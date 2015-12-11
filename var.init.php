@@ -4,9 +4,9 @@
    */
    
    
-	if(empty($_GET['requete']))
+	if(empty($_GET['r']))
 	{
-		$_GET['requete'] = '';
+		$_GET['r'] = '';
 	}
     
 	
