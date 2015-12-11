@@ -21,7 +21,7 @@
 	*/
 	function my_autoloader($class) 
 	{
-		$dossierClasse = array('modeles/', 'vues/', 'lib/mySQL/', '' );
+		$dossierClasse = array('modeles/', 'vues/', 'lib/BDD/', '' );
 		
 		foreach ($dossierClasse as $dossier) 
 		{
