@@ -4,8 +4,9 @@
  * Template de classe Vue. Dupliquer et modifier pour votre usage.
  * 
  * @author Jonathan Martel
+ * @author David Lachambre
  * @version 1.0
- * @update 2013-12-11
+ * @update 2015-12-14
  * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
  * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
  * 
@@ -96,13 +97,13 @@ class Vue {
                 <h1><?php echo $oeuvre["titre"]; ?></h1>
                 <p>
                 <?php
-                    if ($photos) {
+                    if ($photos) {//Si des photos existent pour cette oeuvre...
                         for ($i = 0; $i < count($photos); $i++) {
                             $imgPhoto = $photos[$i]['image'];
                             echo "<img src = '../images/$imgPhoto'><br>";
                         }
                     }
-                    else {
+                    else {//Image par défaut
                         $imgDefaut = "imgDefaut".$langue.".png";
                         echo "<img src = '../images/$imgDefaut'><br>";
                     }
@@ -144,9 +145,9 @@ class Vue {
                    
                     echo "<h2>Commentaires</h2>";
                     echo "<p>";
-                    if ($commentaires) {
+                    if ($commentaires) {//Si des commentaires existent pour cette oeuvre dans la langue d'affichage...
                         for ($i = 0; $i < count($commentaires); $i++) {
-                            switch ($commentaires[$i]['voteCommentaire']) {
+                            switch ($commentaires[$i]['voteCommentaire']) {//Sélection de l'image d'étoile appropriée selon le vote
                                 case 1:
                                     $imgVote = "etoiles_1.png";
                                     break;

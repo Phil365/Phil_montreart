@@ -1,11 +1,10 @@
 <?php
 
 /**
- * @file     mesParametresBD.php
+ * @brief    Définit les constantes de configuration de l'application
  * @author   David Lachambre
  * @version  1.0
- * @date     2015-12-10
- * @brief    Définit les constantes de configuration de l'application.   
+ * @date     2015-12-10 
  */
 
 /**

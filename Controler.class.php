@@ -6,7 +6,7 @@
  * @author Jonathan Martel
  * @author David Lachambre
  * @version 1.1
- * @update 2015-12-10
+ * @update 2015-12-14
  * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
  * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
  * 
@@ -14,13 +14,47 @@
 
 class Controler {
     
+    /**
+    * @var object $oVue Contient la composante vue du MVC
+    * @access private
+    */
     private $oVue;
+    
+    /**
+    * @var object $oCookie Cookie du site
+    * @access private
+    */
     private $oCookie;
+    
+    /**
+    * @var string $metaPageAccueil Contenu personnalisé à intégrer dans le head de la page d'accueil
+    * @access private
+    */
     private $metaPageAccueil;
+    
+    /**
+    * @var string $metaPageOeuvre Contenu personnalisé à intégrer dans le head de la page d'une oeuvre
+    * @access private
+    */
     private $metaPageOeuvre;
+    
+    /**
+    * @var string $pageActuelle Page présentement affichée par l'utilisateur
+    * @access private
+    */
     private $pageActuelle;
+    
+    /**
+    * @var string $langueAffichage Langue d'affichage du site
+    * @access private
+    */
     private $langueAffichage;
     
+    /**
+    * @brief Constructeur, initialise les propriétés
+    * @access public
+    * @return void
+    */
     public function __construct() {
         
         $this->oVue = new Vue();
@@ -40,9 +74,10 @@ class Controler {
         $this->pageActuelle = $_GET['r'];
     }
     /**
-     * Traite la requête
-     * @return void
-     */
+    * @brief Traite la requête GET
+    * @access public
+    * @return void
+    */
     public function gerer() {
         
         switch ($_GET['r']) {//requête
@@ -57,6 +92,13 @@ class Controler {
                 break;
         }
     }
+    
+    
+    /**
+    * @brief Méthode qui appelle la vue d'affichage de la page d'accueil
+    * @access private
+    * @return void
+    */
     private function accueil() {
         
         $this->oVue->afficheMeta($this->metaPageAccueil);
@@ -64,6 +106,12 @@ class Controler {
         $this->oVue->afficheAccueil();
         $this->oVue->affichePiedPage();
     }
+    
+    /**
+    * @brief Méthode qui appelle la vue d'affichage de la page d'une oeuvre
+    * @access private
+    * @return void
+    */
     private function oeuvre() {
         
         $oeuvre = new Oeuvre();
@@ -80,7 +128,9 @@ class Controler {
         $this->oVue->affichePageOeuvre($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $this->langueAffichage);
         $this->oVue->affichePiedPage();
     }
-    // Placer les méthodes du controleur.
+    
+    
+    // Placer les méthodes du controleur ici.
 }
 ?>
 

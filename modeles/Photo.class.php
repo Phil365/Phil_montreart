@@ -9,28 +9,35 @@
 class Photo {
     
     /**
-    * @var integer id de la photo
+    * @var integer $id Id de la photo.
+    * @access private
     */
     private $id;
     
+    /**
+    * @var string $image Nom de l'image, incluant l'extension du fichier.
+    * @access private
+    */
     private $image;
+    
+    /**
+    * @var boolean $authorise Détermine si l'euvre a passé l'étape de l'audit.
+    * @access private
+    */
     private $authorise;
 
     /**
-    * @var BaseDeDonnee Objet base de données qui permet la connexion.
+    * @var object $database Connection à la BDD.
+    * @access private
     */
     private static $database;
     
 	function __construct() {
 		
-        if (!isset(self::$database)) {
+        if (!isset(self::$database)) {//Connection à la BDD si pas déjà connecté
             
             self::$database = new BaseDeDonnees();
         }
-	}
-	
-	function __destruct() {
-		
 	}
     
     /**
@@ -38,7 +45,7 @@ class Photo {
     * @param integer $id
     * @param string $image
     * @param boolean $authorise
-    * @return Void
+    * @return void
     */
     public function setData($id, $image, $authorise) {
         
@@ -50,7 +57,7 @@ class Photo {
 	/**
     * @brief méthode qui récupère les valeurs des propriétés de cet objet.
     * @access public
-    * @return Array
+    * @return array
     */
 	public function getData() {
         
@@ -64,7 +71,7 @@ class Photo {
     * @param $id integer
     * @param $langue string
     * @access public
-    * @return Array
+    * @return array
     */
     public function getPhotosByOeuvre($idOeuvre) {
         

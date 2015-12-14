@@ -1,25 +1,44 @@
 <?php
 /**
- * @file Commentaire.class.php
  * @brief class Commentaire
  * @author David Lachambre
- * @version 0.1
- * @update 2015-12-13
+ * @version 1.0
+ * @update 2015-12-14
  */
 class Commentaire {
     
     /**
-    * @var integer id du commentaire
+    * @var string $id Id du commentaire
+    * @access private
     */
     private $id;
     
+    /**
+    * @var string $texte Texte du commentaire
+    * @access private
+    */
     private $texte;
+    
+    /**
+    * @var string $vote Vote de l'utilisateur ayant laissé le commentaire
+    * @access private
+    */
     private $vote;
+    
+    /**
+    * @var string $langue Langue originale du commentaire
+    * @access private
+    */
     private $langue;
+    
+    /**
+    * @var string $authorise Détermine si le commentaire a passé l'étape de l'audit
+    * @access private
+    */
     private $authorise;
 
     /**
-    * @var BaseDeDonnee Objet base de données qui permet la connexion.
+    * @var object Connection à la BDD
     */
     private static $database;
     
@@ -30,10 +49,6 @@ class Commentaire {
             self::$database = new BaseDeDonnees();
         }
 	}
-	
-	function __destruct() {
-		
-	}
     
     /**
     * @brief Méthode qui assigne des valeurs aux propriétés du commentaire
@@ -42,7 +57,7 @@ class Commentaire {
     * @param integer $vote
     * @param string $langue
     * @param boolean $authorise
-    * @return Void
+    * @return void
     */
     public function setData($id, $texte, $vote, $langue, $authorise) {
         
@@ -54,9 +69,9 @@ class Commentaire {
 	}
 		
 	/**
-    * @brief méthode qui récupère les valeurs des propriétés de cet objet.
+    * @brief Méthode qui récupère les valeurs des propriétés de cet objet
     * @access public
-    * @return Array
+    * @return array
     */
 	public function getData() {
         
@@ -66,11 +81,11 @@ class Commentaire {
 	}
     
     /**
-    * @brief méthode qui récupère tous les commentaires associés à une oeuvre.
+    * @brief Méthode qui récupère tous les commentaires associés à une oeuvre
     * @param $id integer
     * @param $langue string
     * @access public
-    * @return Array
+    * @return array
     */
     public function getCommentairesByOeuvre($idOeuvre, $langue) {
         
