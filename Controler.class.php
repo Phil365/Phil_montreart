@@ -15,10 +15,29 @@
 class Controler {
     
     private $oVue;
+    private $oCookie;
+    private $metaPageAccueil;
+    private $metaPageOeuvre;
+    private $pageActuelle;
+    private $langueAffichage;
     
     public function __construct() {
         
         $this->oVue = new Vue();
+        
+        $this->oCookie = new Cookie();
+        $this->langueAffichage = $this->oCookie->getLangue();
+        
+        if ($this->langueAffichage == "EN") {
+            $this->metaPageAccueil = ["titre"=>"MontreArt - Home Page", "description"=>""];
+            $this->metaPageOeuvre = ["titre"=>"Montréart - Art Page", "description"=>""];
+        }
+        else {
+            $this->metaPageAccueil = ["titre"=>"MontréArt - page d'accueil", "description"=>""];
+            $this->metaPageOeuvre = ["titre"=>"Montréart - page d'une oeuvre", "description"=>""];
+        }
+        
+        $this->pageActuelle = $_GET['r'];
     }
     /**
      * Traite la requête
@@ -26,8 +45,6 @@ class Controler {
      */
     public function gerer() {
         
-        $this->meta();
-        $this->entete();
         switch ($_GET['r']) {//requête
             case 'accueil':
                 $this->accueil();
@@ -39,28 +56,28 @@ class Controler {
                 $this->accueil();
                 break;
         }
-        $this->piedPage();
-    }
-    private function meta() {
-        
-        $this->oVue->afficheMeta();
-    }
-    private function entete() {
-        
-        $this->oVue->afficheEntete();
     }
     private function accueil() {
         
+        $this->oVue->afficheMeta($this->metaPageAccueil);
+        $this->oVue->afficheEntete($this->pageActuelle);
         $this->oVue->afficheAccueil();
+        $this->oVue->affichePiedPage();
     }
     private function oeuvre() {
         
         $oeuvre = new Oeuvre();
-        $oeuvre->setData(1, "titre test", 1234, "45.554", "56.534645", null, null, "adresse test", "description test", 1, 1, 1, 1, ["photo1", "photo2"], ["commentaire1", "commentaire2"]);
-        $this->oVue->affichePageOeuvre($oeuvre);
-    }
-    private function piedPage() {
+        $oeuvreAffichee = $oeuvre->getOeuvreById($_GET["o"], $this->langueAffichage);
         
+        $commentaire = new Commentaire();
+        $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
+        
+        $photo = new Photo();
+        $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"]);
+        
+        $this->oVue->afficheMeta($this->metaPageOeuvre);
+        $this->oVue->afficheEntete($this->pageActuelle);
+        $this->oVue->affichePageOeuvre($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre);
         $this->oVue->affichePiedPage();
     }
     // Placer les méthodes du controleur.
