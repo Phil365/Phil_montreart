@@ -13,6 +13,7 @@
 	define('MODELE_DIR', 'modeles/');	// Chemin vers les modèles
 	define('VUES_DIR', 'vues/');	// Chemin vers les vues
 	define('LIB_DIR', 'lib/');	// Chemin vers les librairies
+	define('CONFIG_DIR', 'config/');	// Chemin vers les fichiers de configuration
 	
 	/*
 	set_include_path(get_include_path().PATH_SEPARATOR.MODELE_DIR.PATH_SEPARATOR.VUES_DIR.PATH_SEPARATOR.LIB_DIR);	// Ajoute le chemin dans les "path"
@@ -21,7 +22,7 @@
 	*/
 	function my_autoloader($class) 
 	{
-		$dossierClasse = array('modeles/', 'vues/', 'lib/BDD/', '' );
+		$dossierClasse = array('modeles/', 'vues/', 'lib/BDD/', 'lib/', 'config/', '' );
 		
 		foreach ($dossierClasse as $dossier) 
 		{
