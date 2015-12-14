@@ -12,6 +12,8 @@ class Oeuvre {
     * @var integer id de l'oeuvre.
     */
     private $id;
+    
+    
     private $titre;
     private $noInterneMtl;
     private $latitude;
@@ -83,14 +85,37 @@ class Oeuvre {
 	}
 		
 	/**
-	 * @access public
-	 * @return Array
-	 */
+    * @brief méthode qui récupère les valeurs des propriétés de cet objet.
+    * @access public
+    * @return Array
+    */
 	public function getData() {
         
         $resutlat = ["id"=>$this->id, "titre"=>$this->titre, "noInterneMtl"=>$this->noInterneMtl, "latitude"=>$this->latitude, "longitude"=>$this->longitude, "parc"=>$this->parc, "batiment"=>$this->batiment, "adresse"=>$this->adresse, "description"=>$this->description, "idCollection"=>$this->idCollection, "idCategorie"=>$this->idCategorie, "idArrondissement"=>$this->idArrondissement, "idArtiste"=>$this->idArtiste, "photos"=>$this->photos, "commentaires"=>$this->commentaires];
         
         return $resutlat;
 	}
+    
+    /**
+    * @brief méthode qui récupère une oeuvre dans la BD.
+    * @param $id integer
+    * @param $langue string
+    * @access public
+    * @return Array
+    */
+    public function getOeuvreById($id, $langue) {
+        
+        self::$database->query('SELECT * FROM Oeuvres JOIN Collections ON Oeuvres.idCollection = Collections.idCollection JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN SousCategories ON Categories.idCategorie = SousCategories.idCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement JOIN Artistes ON Artistes.idArtiste = Oeuvres.idArtiste WHERE Oeuvres.idOeuvre = :id AND Oeuvres.authorise = true');
+        
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':id', $id);
+        
+        $infoOeuvre = [];
+        
+        if ($oeuvreBDD = self::$database->uneLigne()) {
+            $infoOeuvre = ["id"=>$oeuvreBDD['idOeuvre'], "titre"=>$oeuvreBDD['titre'], "parc"=>$oeuvreBDD['parc'], "batiment"=>$oeuvreBDD['batiment'], "adresse"=>$oeuvreBDD['adresse'], "description"=>$oeuvreBDD['description'.$langue], "nomCollection"=>$oeuvreBDD['nomCollection'.$langue], "nomCategorie"=>$oeuvreBDD['nomCategorie'.$langue], "sousCategorie"=>$oeuvreBDD['sousCategorie'.$langue], "nomArrondissement"=>$oeuvreBDD['nomArrondissement'], "prenomArtiste"=>$oeuvreBDD['prenomArtiste'], "nomArtiste"=>$oeuvreBDD['nomArtiste']];
+        }
+        return $infoOeuvre;
+    }
 }
 ?>
