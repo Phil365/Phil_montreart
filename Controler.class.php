@@ -77,7 +77,7 @@ class Controler {
         
         $this->oVue->afficheMeta($this->metaPageOeuvre);
         $this->oVue->afficheEntete($this->pageActuelle);
-        $this->oVue->affichePageOeuvre($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre);
+        $this->oVue->affichePageOeuvre($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $this->langueAffichage);
         $this->oVue->affichePiedPage();
     }
     // Placer les méthodes du controleur.

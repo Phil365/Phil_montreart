@@ -82,7 +82,7 @@ class Vue {
 	 * @access public
 	 * 
 	 */
-    public function affichePageOeuvre($oeuvre, $commentaires, $photos) {
+    public function affichePageOeuvre($oeuvre, $commentaires, $photos, $langue) {
         if (empty($oeuvre)) {
             echo "Cette oeuvre n'a pas été trouvée dans la base de données";
         }
@@ -90,6 +90,7 @@ class Vue {
 //            var_dump($oeuvre);
 //            var_dump($commentaires);
 //            var_dump($photos);
+//            var_dump($langue);
     ?>        
             <article>
                 <h1><?php echo $oeuvre["titre"]; ?></h1>
@@ -102,7 +103,8 @@ class Vue {
                         }
                     }
                     else {
-                        echo "Aucun commentaire";
+                        $imgDefaut = "imgDefaut".$langue.".png";
+                        echo "<img src = '../images/$imgDefaut'><br>";
                     }
                     
                     if ($oeuvre["description"]) {
