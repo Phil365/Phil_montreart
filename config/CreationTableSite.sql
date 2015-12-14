@@ -136,5 +136,7 @@ INSERT INTO Arrondissements VALUES (3,"Rosemont–La Petite-Patrie");
 INSERT INTO Oeuvres VALUES ( 3,"Regarder les pommetiers", 1119,45.561585,-73.562673,"Jardin botanique","Jardin botanique","4101, rue Sherbrooke Est, Montréal (QC) H1X 2B2","super magnifique","super beautyfull",1,1,3,2);
 INSERT INTO Photos VALUES (3,"http://artpublicmontreal.ca/wp-content/uploads/imported/1119_4036.jpg",3);
 
-INSERT INTO OeuvresSoumises VALUES ( 1,"Le chat de Gaspar", "c'est un chat semble t'il magnifique","3306 pie-ix montreal","fr","http://imalbum.aufeminin.com/album/D20070810/323931_IKO56WMIT41K5WFAKCLVMOBNYZDNMI_chat-land-animaux-00237_H150344_L.jpg");
-INSERT INTO OeuvresSoumises VALUES ( 2,"Intemporel", "Arts it's like a box of chocolate you never what you're getting","5985 Turenne Montreal","en","http://www.courtemanchecommunications.com/site/wp-content/uploads/Pinzon_naturalbeauty_.jpg");
+INSERT INTO OeuvresSoumises VALUES ( 1,"Le chat de Gaspar", "c'est un chat semble t'il magnifique","3306 pie-ix montreal","FR","http://imalbum.aufeminin.com/album/D20070810/323931_IKO56WMIT41K5WFAKCLVMOBNYZDNMI_chat-land-animaux-00237_H150344_L.jpg");
+INSERT INTO OeuvresSoumises VALUES ( 2,"Intemporel", "Arts it's like a box of chocolate you never what you're getting","5985 Turenne Montreal","EN","http://www.courtemanchecommunications.com/site/wp-content/uploads/Pinzon_naturalbeauty_.jpg");
+INSERT INTO Utilisateurs VALUES ( 1,"dlachambre", "dl12345","David","Lachambre","dlachambre@montreart.net", "J'aime les marches sur la plage et le tricot extrême.", "photoProfilDefaut.jpg", true);
+INSERT INTO Commentaires VALUES (1,"Trop hot !", 5, "FR", 3, 1);
