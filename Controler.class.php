@@ -57,8 +57,6 @@ class Controler {
     */
     public function __construct() {
         
-        $this->oVue = new Vue();
-        
         $this->oCookie = new Cookie();
         $this->langueAffichage = $this->oCookie->getLangue();
         
@@ -101,10 +99,11 @@ class Controler {
     */
     private function accueil() {
         
-        $this->oVue->afficheMeta($this->metaPageAccueil);
-        $this->oVue->afficheEntete($this->pageActuelle);
-        $this->oVue->afficheAccueil();
-        $this->oVue->affichePiedPage();
+        $this->oVue = new VueAccueil();        
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
     }
     
     /**
@@ -123,10 +122,12 @@ class Controler {
         $photo = new Photo();
         $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"]);
         
-        $this->oVue->afficheMeta($this->metaPageOeuvre);
-        $this->oVue->afficheEntete($this->pageActuelle);
-        $this->oVue->affichePageOeuvre($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $this->langueAffichage);
-        $this->oVue->affichePiedPage();
+        $this->oVue = new VueOeuvre();      
+        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $this->langueAffichage);      
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
     }
     
     
