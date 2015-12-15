@@ -9,6 +9,7 @@ batiment VARCHAR(50),
 adresse VARCHAR(100),
 descriptionFR TEXT,
 descriptionEN TEXT,
+authorise boolean NOT NULL,
 idCollection INT,
 idCategorie INT,
 idArrondissement INT,
@@ -47,7 +48,8 @@ PRIMARY KEY (idArtiste) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS Photos ;
 CREATE TABLE Photos (idPhoto INT  AUTO_INCREMENT NOT NULL,
-photo VARCHAR(100) UNIQUE,
+image VARCHAR(100) UNIQUE,
+authorise boolean NOT NULL,
 idOeuvre INT NOT NULL,
 PRIMARY KEY (idPhoto) ) ENGINE=InnoDB;
 
@@ -68,33 +70,10 @@ CREATE TABLE Commentaires (idCommentaire INT  AUTO_INCREMENT NOT NULL,
 texteCommentaire TEXT,
 voteCommentaire SMALLINT,
 langueCommentaire CHAR(2),
+authorise boolean NOT NULL,
 idOeuvre INT NOT NULL,
 idUtilisateur INT NOT NULL,
 PRIMARY KEY (idCommentaire) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS PhotosSoumises ;
-CREATE TABLE PhotosSoumises (idPhotoSoumise INT  AUTO_INCREMENT NOT NULL,
-photoSoumise VARCHAR(100) UNIQUE,
-idOeuvre INT NOT NULL,
-PRIMARY KEY (idPhotoSoumise) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS CommentairesSoumis ;
-CREATE TABLE CommentairesSoumis (idCommentaireSoumis INT  AUTO_INCREMENT NOT NULL,
-commentaireSoumis TEXT,
-voteCommentaireSoumis SMALLINT,
-langueCommentaireSoumis CHAR(2),
-idOeuvre INT NOT NULL,
-idUtilisateur INT NOT NULL,
-PRIMARY KEY (idCommentaireSoumis) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS OeuvresSoumises ;
-CREATE TABLE OeuvresSoumises (idOeuvreSoumise INT  AUTO_INCREMENT NOT NULL,
-titreOeuvreSoumise VARCHAR(50),
-descriptionOeuvreSoumise TEXT,
-adresseOeuvreSoumise VARCHAR(100),
-langueOeuvreSoumise CHAR(2),
-photoOeuvreSoumise VARCHAR(100),
-PRIMARY KEY (idOeuvreSoumise) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS Visitent ;
 CREATE TABLE Visitent (idOeuvre INT  AUTO_INCREMENT NOT NULL,
@@ -111,9 +90,6 @@ ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idArtiste FOREIGN KEY (idArtiste) 
 ALTER TABLE Photos ADD CONSTRAINT FK_Photos_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
 ALTER TABLE Commentaires ADD CONSTRAINT FK_Commentaires_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
 ALTER TABLE Commentaires ADD CONSTRAINT FK_Commentaires_idUtilisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs (idUtilisateur);
-ALTER TABLE PhotosSoumises ADD CONSTRAINT FK_PhotosSoumises_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
-ALTER TABLE CommentairesSoumis ADD CONSTRAINT FK_CommentairesSoumis_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
-ALTER TABLE CommentairesSoumis ADD CONSTRAINT FK_CommentairesSoumis_idUtilisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs (idUtilisateur);
 ALTER TABLE Visitent ADD CONSTRAINT FK_Visitent_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre);
 ALTER TABLE Visitent ADD CONSTRAINT FK_Visitent_idUtilisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs (idUtilisateur) ON DELETE CASCADE;
 
@@ -122,21 +98,19 @@ INSERT INTO Categories VALUES (1,"Beaux-arts","Fine Arts");
 INSERT INTO SousCategories VALUES (1,"Sculpture","Sculpture", 1);
 INSERT INTO Arrondissements VALUES (1,"Côte-des-Neiges–Notre-Dame-de-Grâce");
 INSERT INTO Artistes VALUES (1,"Patrick","Coutu");
-INSERT INTO Oeuvres VALUES (1,"Source", 960,45.466405,-73.631648,"Parc Benny","Centre sportif Notre-Dame-de Grâce","6445, avenue Monkland, Montréal","super magnifique","super beautyfull",1,1,1,1);
-INSERT INTO Photos VALUES (1,"http://artpublicmontreal.ca/wp-content/uploads/imported/962_4344.jpg",1);
-
+INSERT INTO Oeuvres VALUES (1,"Source", 960,45.466405,-73.631648,"Parc Benny","Centre sportif Notre-Dame-de Grâce","6445, avenue Monkland, Montréal","super magnifique","super beautyfull",true,1,1,1,1);
+INSERT INTO Photos VALUES (1,"source.jpg",true,1);
 INSERT INTO SousCategories VALUES (2,"Installation","Installation", 1);
 INSERT INTO Arrondissements VALUES (2,"Ville-Marie");
 INSERT INTO Artistes VALUES (2,"Jocelyne","Alloucherie");
-INSERT INTO Oeuvres VALUES ( 2,"Porte de jour",1098,45.512090,-73.550979,"Square Dalhousie","","","super magnifique","super beautyfull",1,1,2,2);
-INSERT INTO Photos VALUES (2,"http://artpublicmontreal.ca/wp-content/uploads/imported/1099_5287.jpg",2);
-
-
+INSERT INTO Oeuvres VALUES ( 2,"Porte de jour",1098,45.512090,-73.550979,"Square Dalhousie",null,null,"super magnifique","super beautyfull",true,1,1,2,2);
+INSERT INTO Photos VALUES (2,"porte.jpg",true,2);
 INSERT INTO Arrondissements VALUES (3,"Rosemont–La Petite-Patrie");
-INSERT INTO Oeuvres VALUES ( 3,"Regarder les pommetiers", 1119,45.561585,-73.562673,"Jardin botanique","Jardin botanique","4101, rue Sherbrooke Est, Montréal (QC) H1X 2B2","super magnifique","super beautyfull",1,1,3,2);
-INSERT INTO Photos VALUES (3,"http://artpublicmontreal.ca/wp-content/uploads/imported/1119_4036.jpg",3);
-
-INSERT INTO OeuvresSoumises VALUES ( 1,"Le chat de Gaspar", "c'est un chat semble t'il magnifique","3306 pie-ix montreal","FR","http://imalbum.aufeminin.com/album/D20070810/323931_IKO56WMIT41K5WFAKCLVMOBNYZDNMI_chat-land-animaux-00237_H150344_L.jpg");
-INSERT INTO OeuvresSoumises VALUES ( 2,"Intemporel", "Arts it's like a box of chocolate you never what you're getting","5985 Turenne Montreal","EN","http://www.courtemanchecommunications.com/site/wp-content/uploads/Pinzon_naturalbeauty_.jpg");
+INSERT INTO Oeuvres VALUES ( 3,"Regarder les pommetiers", 1119,45.561585,-73.562673,"Jardin botanique","Jardin botanique","4101, rue Sherbrooke Est, Montréal (QC) H1X 2B2","super magnifique","super beautyfull",true,1,1,3,2);
+INSERT INTO Photos VALUES (3,"pommetiers.jpg",true,3);
+INSERT INTO Oeuvres VALUES ( 4,"Le chat de Gaspar", null, null, null, null, null, "3306 pie-ix montreal", "c'est un chat semble t'il magnifique", null,true,1,1,1,1);
+INSERT INTO Oeuvres VALUES ( 5,"Intemporel", null, null, null, null, null, "5985 Turenne Montreal", null, "Arts it's like a box of chocolate you never know what you're getting",false,1,1,1,1);
+INSERT INTO Photos VALUES (4,"lion.jpg",false,5);
+INSERT INTO Photos VALUES (5,"chat.jpg",true,4);
 INSERT INTO Utilisateurs VALUES ( 1,"dlachambre", "dl12345","David","Lachambre","dlachambre@montreart.net", "J'aime les marches sur la plage et le tricot extrême.", "photoProfilDefaut.jpg", true);
-INSERT INTO Commentaires VALUES (1,"Trop hot !", 5, "FR", 3, 1);
+INSERT INTO Commentaires VALUES (1,"Trop hot !", 5, "FR", true, 3, 1);
