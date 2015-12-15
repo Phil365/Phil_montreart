@@ -1,33 +1,31 @@
 <?php
 /**
  * Class Vue
- * Template de classe Vue. Dupliquer et modifier pour votre usage.
- * 
- * @author Jonathan Martel
+ * @author David Lachambre
  * @version 1.0
- * @update 2013-12-11
- * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
- * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
+ * @update 2015-12-15
  * 
  */
+header('Content-Type: text/html; charset=utf-8');//Affichage du UTF-8 par PHP.
 
+abstract class Vue {
 
-class Vue {
-
-	/**
-	 * Affiche la page d'accueil 
-	 * @access public
-	 * 
-	 */
-	public function afficheAccueil() {
-		?>
-		<!DOCTYPE html>
-<html lang="fr">
+    protected $titrePage = "";
+    protected $descriptionPage = "";
+    
+    /**
+    * @brief Méthode qui écrit les information de meta du document HTML, incluant le doctype et la balise d'ouverture du HTML
+    * @access public
+    * @return void
+    */
+    public function afficherMeta() {
+    ?>
+    <!DOCTYPE html>
+    <html lang="fr">
 	<head>
-		<title>Mon simple MVC</title>
+		<title><?php echo $this->titrePage ?></title>
 		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="description" content="">
+		<meta name="description" content="<?php echo $this->descriptionPage ?>">
 		<meta name="viewport" content="width=device-width">
 		
 		<link rel="stylesheet" href="./css/normalize.css" type="text/css" media="screen">
@@ -38,26 +36,42 @@ class Vue {
 		<script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
 	</head>
+    <?php
+    }
 
-	<body>
-		<article>
-			<h1>Bienvenue sur Simple MVC Structure </h1>
-			<p>Simple MVC Structure  n'est pas un framework, mais seulement une structure de base qui permet de monter un MVC rapidement en php. 
-				Il suffit de forker le <a href="#">dépot Github</a> et de dupliquer les classes vues et modele afin d'en disposer à votre convenance.</p>
-		</article>
-		
-			<div id="footer">
-				Certains droits réservés @ Jonathan Martel (2013)<br>
-				Sous licence Creative Commons (BY-NC 3.0)
-			</div>
-		</div>	
-	</body>
-</html>
+    /**
+    * @brief Méthode qui affiche l'entête (header) du document HTML
+    * @access public
+    * @return void
+    */
+    public function afficherEntete() {
+    ?>
+        <header>
+            <div>HEADER</div>
+        </header>
+    <?php
+    }
+    
+    /**
+    * @brief Méthode abstraite qui affiche le corps du document HTML - doit être défini par chaque nouvelle vue
+    * @access public
+    * @return void
+    */
+    abstract public function afficherBody();
+    
+    /**
+    * @brief Méthode qui affiche le pied de page (footer) du document HTML et ferme la balise HTML
+    * @access public
+    * @return void
+    */
+    public function afficherPiedPage() {
+    ?>
+        <footer>
+            <div>FOOTER</div>
+        </footer>
+    </html>
 
-		<?php
-		
-	}
-	
-
+    <?php
+    }
 }
 ?>
