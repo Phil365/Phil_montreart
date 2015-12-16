@@ -14,7 +14,9 @@
 			<h1>Test - Modèles</h1>
 		</div>
 		<div id="contenu">
-			<?php // Placer vos tests unitaires ici... ?>
+			<?php
+                // Placer vos tests unitaires ici...
+            ?>
 		</div>
 		<div id="footer">
 
