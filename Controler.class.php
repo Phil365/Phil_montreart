@@ -85,6 +85,15 @@ class Controler {
             case 'oeuvre':
                 $this->oeuvre();
                 break;
+            case 'trajet':
+                $this->trajet();
+                break;
+            case 'soumission':
+                $this->soumission();
+                break;
+            case 'profil':
+                $this->profil();
+                break;
             default:
                 $this->accueil();
                 break;
@@ -122,8 +131,50 @@ class Controler {
         $photo = new Photo();
         $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"]);
         
-        $this->oVue = new VueOeuvre();      
+        $this->oVue = new VueOeuvre();
         $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $this->langueAffichage);      
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
+    }
+    
+    /**
+    * @brief Méthode qui appelle la vue d'affichage de la page de trajet
+    * @access private
+    * @return void
+    */
+    private function trajet() {
+        
+        $this->oVue = new VueTrajet();        
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
+    }
+    
+    /**
+    * @brief Méthode qui appelle la vue d'affichage de la page de soumission
+    * @access private
+    * @return void
+    */
+    private function soumission() {
+        
+        $this->oVue = new VueSoumission();        
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
+    }
+    
+    /**
+    * @brief Méthode qui appelle la vue d'affichage de la page de profil
+    * @access private
+    * @return void
+    */
+    private function profil() {
+        
+        $this->oVue = new VueProfil();        
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
