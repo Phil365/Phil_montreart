@@ -1,0 +1,700 @@
+@charset "utf-8";
+
+/*https://css-tricks.com/snippets/php/randomize-background-image/*/
+
+
+/*========================================  CSS RESET ====================================================*/
+/* http://meyerweb.com/eric/tools/css/reset/ 
+v2.0 | 20110126
+License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+margin: 0;
+padding: 0;
+border: 0;
+font-size: 100%;
+font: inherit;
+vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+display: block;
+}
+body {
+line-height: 1;
+}
+ol, ul {
+list-style: none;
+}
+blockquote, q {
+quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+content: '';
+content: none;
+}
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+/*========================================  fin DU CSS RESET ====================================================*/
+
+/*========================================  STYLES GENERAUX ====================================================*/
+/*============================COULEURS:
+rouge fonce: #B22A40;
+rose: #F05570;
+bleu fonce: #1781B2;
+bleu moyenne: #30A0D1;
+jaune: #F8F274;
+================================FIN COULEURS*/
+@viewport{
+zoom: 1.0;
+width: extend-to-zoom;
+}
+@-ms-viewport{
+width: extend-to-zoom;
+zoom: 1.0;
+}
+html,body{
+min-height: 100%; 
+margin: 0;
+padding: 0;
+}
+html{
+background-color: #B22A40;
+}
+body{
+background-color: #ffffff;
+font-family: 'EB Garamond', serif;
+max-width: 980px;
+}
+body div{
+    border: 1px solid #ddd;
+}
+h2{
+font-family: 'Noto Serif', serif;
+font-size: 1.6em;
+color: #B22A40;
+margin: 60px 10px 30px 10px;
+}
+
+h3{
+font-family: 'Noto Serif', serif;
+color: #B22A40;
+font-size: 1.2em;
+margin-top: 1em;
+}
+h4{
+font-family: 'Noto Serif', serif;
+color: #B22A40;
+font-size: 1em;
+margin-top: 1em;
+}
+a{
+font-family: 'Noto Serif', serif;
+color: #000000;
+text-decoration: none;
+}
+
+
+
+.textStandard{
+font-family: 'EB Garamond', serif;
+font-size: .9em;
+line-height: 1.4em;
+letter-spacing: .9px;
+font-weight: 500;
+text-indent: 50px;
+margin: 40px 10px;
+
+}
+.noIndent{
+font-family: 'EB Garamond', serif;
+font-size: 1.2em;
+line-height: 1.4em;
+letter-spacing: .9px;
+font-weight: 500;
+margin: 40px 10px;
+text-indent: 0;
+}
+.bold{
+font-weight: 700;
+}
+.cursive{
+font-style: italic;
+}
+.dummy{
+    height: 89px;
+}
+main{
+     width: 100%;
+}
+.aside1{
+    width: 100%;
+    height: 40px;
+   
+}
+.aside2{
+    width: 100%;
+    height: 40px;
+   
+}
+.section1{
+   
+   
+    height: 300px;
+    width: 100%;
+    display: none;
+}
+
+.section2{
+    
+    height: 300px;
+    width: 100%;
+}
+.section3{
+    
+    height: 300px;
+    width: 100%;
+}
+.section4{
+    
+    height: 300px;
+    width: 100%;
+}
+.section5{
+    
+    height: 300px;
+    width: 100%;
+}
+footer{
+background: #30A0D1;
+width: 100%;
+height: 75px;
+position: relative;
+bottom: 0;
+font-family: 'Noto Serif', serif;
+font-size: .8em;
+letter-spacing: .6px;
+line-height: 1.6em;
+color: #ffffff;
+padding: 10px;
+}
+.anchor{
+float: right;
+clear: both;
+position: fixed;
+bottom: 62px;
+right: 10px;
+}
+.anchor img{
+width: 40px;
+opacity: .5;
+z-index: 3;
+}
+.reseauxsociaux{
+    float: right;
+    margin-right: 10px;
+}
+.reseauxsociaux img{
+    width: 40px;
+    height: auto;
+    margin: 5px;
+}
+.infosOeuvre{
+    width: 100%;
+    height: 300px;
+}
+.rating{
+    width: 100%;
+    height: 30px;
+}
+.sliderOeuvre{
+    width: 100%;
+    height: auto;
+}
+.sliderOeuvre img{
+   
+   width: 94%;
+   margin: 3%;
+}
+.boutonMoyenne{
+  
+    text-align:center;
+    background-color:#30A0D1;
+    font-family:'EB Garamond', serif;
+    color:#fff;
+    border:1px solid #ddd;
+    padding:10px;
+    font-size:1.2em;
+    cursor:pointer;
+    border-radius:5px;
+    margin: 30px; 
+}
+.sliderOeuvre .boutonMoyenne{
+    float: right;
+   
+}
+.description{
+    width: 98%;
+    
+}
+#sectionCommentaires .boutonMoyenne{
+    float: right;
+}
+.thumbnail{
+    width: 50px;
+    height: 50px;
+}
+.ratingUtilisateur{
+    height: 30px;
+}
+/*========NAV PRINCIPALE=====*/
+
+
+
+/*déclaration css combinée, css_reset ciblé*/
+nav ul,
+nav	li,
+nav	a {
+margin:0;
+padding: 0;
+list-style: none;
+}
+nav {
+display: block;
+width: 100%;
+background-color: #ffffff;
+border-top: #B22A40 solid 4px;
+border-bottom: #F8F274 solid 4px;
+position: fixed;
+top: 49px;
+z-index: 2;
+}
+
+
+nav a{
+font-family: 'Noto Serif', serif;
+font-size: .8em;
+color: #B22A40;
+text-decoration: none;
+padding: .2em .3em;
+line-height: 36px;
+border-right: #B22A40 solid 2px;
+}
+.ici{/*--cette class est pour marquer la page actuelle dans le nav--*/
+font-weight: 600;
+}
+nav a:active{
+color:  #b95364;
+}
+
+/*====fin=NAV PRINCIPALE=====*/
+/*--------------------------STYLES FORMULAIRES -------------------------*/
+#div_bgform {
+width:100%;
+height:100%;
+position:absolute;
+top:0;
+left:0;
+background-color:rgba(90, 89, 89, 0.73);
+overflow:auto;
+z-index: 7;
+display: none;
+}
+#fermer {
+position:absolute;
+right:-4px;
+top:-4px;
+width:30px;
+height:30px;
+background-color:#F05570;
+font-family:'EB Garamond', serif;
+font-size: 1.2em;
+color: #fff;
+cursor:pointer;
+border-radius: 16px;
+font-family: sans-serif;
+cursor:pointer;
+}
+#div_form {
+position:absolute;
+top:17%;
+font-family:'EB Garamond', serif;
+z-index: 8;
+display: none;
+}
+
+#div_form h2 {
+color: #B22A40;
+padding:20px 35px;
+margin:-10px -50px;
+text-align:center;
+}
+
+input {
+width:82%;
+padding:10px;
+margin-top:30px;
+border:1px solid #ccc;
+padding-left:40px;
+font-size:16px;
+font-family:'EB Garamond', serif;
+}
+
+
+.submit {
+text-decoration:none;
+width:100%;
+text-align:center;
+display:block;
+background-color:#30A0D1;
+font-family:'EB Garamond', serif;
+color:#fff;
+border:1px solid #ddd;
+padding:10px 0;
+font-size:20px;
+cursor:pointer;
+border-radius:5px;
+margin: 30px 0;
+}
+#formlogin, #form_profil {
+max-width:200px;
+padding:10px 50px;
+border:2px solid #F8F274;
+border-radius:10px;
+font-family:'EB Garamond', serif;
+background-color:#fff;
+}
+#form_itineraire, #contribuer_article{
+padding:10px 50px 30px 50px;
+font-family:'EB Garamond', serif;
+}
+#form_itineraire input[type="submit"]{
+    float: right;
+    width: 100px; 
+}
+
+/*--------------------------FIN STYLES FORMULAIRES -------------------------*/
+
+/*========================================  FIN DU STYLES GENERAUX ====================================================*/
+/*========================================  STYLES POUR MOBILE ====================================================*/
+header{
+
+position: fixed;
+z-index: 3;
+background-color: #FFFFFF;
+width: 100%;
+height: 49px;
+}
+    
+#logo{
+height: 44px;
+width: 44px;
+margin: 5px;
+}
+#titre{
+position: relative;
+top: -50px;
+left: 70px;
+font-family: 'Noto Serif', serif;
+color: #B22A40;
+font-size: 1.4em;
+z-index: 4;
+}
+
+#loupe{
+width: 15%;
+max-width: 36px;
+max-height: 36px;
+}
+#barreRecherche{
+display: block;
+float: right;
+background: #F05570;
+width: 10%;
+height: 100%;
+position: relative;
+top:-79px;
+}
+
+.lienPageMembre{
+    float:left;
+    clear: none;
+    background-color: #ffffff;
+    border: 2px solid #F8F274;
+    border-radius: 14px;
+    padding: 0px 10px 10px 10px;
+}
+
+/*======================================== FIN DU STYLES POUR MOBILE ====================================================*/
+
+
+/*========================================  STYLES POUR TABLETTE ====================================================*/
+@media (min-width: 480px){
+header{
+    height: 57px;
+}
+nav{
+top:58px;    
+}
+nav a{
+font-size: 1em;    
+}
+#icon_menu{
+margin-left: 2%;
+margin-right: 20%;
+}
+#logo{
+height: 52px;
+width: 52px;
+margin: 7px;
+}
+#titre{
+  font-size: 1.8em;  
+}
+#barreRecherche{
+top:-98px;
+}
+#loupe{
+float: right;
+margin-right: 2%;
+}
+    
+nav a:first-child {
+    margin-left: 20%;
+}
+.dummy{
+    height: 98px;
+}
+#div_form {
+left:50%;
+margin-left:-202px;
+}
+#formlogin {
+max-width:300px;
+}
+#formlogin, #contribuer_article, #form_profil{
+    max-width:300px;
+}
+nav a{
+
+font-size: 1.2em;
+letter-spacing: .4px;
+text-align: center;
+padding: 0 .3em;
+line-height: 30px;
+}   
+}
+@media (min-width: 800px){
+html{
+    width: 100%;
+}
+
+
+body{
+    width: 100%;
+}
+header{
+background-image: url(../images/slider1.jpg);
+background-blend-mode:hard-light;
+background-size: 100% 100%;
+height: 76px;
+width: 100%;
+}
+#titre{
+left: 100px;
+font-weight: 900;
+}
+#logo{
+width: 60px;
+height: 60px;
+}
+nav{
+    top: 76px;
+    width: 100%;
+    margin-left: 0;
+}
+
+#recherche{
+width: 40%;
+position: fixed;
+top: 0px;
+right: 55px;
+background: #00acc2;
+z-index: 4;
+}
+#loupe{
+margin:10px;
+}
+main{
+width: 70%;
+}
+
+.textStandard, .noIndent{
+margin: 40px 20px;
+}
+h2{
+margin-left: 20px;
+margin-right: 20px;
+}
+.dummy{
+    height: 110px;
+}
+.aside1{
+    width: 30%;
+    height: 300px;
+    float: right;
+    position: relative;
+    left: 0
+}
+.aside2{
+    width: 30%;
+    height: 300px;
+    float: right;
+    position: relative;
+    right: -30%;
+    top: 300px;
+} 
+.section1{
+    
+    height: 300px;
+    width: 30%;
+    display: block;
+    margin-right: 0;
+}
+
+.section2{
+   
+    height: 300px;
+    width: 70%;
+    float: left;
+    clear: none;
+    position: relative;
+    top: -300px;
+    left: 30%;
+    margin-left: 0;
+   
+}
+.section3{
+    
+    height: 300px;
+    width: 20%;
+    margin-right: 0;
+}
+.section4{
+   
+    height: 300px;
+    width: 60%;
+    float: left;
+    clear: none;
+    position: relative;
+    top: -300px;
+    left: 20%;
+    margin-left: 0;
+}
+.section5{
+    
+    height: 300px;
+    width: 20%;
+    float: left;
+    clear: none;
+    position: relative;
+    top: -300px;
+    left: 20%;
+    margin-left: 0;
+}
+.lienPageMembre{
+    display: none;
+}    
+.infosOeuvre{
+    width: 20%;
+    height: 300px;
+}
+.sliderOeuvre{
+    width: 80%;
+    height: auto;
+    position: relative;
+    right: -20%;
+    top: -300px;
+}
+}
+/*======================================== FIN DU STYLES POUR TABLETTE ====================================================*/
+
+
+/*========================================  STYLES POUR DESKTOP ====================================================*/
+@media (min-width: 1024px){
+html{
+    width: 80%;
+    margin-left: 10%;
+}
+
+header{
+width: 80%;
+height: 86px;
+}
+footer{
+    width: 98%;
+}
+
+nav{
+top: 86px;
+width: 80%;
+}
+#logo{
+width: 76px;
+height: 76px;
+}
+#titre{
+top: -70px;
+font-size: 3em;
+}
+#barreRecherche{
+top: -140px;
+}
+.dummy{
+height: 120px;
+}
+.textStandard, .noIndent, h2{
+max-width: 800px;
+margin-left: 40px;
+}
+
+}
+@media (min-width: 1200px){
+html{
+width: 980px;
+margin-left: 15%;
+
+}
+
+header{
+width: 980px;
+}
+nav{
+width: 980px;    
+}
+footer{
+    width: 980px;
+    padding: 0;
+}
+
+
+}
+/*========================================FIN DU STYLES POUR DESKTOP ====================================================*/
+
