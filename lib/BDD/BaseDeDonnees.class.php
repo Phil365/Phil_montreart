@@ -2,7 +2,6 @@
 
 // http://culttt.com/2012/10/01/roll-your-own-pdo-php-class/
 
-require_once ("./config/parametresBDD.php");//Contient les paramètres de connection à la BDD
 
 /**
  * @brief class BaseDeDonnees

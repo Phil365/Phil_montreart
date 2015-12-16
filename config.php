@@ -32,7 +32,7 @@
 				require_once('./'.$dossier.$class.'.class.php');
 			}
 		}
-		
+		require_once ("./config/parametresBDD.php");//Contient les paramètres de connection à la BDD
 	  
 	}
 	

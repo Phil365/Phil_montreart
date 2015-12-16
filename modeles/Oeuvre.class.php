@@ -163,7 +163,7 @@ class Oeuvre {
     */
 	public function getData() {
         
-        $resutlat = ["id"=>$this->id, "titre"=>$this->titre, "noInterneMtl"=>$this->noInterneMtl, "latitude"=>$this->latitude, "longitude"=>$this->longitude, "parc"=>$this->parc, "batiment"=>$this->batiment, "adresse"=>$this->adresse, "description"=>$this->description, "idCollection"=>$this->idCollection, "idCategorie"=>$this->idCategorie, "idArrondissement"=>$this->idArrondissement, "idArtiste"=>$this->idArtiste, "authorise"=>$this->authorise, "photos"=>$this->photos, "commentaires"=>$this->commentaires];
+        $resutlat = array("id"=>$this->id, "titre"=>$this->titre, "noInterneMtl"=>$this->noInterneMtl, "latitude"=>$this->latitude, "longitude"=>$this->longitude, "parc"=>$this->parc, "batiment"=>$this->batiment, "adresse"=>$this->adresse, "description"=>$this->description, "idCollection"=>$this->idCollection, "idCategorie"=>$this->idCategorie, "idArrondissement"=>$this->idArrondissement, "idArtiste"=>$this->idArtiste, "authorise"=>$this->authorise, "photos"=>$this->photos, "commentaires"=>$this->commentaires);
         
         return $resutlat;
 	}
@@ -182,10 +182,10 @@ class Oeuvre {
         //Lie les paramètres aux valeurs
         self::$database->bind(':id', $id);
         
-        $infoOeuvre = [];
+        $infoOeuvre = array();
         
         if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
-            $infoOeuvre = ["id"=>$oeuvreBDD['idOeuvre'], "titre"=>$oeuvreBDD['titre'], "parc"=>$oeuvreBDD['parc'], "batiment"=>$oeuvreBDD['batiment'], "adresse"=>$oeuvreBDD['adresse'], "description"=>$oeuvreBDD['description'.$langue], "nomCollection"=>$oeuvreBDD['nomCollection'.$langue], "nomCategorie"=>$oeuvreBDD['nomCategorie'.$langue], "sousCategorie"=>$oeuvreBDD['sousCategorie'.$langue], "nomArrondissement"=>$oeuvreBDD['nomArrondissement'], "prenomArtiste"=>$oeuvreBDD['prenomArtiste'], "nomArtiste"=>$oeuvreBDD['nomArtiste']];
+            $infoOeuvre = array("id"=>$oeuvreBDD['idOeuvre'], "titre"=>$oeuvreBDD['titre'], "parc"=>$oeuvreBDD['parc'], "batiment"=>$oeuvreBDD['batiment'], "adresse"=>$oeuvreBDD['adresse'], "description"=>$oeuvreBDD['description'.$langue], "nomCollection"=>$oeuvreBDD['nomCollection'.$langue], "nomCategorie"=>$oeuvreBDD['nomCategorie'.$langue], "sousCategorie"=>$oeuvreBDD['sousCategorie'.$langue], "nomArrondissement"=>$oeuvreBDD['nomArrondissement'], "prenomArtiste"=>$oeuvreBDD['prenomArtiste'], "nomArtiste"=>$oeuvreBDD['nomArtiste']);
         }
         return $infoOeuvre;
     }

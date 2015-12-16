@@ -28,13 +28,15 @@ abstract class Vue {
 		<meta name="description" content="<?php echo $this->descriptionPage ?>">
 		<meta name="viewport" content="width=device-width">
 		
-		<link rel="stylesheet" href="./css/normalize.css" type="text/css" media="screen">
-		<link rel="stylesheet" href="./css/base_h5bp.css" type="text/css" media="screen">
-		<link rel="stylesheet" href="./css/main.css" type="text/css" media="screen">
+        <link rel="stylesheet" type="text/css" href="./css/styles.css">
+        <link href="https://fonts.googleapis.com/css?family=EB+Garamond%7CNoto+Serif" rel="stylesheet" type="text/css">
 		
 		<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 		<script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
+        <script src="gestionDivsForms.js"></script>
+
+        
 	</head>
     <?php
     }
@@ -46,8 +48,19 @@ abstract class Vue {
     */
     public function afficherEntete() {
     ?>
+    <body>
         <header>
-            <div>HEADER</div>
+            <img id="logo" src="../images/logo.png" alt="logo">
+            <h1 id="titre">MONTR&Eacute;ART</h1>
+            <div id="barreRecherche">barre de recherche
+            </div>
+
+            <nav>
+                <a href="" class="ici">Accueil</a>
+                <a href="carte.php">Trajet</a>
+                <a href="contribuerArticle.php">Soumettre Oeuvre</a>
+                <a href="#" onclick="montrer_form()">Se connecter</a>
+            </nav>
         </header>
     <?php
     }
@@ -67,9 +80,16 @@ abstract class Vue {
     public function afficherPiedPage() {
     ?>
         <footer>
-            <div>FOOTER</div>
+            <div class="lienPageMembre">
+                <a href='#'><h3>Devenez membre</h3></a>
+            </div>
+            <div class="reseauxsociaux">
+                <img id="logofb" src="../images/fblogo2.png" alt="logofb">
+                <img id="logoInsta" src="../images/instalogo2.png" alt="logoInsta">
+                <img id="logoPin" src="../images/pinlogo2.png" alt="logoPin">
+            </div>
         </footer>
-    </html>
+    </body>
 
     <?php
     }

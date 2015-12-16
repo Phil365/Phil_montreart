@@ -61,7 +61,7 @@ class Photo {
     */
 	public function getData() {
         
-        $resutlat = ["id"=>$this->id, "image"=>$this->image, "authorise"=>$this->authorise];
+        $resutlat = array("id"=>$this->id, "image"=>$this->image, "authorise"=>$this->authorise);
         
         return $resutlat;
 	}
@@ -75,7 +75,7 @@ class Photo {
     */
     public function getPhotosByOeuvre($idOeuvre) {
         
-        $infoPhotos = [];
+        $infoPhotos = array();
         
         self::$database->query('SELECT * FROM Photos WHERE Photos.idOeuvre = :id AND Photos.authorise = true');
         
@@ -84,7 +84,7 @@ class Photo {
         
         if ($photosBDD = self::$database->resultset()) {
             foreach ($photosBDD as $photo) {
-                $unePhoto = ["image"=>$photo["image"]];
+                $unePhoto = array("image"=>$photo["image"]);
                 $infoPhotos[] = $unePhoto;
             }
         }
