@@ -60,14 +60,14 @@ class Controler {
         $this->oCookie = new Cookie();
         $this->langueAffichage = $this->oCookie->getLangue();
         
-        if ($this->langueAffichage == "EN") {
-            $this->metaPageAccueil = ["titre"=>"MontreArt - Home Page", "description"=>""];
-            $this->metaPageOeuvre = ["titre"=>"Montréart - Art Page", "description"=>""];
-        }
-        else {
-            $this->metaPageAccueil = ["titre"=>"MontréArt - page d'accueil", "description"=>""];
-            $this->metaPageOeuvre = ["titre"=>"Montréart - page d'une oeuvre", "description"=>""];
-        }
+//        if ($this->langueAffichage == "EN") {
+//            $this->metaPageAccueil = ["titre"=>"MontreArt - Home Page", "description"=>""];
+//            $this->metaPageOeuvre = ["titre"=>"Montréart - Art Page", "description"=>""];
+//        }
+//        else {
+//            $this->metaPageAccueil = ["titre"=>"MontréArt - page d'accueil", "description"=>""];
+//            $this->metaPageOeuvre = ["titre"=>"Montréart - page d'une oeuvre", "description"=>""];
+//        }
         
         $this->pageActuelle = $_GET['r'];
     }
