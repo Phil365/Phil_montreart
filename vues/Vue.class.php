@@ -56,11 +56,11 @@ abstract class Vue {
             <div id="barreRecherche">barre de recherche
             </div>
 
-            <nav>
-                <a href="" class="ici">Accueil</a>
-                <a href="carte.php">Trajet</a>
-                <a href="contribuerArticle.php">Soumettre Oeuvre</a>
-                <a href="#" onclick="montrer_form()">Se connecter</a>
+           <nav>
+                <a href="?r=accueil" class="ici">Accueil</a>
+                <a href="?r=trajet">Trajet</a>
+                <a href="?r=soumission">Soumettre Oeuvre</a>
+                <a href="?r=#" onclick="montrer_form()">Se connecter</a>
             </nav>
         </header>
     <?php
