@@ -30,7 +30,8 @@ abstract class Vue {
 		
         <link rel="stylesheet" type="text/css" href="./css/styles.css">
         <link href="https://fonts.googleapis.com/css?family=EB+Garamond%7CNoto+Serif" rel="stylesheet" type="text/css">
-		
+		  <link rel="stylesheet" type="text/css" href="js/vendor/slick-1.5.9/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="js/vendor/slick-1.5.9/slick/slick-theme.css"/>
 		<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 		<script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
@@ -50,7 +51,7 @@ abstract class Vue {
     ?>
     <body>
         <header>
-            <img id="logo" src="../images/logo.png" alt="logo">
+            <img id="logo" src="images/logo.png" alt="logo">
             <h1 id="titre">MONTR&Eacute;ART</h1>
             <div id="barreRecherche">barre de recherche
             </div>
@@ -84,9 +85,9 @@ abstract class Vue {
                 <a href='#'><h3>Devenez membre</h3></a>
             </div>
             <div class="reseauxsociaux">
-                <img id="logofb" src="../images/fblogo2.png" alt="logofb">
-                <img id="logoInsta" src="../images/instalogo2.png" alt="logoInsta">
-                <img id="logoPin" src="../images/pinlogo2.png" alt="logoPin">
+                <img id="logofb" src="images/fblogo2.png" alt="logofb">
+                <img id="logoInsta" src="images/instalogo2.png" alt="logoInsta">
+                <img id="logoPin" src="images/pinlogo2.png" alt="logoPin">
             </div>
         </footer>
     </body>

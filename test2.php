@@ -1,18 +1,7 @@
 <?php
+
+    
 // Start XML file, create parent node
-
-
-/**
- * Controlleur AJAX. Ce fichier est la porte d'entrée des requêtes AJAX (XHR)
- * @author Jonathan Martel
- * @version 1.0
- * @update 2013-03-11
- * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
- * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
- * 
- */
-
-	// Start XML file, create parent node
 
 $dom = new DOMDocument("1.0");
 $node = $dom->createElement("markers");
