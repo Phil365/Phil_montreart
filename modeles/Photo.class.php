@@ -90,20 +90,5 @@ class Photo {
         }
         return $infoPhotos;
     }
-       public function getAllPhoto() {
-        
-        $photoAll = array();
-        
-        self::$database->query('SELECT * FROM Photos WHERE Photos.authorise = true');
-        
-               
-        if ($photosBDD = self::$database->resultset()) {
-            foreach ($photosBDD as $photo) {
-                $unePhoto = array("image"=>$photo["image"]);
-                $photoAll[] = $unePhoto;
-            }
-        }
-        return $photoAll;
-    }
 }
 ?>

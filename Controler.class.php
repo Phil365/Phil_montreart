@@ -107,16 +107,12 @@ class Controler {
     * @return void
     */
     private function accueil() {
-        $photo = new Photo();
-      $photosAll = $photo->getAllPhoto();
-    $this->oVue = new VueAccueil();  
-     $this->oVue->setData($photosAll);
-     $this->oVue->afficherMeta();
-     $this->oVue->afficherEntete();
-     $this->oVue->afficherBody();
-     $this->oVue->afficherPiedPage();
         
-
+        $this->oVue = new VueAccueil();        
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
     }
     
     /**
