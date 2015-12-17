@@ -43,11 +43,7 @@ class VueAccueil extends Vue {
                
                         for ($i = 0; $i < count($this->photosAll); $i++) {
                             $imgPhoto = $this->photosAll[$i]['image'];
-<<<<<<< HEAD
                             echo "<div><img src ='$imgPhoto'></div>";
-=======
-                            echo "<div><img src = '$imgPhoto'></div>";
->>>>>>> origin/master
                         }
                  
                    
