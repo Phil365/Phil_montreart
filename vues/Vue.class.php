@@ -30,8 +30,9 @@ abstract class Vue {
 		
         <link rel="stylesheet" type="text/css" href="./css/styles.css">
         <link href="https://fonts.googleapis.com/css?family=EB+Garamond%7CNoto+Serif" rel="stylesheet" type="text/css">
+		        <link rel="stylesheet" type="text/css" href="js/vendor/slick-1.5.9/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="js/vendor/slick-1.5.9/slick/slick-theme.css"/>
 		
-		<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 		<script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
         <script src="js/gestionDivsForms.js"></script>
