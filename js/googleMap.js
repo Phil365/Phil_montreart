@@ -18,13 +18,20 @@ downloadUrl("ajaxControler.php", function(data) {
   for (var i = 0; i < markers.length; i++) {
     var name = markers[i].getAttribute("name");
     var photo = markers[i].getAttribute("photo");
+<<<<<<< HEAD
     var urlTest = markers[i].getAttribute("urlTest");
     var url = markers[i].getAttribute("url");
+=======
+>>>>>>> origin/master
   
     var point = new google.maps.LatLng(
         parseFloat(markers[i].getAttribute("lat")),
         parseFloat(markers[i].getAttribute("lng")));
+<<<<<<< HEAD
     var html = "<b>" + name + "</b> <br/>"+ "<a href='"+urlTest+"'><img src='"+photo+"'alt='Porte de jour' width:'304px' height:'228px'></a>";
+=======
+    var html = "<b>" + name + "</b> <br/>"+ "<img src='"+photo+"'alt='Porte de jour' width:'304px' height:'228px'>";
+>>>>>>> origin/master
      
    
     var marker = new google.maps.Marker({

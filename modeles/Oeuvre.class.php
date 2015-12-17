@@ -195,6 +195,7 @@ class Oeuvre {
         }
         return $infoOeuvre;
     }
+<<<<<<< HEAD
     
     public function getAllOeuvreWithPhoto() {
     
@@ -207,5 +208,16 @@ class Oeuvre {
             return $oeuvres;
         }
     }
+=======
+      public function getAllOeuvreWithPhoto() {
+      
+        self::$database->query('SELECT * FROM oeuvres join photos on photos.idOeuvre = oeuvres.idOeuvre');
+
+        $oeuvreBDD = self::$database->resultset(); //Si trouvé dans la BDD       
+          return $oeuvreBDD;      
+        }
+    
+    
+>>>>>>> origin/master
 }
 ?>
