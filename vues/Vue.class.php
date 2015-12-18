@@ -28,13 +28,16 @@ abstract class Vue {
 		<meta name="description" content="<?php echo $this->descriptionPage ?>">
 		<meta name="viewport" content="width=device-width">
 		
-		<link rel="stylesheet" href="./css/normalize.css" type="text/css" media="screen">
-		<link rel="stylesheet" href="./css/base_h5bp.css" type="text/css" media="screen">
-		<link rel="stylesheet" href="./css/main.css" type="text/css" media="screen">
+        <link rel="stylesheet" type="text/css" href="./css/styles.css">
+        <link href="https://fonts.googleapis.com/css?family=EB+Garamond%7CNoto+Serif" rel="stylesheet" type="text/css">
+		        <link rel="stylesheet" type="text/css" href="js/vendor/slick-1.5.9/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="js/vendor/slick-1.5.9/slick/slick-theme.css"/>
 		
-		<script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
 		<script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
+        <script src="js/gestionDivsForms.js"></script>
+
+        
 	</head>
     <?php
     }
@@ -46,9 +49,37 @@ abstract class Vue {
     */
     public function afficherEntete() {
     ?>
+    <body>
         <header>
-            <div>HEADER</div>
+            <img id="logo" src="images/logo.png" alt="logo">
+            <h1 id="titre">MONTR&Eacute;ART</h1>
+            <div id="barreRecherche">barre de recherche
+            </div>
+
+            <nav>
+                <a href="?r=accueil">Accueil</a>
+                <a href="?r=trajet">Trajet</a>
+                <a href="?r=soumission">Soumettre Oeuvre</a>
+                <a href="?r=#" onclick="montrer_form()">Se connecter</a>
+            </nav>
         </header>
+        
+        
+        
+        <div id="div_bgform">
+            <div id="div_form">
+                <!-- Formulaire login -->
+                <form action="#" id="formlogin" method="post" name="formlogin">
+                    <button id="fermer" onclick ="fermer()">X</button>
+                <h2>Connectez vous</h2>
+
+                    <input id="nomutilisateur" name="nomutilisateur" placeholder="Votre identifiant" type="text">
+                    <input id="motpasse" name="motpasse" placeholder="Mot de passe" type="password">
+
+                    <button onclick="validerform()" class="submit" id="submit">Envoyer</button>
+                </form>
+            </div>
+        </div>
     <?php
     }
     
@@ -67,9 +98,16 @@ abstract class Vue {
     public function afficherPiedPage() {
     ?>
         <footer>
-            <div>FOOTER</div>
+            <div class="lienPageMembre">
+                <a href='#'><h3>Devenez membre</h3></a>
+            </div>
+            <div class="reseauxsociaux">
+                <img id="logofb" src="images/fblogo2.png" alt="logofb">
+                <img id="logoInsta" src="images/instalogo2.png" alt="logoInsta">
+                <img id="logoPin" src="images/pinlogo2.png" alt="logoPin">
+            </div>
         </footer>
-    </html>
+    </body>
 
     <?php
     }

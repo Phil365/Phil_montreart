@@ -75,7 +75,7 @@ class Commentaire {
     */
 	public function getData() {
         
-        $resutlat = ["id"=>$this->id, "texte"=>$this->texte, "vote"=>$this->vote, "langue"=>$this->langue, "authorise"=>$this->authorise];
+        $resutlat = array("id"=>$this->id, "texte"=>$this->texte, "vote"=>$this->vote, "langue"=>$this->langue, "authorise"=>$this->authorise);
         
         return $resutlat;
 	}
@@ -89,7 +89,7 @@ class Commentaire {
     */
     public function getCommentairesByOeuvre($idOeuvre, $langue) {
         
-        $infoCommentaires = [];
+        $infoCommentaires = array();
         
         self::$database->query('SELECT * FROM Commentaires JOIN Utilisateurs ON Utilisateurs.idUtilisateur = Commentaires.idUtilisateur WHERE Commentaires.idOeuvre = :id AND Commentaires.authorise = true AND Commentaires.langueCommentaire = :langue');
         
@@ -99,7 +99,7 @@ class Commentaire {
         
         if ($commentairesBDD = self::$database->resultset()) {
             foreach ($commentairesBDD as $commentaire) {
-                $unCommentaire = ["texteCommentaire"=>$commentaire["texteCommentaire"], "voteCommentaire"=>$commentaire["voteCommentaire"], "nomUsager"=>$commentaire["nomUsager"], "photoProfil"=>$commentaire["photoProfil"]];
+                $unCommentaire = array("texteCommentaire"=>$commentaire["texteCommentaire"], "voteCommentaire"=>$commentaire["voteCommentaire"], "nomUsager"=>$commentaire["nomUsager"], "photoProfil"=>$commentaire["photoProfil"]);
                 $infoCommentaires[] = $unCommentaire;
             }
         }
