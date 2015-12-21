@@ -441,6 +441,10 @@ position: relative;
 top:-79px;
 }
 
+#SponsorImg {
+  width: 100%;  
+}
+
 .lienPageMembre{
     float:left;
     clear: none;
