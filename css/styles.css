@@ -82,9 +82,11 @@ body{
 background-color: #ffffff;
 font-family: 'EB Garamond', serif;
 max-width: 980px;
-overflow-y: scroll; 
+overflow-y: scroll;  
 }
-
+/*body div{
+    border: 1px solid #ddd;
+}*/
 h2{
 font-family: 'Noto Serif', serif;
 font-size: 1.6em;
@@ -109,6 +111,10 @@ font-family: 'Noto Serif', serif;
 color: #B22A40;  
 font-size: .9em;
 }
+p{
+    margin-top: .3em;
+    margin-bottom: 1em;
+}
 a{
 font-family: 'Noto Serif', serif;
 color: #000000;
@@ -119,9 +125,9 @@ text-decoration: none;
 
 .textStandard{
 font-family: 'EB Garamond', serif;
-font-size: .9em;
-line-height: 1.4em;
-letter-spacing: .9px;
+font-size: 1.1em;
+line-height: 1.2em;
+letter-spacing: .2px;
 font-weight: 500;
 text-indent: 50px;
 margin: 40px 10px;
@@ -222,7 +228,7 @@ z-index: 3;
 }
 .infosOeuvre{
     width: 100%;
-    height: 300px;
+    height: 800px;
 }
 .rating{
     width: 100%;
@@ -258,7 +264,7 @@ z-index: 3;
     width: 100%;
     
 }
-.sectionCommentaires{
+sectionCommentaires{
     width: 100%;
     
 }
@@ -524,9 +530,9 @@ body{
 }
 header{
 background-image: url(../images/Banniere.png);
-
+background-blend-mode:hard-light;
 background-size: 100% 100%;
-height: 76px;
+height: 100%;
 width: 100%;
 }
 #titre{
@@ -706,31 +712,7 @@ footer{
     padding: 0;
 }
 
-.single-item{
-    width: 99%;
 
-   
-  
-     text-align: center;
-  }
- /* h3{
-    padding: 20px;
-  }*/
-  
-  .slick-slide{
-width: 270px;
-
-}
-.slick-slide img {
-   
-    display: block;
-    width: 100%;
-}
-.gm-style .photomap {
-    max-width: 200px;
-}#map {
-        height: 100%;
-      }
 }
 /*========================================FIN DU STYLES POUR DESKTOP ====================================================*/
 

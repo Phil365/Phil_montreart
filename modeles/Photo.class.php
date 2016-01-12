@@ -32,13 +32,13 @@ class Photo {
     */
     private static $database;
     
-    function __construct() {
-        
+	function __construct() {
+		
         if (!isset(self::$database)) {//Connection à la BDD si pas déjà connecté
             
             self::$database = new BaseDeDonnees();
         }
-    }
+	}
     
     /**
     * @brief Méthode qui assigne des valeurs aux propriétés de la photo
@@ -49,22 +49,22 @@ class Photo {
     */
     public function setData($id, $image, $authorise) {
         
-        $this->id = $id;
-        $this->image = $image;
-        $this->authorise = $authorise;
-    }
-        
-    /**
+		$this->id = $id;
+		$this->image = $image;
+		$this->authorise = $authorise;
+	}
+		
+	/**
     * @brief méthode qui récupère les valeurs des propriétés de cet objet.
     * @access public
     * @return array
     */
-    public function getData() {
+	public function getData() {
         
         $resutlat = array("id"=>$this->id, "image"=>$this->image, "authorise"=>$this->authorise);
         
         return $resutlat;
-    }
+	}
     
     /**
     * @brief méthode qui récupère toutes les photos associées à une oeuvre.
@@ -89,21 +89,6 @@ class Photo {
             }
         }
         return $infoPhotos;
-    }
-       public function getAllPhoto() {
-        
-        $photoAll = array();
-        
-        self::$database->query('SELECT * FROM Photos WHERE Photos.authorise = true');
-        
-               
-        if ($photosBDD = self::$database->resultset()) {
-            foreach ($photosBDD as $photo) {
-                $unePhoto = array("image"=>$photo["image"]);
-                $photoAll[] = $unePhoto;
-            }
-        }
-        return $photoAll;
     }
 }
 ?>
