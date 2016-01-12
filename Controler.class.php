@@ -108,12 +108,14 @@ class Controler {
     */
     private function accueil() {
         
-        $this->oVue = new VueAccueil();        
-        $this->oVue->afficherMeta();
-        $this->oVue->afficherEntete();
-        $this->oVue->afficherBody();
-        $this->oVue->afficherPiedPage();
-    }
+         $photo = new Photo();
+      $photosAll = $photo->getAllPhoto();
+    $this->oVue = new VueAccueil();  
+     $this->oVue->setData($photosAll);
+     $this->oVue->afficherMeta();
+     $this->oVue->afficherEntete();
+     $this->oVue->afficherBody();
+     $this->oVue->afficherPiedPage();    }
     
     /**
     * @brief Méthode qui appelle la vue d'affichage de la page d'une oeuvre
