@@ -46,7 +46,7 @@ class Commentaire {
 		
         if (!isset(self::$database)) {
             
-            self::$database = new BaseDeDonnees();
+            self::$database = BaseDeDonnees::getInstance();
         }
 	}
     
