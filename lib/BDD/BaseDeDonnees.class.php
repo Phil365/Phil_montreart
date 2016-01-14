@@ -17,11 +17,25 @@ class BaseDeDonnees {
     private $erreur;
     // variable pour la requête à exécuter
     private $instruction;
+    private static $_instance = null;
 
+    /*
+	Obtenir l'instance de la classe.
+	@return instance
+    @author Jonathan Martel
+	*/
+	public static function getInstance() {
+		if(!self::$_instance) 
+		{ // Si aucun instance, creer l'instance
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
+    
     /**
-     * @brief Constructeur
+     * @brief Constructeur privé
      */
-    public function __construct() {
+    private function __construct() {
         // Set DSN
         $dsn = 'mysql:host=' . $this->hote . ';dbname=' . $this->nombd;
         // Set options
@@ -41,6 +55,14 @@ class BaseDeDonnees {
         }
     }
 
+    /**
+     * @brief Empêche le clonage de l'objet
+     */
+    // 
+    private function __clone() {
+        
+    }
+    
     /**
      * @brief  Fonction pour Préparer la requête
      * @param string $requete la requête à préparer.

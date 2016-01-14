@@ -71,18 +71,18 @@ width: extend-to-zoom;
 zoom: 1.0;
 }
 html,body{
-min-height: 100%; 
+min-height: 100%;
 margin: 0;
 padding: 0;
 }
-
+html{
+background-color: #B22A40;
+}
 body{
-float: left;
-height: 100%;
 background-color: #ffffff;
 font-family: 'EB Garamond', serif;
 max-width: 980px;
-overflow-y: scroll; 
+height: auto;
 }
 
 h2{
@@ -107,10 +107,7 @@ margin-top: 1em;
 h5{
 font-family: 'Noto Serif', serif;
 color: #B22A40;  
-font-size: 1em;
-font-weight: 600;
-margin-bottom: 7px;
-margin-top: 12px;
+font-size: .9em;
 }
 a{
 font-family: 'Noto Serif', serif;
@@ -147,35 +144,39 @@ font-style: italic;
 }
 .dummy{
     height: 89px;
-    margin-bottom: 30px;
 }
 main{
      width: 100%;
-     min-height: 100%;
 }
-.aside1{   
-    float: left;
-    clear: left;
+.aside1{
     width: 100%;
-    margin: 30px;
+    height: 40px;
+   
 }
 .aside2{
-    float: left;
-    clear: left;
     width: 100%;
     height: 40px;
    
 }
 .section1{
+   
+   
     height: 300px;
-    width: 100%;
-    display: none;
+    width: 96%;
+    margin-top: 30px;
+    margin-right: 2%;
+    margin-left: 2%;
+    overflow: hidden;
 }
 
 .section2{
     
     height: 300px;
-    width: 100%;
+    width: 96%;
+    margin-top: 30px;
+    margin-right: 2%;
+    margin-left: 2%;
+    
 }
 .section3{
     
@@ -193,13 +194,12 @@ main{
     width: 100%;
 }
 footer{
-float: left;
-clear: left;
 background: #30A0D1;
 width: 100%;
 height: 75px;
 position: relative;
-bottom: 0;
+bottom: -75px;
+clear: both;
 font-family: 'Noto Serif', serif;
 font-size: .8em;
 letter-spacing: .6px;
@@ -224,16 +224,13 @@ z-index: 3;
     margin-right: 10px;
 }
 .reseauxsociaux img{
-    width: 40px;
+    width: 36px;
     height: auto;
     margin: 5px;
 }
 .infosOeuvre{
-    display: block;
-    clear: left;
     width: 100%;
     height: 300px;
-   
 }
 .rating{
     width: 100%;
@@ -259,28 +256,19 @@ z-index: 3;
     font-size:1.2em;
     cursor:pointer;
     border-radius:5px;
-    margin: 10px; 
+    margin: 30px; 
 }
 .sliderOeuvre .boutonMoyenne{
-    float: left;
+    float: right;
    
 }
-.infosOeuvre .boutonMoyenne{
-    float: left;
-    margin: 10px;
-}
 .description{
-    float: left;
-    clear: left;
     width: 100%;
-    margin: 30px;
+    
 }
 .sectionCommentaires{
     width: 100%;
-    float: left;
-    clear: left;
-    width: 100%;
-    margin: 30px;
+    
 }
 .sectionCommentaires .boutonMoyenne{
     float: right;
@@ -292,9 +280,30 @@ z-index: 3;
 .ratingUtilisateur{
     height: 30px;
 }
-/*========NAV PRINCIPALE=====*/
+/*----------------PHOTO SLIDER--------------------------*/
+ .slick-slide{
+width: 270px;
+
+}
+.slick-slide img {
+   
+    display: block;
+    width: 100%;
+   
+}
+/*----------------FIN PHOTO SLIDER--------------------------*/
+
+/*----------------CARTE--------------------------*/
+.gm-style .photomap {
+    max-width: 200px;
+}#map {
+        height: 100%;
+      }
+/*----------------FIN CARTE--------------------------*/
 
 
+
+/*==================NAV PRINCIPALE===========================*/
 
 /*déclaration css combinée, css_reset ciblé*/
 nav ul,
@@ -336,12 +345,11 @@ color:  #b95364;
 /*--------------------------STYLES FORMULAIRES -------------------------*/
 #div_bgform {
 width:100%;
-height:100%;
+height:200%;
 position:absolute;
 top:0;
 left:0;
 background-color:rgba(90, 89, 89, 0.73);
-overflow:auto;
 z-index: 7;
 display: none;
 }
@@ -461,10 +469,6 @@ position: relative;
 top:-79px;
 }
 
-#SponsorImg {
-  width: 100%;  
-}
-
 .lienPageMembre{
     float:left;
     clear: none;
@@ -531,11 +535,13 @@ letter-spacing: .4px;
 text-align: center;
 padding: 0 .3em;
 line-height: 30px;
-}   
+}
+.section1, .section2{
+height: 500px;
+}
 }
 @media (min-width: 800px){
 html{
-    background-color: #B22A40;
     width: 100%;
 }
 
@@ -606,29 +612,26 @@ margin-right: 20px;
 } 
 .section1{
     
-    height: 300px;
-    width: 30%;
-    display: block;
-    margin-right: 0;
+    height: 400px;
+    width: 36%;
 }
 
 .section2{
    
-    height: 300px;
-    width: 70%;
+    height: 400px;
+    width: 56%;
     float: left;
     clear: none;
     position: relative;
-    top: -300px;
-    left: 30%;
-    margin-left: 0;
-   
+    top: -430px;
+    left: 38%;
+
 }
 .section3{
-    
     height: 300px;
     width: 20%;
     margin-right: 0;
+    margin-top: 50px;
 }
 .section4{
    
@@ -637,7 +640,7 @@ margin-right: 20px;
     float: left;
     clear: none;
     position: relative;
-    top: -300px;
+    top: -380px;
     left: 20%;
     margin-left: 0;
 }
@@ -648,32 +651,28 @@ margin-right: 20px;
     float: left;
     clear: none;
     position: relative;
-    top: -300px;
+    top: -380px;
     left: 20%;
     margin-left: 0;
 }
-.lienPageMembre{
-    display: none;
-}    
+.section5 #imageSponsors{
+    max-width: 200px;
+}
+   
 .infosOeuvre{
-    float:right;
-    clear: none;
-    position: relative;
-    top: -330px;
-    left: 50px;
     width: 20%;
     height: 300px;
-    margin: 20px;
-}
-.infosOeuvre .boutonMoyenne{
-    float: left;
-    margin: 30px;
 }
 .sliderOeuvre{
     width: 80%;
     height: auto;
     position: relative;
-    margin: 10px;
+    right: -20%;
+    top: -300px;
+}
+
+.reseauxsociaux img{
+    width: 40px;
 }
 }
 /*======================================== FIN DU STYLES POUR TABLETTE ====================================================*/
@@ -738,29 +737,15 @@ footer{
 
 .single-item{
     width: 99%;
-
-   
-  
-     text-align: center;
+    text-align: center;
   }
- /* h3{
-    padding: 20px;
-  }*/
-  
-  .slick-slide{
-width: 270px;
 
+ .lienPageMembre{
+    margin: 16px;
 }
-.slick-slide img {
-   
-    display: block;
-    width: 100%;
+.reseauxsociaux{
+   margin: 16px;
 }
-.gm-style .photomap {
-    max-width: 200px;
-}#map {
-        height: 100%;
-      }
 }
 /*========================================FIN DU STYLES POUR DESKTOP ====================================================*/
 

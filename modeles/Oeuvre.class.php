@@ -112,7 +112,7 @@ class Oeuvre {
 		
         if (!isset(self::$database)) {//Connection à la BDD si pas déjà connecté
             
-            self::$database = new BaseDeDonnees();
+            self::$database = BaseDeDonnees::getInstance();
         }
 	}
     
