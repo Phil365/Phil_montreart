@@ -35,7 +35,7 @@ class VueAccueil extends Vue {
     public function afficherBody() {
     ?>
         <div class="dummy"><!--    Ne mettez rien ici--></div>
-            <div name="top"></div>
+
            <div class="section1">
                    <div class="single-item">
 <?php
@@ -88,11 +88,9 @@ autoplay: true,
 Bienvenue sur le site de Montréart, où les oeuvres publiques les plus fantastiques en ville sont répertoriées. Idéal pour en apprendre sur les artistes les plus branchés, des techniques de création des plus diverses et des pièces d'art à couper le souffle. Vous pourrez vous balader et partager vos trouvailles avec vos propres photos, et exprimer vos opinions en ligne. En plus de découvrir l'art d'ici, vous avec la possibilité de gagner des rabais incroyables grâce à notre système dès que vous vous trouvez proche d'une oeuvre! Partez à l'aventure, ça en vaut le coup!</p>
             </div>
              <div class="section5">
-                    <img id="imageSponsors" src="images/Sponsors.png">
+                    <img src="../images/Sponsors.png">
             </div>
-            <div class="anchor">
-                <a href="#top"><img src="images/arrow.png"></a>
-            </div>
+
     <?php
     }
 }

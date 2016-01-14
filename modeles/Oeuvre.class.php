@@ -5,6 +5,7 @@
  * @version 1.0
  * @update 2015-12-14
  */
+
 class Oeuvre {
     
     /**
@@ -108,13 +109,13 @@ class Oeuvre {
     */
     private static $database;
     
-	function __construct() {
-		
+    function __construct() {
+        
         if (!isset(self::$database)) {//Connection à la BDD si pas déjà connecté
             
             self::$database = BaseDeDonnees::getInstance();
         }
-	}
+    }
     
     /**
     * @brief Méthode qui assigne des valeurs aux propriétés de l'oeuvre
@@ -138,35 +139,35 @@ class Oeuvre {
     */
     public function setData($id, $titre, $noInterneMtl, $latitude, $longitude, $parc, $batiment, $adresse, $description, $idCollection, $idCategorie, $idArrondissement, $idArtiste, $authorise, $photos, $commentaires) {
         
-		$this->id = $id;
-		$this->titre = $titre;
-		$this->noInterneMtl = $noInterneMtl;
-		$this->latitude = $latitude;
-		$this->longitude = $longitude;
-		$this->parc = $parc;
-		$this->batiment = $batiment;
-		$this->adresse = $adresse;
-		$this->description = $description;
-		$this->idCollection = $idCollection;
-		$this->idCategorie = $idCategorie;
-		$this->idArrondissement = $idArrondissement;
-		$this->idArtiste = $idArtiste;
-		$this->authorise = $authorise;
-		$this->photos = $photos;
-		$this->commentaires = $commentaires;
-	}
-		
-	/**
+        $this->id = $id;
+        $this->titre = $titre;
+        $this->noInterneMtl = $noInterneMtl;
+        $this->latitude = $latitude;
+        $this->longitude = $longitude;
+        $this->parc = $parc;
+        $this->batiment = $batiment;
+        $this->adresse = $adresse;
+        $this->description = $description;
+        $this->idCollection = $idCollection;
+        $this->idCategorie = $idCategorie;
+        $this->idArrondissement = $idArrondissement;
+        $this->idArtiste = $idArtiste;
+        $this->authorise = $authorise;
+        $this->photos = $photos;
+        $this->commentaires = $commentaires;
+    }
+        
+    /**
     * @brief Méthode qui récupère les valeurs des propriétés de cet objet
     * @access public
     * @return array
     */
-	public function getData() {
+    public function getData() {
         
         $resutlat = array("id"=>$this->id, "titre"=>$this->titre, "noInterneMtl"=>$this->noInterneMtl, "latitude"=>$this->latitude, "longitude"=>$this->longitude, "parc"=>$this->parc, "batiment"=>$this->batiment, "adresse"=>$this->adresse, "description"=>$this->description, "idCollection"=>$this->idCollection, "idCategorie"=>$this->idCategorie, "idArrondissement"=>$this->idArrondissement, "idArtiste"=>$this->idArtiste, "authorise"=>$this->authorise, "photos"=>$this->photos, "commentaires"=>$this->commentaires);
         
         return $resutlat;
-	}
+    }
     
     /**
     * @brief Méthode qui récupère une oeuvre dans la BD
@@ -188,6 +189,18 @@ class Oeuvre {
             $infoOeuvre = array("id"=>$oeuvreBDD['idOeuvre'], "titre"=>$oeuvreBDD['titre'], "parc"=>$oeuvreBDD['parc'], "batiment"=>$oeuvreBDD['batiment'], "adresse"=>$oeuvreBDD['adresse'], "description"=>$oeuvreBDD['description'.$langue], "nomCollection"=>$oeuvreBDD['nomCollection'.$langue], "nomCategorie"=>$oeuvreBDD['nomCategorie'.$langue], "sousCategorie"=>$oeuvreBDD['sousCategorie'.$langue], "nomArrondissement"=>$oeuvreBDD['nomArrondissement'], "prenomArtiste"=>$oeuvreBDD['prenomArtiste'], "nomArtiste"=>$oeuvreBDD['nomArtiste']);
         }
         return $infoOeuvre;
+    }
+    
+    public function getAllOeuvreWithPhoto() {
+    
+    self::$database->query('SELECT * FROM oeuvres join photos on photos.idOeuvre = oeuvres.idOeuvre');
+        if ($lignes = self::$database->resultset()) {
+            foreach ($lignes as $ligne) {
+                $uneOeuvre = array("idOeuvre"=>$ligne['idOeuvre'], "titre"=>$ligne['titre'], "longitude"=>$ligne['longitude'], "latitude"=>$ligne['latitude'], "image"=>$ligne['image']);
+                $oeuvres[] = $uneOeuvre;
+            }
+            return $oeuvres;
+        }
     }
 }
 ?>
