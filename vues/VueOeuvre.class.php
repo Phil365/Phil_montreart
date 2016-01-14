@@ -76,14 +76,20 @@ class VueOeuvre extends Vue {
         }
         else {
             
-           echo "<div class='dummy'><!--    Ne mettez rien ici--></div>
+    ?>
+    <?php echo "<div class='dummy'><!--    Ne mettez rien ici--></div>
+    <div class='aside1'  id='DevenirMembre'>
+            Devenir membre a ses avantages!
+        </div>
+        
+ 
+        <div class='aside2' id='sponsors'>
+            Sponsors
+        </div>
+    <main id='pageOeuvres'>";
                 
-                <main id='pageOeuvres'>
-
-                    <div class='sliderOeuvre'>";
-    
-    
-                    if ($this->photos) {//Si des photos existent pour cette oeuvre
+                    echo "<div class='sliderOeuvre'>";
+                    if ($this->photos) {//Si des photos existent pour cette oeuvre...
                         for ($i = 0; $i < count($this->photos); $i++) {
                             $imgPhoto = $this->photos[$i]['image'];
                             echo "<img src = 'images/$imgPhoto'>";
@@ -91,17 +97,17 @@ class VueOeuvre extends Vue {
                     }
                     else {//Image par défaut
                         $imgDefaut = "imgDefaut".$this->langue.".png";
-                        echo "<img src = 'images/$imgDefaut'></div>";
+                        echo "<img src = 'images/$imgDefaut'>";
                     }
-                    //fin div sliderOeuvre:
-                    echo "<button class='boutonMoyenne' onclick=''>Contribuer une image</button></div>
-            <div class='infosOeuvre'>
-                <h5>Titre: </h5>";
-                echo  "<p>".$this->oeuvre['titre']."</p>"; 
-        
+                    echo "<button class='boutonMoyenne' onclick=''>Contribuer une image</button></div>";//fin div sliderOeuvre
             
-                echo "<h5>Classement:</h5>
-                <div class='rating'></div>";
+                    echo "<div class='infosOeuvre'>
+                    <h5>Titre: </h5>";
+                echo  "<p>".$this->oeuvre['titre']."</p>"; 
+                    echo "<h5>Classement:</h5>
+                <div class='rating'>
+                    
+                </div>";
                 
                  if ( $this->oeuvre["nomArtiste"]) {
                         echo "<h5>Artiste : </h5>";
@@ -119,9 +125,9 @@ class VueOeuvre extends Vue {
                     if ( $this->oeuvre["sousCategorie"]) {
                         echo "<h5>Sous-catégorie : </h5>"."<p>". $this->oeuvre["sousCategorie"]."</p>";
                     }
+                ?>
                 
-                
-            
+                <?php
                     if ( $this->oeuvre["parc"]) {
                         echo "<h5>Parc : </h5>"."<p>". $this->oeuvre["parc"]."</p>";
                     }
@@ -136,22 +142,12 @@ class VueOeuvre extends Vue {
                     }
                     echo "<a class='boutonMoyenne' href='?r=trajet'>Directions</a></div>";//fin div infosOeuvre
                     
-              
-                    
                     if ( $this->oeuvre["description"]) {
                         echo " <div class='description'>
-                        <h5>Description :</h5>
-                        <p class='noIndent'>".$this->oeuvre["description"]."</p></div>";
+                <h5>Description :</h5>
+                <p class='noIndent'>".$this->oeuvre["description"]."</p></div>";
                     }
-            
-                    echo "<div class='aside1'  id='DevenirMembre'>
-                            Devenir membre a ses avantages!
-                        </div>
-
-
-                        <div class='aside2' id='sponsors'>
-                            Sponsors
-                        </div>";
+                    
                    
                     echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' onclick=''>Laisser Commentaire</button>";
                   

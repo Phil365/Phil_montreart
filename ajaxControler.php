@@ -26,6 +26,16 @@ header("Content-type: text/xml");
 
 // Iterate through the rows, adding XML nodes for each
 
+if ($_SERVER['HTTP_HOST'] === '127.0.0.1' || $_SERVER['HTTP_HOST'] === 'localhost') {
+    $urlOeuvre = "http://localhost?r=oeuvre&o=";
+}
+else if ($_SERVER['HTTP_HOST'] === '127.0.0.1:8008' || $_SERVER['HTTP_HOST'] === 'localhost:8008') {
+    $urlOeuvre = "http://localhost:8008?r=oeuvre&o=";
+}
+else if ($_SERVER['HTTP_HOST'] === '127.0.0.1:8080' || $_SERVER['HTTP_HOST'] === 'localhost:8080') {
+    $urlOeuvre = "http://localhost:8080?r=oeuvre&o=";
+}
+
   // ADD TO XML DOCUMENT NODE
 for ($i = 0; $i < count($infoOeuvre); $i++) {
     $node = $dom->createElement("marker");
@@ -35,8 +45,7 @@ for ($i = 0; $i < count($infoOeuvre); $i++) {
     $newnode->setAttribute("lat", $infoOeuvre[$i]["latitude"]);
     $newnode->setAttribute("lng", $infoOeuvre[$i]["longitude"]); 
     $newnode->setAttribute("photo", $infoOeuvre[$i]["image"]);   
-$newnode->setAttribute("urlTest", "http://localhost?r=oeuvre&o=".$infoOeuvre[$i]["idOeuvre"]);
-  $newnode->setAttribute("url", "http://montreart.net?r=oeuvre&o=".$infoOeuvre[$i]["idOeuvre"]);
+    $newnode->setAttribute("url", $urlOeuvre.$infoOeuvre[$i]["idOeuvre"]);
 }
 //}
 
