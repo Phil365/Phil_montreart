@@ -10,7 +10,9 @@
     if(empty($_GET['o'])) {//id d'une oeuvre
 		$_GET['o'] = '';
 	}
-    
+    if(empty($_GET['action'])) {//id d'une oeuvre
+		$_GET['action'] = '';
+	}
 	
 	
    

@@ -70,6 +70,7 @@ class VueOeuvre extends Vue {
     public function afficherBody() {
     ?> 
         <body>
+    <script type="text/javascript" src="js/main.js"></script>
     <?php
         if (empty($this->oeuvre)) {
             echo "<p>Cette oeuvre n'a pas été trouvée dans la base de données</p>";
@@ -92,15 +93,23 @@ class VueOeuvre extends Vue {
                     if ($this->photos) {//Si des photos existent pour cette oeuvre...
                         for ($i = 0; $i < count($this->photos); $i++) {
                             $imgPhoto = $this->photos[$i]['image'];
-                            echo "<img src = 'images/$imgPhoto'>";
+                            echo "<img src = '$imgPhoto'>";
                         }
                     }
                     else {//Image par défaut
                         $imgDefaut = "imgDefaut".$this->langue.".png";
-                        echo "<img src = 'images/$imgDefaut'>";
+                        echo "<img src = '$imgDefaut'>";
                     }
-                    echo "<button class='boutonMoyenne' onclick=''>Contribuer une image</button></div>";//fin div sliderOeuvre
-            
+                   //fin div sliderOeuvre
+                    $idOeuvreencours=$this->oeuvre["id"]
+            ?>
+
+                    <form action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyer" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
+                        Select image to upload:
+                        <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
+                        <input class='boutonMoyenne' type="submit" value="Upload Image" name="submit">
+                    </form>
+            <?php
                     echo "<div class='infosOeuvre'>
                     <h5>Titre: </h5>";
                 echo  "<p>".$this->oeuvre['titre']."</p>"; 

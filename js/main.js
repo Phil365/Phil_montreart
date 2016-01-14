@@ -9,3 +9,15 @@
  */
 
  // Placer votre JavaScript ici
+
+ function validePhotoSubmit()
+{
+if (document.getElementById("fileToUpload").files.length == 0 )
+    {alert("Ne peux pas etre vide");
+        return false;
+   } // end if  
+   
+   
+   
+   return true;
+} // end function validateForm

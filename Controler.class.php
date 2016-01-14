@@ -76,14 +76,22 @@ class Controler {
     * @access public
     * @return void
     */
-    public function gerer() {
+     public function gerer() {
         
         switch ($_GET['r']) {//requête
             case 'accueil':
                 $this->accueil();
                 break;
             case 'oeuvre':
-                $this->oeuvre();
+                if($_GET['action'] == 'envoyer')
+                {
+                    $this->enregistrerOeuvre();
+                }
+                else
+                {
+                    $this->oeuvre();    
+                }
+                
                 break;
             case 'trajet':
                 $this->trajet();
@@ -141,6 +149,25 @@ class Controler {
         $this->oVue->afficherPiedPage();
     }
     
+     private function enregistrerOeuvre() {
+        
+        $oeuvre = new Oeuvre();
+        $oeuvreAffichee = $oeuvre->getOeuvreById($_GET["o"], $this->langueAffichage);
+        
+        $commentaire = new Commentaire();
+        $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
+        
+        $photo = new Photo();
+        $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"]);
+        $photosEnvoie = $photo->inserePhotoBdd($_GET["o"]);
+         
+        $this->oVue = new VueOeuvre();
+        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $this->langueAffichage);      
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
+    }
     /**
     * @brief Méthode qui appelle la vue d'affichage de la page de trajet
     * @access private
