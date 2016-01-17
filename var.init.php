@@ -13,6 +13,10 @@
     if(empty($_GET['action'])) {//id d'une oeuvre
 		$_GET['action'] = '';
 	}
+
+    if(empty($_GET['typeRecherche'])) {//initialise le select de la barre de recherche
+    $_GET['typeRecherche'] = '';  
+    }
 	
 	
    
