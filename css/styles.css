@@ -452,13 +452,29 @@ max-width: 36px;
 max-height: 36px;
 }
 #barreRecherche{
+text-align: center;
+font-family: 'Noto Serif', bold;
+color: #ffffff;
 display: block;
 float: right;
 background: #F05570;
-width: 10%;
-height: 100%;
+width: 40%;
+height: 90%;
 position: relative;
 top:-79px;
+}
+
+
+#barreRechercheContenu{
+    padding: 50px;
+    display: none;
+    background: #F05570;
+}
+
+#submitRecherche{
+    
+    text-align: center;
+    width: 100%;
 }
 
 .lienPageMembre{

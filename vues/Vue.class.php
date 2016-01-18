@@ -36,10 +36,20 @@ abstract class Vue {
 		<script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
         <script src="js/gestionDivsForms.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+            
+        <script>$(document).ready(function(){
+                    $("#flip").click(function(){
+                        $("#barreRechercheContenu").slideToggle("slow");
+                        });
+                    });
+</script>
 
         
 	</head>
     <?php
+        
+                        
     }
 
     /**
@@ -53,7 +63,59 @@ abstract class Vue {
         <header>
             <img id="logo" src="images/logo.png" alt="logo">
             <h1 id="titre">MONTR&Eacute;ART</h1>
-            <div id="barreRecherche">barre de recherche
+            <div id="barreRecherche"><div id="flip">Rechercher une oeuvre<br><br></div>
+                
+                <div id="barreRechercheContenu">Chercher par : <br><br>
+                    <form action="#" name="formRecherche" method="get">
+                    
+                        <select name="typeRecherche" onchange="choisirTypeRecherche()">
+                            <option value="default">Veuillez choisir un type...</option>
+                            <option value="artiste">Artiste</option>
+                            <option value="arrondissement">Arrondissement</option>
+                            <option value="categorie">Catégorie</option>
+                        </select>
+                        <input type="submit" id="submitRecherche" name="submit" value="Soumettre" />
+                    </form>
+                    
+                        <?php
+                            if(isset($_GET['submit'])) {
+                            $choixType = $_GET['typeRecherche'];  
+                            echo "<br><br> résultat : " .$choixType; 
+                                
+                            //}
+        
+        
+                            //function choisirTypeRecherche() {
+                                
+                                if ($choixType == "artiste") {
+                                
+                                echo '<td><input class="text" type="text" id="txtLogin" name="txtLogin" value="Entrez le nom du créateur"></td>';
+                                }
+        
+                            
+                                else if ($choixType == "arrondissement") {
+                                
+                                echo '<td><br><select name="selectArrondissement">
+                                    <option>Rosemont - La Petite-Patrie</option>
+                                    <option>Côte-des-Neiges/Notre-Dame-de-Grâce</option>
+                                    <option>Ville-Marie</option>
+                                    </select></td>';
+                                }
+        
+                            
+                                else if ($choixType == "categorie") {
+                                
+                                echo '<td><br><select name="selectCatégorie">
+                                    <option>Beaux-Arts</option>
+                                    </select></td>';
+                                }
+                                
+                            }
+        
+                        ?>
+                    
+                
+                </div>
             </div>
 
             <nav>
