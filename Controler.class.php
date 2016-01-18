@@ -102,6 +102,9 @@ class Controler {
             case 'profil':
                 $this->profil();
                 break;
+            case 'updateOeuvresVille':
+                $this->updateOeuvresVille();
+                break;
             default:
                 $this->accueil();
                 break;
@@ -123,7 +126,8 @@ class Controler {
      $this->oVue->afficherMeta();
      $this->oVue->afficherEntete();
      $this->oVue->afficherBody();
-     $this->oVue->afficherPiedPage();    }
+     $this->oVue->afficherPiedPage();
+    }
     
     /**
     * @brief Méthode qui appelle la vue d'affichage de la page d'une oeuvre
@@ -208,6 +212,17 @@ class Controler {
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
         $this->oVue->afficherPiedPage();
+    }
+    
+    /**
+    * @brief Méthode qui appelle la déclenche la mise à jour des données de la ville de Montréal
+    * @access private
+    * @return void
+    */
+    private function updateOeuvresVille() {
+        
+        $oeuvre = new Oeuvre();
+        $oeuvre->updaterOeuvresVille();
     }
     
     
