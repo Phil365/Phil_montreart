@@ -101,7 +101,7 @@ class VueOeuvre extends Vue {
                         echo "<img src = '$imgDefaut'>";
                     }
                    //fin div sliderOeuvre
-                    $idOeuvreencours=$this->oeuvre["id"]
+                    $idOeuvreencours=$this->oeuvre["idOeuvre"]
             ?>
 
                     <form action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyer" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
@@ -118,43 +118,43 @@ class VueOeuvre extends Vue {
                     
                 </div>";
                 
-                 if ( $this->oeuvre["nomArtiste"]) {
+                 if (isset($this->oeuvre["nomArtiste"])) {
                         echo "<h5>Artiste : </h5>";
-                        if ( $this->oeuvre["prenomArtiste"]) {
+                        if (isset($this->oeuvre["prenomArtiste"])) {
                             echo  "<p>".$this->oeuvre["prenomArtiste"]." ";
                         }
                         echo  $this->oeuvre["nomArtiste"]."</p>";
                     }
-                    if ( $this->oeuvre["nomCollection"]) {
-                        echo "<h5>Collection : </h5>"."<p>". $this->oeuvre["nomCollection"]."</p>";
+                    if (isset($this->oeuvre["nomCollection" . $this->langue])) {
+                        echo "<h5>Collection : </h5>"."<p>". $this->oeuvre["nomCollection" . $this->langue]."</p>";
                     }
-                    if ( $this->oeuvre["nomCategorie"]) {
-                        echo "<h5>Catégorie : </h5>"."<p>". $this->oeuvre["nomCategorie"]."</p>";
+                    if (isset($this->oeuvre["nomCategorie" . $this->langue])) {
+                        echo "<h5>Catégorie : </h5>"."<p>". $this->oeuvre["nomCategorie" . $this->langue]."</p>";
                     }
-                    if ( $this->oeuvre["sousCategorie"]) {
-                        echo "<h5>Sous-catégorie : </h5>"."<p>". $this->oeuvre["sousCategorie"]."</p>";
+                    if (isset($this->oeuvre["sousCategorie" . $this->langue])) {
+                        echo "<h5>Sous-catégorie : </h5>"."<p>". $this->oeuvre["sousCategorie" . $this->langue]."</p>";
                     }
                 ?>
                 
                 <?php
-                    if ( $this->oeuvre["parc"]) {
+                    if (isset($this->oeuvre["parc"])) {
                         echo "<h5>Parc : </h5>"."<p>". $this->oeuvre["parc"]."</p>";
                     }
-                    if ( $this->oeuvre["batiment"]) {
+                    if (isset($this->oeuvre["batiment"])) {
                         echo "<h5>Bâtiment : </h5>"."<p>". $this->oeuvre["batiment"]."</p>";
                     }
-                    if ( $this->oeuvre["adresse"]) {
+                    if (isset($this->oeuvre["adresse"])) {
                         echo "<h5>Adresse : </h5>"."<p>". $this->oeuvre["adresse"]."</p>";
                     }
-                    if ( $this->oeuvre["nomArrondissement"]) {
+                    if (isset($this->oeuvre["nomArrondissement"])) {
                         echo "<h5>Arrondissement : </h5>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
                     }
                     echo "<a class='boutonMoyenne' href='?r=trajet'>Directions</a></div>";//fin div infosOeuvre
                     
-                    if ( $this->oeuvre["description"]) {
+                    if (isset($this->oeuvre["description" . $this->langue])) {
                         echo " <div class='description'>
                 <h5>Description :</h5>
-                <p class='noIndent'>".$this->oeuvre["description"]."</p></div>";
+                <p class='noIndent'>".$this->oeuvre["description" . $this->langue]."</p></div>";
                     }
                     
                    
