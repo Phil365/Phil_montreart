@@ -105,6 +105,11 @@ class Controler {
             case 'updateOeuvresVille':
                 $this->updateOeuvresVille();
                 break;
+            case 'recherche':
+                $this->recherche();
+                break;
+            case 'selectArrondissement';
+                $this->creerSelectArrondissement();
             default:
                 $this->accueil();
                 break;
@@ -119,9 +124,9 @@ class Controler {
     */
     private function accueil() {
         
-         $photo = new Photo();
-      $photosAll = $photo->getAllPhoto();
-    $this->oVue = new VueAccueil();  
+     $photo = new Photo();
+     $photosAll = $photo->getAllPhoto();
+     $this->oVue = new VueAccueil();  
      $this->oVue->setData($photosAll);
      $this->oVue->afficherMeta();
      $this->oVue->afficherEntete();
@@ -224,6 +229,26 @@ class Controler {
         $oeuvre = new Oeuvre();
         $oeuvre->updaterOeuvresVille();
     }
+    
+    
+        private function recherche() {
+        
+        $this->oVue = new VueRecherche();        
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
+    }
+    
+    
+        private function creerSelectArrondissement() {
+        
+            
+        
+        }
+    
+    
+        
     
     
     // Placer les méthodes du controleur ici.

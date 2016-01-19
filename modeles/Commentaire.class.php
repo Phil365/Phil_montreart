@@ -75,9 +75,9 @@ class Commentaire {
     */
 	public function getData() {
         
-        $resutlat = array("id"=>$this->id, "texte"=>$this->texte, "vote"=>$this->vote, "langue"=>$this->langue, "authorise"=>$this->authorise);
+        $resultat = array("id"=>$this->id, "texte"=>$this->texte, "vote"=>$this->vote, "langue"=>$this->langue, "authorise"=>$this->authorise);
         
-        return $resutlat;
+        return $resultat;
 	}
     
     /**

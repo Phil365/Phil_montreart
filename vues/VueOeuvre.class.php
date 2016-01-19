@@ -105,7 +105,7 @@ class VueOeuvre extends Vue {
             ?>
 
                     <form action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyer" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
-                        Select image to upload:
+                        <h4 id="selectImageUpload">Select image to upload:</h4>
                         <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
                         <input class='boutonMoyenne' type="submit" value="Upload Image" name="submit">
                     </form>
@@ -113,7 +113,7 @@ class VueOeuvre extends Vue {
                     echo "<div class='infosOeuvre'>
                     <h5>Titre: </h5>";
                 echo  "<p>".$this->oeuvre['titre']."</p>"; 
-                    echo "<h5>Classement:</h5>
+                    echo "<br><h5>Classement:</h5>
                 <div class='rating'>
                     
                 </div>";
@@ -137,19 +137,19 @@ class VueOeuvre extends Vue {
                 ?>
                 
                 <?php
-                    if (isset($this->oeuvre["parc"])) {
-                        echo "<h5>Parc : </h5>"."<p>". $this->oeuvre["parc"]."</p>";
+                    if ( $this->oeuvre["parc"]) {
+                        echo "<br><h5>Parc : </h5>"."<p>". $this->oeuvre["parc"]."</p>";
                     }
-                    if (isset($this->oeuvre["batiment"])) {
-                        echo "<h5>Bâtiment : </h5>"."<p>". $this->oeuvre["batiment"]."</p>";
+                    if ( $this->oeuvre["batiment"]) {
+                        echo "<br><h5>Bâtiment : </h5>"."<p>". $this->oeuvre["batiment"]."</p>";
                     }
-                    if (isset($this->oeuvre["adresse"])) {
-                        echo "<h5>Adresse : </h5>"."<p>". $this->oeuvre["adresse"]."</p>";
+                    if ( $this->oeuvre["adresse"]) {
+                        echo "<br><h5>Adresse : </h5>"."<p>". $this->oeuvre["adresse"]."</p>";
                     }
-                    if (isset($this->oeuvre["nomArrondissement"])) {
-                        echo "<h5>Arrondissement : </h5>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
+                    if ( $this->oeuvre["nomArrondissement"]) {
+                        echo "<br><h5>Arrondissement : </h5>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
                     }
-                    echo "<a class='boutonMoyenne' href='?r=trajet'>Directions</a></div>";//fin div infosOeuvre
+                    echo "<a class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</a></div>";//fin div infosOeuvre
                     
                     if (isset($this->oeuvre["description" . $this->langue])) {
                         echo " <div class='description'>
@@ -158,7 +158,7 @@ class VueOeuvre extends Vue {
                     }
                     
                    
-                    echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' onclick=''>Laisser Commentaire</button>";
+                    echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser Commentaire</button>";
                   
                     if ($this->commentaires) {//Si des commentaires existent pour cette oeuvre dans la langue d'affichage...
                         for ($i = 0; $i < count($this->commentaires); $i++) {

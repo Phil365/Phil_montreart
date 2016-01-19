@@ -247,10 +247,12 @@ z-index: 3;
     height: auto;
 }
 .sliderOeuvre img{
-   float: left;
-  clear: left;
-   width: 94%;
-   margin: 3%;
+    /*float: left;*/
+    /*clear: left;*/
+    width: 94%;
+    margin: 3%;
+
+    
 }
 .boutonMoyenne{
   
@@ -270,20 +272,22 @@ z-index: 3;
    
 }
 .description{
-    float: left;
-    clear: left;
+    /*float: right;
+    clear: left;*/
    
     width: 100%;
+    display: block;
     
 }
 .sectionCommentaires{
     float:left;
     clear: left;
     width: 100%;
+    position: relative;
     
 }
 .sectionCommentaires .boutonMoyenne{
-    float: right;
+    float: left;
 }
 .thumbnail{
     width: 50px;
@@ -462,6 +466,7 @@ width: 40%;
 height: 90%;
 position: relative;
 top:-79px;
+z-index: 5;
 }
 
 
@@ -485,6 +490,36 @@ top:-79px;
     border-radius: 14px;
     padding: 0px 10px 10px 10px;
 }
+
+/*======================================== Style reponse recherche====================================================*/
+
+#keyword {
+    width: 200px;
+    font-size: 1em;
+}
+
+#results {
+    width: 204px;
+    position: absolute;
+    border: 1px solid #c0c0c0;
+    display: none;
+}
+
+#results .item {
+    padding: 3px;
+    font-family: Helvetica;
+    border-bottom: 1px solid #c0c0c0;
+}
+
+#results .item:last-child {
+    border-bottom: 0px;
+}
+
+#results .item:hover {
+    background-color: #f2f2f2;
+    cursor: pointer;
+}
+/*======================================== Style reponse recherche ====================================================*/
 
 /*======================================== FIN DU STYLES POUR MOBILE ====================================================*/
 
@@ -673,7 +708,6 @@ margin-right: 20px;
 .sliderOeuvre{
     width: 80%;
     height: auto;
-    
     top: -300px;
 }
 }
@@ -720,6 +754,12 @@ margin-left: 40px;
 
 }
 @media (min-width: 1200px){
+
+body {
+height: 1500px;
+
+}    
+    
 html{
 width: 980px;
 margin-left: 15%;
@@ -763,5 +803,52 @@ width: 270px;
         height: 100%;
       }
 }
+
+.sliderOeuvre{
+    width: 50%;
+    height: auto;
+    top: 0px;
+    
+}
+
+.sliderOeuvre img{
+    width: 100%;
+    margin-left: 10%;
+}
+
+.infosOeuvre{
+    width: 50%;
+    height: 300px;
+    margin-left: 10%;
+}
+
+.description{
+    margin-left: 10%;
+    
+}
+
+.sectionCommentaires{
+    float:left;
+    clear: left;
+    width: 100%;
+    margin-top: 100px;
+    margin-left: 10%;
+    display: block;
+    
+}
+
+#boutonCommentaire {
+ float: right;  
+}
+
+#boutonDirection {
+ float: right;
+}
+
+#selectImageUpload {
+    margin-left: 10%;
+
+}
+
 /*========================================FIN DU STYLES POUR DESKTOP ====================================================*/
 
