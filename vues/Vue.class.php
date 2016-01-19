@@ -162,6 +162,103 @@ class Vue {
     }
     
     /**
+    * @brief Méthode qui affiche l'entête (header) du document HTML
+    * @access public
+    * @return void
+    */
+    public function afficherEntete() {
+        
+    ?>
+    <body>
+        <header>
+            <img id="logo" src="images/logo.png" alt="logo">
+            <h1 id="titre">MONTR&Eacute;ART</h1>
+            <div id="barreRecherche"><div id="flip">Rechercher une oeuvre<br><br></div>
+
+                <div id="barreRechercheContenu">Chercher par : <br><br>
+
+                    <form action="?r=recherche&pageActuelle=<?php if ($this->pageActuelle == "oeuvre") {echo $this->pageActuelle."&o=".$_GET["o"];} else {echo $this->pageActuelle;} ?>" method="post">
+                    
+                        <select name="typeRecherche"</selec>>
+                            <option value="" <?php if (isset($POST_["typeRecherche"]) && $POST_["typeRecherche"] == "") {echo 'selected="selected"';} ?>>Veuillez choisir un type...</option>
+                            <option value="artiste" <?php if (isset($POST_["typeRecherche"]) && $POST_["typeRecherche"] == "artiste") {echo 'selected="selected"';} ?>>Artiste</option>
+                            <option value="titre" <?php if (isset($POST_["typeRecherche"]) && $POST_["typeRecherche"] == "titre") {echo 'selected="selected"';} ?>>Titre d'oeuvre</option>
+                            <option value="arrondissement" <?php if (isset($POST_["typeRecherche"]) && $POST_["typeRecherche"] == "arrondissement") {echo 'selected="selected"';} ?>>Arrondissement</option>
+                            <option value="categorie" <?php if (isset($POST_["typeRecherche"]) && $POST_["typeRecherche"] == "categorie") {echo 'selected="selected"';} ?>>Catégorie</option>
+                        </select>
+                        <input type="submit" id="submitRecherche" name="submit" value="Soumettre" />
+                    
+        <?php
+        
+        if(isset($_POST['submit']) && $_POST['submit'] != "") {   
+            $choixType = $_POST['typeRecherche'];
+
+            $langue = $this->langue;
+//            var_dump($this->typeRecherche);
+            if ($choixType == "artiste") {
+
+            $artiste = "artiste";
+            echo '<input class="text" type="text" placeholder="Entrez le nom de l\'artiste" id="keyword" name="inputArtiste" onkeyup="autoComplete(\''.$artiste.'\')">';
+            echo '<div id="results"></div>';
+            }
+
+            if ($choixType == "titre") {
+
+            $titre = "titre";
+            echo '<input class="text" type="text" placeholder="Entrez le titre de l\'oeuvre" id="keyword" name="inputOeuvre" onkeyup="autoComplete(\''.$titre.'\')">';
+            echo '<div id="results"></div>';
+            }
+
+            else if ($choixType == "arrondissement") {
+
+                echo '<select name="selectArrondissement">';
+                echo '<option value = "">Choisir un arrondissement</option>';
+                foreach ($this->typeRecherche as $arrondissement) {
+                    echo '<option value="'.$arrondissement["idArrondissement"].'">'.$arrondissement["nomArrondissement"].'</option>';
+                }
+                echo '</select>';
+            }
+
+            else if ($choixType == "categorie") {
+
+                echo '<select name="selectCategorie">';
+                echo '<option value = "">Choisir une catégorie</option>';
+                foreach ($this->typeRecherche as $categorie) {
+                    echo '<option value="'.$categorie["idCategorie"].'">'.$categorie["nomCategorie$langue"].'</option>';
+                }
+                echo '</select>';
+            }
+        }
+    ?>
+                    </form>
+                </div>
+            </div>
+            <nav>
+                <a href="?r=accueil">Accueil</a>
+                <a href="?r=trajet">Trajet</a>
+                <a href="?r=soumission">Soumettre Oeuvre</a>
+                <a href="?r=#" onclick="montrer_form()">Se connecter</a>
+            </nav>
+        </header>
+
+        <div id="div_bgform">
+            <div id="div_form">
+                <!-- Formulaire login -->
+                <form action="#" id="formlogin" method="post" name="formlogin">
+                    <button id="fermer" onclick ="fermer()">X</button>
+                <h2>Connectez vous</h2>
+
+                    <input id="nomutilisateur" name="nomutilisateur" placeholder="Votre identifiant" type="text">
+                    <input id="motpasse" name="motpasse" placeholder="Mot de passe" type="password">
+
+                    <button onclick="validerform()" class="submit" id="submit">Envoyer</button>
+                </form>
+            </div>
+        </div>
+    <?php
+    }
+    
+    /**
     * @brief Méthode qui affiche le pied de page (footer) du document HTML et ferme la balise HTML
     * @access public
     * @return void
