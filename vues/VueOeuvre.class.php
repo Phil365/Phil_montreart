@@ -105,7 +105,7 @@ class VueOeuvre extends Vue {
             ?>
 
                     <form action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyer" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
-                        Select image to upload:
+                        <h4 id="selectImageUpload">Select image to upload:</h4>
                         <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
                         <input class='boutonMoyenne' type="submit" value="Upload Image" name="submit">
                     </form>
@@ -113,7 +113,7 @@ class VueOeuvre extends Vue {
                     echo "<div class='infosOeuvre'>
                     <h5>Titre: </h5>";
                 echo  "<p>".$this->oeuvre['titre']."</p>"; 
-                    echo "<h5>Classement:</h5>
+                    echo "<br><h5>Classement:</h5>
                 <div class='rating'>
                     
                 </div>";
@@ -126,30 +126,30 @@ class VueOeuvre extends Vue {
                         echo  $this->oeuvre["nomArtiste"]."</p>";
                     }
                     if ( $this->oeuvre["nomCollection"]) {
-                        echo "<h5>Collection : </h5>"."<p>". $this->oeuvre["nomCollection"]."</p>";
+                        echo "<br><h5>Collection : </h5>"."<p>". $this->oeuvre["nomCollection"]."</p>";
                     }
                     if ( $this->oeuvre["nomCategorie"]) {
-                        echo "<h5>Catégorie : </h5>"."<p>". $this->oeuvre["nomCategorie"]."</p>";
+                        echo "<br><h5>Catégorie : </h5>"."<p>". $this->oeuvre["nomCategorie"]."</p>";
                     }
                     if ( $this->oeuvre["sousCategorie"]) {
-                        echo "<h5>Sous-catégorie : </h5>"."<p>". $this->oeuvre["sousCategorie"]."</p>";
+                        echo "<br><h5>Sous-catégorie : </h5>"."<p>". $this->oeuvre["sousCategorie"]."</p>";
                     }
                 ?>
                 
                 <?php
                     if ( $this->oeuvre["parc"]) {
-                        echo "<h5>Parc : </h5>"."<p>". $this->oeuvre["parc"]."</p>";
+                        echo "<br><h5>Parc : </h5>"."<p>". $this->oeuvre["parc"]."</p>";
                     }
                     if ( $this->oeuvre["batiment"]) {
-                        echo "<h5>Bâtiment : </h5>"."<p>". $this->oeuvre["batiment"]."</p>";
+                        echo "<br><h5>Bâtiment : </h5>"."<p>". $this->oeuvre["batiment"]."</p>";
                     }
                     if ( $this->oeuvre["adresse"]) {
-                        echo "<h5>Adresse : </h5>"."<p>". $this->oeuvre["adresse"]."</p>";
+                        echo "<br><h5>Adresse : </h5>"."<p>". $this->oeuvre["adresse"]."</p>";
                     }
                     if ( $this->oeuvre["nomArrondissement"]) {
-                        echo "<h5>Arrondissement : </h5>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
+                        echo "<br><h5>Arrondissement : </h5>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
                     }
-                    echo "<a class='boutonMoyenne' href='?r=trajet'>Directions</a></div>";//fin div infosOeuvre
+                    echo "<a class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</a></div>";//fin div infosOeuvre
                     
                     if ( $this->oeuvre["description"]) {
                         echo " <div class='description'>
@@ -158,7 +158,7 @@ class VueOeuvre extends Vue {
                     }
                     
                    
-                    echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' onclick=''>Laisser Commentaire</button>";
+                    echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser Commentaire</button>";
                   
                     if ($this->commentaires) {//Si des commentaires existent pour cette oeuvre dans la langue d'affichage...
                         for ($i = 0; $i < count($this->commentaires); $i++) {

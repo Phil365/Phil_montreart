@@ -202,5 +202,84 @@ class Oeuvre {
             return $oeuvres;
         }
     }
+    
+        function searchForKeyword($keyword) {
+    
+    self::$database->query("SELECT titre, idOeuvre FROM oeuvres WHERE titre LIKE  ? and authorise = true");
+                           
+    $keyword = $keyword.'%';
+
+    self::$database->bind(1, $keyword);
+    //var_dump(self::$database->bind(1, $keyword));
+    //var_dump(self::$database->query("SELECT titre FROM oeuvres WHERE titre LIKE 'le%'"));
+    $results = array();
+
+   if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $results = array("idOeuvre"=>$oeuvreBDD['idOeuvre'],"titre"=>$oeuvreBDD['titre']);
+        }
+   
+
+
+    return $results;
+
+    }
+    function chercheParArtiste($keyword) {
+    
+    self::$database->query("SELECT titre, idOeuvre, prenomArtiste FROM oeuvres JOIN Artistes ON Artistes.idArtiste = Oeuvres.idArtiste WHERE prenomArtiste LIKE ? and authorise = true");
+                           
+    $keyword = $keyword.'%';
+
+    self::$database->bind(1, $keyword);
+   
+    $results = array();
+
+   if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $results = array("idOeuvre"=>$oeuvreBDD['idOeuvre'],"prenomArtiste"=>$oeuvreBDD['prenomArtiste']);
+        }
+
+    return $results;
+
+    }
+     
+    
+    function chercheParCategorie($keyword) {
+        
+    
+    self::$database->query("SELECT idCategorie, nomCategorie ".$langue." FROM Categories;");
+                           /*SELECT nomCategorieFR, nomCategorieEN  FROM categories JOIN oeuvres ON oeuvres.idCategorie = categories.idCategorie Group By nomCategorieFR*/
+                           /*SELECT nomCategorieFR, nomCategorieEN, idOeuvre FROM categories, oeuvres Where oeuvres.idCategorie = categories.idCategorie Group By idOeuvre*/
+    $keyword = $keyword.'%';
+
+    self::$database->bind(1, $keyword);
+    
+    $results = array();
+
+   if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $results = array("idOeuvre"=>$oeuvreBDD['idOeuvre'],"titre"=>$oeuvreBDD['titre']);
+        }
+
+    return $results;
+
+    }
+    
+    
+    
+     function chercheParArrondissement($keyword) {
+    
+    self::$database->query("SELECT nomArrondissement, idOeuvre FROM arrondissements, oeuvres Where oeuvres.idArrondissement = arrondissements.idArrondissement Group By nomArrondissement");
+                           
+    $keyword = $keyword.'%';
+
+    self::$database->bind(1, $keyword);
+    
+    $results = array();
+
+   if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $results = array("idOeuvre"=>$oeuvreBDD['idOeuvre'],"titre"=>$oeuvreBDD['titre']);
+        }
+
+    return $results;
+
+    }
 }
 ?>

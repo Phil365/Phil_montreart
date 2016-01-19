@@ -35,7 +35,7 @@ else if ($_SERVER['HTTP_HOST'] === '127.0.0.1:8008' || $_SERVER['HTTP_HOST'] ===
 else if ($_SERVER['HTTP_HOST'] === '127.0.0.1:8080' || $_SERVER['HTTP_HOST'] === 'localhost:8080') {
     $urlOeuvre = "http://localhost:8080?r=oeuvre&o=";
 }
-else if ($_SERVER['HTTP_HOST'] === '127.0.0.1:8080' || $_SERVER['HTTP_HOST'] === 'localhost:8888') {
+else if ($_SERVER['HTTP_HOST'] === '127.0.0.1:8888' || $_SERVER['HTTP_HOST'] === 'localhost:8888') {
     $urlOeuvre = "http://localhost:8888/origin/?r=oeuvre&o=";
 }
 
