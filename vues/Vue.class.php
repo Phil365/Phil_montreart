@@ -8,11 +8,24 @@
  */
 header('Content-Type: text/html; charset=utf-8');//Affichage du UTF-8 par PHP.
 
-abstract class Vue {
+class Vue {
 
     protected $titrePage = "";
     protected $descriptionPage = "";
+    protected $langue;
+    private $typeRecherche;
+    private $pageActuelle;
     
+    public function setSelectRecherche($typeRecherche) {
+        $this->typeRecherche = $typeRecherche;
+    }
+    
+    public function setDataGlobal($titrePage, $descriptionPage, $langue, $pageActuelle) {
+        $this->titrePage = $titrePage;
+        $this->descriptionPage = $descriptionPage;
+        $this->langue = $langue;
+        $this->pageActuelle = $pageActuelle;
+    }
     /**
     * @brief Méthode qui écrit les information de meta du document HTML, incluant le doctype et la balise d'ouverture du HTML
     * @access public
@@ -48,7 +61,6 @@ abstract class Vue {
         
 	</head>
     <?php
-        
                         
     }
 
@@ -58,84 +70,72 @@ abstract class Vue {
     * @return void
     */
     public function afficherEntete() {
+        
     ?>
     <body>
         <header>
             <img id="logo" src="images/logo.png" alt="logo">
             <h1 id="titre">MONTR&Eacute;ART</h1>
             <div id="barreRecherche"><div id="flip">Rechercher une oeuvre<br><br></div>
-                
+
                 <div id="barreRechercheContenu">Chercher par : <br><br>
-                    <form action="#" name="formRecherche" method="get">
+
+                    <form action="?r=recherche&pageActuelle=<?php if ($this->pageActuelle == "oeuvre") {echo $this->pageActuelle."&o=".$_GET["o"];} else {echo $this->pageActuelle;} ?>" method="post">
                     
-                        <select name="typeRecherche">
-                            <option value="default">Veuillez choisir un type...</option>
-                            <option value="artiste">Artiste</option>
-                            <option value="nomOeuvre">Nom d'oeuvre</option>
-                            <option value="arrondissement">Arrondissement</option>
-                            <option value="categorie">Catégorie</option>
+                        <select name="typeRecherche"</selec>>
+                            <option value="" <?php if (isset($POST_["typeRecherche"]) && $POST_["typeRecherche"] == "") {echo 'selected="selected"';} ?>>Veuillez choisir un type...</option>
+                            <option value="artiste" <?php if (isset($POST_["typeRecherche"]) && $POST_["typeRecherche"] == "artiste") {echo 'selected="selected"';} ?>>Artiste</option>
+                            <option value="titre" <?php if (isset($POST_["typeRecherche"]) && $POST_["typeRecherche"] == "titre") {echo 'selected="selected"';} ?>>Titre d'oeuvre</option>
+                            <option value="arrondissement" <?php if (isset($POST_["typeRecherche"]) && $POST_["typeRecherche"] == "arrondissement") {echo 'selected="selected"';} ?>>Arrondissement</option>
+                            <option value="categorie" <?php if (isset($POST_["typeRecherche"]) && $POST_["typeRecherche"] == "categorie") {echo 'selected="selected"';} ?>>Catégorie</option>
                         </select>
                         <input type="submit" id="submitRecherche" name="submit" value="Soumettre" />
+                    
+        <?php
+        
+        if(isset($_POST['submit']) && $_POST['submit'] != "") {   
+            $choixType = $_POST['typeRecherche'];
+
+            $langue = $this->langue;
+//            var_dump($this->typeRecherche);
+            if ($choixType == "artiste") {
+
+            $artiste = "artiste";
+            echo '<input class="text" type="text" placeholder="Entrez le nom de l\'artiste" id="keyword" name="inputArtiste" onkeyup="autoComplete(\''.$artiste.'\')">';
+            echo '<div id="results"></div>';
+            }
+
+            if ($choixType == "titre") {
+
+            $titre = "titre";
+            echo '<input class="text" type="text" placeholder="Entrez le titre de l\'oeuvre" id="keyword" name="inputOeuvre" onkeyup="autoComplete(\''.$titre.'\')">';
+            echo '<div id="results"></div>';
+            }
+
+            else if ($choixType == "arrondissement") {
+
+                echo '<select name="selectArrondissement">';
+                echo '<option value = "">Choisir un arrondissement</option>';
+                foreach ($this->typeRecherche as $arrondissement) {
+                    echo '<option value="'.$arrondissement["idArrondissement"].'">'.$arrondissement["nomArrondissement"].'</option>';
+                }
+                echo '</select>';
+            }
+
+            else if ($choixType == "categorie") {
+
+                echo '<select name="selectCategorie">';
+                echo '<option value = "">Choisir une catégorie</option>';
+                foreach ($this->typeRecherche as $categorie) {
+                    echo '<option value="'.$categorie["idCategorie"].'">'.$categorie["nomCategorie$langue"].'</option>';
+                }
+                echo '</select>';
+            }
+        }
+    ?>
                     </form>
-                    
-                        <?php
-                            if(isset($_GET['submit'])) {
-                            $choixType = $_GET['typeRecherche'];  
-                            echo "<br><br> résultat : " .$choixType; 
-                                
-                                
-                            $cookie = new Cookie();
-        
-                            $langue = $cookie->getLangue();    
-                                
-                            //}
-        
-        
-                            //function choisirTypeRecherche() {
-                                
-                                if ($choixType == "artiste") {
-                                
-                                $artiste = "artiste";
-                                echo '<input class="text" type="text" placeholder="Entrez le nom de l\'artiste" id="keyword" name="inputArtiste" onkeyup="autoComplete(\''.$artiste.'\')">';
-                                echo '<div id="results"></div>';
-                                }
-                                
-                                
-                                if ($choixType == "nomOeuvre") {
-                                
-                                $titre = "titre";
-                                echo '<input class="text" type="text" placeholder="Entrez le titre de l\'oeuvre" id="keyword" name="inputOeuvre" onkeyup="autoComplete(\''.$titre.'\')">';
-                                echo '<div id="results"></div>';
-                                }
-        
-                            
-                                else if ($choixType == "arrondissement") {
-                                
-                                echo '<br><select name="selectArrondissement">
-                                    <option>Rosemont - La Petite-Patrie</option>
-                                    <option>Côte-des-Neiges/Notre-Dame-de-Grâce</option>
-                                    <option>Ville-Marie</option>
-                                    </select>';
-                                }
-        
-                            
-                                else if ($choixType == "categorie") {
-                                
-                                echo '<br><select name="selectCatégorie">';
-                                    foreach ($categories as $categorie) {
-                                        
-                                        echo '<option value="'.$categorie["idCategorie"].'>'.$categorie["idCategorie"].$langue.'</option>';
-                                    }
-                                }
-                                
-                            }
-        
-                        ?>
-                    
-                
                 </div>
             </div>
-
             <nav>
                 <a href="?r=accueil">Accueil</a>
                 <a href="?r=trajet">Trajet</a>
@@ -143,9 +143,7 @@ abstract class Vue {
                 <a href="?r=#" onclick="montrer_form()">Se connecter</a>
             </nav>
         </header>
-        
-        
-        
+
         <div id="div_bgform">
             <div id="div_form">
                 <!-- Formulaire login -->
@@ -162,13 +160,6 @@ abstract class Vue {
         </div>
     <?php
     }
-    
-    /**
-    * @brief Méthode abstraite qui affiche le corps du document HTML - doit être défini par chaque nouvelle vue
-    * @access public
-    * @return void
-    */
-    abstract public function afficherBody();
     
     /**
     * @brief Méthode qui affiche le pied de page (footer) du document HTML et ferme la balise HTML
