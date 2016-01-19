@@ -105,6 +105,46 @@ class Photo {
         }
         return $photoAll;
     }
+      /**
+    * @brief méthode qui récupère toutes les photos n'aillant pas encore été vetés par l'administrateur
+    * @access public
+    * @return array
+    */
+         public function getAllUnauthorizedPhoto() {
+        
+        $photoAllUnauthorized = array();
+        
+        self::$database->query('SELECT * FROM Photos WHERE Photos.authorise = false');
+        
+               
+        if ($photosBDD = self::$database->resultset()) {
+            foreach ($photosBDD as $photo) {
+                $unePhoto = array("idPhoto"=>$photo["idPhoto"]);
+                $photoAllUnauthorized[] = $unePhoto;
+            }
+        }
+        return $photoAllUnauthorized;
+    }
+     public function getPhotoById(){
+        
+        if(isset($_POST['liPhotoId'])){
+        
+            $idPhoto = $_POST['liPhotoId'];
+            
+            self::$database->query('SELECT * FROM photos where photos.idPhoto = :idPhoto');
+            self::$database->bind(':id', $idPhoto);
+            
+            $infoPhoto = array();
+            
+            if($photoBDD = self::$database->uneLigne()){
+            
+                $infoPhoto = $photoBDD;
+            }
+            return $infoPhoto;
+        }
+        
+    }
+}
      public function inserePhotoBdd($idOeuvre) {
         if (!$_FILES["fileToUpload"]["error"]) {
                
