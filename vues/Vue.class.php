@@ -43,7 +43,7 @@ abstract class Vue {
                         $("#barreRechercheContenu").slideToggle("slow");
                         });
                     });
-</script>
+        </script>
 
         
 	</head>
@@ -68,9 +68,10 @@ abstract class Vue {
                 <div id="barreRechercheContenu">Chercher par : <br><br>
                     <form action="#" name="formRecherche" method="get">
                     
-                        <select name="typeRecherche" onchange="choisirTypeRecherche()">
+                        <select name="typeRecherche">
                             <option value="default">Veuillez choisir un type...</option>
                             <option value="artiste">Artiste</option>
+                            <option value="nomOeuvre">Nom d'oeuvre</option>
                             <option value="arrondissement">Arrondissement</option>
                             <option value="categorie">Catégorie</option>
                         </select>
@@ -82,6 +83,11 @@ abstract class Vue {
                             $choixType = $_GET['typeRecherche'];  
                             echo "<br><br> résultat : " .$choixType; 
                                 
+                                
+                            $cookie = new Cookie();
+        
+                            $langue = $cookie->getLangue();    
+                                
                             //}
         
         
@@ -89,25 +95,37 @@ abstract class Vue {
                                 
                                 if ($choixType == "artiste") {
                                 
-                                echo '<td><input class="text" type="text" id="txtLogin" name="txtLogin" value="Entrez le nom du créateur"></td>';
+                                $artiste = "artiste";
+                                echo '<input class="text" type="text" placeholder="Entrez le nom de l\'artiste" id="keyword" name="inputArtiste" onkeyup="autoComplete(\''.$artiste.'\')">';
+                                echo '<div id="results"></div>';
+                                }
+                                
+                                
+                                if ($choixType == "nomOeuvre") {
+                                
+                                $titre = "titre";
+                                echo '<input class="text" type="text" placeholder="Entrez le titre de l\'oeuvre" id="keyword" name="inputOeuvre" onkeyup="autoComplete(\''.$titre.'\')">';
+                                echo '<div id="results"></div>';
                                 }
         
                             
                                 else if ($choixType == "arrondissement") {
                                 
-                                echo '<td><br><select name="selectArrondissement">
+                                echo '<br><select name="selectArrondissement">
                                     <option>Rosemont - La Petite-Patrie</option>
                                     <option>Côte-des-Neiges/Notre-Dame-de-Grâce</option>
                                     <option>Ville-Marie</option>
-                                    </select></td>';
+                                    </select>';
                                 }
         
                             
                                 else if ($choixType == "categorie") {
                                 
-                                echo '<td><br><select name="selectCatégorie">
-                                    <option>Beaux-Arts</option>
-                                    </select></td>';
+                                echo '<br><select name="selectCatégorie">';
+                                    foreach ($categories as $categorie) {
+                                        
+                                        echo '<option value="'.$categorie["idCategorie"].'>'.$categorie["idCategorie"].$langue.'</option>';
+                                    }
                                 }
                                 
                             }
