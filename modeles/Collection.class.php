@@ -1,6 +1,6 @@
 <?php
 
-class Categorie {
+class Collection {
 	
     private static $database;
     
@@ -16,38 +16,38 @@ class Categorie {
 	 * @access public
 	 * @return Array
 	 */
-	public function getAllCategories($langue) {
+	public function getAllCollections($langue) {
 				
-        $infoCategories = array();
+        $infoCCollections = array();
         
         self::$database->query('SELECT idCategorie, nomCategorie' . $langue . ' FROM Categories');
         
         //Lie les paramètres aux valeurs
         self::$database->bind(':langue', $langue);
         
-        if ($categories = self::$database->resultset()) {
-            foreach ($categories as $categorie) {
-                $infoCategories[] = $categorie;
+        if ($collections = self::$database->resultset()) {
+            foreach ($collections as $collection) {
+                $infoCollections[] = $collection;
             }
         }
-        return $infoCategories;
+        return $infoCCollections;
 	}
     
     /**
     * @brief Méthode qui récupère l'ID en fonction du nom passé en paramètre, s'il existe.
-    * @param string $nomCategorie
+    * @param string $nomCollection
     * @access private
     * @return string ou boolean
     */
-    public function getCategorieIdByName($nomCategorie) {
+    public function getCollectionIdByName($nomCollection) {
         
-        self::$database->query('SELECT idCategorie FROM Categories WHERE Categories.nomCategorieFR = :nomCategorie OR Categories.nomCategorieEN = :nomCategorie');
+        self::$database->query('SELECT idCollection FROM Collections WHERE Collections.nomCollectionFR = :nomCollection OR Collections.nomCollectionEN = :nomCollection');
 
         //Lie les paramètres aux valeurs
-        self::$database->bind(':nomCategorie', $nomCategorie);
+        self::$database->bind(':nomCollection', $nomCollection);
 
-        if ($categorie = self::$database->uneLigne()) {//Si trouvé dans la BDD
-            return $categorie["idCategorie"];
+        if ($collection = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            return $collection["idCollection"];
         }
         else {
             return false;
@@ -55,17 +55,17 @@ class Categorie {
     }
     
     /**
-    * @brief Méthode qui ajoute une catégorie à la BDD.
-    * @param string $nomCategorieFR
-    * @param string $nomCategorieEN
-    * @access public
+    * @brief Méthode qui ajoute une collection à la BDD.
+    * @param string $nomCollectionFR
+    * @param string $nomCollectionEN
+    * @access private
     * @return void
     */
-    public function ajouterCategorie($nomCategorieFR, $nomCategorieEN) {
+    public function ajouterCollection($nomCollectionFR, $nomCollectionEN) {
         try {
-            self::$database->query('INSERT INTO Categories (nomCategorieFR, nomCategorieEN) VALUES (:nomCategorieFR, :nomCategorieEN)');
-            self::$database->bind(':nomCategorieFR', $nomCategorieFR);
-            self::$database->bind(':nomCategorieEN', $nomCategorieEN);
+            self::$database->query('INSERT INTO Collections (nomCollectionFR, nomCollectionEN) VALUES (:nomCollectionFR, :nomCollectionEN)');
+            self::$database->bind(':nomCollectionFR', $nomCollectionFR);
+            self::$database->bind(':nomCollectionEN', $nomCollectionEN);
             self::$database->execute();
         }
         catch(Exception $e) {
