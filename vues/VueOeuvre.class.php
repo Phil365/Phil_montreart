@@ -32,7 +32,7 @@ class VueOeuvre extends Vue {
     * @var string $langue Langue d'affichage
     * @access private
     */
-    private $langue;
+    protected $langue;
     
     /**
     * @brief Constructeur. Initialise les propriétés communes de la classe mère

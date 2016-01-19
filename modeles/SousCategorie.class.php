@@ -1,6 +1,6 @@
 <?php
 
-class Categorie {
+class SousCategorie {
 	
     private static $database;
     
@@ -16,38 +16,38 @@ class Categorie {
 	 * @access public
 	 * @return Array
 	 */
-	public function getAllCategories($langue) {
+	public function getAllSousCategories($langue) {
 				
-        $infoCategories = array();
+        $infoSousCategories = array();
         
-        self::$database->query('SELECT idCategorie, nomCategorie' . $langue . ' FROM Categories');
+        self::$database->query('SELECT idSousCategorie, sousCategorie' . $langue . ' FROM SousCategories');
         
         //Lie les paramètres aux valeurs
         self::$database->bind(':langue', $langue);
         
-        if ($categories = self::$database->resultset()) {
-            foreach ($categories as $categorie) {
-                $infoCategories[] = $categorie;
+        if ($sousCategories = self::$database->resultset()) {
+            foreach ($sousCategories as $sousCategorie) {
+                $infoSousCategories[] = $sousCategorie;
             }
         }
-        return $infoCategories;
+        return $infoSousCategories;
 	}
     
     /**
     * @brief Méthode qui récupère l'ID en fonction du nom passé en paramètre, s'il existe.
-    * @param string $nomCategorie
+    * @param string $nomSousCategorie
     * @access private
     * @return string ou boolean
     */
-    public function getCategorieIdByName($nomCategorie) {
+    public function getSousCategorieIdByName($nomSousCategorie) {
         
-        self::$database->query('SELECT idCategorie FROM Categories WHERE Categories.nomCategorieFR = :nomCategorie OR Categories.nomCategorieEN = :nomCategorie');
+        self::$database->query('SELECT idSousCategorie FROM SousCategories WHERE SousCategories.sousCategorieFR = :nomSousCategorie OR SousCategories.sousCategorieEN = :nomSousCategorie');
 
         //Lie les paramètres aux valeurs
-        self::$database->bind(':nomCategorie', $nomCategorie);
+        self::$database->bind(':nomSousCategorie', $nomSousCategorie);
 
-        if ($categorie = self::$database->uneLigne()) {//Si trouvé dans la BDD
-            return $categorie["idCategorie"];
+        if ($SousCategorie = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            return $SousCategorie["idSousCategorie"];
         }
         else {
             return false;
@@ -55,17 +55,17 @@ class Categorie {
     }
     
     /**
-    * @brief Méthode qui ajoute une catégorie à la BDD.
-    * @param string $nomCategorieFR
-    * @param string $nomCategorieEN
-    * @access public
+    * @brief Méthode qui ajoute une sous-catégorie à la BDD.
+    * @param string $nomSousCategorieFR
+    * @param string $nomSousCategorieEN
+    * @access private
     * @return void
     */
-    public function ajouterCategorie($nomCategorieFR, $nomCategorieEN) {
+    public function ajouterSousCategorie($nomSousCategorieFR, $nomSousCategorieEN) {
         try {
-            self::$database->query('INSERT INTO Categories (nomCategorieFR, nomCategorieEN) VALUES (:nomCategorieFR, :nomCategorieEN)');
-            self::$database->bind(':nomCategorieFR', $nomCategorieFR);
-            self::$database->bind(':nomCategorieEN', $nomCategorieEN);
+            self::$database->query('INSERT INTO SousCategories (sousCategorieFR, sousCategorieEN) VALUES (:nomSousCategorieFR, :nomSousCategorieEN)');
+            self::$database->bind(':nomSousCategorieFR', $nomSousCategorieFR);
+            self::$database->bind(':nomSousCategorieEN', $nomSousCategorieEN);
             self::$database->execute();
         }
         catch(Exception $e) {

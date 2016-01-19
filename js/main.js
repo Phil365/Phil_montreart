@@ -41,19 +41,19 @@ $( document ).ready(function() {
 				$(results).each(function(key, value) {
 				
                     if (rechercheVoulue=="titre") {
-$('#results').append('<div class="item">' + "<a href=http://localhost:8888/origin/?r=oeuvre&o="+value['idOeuvre']+">"+value['titre']+"</a>" +'</div>');
+$('#results').append('<div class="item">' + "<a href=http://localhost/?r=oeuvre&o="+value['idOeuvre']+">"+value['titre']+"</a>" +'</div>');
 
 }
                     if (rechercheVoulue=="artiste") {
-$('#results').append('<div class="item">' + "<a href=http://localhost:8888/origin/?r=oeuvre&o="+value['idOeuvre']+">"+value['prenomArtiste']+"</a>" +'</div>');
+$('#results').append('<div class="item">' + "<a href=http://localhost/?r=oeuvre&o="+value['idOeuvre']+">"+value['prenomArtiste']+"</a>" +'</div>');
 
 }
                     if (rechercheVoulue=="categorie") {
-$('#results').append('<div class="item">' + "<a href=http://localhost:8888/origin/?r=oeuvre&o="+value['idOeuvre']+">"+value['nomCategorieFR']+"</a>" +'</div>');
+$('#results').append('<div class="item">' + "<a href=http://localhost/?r=oeuvre&o="+value['idOeuvre']+">"+value['nomCategorieFR']+"</a>" +'</div>');
 
 }
                     if (rechercheVoulue=="arrondissement") {
-$('#results').append('<div class="item">' + "<a href=http://localhost:8888/origin/?r=oeuvre&o="+value['idOeuvre']+">"+value['nomCategorieFR']+"</a>" +'</div>');
+$('#results').append('<div class="item">' + "<a href=http://localhost/?r=oeuvre&o="+value['idOeuvre']+">"+value['nomCategorieFR']+"</a>" +'</div>');
 
 }
 

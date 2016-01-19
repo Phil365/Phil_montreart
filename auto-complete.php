@@ -1,8 +1,5 @@
 <?php
 require_once("./config.php");
-$oeuvre = new Oeuvre();
-
-
 
 if (!isset($_GET['keyword'])) {
 	die();
@@ -14,11 +11,13 @@ if (!isset($_GET['keyword'])) {
 $keyword = $_GET['keyword'];
 
 if (($_GET['rechercheVoulue'])=="titre") {
-$data =  $oeuvre->searchForKeyword($keyword);
+    $oeuvre = new Oeuvre();
+    $data =  $oeuvre->chercheParTitre($keyword);
 }
 
 else if (($_GET['rechercheVoulue'])=="artiste") {
-$data =  $oeuvre->chercheParArtiste($keyword);
+    $artiste = new Artiste();
+    $data =  $artiste->chercheParArtiste($keyword);
 }
 
 
