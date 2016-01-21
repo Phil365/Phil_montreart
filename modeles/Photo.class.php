@@ -144,7 +144,7 @@ class Photo {
         }
         
     }
-}
+
      public function inserePhotoBdd($idOeuvre) {
         if (!$_FILES["fileToUpload"]["error"]) {
                
