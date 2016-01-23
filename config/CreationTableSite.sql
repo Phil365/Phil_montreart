@@ -20,7 +20,6 @@ idCollection INT,
 idCategorie INT NOT NULL,
 idSousCategorie INT,
 idArrondissement INT NOT NULL,
-idArtiste INT,
 PRIMARY KEY (idOeuvre) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS Collections ;
@@ -52,6 +51,12 @@ prenomArtiste VARCHAR(50),
 nomArtiste VARCHAR(50),
 nomCollectif VARCHAR(50),
 PRIMARY KEY (idArtiste) ) ENGINE=InnoDB;
+
+DROP TABLE IF EXISTS OeuvresArtistes ;
+CREATE TABLE OeuvresArtistes (
+idOeuvre INT NOT NULL,
+idArtiste INT NOT NULL
+) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS Photos ;
 CREATE TABLE Photos (idPhoto INT  AUTO_INCREMENT NOT NULL,
@@ -93,7 +98,8 @@ ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idSousCategorie FOREIGN KEY (idSou
 ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idCollection FOREIGN KEY (idCollection) REFERENCES Collections (idCollection);
 ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idCategorie FOREIGN KEY (idCategorie) REFERENCES Categories (idCategorie);
 ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idArrondissement FOREIGN KEY (idArrondissement) REFERENCES Arrondissements (idArrondissement);
-ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idArtiste FOREIGN KEY (idArtiste) REFERENCES Artistes (idArtiste);
+ALTER TABLE OeuvresArtistes ADD CONSTRAINT FK_OeuvresArtistes_idArtiste FOREIGN KEY (idArtiste) REFERENCES Artistes (idArtiste);
+ALTER TABLE OeuvresArtistes ADD CONSTRAINT FK_OeuvresArtistes_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre);
 ALTER TABLE Photos ADD CONSTRAINT FK_Photos_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
 ALTER TABLE Commentaires ADD CONSTRAINT FK_Commentaires_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
 ALTER TABLE Commentaires ADD CONSTRAINT FK_Commentaires_idUtilisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs (idUtilisateur);
@@ -103,22 +109,28 @@ ALTER TABLE Visitent ADD CONSTRAINT FK_Visitent_idUtilisateur FOREIGN KEY (idUti
 INSERT INTO Collections VALUES (1,"Art public","Public art");
 INSERT INTO Categories VALUES (1,"Beaux-arts","Fine Arts");
 INSERT INTO SousCategories VALUES (1,"Sculpture","Sculpture");
+INSERT INTO SousCategories VALUES (2,"Installation","Installation");
 INSERT INTO Arrondissements VALUES (1,"Côte-des-Neiges–Notre-Dame-de-Grâce");
+INSERT INTO Arrondissements VALUES (2,"Ville-Marie");
+INSERT INTO Arrondissements VALUES (3,"Rosemont–La Petite-Patrie");
 INSERT INTO Artistes VALUES (1,null,null, null);
 INSERT INTO Artistes VALUES (2,"Patrick","Coutu", null);
-INSERT INTO Oeuvres VALUES (1,"Source", 962,45.466405,-73.631648,"Parc Benny","Centre sportif Notre-Dame-de Grâce","6445, avenue Monkland, Montréal","super magnifique","super beautyfull",true,1,1,1,1,1);
-INSERT INTO Photos VALUES (1,"images/source.jpg",true,1);
-INSERT INTO SousCategories VALUES (2,"Installation","Installation");
-INSERT INTO Arrondissements VALUES (2,"Ville-Marie");
 INSERT INTO Artistes VALUES (3,"Jocelyne","Alloucherie", null);
-INSERT INTO Oeuvres VALUES ( 2,"Porte de jour",1099,45.512090,-73.550979,"Square Dalhousie",null,null,"super magnifique","super beautyfull",true,1,1,1,2,2);
+INSERT INTO Oeuvres VALUES (1,"Source", 962,45.466405,-73.631648,"Parc Benny","Centre sportif Notre-Dame-de Grâce","6445, avenue Monkland, Montréal","super magnifique","super beautyfull",true,1,1,1,1);
+INSERT INTO Oeuvres VALUES ( 2,"Porte de jour",1099,45.512090,-73.550979,"Square Dalhousie",null,null,"super magnifique","super beautyfull",true,1,1,1,2);
+INSERT INTO Oeuvres VALUES ( 3,"Regarder les pommetiers", 1119,45.561585,-73.562673,"Jardin botanique","Jardin botanique","4101, rue Sherbrooke Est, Montréal (QC) H1X 2B2","super magnifique","super beautyfull",true,1,1,1,3);
+INSERT INTO Oeuvres VALUES ( 4,"Le chat de Gaspar", null, null, null, null, null, "3306 pie-ix montreal", "c'est un chat semble t'il magnifique", null,true,1,1,1,1);
+INSERT INTO Oeuvres VALUES ( 5,"Intemporel", null, null, null, null, null, "5985 Turenne Montreal", null, "Arts it's like a box of chocolate you never know what you're getting",false,1,1,1,2);
+INSERT INTO OeuvresArtistes VALUES (1, 2);
+INSERT INTO OeuvresArtistes VALUES (2, 3);
+INSERT INTO OeuvresArtistes VALUES (3, 3);
+INSERT INTO OeuvresArtistes VALUES (4, 1);
+INSERT INTO OeuvresArtistes VALUES (4, 3);
+INSERT INTO OeuvresArtistes VALUES (5, 2);
+INSERT INTO Photos VALUES (1,"images/source.jpg",true,1);
 INSERT INTO Photos VALUES (2,"images/porte.jpg",true,2);
-INSERT INTO Arrondissements VALUES (3,"Rosemont–La Petite-Patrie");
-INSERT INTO Oeuvres VALUES ( 3,"Regarder les pommetiers", 1119,45.561585,-73.562673,"Jardin botanique","Jardin botanique","4101, rue Sherbrooke Est, Montréal (QC) H1X 2B2","super magnifique","super beautyfull",true,1,1,1,3,2);
 INSERT INTO Photos VALUES (3,"images/pommetiers.jpg",true,3);
-INSERT INTO Oeuvres VALUES ( 4,"Le chat de Gaspar", null, null, null, null, null, "3306 pie-ix montreal", "c'est un chat semble t'il magnifique", null,true,1,1,1,1,1);
-INSERT INTO Oeuvres VALUES ( 5,"Intemporel", null, null, null, null, null, "5985 Turenne Montreal", null, "Arts it's like a box of chocolate you never know what you're getting",false,1,1,1,1,1);
-INSERT INTO Photos VALUES (4,"images/lion.jpg",false,5);
-INSERT INTO Photos VALUES (5,"images/chat.jpg",true,4);
+INSERT INTO Photos VALUES (4,"images/lion.jpg",true,5);
+INSERT INTO Photos VALUES (5,"images/chat.jpg",false,4);
 INSERT INTO Utilisateurs VALUES ( 1,"dlachambre", "dl12345","David","Lachambre","dlachambre@montreart.net", "J'aime les marches sur la plage et le tricot extrême.", "images/photoProfilDefaut.jpg", true);
 INSERT INTO Commentaires VALUES (1,"Trop hot !", 5, "FR", true, 3, 1);

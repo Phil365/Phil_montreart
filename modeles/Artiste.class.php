@@ -107,5 +107,46 @@ class Artiste {
             return false;
         }
     }
+    
+    /**
+    * @brief Méthode qui récupère les artistes d'une oeuvre.
+    * @param int $idOeuvre
+    * @access public
+    * @return array
+    */
+    public function getArtistesbyOeuvreId ($idOeuvre) {
+        
+        $artistes = array();
+        
+        self::$database->query('SELECT * FROM Artistes JOIN OeuvresArtistes ON OeuvresArtistes.idArtiste = Artistes.idArtiste WHERE OeuvresArtistes.idOeuvre = :idOeuvre');
+        self::$database->bind(':idOeuvre', $idOeuvre);
+        
+        if ($lignes = self::$database->resultset()) {
+            foreach ($lignes as $ligne) {
+                $artistes[] = $ligne;
+            }
+            return $artistes;
+        }
+    }
+    
+    /**
+    * @brief Méthode qui crée le lien entre oeuvre et artistes dans la BDD.
+    * @param int $idOeuvre
+    * @param array $idArtistes
+    * @access public
+    * @return void
+    */
+    public function lierArtistesOeuvre ($idOeuvre, $idArtistes) {
+        
+        foreach ($idArtistes as $idArtiste) {
+            
+            self::$database->query('INSERT INTO OeuvresArtistes (idOeuvre, idArtiste) VALUES (:idOeuvre, :idArtiste)');
+        
+            self::$database->bind(':idOeuvre', $idOeuvre);
+            self::$database->bind(':idArtiste', $idArtiste);
+
+            self::$database->execute();
+        }
+    }
 }
 ?>
