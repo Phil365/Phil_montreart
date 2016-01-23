@@ -161,6 +161,33 @@ class Vue {
     <?php
     }
     
+      /**
+    * @brief Méthode qui affiche l'entête (header) du document HTML de la page admin
+    * @access public
+    * @return void
+    */
+    public function afficherEnteteAdmin() {
+    ?>
+    <body>
+        <header>
+            <img id="logo" src="images/logo.png" alt="logo">
+            <h1 id="titre">MONTR&Eacute;ART</h1>
+            <div id="barreRecherche">barre de recherche
+            </div>
+
+            <nav>
+                <a href="?r=accueil">Accueil</a>
+                <a href="?r=trajet">Trajet</a>
+                <a href="?r=soumission">Soumettre Oeuvre</a>
+                <a href="?r=#" onclick="#">Deconnexion</a>
+                <h4>Bienvenue nomUtilisateurAdmin</h4>
+            </nav>
+        </header>
+        
+        
+    <?php
+    }
+    
     /**
     * @brief Méthode qui affiche le pied de page (footer) du document HTML et ferme la balise HTML
     * @access public

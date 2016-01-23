@@ -237,6 +237,26 @@ class Controler {
         $this->oVue->afficherBody();
         $this->oVue->afficherPiedPage();
     }
+     /**
+    * @brief Méthode qui appelle la vue d'affichage de la page admin
+    * @access private
+    * @return void
+    */
+    private function admin(){
+        $photo = new Photo();
+        $photoAllUnauthorized = $photo->getAllUnauthorizedPhoto();
+        $photoAReviser = $photo->getPhotoById();
+        $oeuvre = new Oeuvre;
+        $oeuvre->updaterOeuvresVille();
+        $date = $oeuvre->getDateDernierUpdate();
+        $this->oVue = new VueAdmin(); 
+        $this->oVue->setData($photoAllUnauthorized);
+        $this->oVue->setData($photoAReviser);
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEnteteAdmin();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
+    }
     
     /**
     * @brief Méthode qui appelle la déclenche la mise à jour des données de la ville de Montréal
