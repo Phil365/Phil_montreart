@@ -1,7 +1,12 @@
 <?php
 //Mettre les fichiers requis pour les tests ici.
-require_once("../config.php");
+
 require_once "../modeles/Oeuvre.class.php";
+require_once "../modeles/Collection.class.php";
+require_once "../modeles/Categorie.class.php";
+require_once "../modeles/SousCategorie.class.php";
+require_once "../modeles/Arrondissement.class.php";
+require_once "../modeles/Artiste.class.php";
 require_once "../modeles/Commentaire.class.php";
 require_once "../modeles/Photo.class.php";
 require_once "../config/parametresBDD.php";
