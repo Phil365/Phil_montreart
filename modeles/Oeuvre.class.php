@@ -86,10 +86,10 @@ class Oeuvre {
     private $idArrondissement;
     
     /**
-    * @var string $idArtiste Artiste ayant créé l'oeuvre
+    * @var array $idArtistes Artistes ayant créé l'oeuvre
     * @access private
     */
-    private $idArtiste;
+    private $idArtistes;
     
     /**
     * @var string $authorise Détermine si l'oeuvre a passé l'étape de l'audit
@@ -140,14 +140,14 @@ class Oeuvre {
     * @param integer $idCollection
     * @param integer $idCategorie
     * @param integer $idArrondissement
-    * @param integer $idArtiste
+    * @param array $idArtistes
     * @param boolean $authorise
     * @param array $photos
     * @param array $commentaires
     * @access public
     * @return void
     */
-    public function setData($id, $titre, $noInterneMtl, $latitude, $longitude, $parc, $batiment, $adresse, $description, $idCollection, $idCategorie, $idSousCategorie, $idArrondissement, $idArtiste, $authorise, $photos, $commentaires) {
+    public function setData($id, $titre, $noInterneMtl, $latitude, $longitude, $parc, $batiment, $adresse, $description, $idCollection, $idCategorie, $idSousCategorie, $idArrondissement, $idArtistes, $authorise, $photos, $commentaires) {
         
         $this->id = $id;
         $this->titre = $titre;
@@ -162,7 +162,7 @@ class Oeuvre {
         $this->idCategorie = $idCategorie;
         $this->idSousCategorie = $idSousCategorie;
         $this->idArrondissement = $idArrondissement;
-        $this->idArtiste = $idArtiste;
+        $this->idArtistes = $idArtistes;
         $this->authorise = $authorise;
         $this->photos = $photos;
         $this->commentaires = $commentaires;
@@ -175,7 +175,7 @@ class Oeuvre {
     */
     public function getData() {
         
-        $resutlat = array("id"=>$this->id, "titre"=>$this->titre, "noInterneMtl"=>$this->noInterneMtl, "latitude"=>$this->latitude, "longitude"=>$this->longitude, "parc"=>$this->parc, "batiment"=>$this->batiment, "adresse"=>$this->adresse, "description"=>$this->description, "idCollection"=>$this->idCollection, "idCategorie"=>$this->idCategorie, "idArrondissement"=>$this->idArrondissement, "idArtiste"=>$this->idArtiste, "authorise"=>$this->authorise, "photos"=>$this->photos, "commentaires"=>$this->commentaires);
+        $resutlat = array("id"=>$this->id, "titre"=>$this->titre, "noInterneMtl"=>$this->noInterneMtl, "latitude"=>$this->latitude, "longitude"=>$this->longitude, "parc"=>$this->parc, "batiment"=>$this->batiment, "adresse"=>$this->adresse, "description"=>$this->description, "idCollection"=>$this->idCollection, "idCategorie"=>$this->idCategorie, "idArrondissement"=>$this->idArrondissement, "idArtistes"=>$this->idArtistes, "authorise"=>$this->authorise, "photos"=>$this->photos, "commentaires"=>$this->commentaires);
         
         return $resutlat;
     }
@@ -189,7 +189,7 @@ class Oeuvre {
     */
     public function getOeuvreById($id, $langue) {
         
-        self::$database->query('SELECT * FROM Oeuvres JOIN Collections ON Oeuvres.idCollection = Collections.idCollection JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN SousCategories ON Oeuvres.idSousCategorie = SousCategories.idSousCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement JOIN Artistes ON Artistes.idArtiste = Oeuvres.idArtiste WHERE Oeuvres.idOeuvre = :id AND Oeuvres.authorise = true');
+        self::$database->query('SELECT * FROM Oeuvres JOIN Collections ON Oeuvres.idCollection = Collections.idCollection JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN SousCategories ON Oeuvres.idSousCategorie = SousCategories.idSousCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement WHERE Oeuvres.idOeuvre = :id AND Oeuvres.authorise = true');
         
         //Lie les paramètres aux valeurs
         self::$database->bind(':id', $id);
@@ -226,12 +226,13 @@ class Oeuvre {
         foreach ($oeuvresVilleMtl as $oeuvreVilleMtl) {
             
             if (isset($oeuvreVilleMtl["NoInterne"])) {
+                $this->noInterneMtl = $oeuvreVilleMtl["NoInterne"];
                 $oeuvreMtlBDD = $this->getOeuvreByNoInterne($oeuvreVilleMtl["NoInterne"]);
                 
                 $this->getFKOeuvreByName($oeuvreVilleMtl);
                 
                 if (empty($oeuvreMtlBDD)) {
-                    $action = "inserer";
+                    $action = "ajouter";
                     $this->test2++;
                 }
                 else {
@@ -353,27 +354,31 @@ class Oeuvre {
             exit;
         }
         //Artistes
-        try {
-            $artiste = new Artiste();
-            $idArtiste = false;
-            $idArtiste = $artiste->getArtisteIdByName($oeuvre["Artistes"][0]["Prenom"], $oeuvre["Artistes"][0]["Nom"], $oeuvre["Artistes"][0]["NomCollectif"]);//Récupère l'ID en fonction des noms passés en paramètres
-            
-            if (!$idArtiste) {//Si l'artiste n'existe pas...
-                try {
-                    $artiste->ajouterArtiste($oeuvre["Artistes"][0]["Prenom"], $oeuvre["Artistes"][0]["Nom"], $oeuvre["Artistes"][0]["NomCollectif"]);//Fait l'insertion si non trouvé dans la BDD
-                    $idArtiste = $artiste->getArtisteIdByName($oeuvre["Artistes"][0]["Prenom"], $oeuvre["Artistes"][0]["Nom"], $oeuvre["Artistes"][0]["NomCollectif"]);//Récupère l'ID en fonction des noms passés en paramètres
+        foreach ($oeuvre["Artistes"] as $artiste) {
+
+            try {
+                $artisteVide = new Artiste();
+                $idArtiste = false;
+                $idArtiste = $artisteVide->getArtisteIdByName($artiste["Prenom"], $artiste["Nom"], $artiste["NomCollectif"]);//Récupère l'ID en fonction des noms passés en paramètres
+
+                if (!$idArtiste) {//Si l'artiste n'existe pas...
+                    try {
+                        $artisteVide->ajouterArtiste($artiste["Prenom"], $artiste["Nom"], $artiste["NomCollectif"]);//Fait l'insertion si non trouvé dans la BDD
+                        $idArtiste = $artisteVide->getArtisteIdByName($artiste["Prenom"], $artiste["Nom"], $artiste["NomCollectif"]);//Récupère l'ID en fonction des noms passés en paramètres
+                    }
+                    catch(Exception $e) {
+                        echo "erreur lors de l'insertion : " . $e;
+                        exit;
+                    }
                 }
-                catch(Exception $e) {
-                    echo "erreur lors de l'insertion : " . $e;
-                    exit;
-                }
+                $idArtistes[] = $idArtiste;//Tableau de tous les artistes de l'eouvre
             }
-            $this->idArtiste = $idArtiste;//Mets à jour la propriété avec l'ID trouvé
+            catch(Exception $e) {
+                echo "erreur lors de l'insertion : " . $e;
+                exit;
+            }
         }
-        catch(Exception $e) {
-            echo "erreur lors de l'insertion : " . $e;
-            exit;
-        }
+        $this->idArtistes = $idArtistes;//Mets à jour la propriété avec les ID trouvés
     }
     
     /**
@@ -385,16 +390,20 @@ class Oeuvre {
     */
     private function insererUpdaterOeuvreVille($oeuvre, $action) {
 
-        try {            
-            if ($action === "inserer") {//Requête pour insérer une oeuvre
-                self::$database->query('INSERT INTO Oeuvres (titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCollection, idCategorie, idSousCategorie, idArrondissement, idArtiste) VALUES (:titre, :noInterneMtl, :latitude, :longitude, :parc, :batiment, :adresse, :descriptionFR, :descriptionEN, :authorise, :idCollection, :idCategorie, :idSousCategorie, :idArrondissement, :idArtiste)');
+        try {
+//            var_dump($oeuvre);
+//            echo "<br><br><br>";
+            
+            if ($action === "ajouter") {//Requête pour insérer une oeuvre
+            self::$database->query('INSERT INTO Oeuvres (titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCollection, idCategorie, idSousCategorie, idArrondissement) VALUES (:titre, :noInterneMtl, :latitude, :longitude, :parc, :batiment, :adresse, :descriptionFR, :descriptionEN, :authorise, :idCollection, :idCategorie, :idSousCategorie, :idArrondissement)');
+
+            self::$database->bind(':descriptionFR', "Aucune description disponible");
+            self::$database->bind(':descriptionEN', "No description available.");
+            self::$database->bind(':authorise', true);
                 
-                self::$database->bind(':descriptionFR', "Aucune description disponible");
-                self::$database->bind(':descriptionEN', "No description available.");
-                self::$database->bind(':authorise', true);
             }
             else if ($action === "updater") {//Requête pour mettre à jour une oeuvre
-                self::$database->query('UPDATE Oeuvres SET titre=:titre, latitude=:latitude, longitude=:longitude, parc=:parc, batiment=:batiment, adresse=:adresse, idCollection=:idCollection, idCategorie=:idCategorie, idSousCategorie=:idSousCategorie, idArrondissement=:idArrondissement, idArtiste=:idArtiste WHERE noInterneMtl = :noInterneMtl');
+                self::$database->query('UPDATE Oeuvres SET titre=:titre, latitude=:latitude, longitude=:longitude, parc=:parc, batiment=:batiment, adresse=:adresse, idCollection=:idCollection, idCategorie=:idCategorie, idSousCategorie=:idSousCategorie, idArrondissement=:idArrondissement WHERE noInterneMtl = :noInterneMtl');
             }
 
             self::$database->bind(':titre', $oeuvre["Titre"]);
@@ -408,9 +417,16 @@ class Oeuvre {
             self::$database->bind(':idCategorie', $this->idCategorie);
             self::$database->bind(':idSousCategorie', $this->idSousCategorie);
             self::$database->bind(':idArrondissement', $this->idArrondissement);
-            self::$database->bind(':idArtiste', $this->idArtiste);
             
             self::$database->execute();
+            
+            if ($action === "ajouter") {
+                
+                $idOeuvre = $this->getOeuvreIdByNoInterne($this->noInterneMtl);//aller chercher id oeuvre insérée
+                
+                $artiste = new Artiste();
+                $artiste->lierArtistesOeuvre($idOeuvre, $this->idArtistes);//Lier les artistes à l'oeuvre
+            }
         }
         catch(Exception $e) {
             echo "erreur lors de l'insertion : " . $e;
@@ -429,7 +445,7 @@ class Oeuvre {
         $oeuvreMtlBDD = array();
 
         try {
-            self::$database->query('SELECT * FROM oeuvres JOIN Collections ON Oeuvres.idCollection = Collections.idCollection JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN SousCategories ON Categories.idCategorie = SousCategories.idSousCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement JOIN Artistes ON Artistes.idArtiste = Oeuvres.idArtiste WHERE Oeuvres.noInterneMtl = :noInterneMtl');
+            self::$database->query('SELECT * FROM oeuvres JOIN Collections ON Oeuvres.idCollection = Collections.idCollection JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN SousCategories ON Categories.idCategorie = SousCategories.idSousCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement WHERE Oeuvres.noInterneMtl = :noInterneMtl');
 
             //Lie les paramètres aux valeurs
             self::$database->bind(':noInterneMtl', $noInterneMtl);
@@ -532,7 +548,7 @@ class Oeuvre {
     public function getAllOeuvresByCategorie ($id) {
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN Artistes ON Artistes.idArtiste = Oeuvres.idArtiste WHERE Oeuvres.authorise = true AND Categories.idCategorie = :id GROUP BY Oeuvres.idOeuvre');
+        self::$database->query('SELECT * FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN OeuvresArtistes ON OeuvresArtistes.idOeuvre = Oeuvres.idOeuvre JOIN Artistes ON OeuvresArtistes.idArtiste = Artistes.idArtiste WHERE Oeuvres.authorise = true AND Categories.idCategorie = :id GROUP BY Oeuvres.idOeuvre');
             
         //Lie les paramètres aux valeurs
         self::$database->bind(':id', $id);
@@ -548,7 +564,7 @@ class Oeuvre {
     public function getAllOeuvresByArrondissement ($id) {
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN Artistes ON Artistes.idArtiste = Oeuvres.idArtiste JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement WHERE Oeuvres.authorise = true AND Arrondissements.idArrondissement = :id GROUP BY Oeuvres.idOeuvre');
+        self::$database->query('SELECT * FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN OeuvresArtistes ON OeuvresArtistes.idOeuvre = Oeuvres.idOeuvre JOIN Artistes ON OeuvresArtistes.idArtiste = Artistes.idArtiste JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement WHERE Oeuvres.authorise = true AND Arrondissements.idArrondissement = :id GROUP BY Oeuvres.idOeuvre');
             
         //Lie les paramètres aux valeurs
         self::$database->bind(':id', $id);
@@ -579,5 +595,19 @@ class Oeuvre {
         }
         return $infoOeuvres;
 	}
+    
+    public function getOeuvreIdByNoInterne($noInterneMtl) {
+        
+        $idOeuvre = "";
+        
+        self::$database->query("SELECT idOeuvre FROM Oeuvres WHERE noInterneMtl = :noInterneMtl");
+        self::$database->bind(':noInterneMtl', $noInterneMtl);
+        
+
+       if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $idOeuvre = $oeuvreBDD['idOeuvre'];
+        }
+        return $idOeuvre;
+    }
 }
 ?>

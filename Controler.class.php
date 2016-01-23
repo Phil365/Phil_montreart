@@ -161,9 +161,12 @@ class Controler {
         $photo = new Photo();
         $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"]);
         
+        $artiste = new Artiste();
+        $artistesOeuvre = $artiste->getArtistesbyOeuvreId ($_GET["o"]);
+        
         $this->oVue = new VueOeuvre();
         $this->oVue->setDataGlobal('oeuvre', "page d'une oeuvre", $this->langueAffichage, $this->pOeuvre);
-        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $this->langueAffichage);      
+        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre, $this->langueAffichage);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
