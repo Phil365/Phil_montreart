@@ -17,9 +17,9 @@ descriptionFR TEXT,
 descriptionEN TEXT,
 authorise boolean NOT NULL,
 idCollection INT,
-idCategorie INT NOT NULL,
+idCategorie INT,
 idSousCategorie INT,
-idArrondissement INT NOT NULL,
+idArrondissement INT,
 PRIMARY KEY (idOeuvre) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS Collections ;
@@ -98,8 +98,8 @@ ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idSousCategorie FOREIGN KEY (idSou
 ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idCollection FOREIGN KEY (idCollection) REFERENCES Collections (idCollection);
 ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idCategorie FOREIGN KEY (idCategorie) REFERENCES Categories (idCategorie);
 ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idArrondissement FOREIGN KEY (idArrondissement) REFERENCES Arrondissements (idArrondissement);
-ALTER TABLE OeuvresArtistes ADD CONSTRAINT FK_OeuvresArtistes_idArtiste FOREIGN KEY (idArtiste) REFERENCES Artistes (idArtiste);
-ALTER TABLE OeuvresArtistes ADD CONSTRAINT FK_OeuvresArtistes_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre);
+ALTER TABLE OeuvresArtistes ADD CONSTRAINT FK_OeuvresArtistes_idArtiste FOREIGN KEY (idArtiste) REFERENCES Artistes (idArtiste) ON DELETE CASCADE;
+ALTER TABLE OeuvresArtistes ADD CONSTRAINT FK_OeuvresArtistes_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
 ALTER TABLE Photos ADD CONSTRAINT FK_Photos_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
 ALTER TABLE Commentaires ADD CONSTRAINT FK_Commentaires_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
 ALTER TABLE Commentaires ADD CONSTRAINT FK_Commentaires_idUtilisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs (idUtilisateur);
