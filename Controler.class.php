@@ -48,6 +48,7 @@ class Controler {
     private $pSoumission = "soumission";
     private $pProfil = "profil";
     private $pRecherche = "recherche";
+    private $pAdmin = "admin";
     
     /**
     * @var string $langueAffichage Langue d'affichage du site
@@ -68,6 +69,7 @@ class Controler {
         $this->pSoumission = "soumission";
         $this->pProfil = "profil";
         $this->pRecherche = "recherche";
+        $this->pAdmin = "admin";
         
         $this->oCookie = new Cookie();
         $this->langueAffichage = $this->oCookie->getLangue();
@@ -117,6 +119,9 @@ class Controler {
                 break;
             case $this->pRecherche:
                 $this->recherche();
+                break;
+            case $this->pAdmin:
+                $this->admin();
                 break;
             case 'selectArrondissement';
                 $this->creerSelectArrondissement();
@@ -249,11 +254,12 @@ class Controler {
         $oeuvre = new Oeuvre;
         $oeuvre->updaterOeuvresVille();
         $date = $oeuvre->getDateDernierUpdate();
-        $this->oVue = new VueAdmin(); 
+        $this->oVue = new VueAdmin();
+        $this->oVue->setDataGlobal("Admin", "page d'administration", $this->langueAffichage, $this->pAdmin);
         $this->oVue->setData($photoAllUnauthorized);
         $this->oVue->setData($photoAReviser);
         $this->oVue->afficherMeta();
-        $this->oVue->afficherEnteteAdmin();
+        $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
         $this->oVue->afficherPiedPage();
     }
@@ -271,65 +277,26 @@ class Controler {
     
     private function recherche() {
         
-        switch ($_GET["pageActuelle"]) {
-            case $this->pAccueil:
-                $this->oVue = new VueAccueil();
-                $this->oVue->setDataGlobal("Accueil", "page d'accueil", $this->langueAffichage, $this->pAccueil);
-                break;
-            case $this->pOeuvre:
-                $this->oVue = new VueOeuvre();
-                $this->oVue->setDataGlobal("Oeuvre", "page d'une oeuvre", $this->langueAffichage, $this->pOeuvre);
-                break;
-            case $this->pTrajet:
-                $this->oVue = new VueTrajet();
-                $this->oVue->setDataGlobal("Trajet", "page de création d'un trajet", $this->langueAffichage, $this->pTrajet);
-                break;
-            case $this->pSoumission:
-                $this->oVue = new VueSoumission();
-                $this->oVue->setDataGlobal("Soumission", "page de soumission", $this->langueAffichage, $this->pSoumission);
-                break;
-            case $this->pProfil:
-                $this->oVue = new VueProfil();
-                $this->oVue->setDataGlobal("Profil", "page de profil utilisateur", $this->langueAffichage, $this->pProfil);
-                break;
-            case $this->pRecherche:
-                $this->oVue = new VueRecherche();
-                $this->oVue->setDataGlobal("Recherche", "page de résultats de recherche", $this->langueAffichage, $this->pRecherche);
-                break;
-            default:
-                $this->oVue = new VueAccueil();
-                $this->oVue->setDataGlobal("Accueil", "page d'accueil", $this->langueAffichage, $this->pAccueil);
-                break;
-        }
+        $oeuvres = array();
         
-        if (isset($_POST["typeRecherche"])) {//Pour remplir le 2e select de la recherche.
+        if (isset($_POST["boutonRecherche"])) {
             
-            if ($_POST["typeRecherche"] == "categorie") {
-                $nouvelleCategorie = new Categorie();
-                $categories = $nouvelleCategorie->getAllCategories($this->langueAffichage);
-                $this->oVue->setSelectRecherche($categories);
+            if (isset($_POST["selectArrondissement"]) && $_POST["selectArrondissement"] != "") {
+                $oeuvre = new Oeuvre();
+                $oeuvres = $oeuvre->getAllOeuvresByArrondissement($_POST["selectArrondissement"]);    
             }
-            else if ($_POST["typeRecherche"] == "arrondissement") {
-                $nouvelArrondissement = new Arrondissement();
-                $arrondissement = $nouvelArrondissement->getAllArrondissements();
-                $this->oVue->setSelectRecherche($arrondissement);
-            }
-            
-            if (isset($_POST["selectCategorie"]) && $_POST["selectCategorie"] != "") {//Effecetue la recherche et affiche les résultats.
+            else if (isset($_POST["selectCategorie"]) && $_POST["selectCategorie"] != "") {
                 $oeuvre = new Oeuvre();
                 $oeuvres = $oeuvre->getAllOeuvresByCategorie($_POST["selectCategorie"]);
-                $this->oVue = new VueRecherche();
-                $this->oVue->setDataGlobal('recherche', 'page de recherche', $this->langueAffichage, $this->pRecherche);
-                $this->oVue->setOeuvres($oeuvres);  
-            }
-            else if (isset($_POST["selectArrondissement"]) && $_POST["selectArrondissement"] != "") {//Effecetue la recherche et affiche les résultats.
-                $oeuvre = new Oeuvre();
-                $oeuvres = $oeuvre->getAllOeuvresByArrondissement($_POST["selectArrondissement"]);
-                $this->oVue = new VueRecherche();
-                $this->oVue->setDataGlobal('recherche', 'page de recherche', $this->langueAffichage, $this->pRecherche);
-                $this->oVue->setOeuvres($oeuvres);  
             }
         }
+        else if (isset($_GET["rechercheParArtiste"])) {
+            $oeuvre = new Oeuvre();
+            $oeuvres = $oeuvre->getAllOeuvresByArtiste($_GET["rechercheParArtiste"]);
+        }
+        $this->oVue = new VueRecherche();
+        $this->oVue->setDataGlobal('recherche', 'page de recherche', $this->langueAffichage, $this->pRecherche);
+        $this->oVue->setOeuvres($oeuvres);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
@@ -339,18 +306,3 @@ class Controler {
     // Placer les méthodes du controleur ici.
 }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

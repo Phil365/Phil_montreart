@@ -15,10 +15,12 @@
 	}
 
     if(empty($_GET['typeRecherche'])) {//initialise le select de la barre de recherche
-    $_GET['typeRecherche'] = '';  
+        $_GET['typeRecherche'] = '';  
     }
-	
-	
-   
-   
+	if(empty($_GET['keyword'])) {//initialise les keywords de l'autocomplete
+        $_GET['keyword'] = '';  
+    }
+    if(empty($_GET['testAutocomplete'])) {//initialise les keywords de l'autocomplete
+        $_GET['testAutocomplete'] = '';  
+    }
 ?>

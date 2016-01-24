@@ -107,8 +107,9 @@ class BaseDeDonnees {
         }
         catch(PDOException $e) {
             $resultat = $e->getMessage();
+            echo "Erreur lors du traitement : " . $resultat;
+            exit;
         }
-        return $resultat;
     }
 
     /**
