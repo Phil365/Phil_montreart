@@ -1,10 +1,10 @@
 <?php
 /**
- * @brief class Commentaire
- * @author David Lachambre
- * @version 1.0
- * @update 2015-12-14
- */
+* @brief class Commentaire
+* @author David Lachambre
+* @version 1.0
+* @update 2015-12-14
+*/
 class Commentaire {
     
     /**

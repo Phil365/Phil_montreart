@@ -106,7 +106,7 @@ class VueOeuvre extends Vue {
                         }
                     }
                     else {//Image par défaut
-                        $imgDefaut = "imgDefaut".$this->langue.".png";
+                        $imgDefaut = "images/imgDefaut".$this->langue.".png";
                         echo "<img src = '$imgDefaut'>";
                     }
                    //fin div sliderOeuvre

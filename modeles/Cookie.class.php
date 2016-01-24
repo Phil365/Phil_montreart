@@ -1,10 +1,10 @@
 <?php
 /**
- * @brief class Cookie
- * @author David Lachambre
- * @version 1.0
- * @update 2015-12-14
- */
+* @brief class Cookie
+* @author David Lachambre
+* @version 1.0
+* @update 2015-12-14
+*/
 class Cookie {
 
     /**
