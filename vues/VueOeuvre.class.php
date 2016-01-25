@@ -28,6 +28,13 @@ class VueOeuvre extends Vue {
     */
     private $photos;
     
+    
+    /**
+    * @var array $artistes Artistes associés à l'oeuvre
+    * @access private
+    */
+    private $artistes;
+    
     /**
     * @var string $langue Langue d'affichage
     * @access private
@@ -47,18 +54,20 @@ class VueOeuvre extends Vue {
     
     /**
     * @brief Méthode qui assigne des valeurs aux propriétés de la vue
-    * @param array $idArtiste
+    * @param array $oeuvre
     * @param array $photos
     * @param array $commentaires
+    * @param array $artistes
     * @param string $langue
     * @access public
     * @return void
     */
-    public function setData($oeuvre, $commentaires, $photos, $langue) {
+    public function setData($oeuvre, $commentaires, $photos, $artistes, $langue) {
         
         $this->oeuvre = $oeuvre;
         $this->commentaires = $commentaires;
         $this->photos = $photos;
+        $this->artistes = $artistes;
         $this->langue = $langue;
     }
     
@@ -97,7 +106,7 @@ class VueOeuvre extends Vue {
                         }
                     }
                     else {//Image par défaut
-                        $imgDefaut = "imgDefaut".$this->langue.".png";
+                        $imgDefaut = "images/imgDefaut".$this->langue.".png";
                         echo "<img src = '$imgDefaut'>";
                     }
                    //fin div sliderOeuvre
@@ -118,13 +127,24 @@ class VueOeuvre extends Vue {
                     
                 </div>";
                 
-                 if (isset($this->oeuvre["nomArtiste"])) {
-                        echo "<h5>Artiste : </h5>";
-                        if (isset($this->oeuvre["prenomArtiste"])) {
-                            echo  "<p>".$this->oeuvre["prenomArtiste"]." ";
+                    echo "<h5>Artiste(s) : </h5><p>";
+                    foreach ($this->artistes as $artiste) {
+                        if (isset($artiste["nomArtiste"])) {
+                            
+                            if (isset($artiste["prenomArtiste"])) {
+                                echo  $artiste["prenomArtiste"]." ";
+                            }
+                            echo  $artiste["nomArtiste"];
                         }
-                        echo  $this->oeuvre["nomArtiste"]."</p>";
+                        else if (isset($artiste["nomCollectif"])) {
+                            echo $artiste["nomCollectif"];
+                        }
+                        else {
+                            echo "artiste inconnu";
+                        }
+                        echo "</p>";
                     }
+        
                     if (isset($this->oeuvre["nomCollection" . $this->langue])) {
                         echo "<h5>Collection : </h5>"."<p>". $this->oeuvre["nomCollection" . $this->langue]."</p>";
                     }
