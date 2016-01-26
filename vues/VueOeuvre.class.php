@@ -87,18 +87,9 @@ class VueOeuvre extends Vue {
         else {
             
     ?>
-    <?php echo "<div class='dummy'><!--    Ne mettez rien ici--></div>
-    <div class='aside1'  id='DevenirMembre'>
-            Devenir membre a ses avantages!
-        </div>
-        
- 
-        <div class='aside2' id='sponsors'>
-            Sponsors
-        </div>
-    <main id='pageOeuvres'>";
+    <?php echo "<div class='dummy'><!--    Ne mettez rien ici--></div>";
                 
-                    echo "<div class='sliderOeuvre'>";
+                    echo "<main id='pageOeuvres'><div class='sliderOeuvre'>";
                     if ($this->photos) {//Si des photos existent pour cette oeuvre...
                         for ($i = 0; $i < count($this->photos); $i++) {
                             $imgPhoto = $this->photos[$i]['image'];
@@ -109,11 +100,11 @@ class VueOeuvre extends Vue {
                         $imgDefaut = "images/imgDefaut".$this->langue.".png";
                         echo "<img src = '$imgDefaut'>";
                     }
-                   //fin div sliderOeuvre
+                    echo "</div>"; //fin div sliderOeuvre
                     $idOeuvreencours=$this->oeuvre["idOeuvre"]
             ?>
 
-                    <form action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyer" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
+                    <form id='formContribuerPhoto' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyer" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
                         <h4 id="selectImageUpload">Select image to upload:</h4>
                         <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
                         <input class='boutonMoyenne' type="submit" value="Upload Image" name="submit">
@@ -158,24 +149,24 @@ class VueOeuvre extends Vue {
                 
                 <?php
                     if ( $this->oeuvre["parc"]) {
-                        echo "<br><h5>Parc : </h5>"."<p>". $this->oeuvre["parc"]."</p>";
+                        echo "<h5>Parc : </h5>"."<p>". $this->oeuvre["parc"]."</p>";
                     }
                     if ( $this->oeuvre["batiment"]) {
-                        echo "<br><h5>Bâtiment : </h5>"."<p>". $this->oeuvre["batiment"]."</p>";
+                        echo "<h5>Bâtiment : </h5>"."<p>". $this->oeuvre["batiment"]."</p>";
                     }
                     if ( $this->oeuvre["adresse"]) {
-                        echo "<br><h5>Adresse : </h5>"."<p>". $this->oeuvre["adresse"]."</p>";
+                        echo "<h5>Adresse : </h5>"."<p>". $this->oeuvre["adresse"]."</p>";
                     }
                     if ( $this->oeuvre["nomArrondissement"]) {
-                        echo "<br><h5>Arrondissement : </h5>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
+                        echo "<h5>Arrondissement : </h5>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
                     }
-                    echo "<a class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</a></div>";//fin div infosOeuvre
+                    echo "<button class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</button></div>";//fin div infosOeuvre
                     
                     if (isset($this->oeuvre["description" . $this->langue])) {
-                        echo " <div class='description'>
+                        echo "<div class='description'>
                 <h5>Description :</h5>
                 <p class='noIndent'>".$this->oeuvre["description" . $this->langue]."</p></div>";
-                    }
+                    }//fin div description
                     
                    
                     echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser Commentaire</button>";
@@ -211,9 +202,19 @@ class VueOeuvre extends Vue {
                         }
                     }
                     else {
-                        echo "Aucun commentaire";
+                        echo "<p>Aucun commentaire</p>";
                     }
-                    echo "</div></main></body>";//fin divs sectionCommentaires affichageComm
+            echo "</div></main>"; //fin div commentaires et main
+             echo " <div class='aside1'  id='devenirMembre'>
+                    Devenir membre a ses avantages!
+                </div>
+
+
+                <div class='aside2' id='sponsors'>
+                    Sponsors
+                </div>";
+                    echo "</body>";
+           
                 ?>
             
     <?php
