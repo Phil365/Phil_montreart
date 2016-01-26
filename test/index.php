@@ -1,7 +1,13 @@
 <?php
 //Mettre les fichiers requis pour les tests ici.
-require_once("../config.php");
+
+require_once "../var.init.php";
 require_once "../modeles/Oeuvre.class.php";
+require_once "../modeles/Collection.class.php";
+require_once "../modeles/Categorie.class.php";
+require_once "../modeles/SousCategorie.class.php";
+require_once "../modeles/Arrondissement.class.php";
+require_once "../modeles/Artiste.class.php";
 require_once "../modeles/Commentaire.class.php";
 require_once "../modeles/Photo.class.php";
 require_once "../config/parametresBDD.php";
@@ -18,10 +24,13 @@ require_once "../lib/BDD/BaseDeDonnees.class.php";
     </head>
     <body>
 <?php
-require_once ("./testAffichageOeuvre.php");
-require_once ("./testGestionJson.php");
         
-//Mettre les pages test ici.
+foreach(glob('./*.*') as $nomFichier){
+    if ($nomFichier != "./gabarit.test.php" && $nomFichier != "./index.php") {
+        require_once ($nomFichier);
+    }
+}
+
 ?>
 	</body>
 </html>

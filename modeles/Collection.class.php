@@ -1,5 +1,11 @@
 <?php
 
+/**
+* @brief class Collection
+* @author David Lachambre
+* @version 1.0
+* @update 2016-01-13
+*/
 class Collection {
 	
     private static $database;

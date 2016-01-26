@@ -1,82 +1,167 @@
 /**
- * @file Script contenant les fonctions de base
- * @author Jonathan Martel (jmartel@gmail.com)
- * @version 0.1
- * @update 2013-12-11
- * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
- * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
- *
- */
+* @file Script contenant les fonctions de base
+* @author Jonathan Martel (jmartel@gmail.com)
+* @version 0.1
+* @update 2013-12-11
+* @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
+* @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
+*
+*/
 
- // Placer votre JavaScript ici
+// Placer votre JavaScript ici
 
- function validePhotoSubmit()
+//INITIALISATION FONCTIONS JQUERY
+$(document).ready(function(){
+    
+    //SLIDE BARRE DE RECHERCHE
+    $(".barreRecherche").hide();
+    $(".boutonRecherche").click(function(){
+        
+        $( ".barreRecherche").animate({
+            width: "toggle",
+        });
+    });
+    
+    //AJAX SELECT TYPE DE RECHERCHE
+    $(".barreRecherche").on("change", ".typeRecherche", function(){
+        
+        $.get("ajaxControler.php?rAjax=selectTypeRecherche&typeRecherche="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".deuxiemeSelectRecherche").html(reponse);
+            $(".submitRecherche").html("");//Pour corriger un bug où le bouton restait affiché si on changeait le type de recherche après son affichage.
+        });
+    });
+    //AJAX SELECT CATEGORIE
+    $(".barreRecherche").on("change", ".selectCategorie", function(){
+        $.get("ajaxControler.php?rAjax=selectRecherche&selectCategorie="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".submitRecherche").html(reponse);
+        });
+    });
+    //AJAX SELECT ARRONDISSEMENT
+    $(".barreRecherche").on("change", ".selectArrondissement", function(){
+        $.get("ajaxControler.php?rAjax=selectRecherche&selectArrondissement="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".submitRecherche").html(reponse);
+        });
+    });
+});
+
+function validePhotoSubmit()
 {
-if (document.getElementById("fileToUpload").files.length == 0 )
-    {alert("Ne peux pas etre vide");
+    if (document.getElementById("fileToUpload").files.length == 0)
+    {
+        alert("Ne peux pas etre vide");
         return false;
-   } // end if  
-   
-   
-   
-   return true;
+    } // end if  
+       return true;
 } // end function validateForm
 
 
 function autoComplete(rechercheVoulue)
 {
-console.log(rechercheVoulue);
-var MIN_LENGTH = 1;
-    
-var url =  "auto-complete.php?rechercheVoulue=";
+    var MIN_LENGTH = 1;
+    var url =  "ajaxControler.php?rAjax=autoComplete&rechercheVoulue=";
 
-$( document ).ready(function() {
-	$("#keyword").keyup(function() {
-		var keyword = $("#keyword").val();
-		if (keyword.length >= MIN_LENGTH) {
-			$.get(url + rechercheVoulue, { keyword: keyword } )
-			.done(function( data ) {
-				$('#results').html('');
-				var results = jQuery.parseJSON(data);
-				$(results).each(function(key, value) {
-				
+    $("#keyword").keyup(function() {
+        
+        var keyword = $("#keyword").val();
+        if (keyword.length >= MIN_LENGTH) {
+            $.get(url + rechercheVoulue, { keyword: keyword } )
+            
+            .done(function( data ) {
+                
+                $('#results').html('');
+                var results = jQuery.parseJSON(data);
+                
+                $(results).each(function(key, value) {
+
                     if (rechercheVoulue=="titre") {
-$('#results').append('<div class="item">' + "<a href=http://localhost/?r=oeuvre&o="+value['idOeuvre']+">"+value['titre']+"</a>" +'</div>');
-
-}
+                        $('#results').append('<div class="item">' + "<a href=http://localhost/?r=oeuvre&o="+value['idOeuvre']+">"+value['titre']+"</a>" +'</div>');
+                    }
                     if (rechercheVoulue=="artiste") {
-$('#results').append('<div class="item">' + "<a href=http://localhost/?r=oeuvre&o="+value['idOeuvre']+">"+value['prenomArtiste']+"</a>" +'</div>');
-
-}
-                    if (rechercheVoulue=="categorie") {
-$('#results').append('<div class="item">' + "<a href=http://localhost/?r=oeuvre&o="+value['idOeuvre']+">"+value['nomCategorieFR']+"</a>" +'</div>');
-
-}
-                    if (rechercheVoulue=="arrondissement") {
-$('#results').append('<div class="item">' + "<a href=http://localhost/?r=oeuvre&o="+value['idOeuvre']+">"+value['nomCategorieFR']+"</a>" +'</div>');
-
-}
-
-					
-					for(var key in value) {
-					console.log('key: ' + key + '\n' + 'value: ' + value[key]);
-					}
-				})
-
-			   
-
-			});
-		} else {
-			$('#results').html('');
-		}
-	});
-
+                        if (value['nomCollectif'] != null) {
+                            $('#results').append('<div class="item">' + "<a href=http://localhost/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCollectif']+"</a>" +'</div>');
+                        }
+                        else {
+                            $('#results').append('<div class="item">' + "<a href=http://localhost/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCompletArtiste']+"</a>" +'</div>');
+                        }
+                    }
+                })
+                $("#results").show();
+            });
+        }
+        else {
+            $('#results').html('');
+        }
+    });
+    
     $("#keyword").blur(function(){
-    		$("#results").fadeOut(500);
-    	})
-        .focus(function() {		
-    	    $("#results").show();
-    	});
+        
+        $("#results").fadeOut(500);
+    })
+}
 
+function initMap() {
+
+  var map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 11,
+    center: new google.maps.LatLng(45.512090, -73.550979),
+    mapTypeId: 'roadmap'
+  });
+var infoWindow = new google.maps.InfoWindow();
+
+downloadUrl("ajaxControler.php?rAjax=googleMap", function(data) {
+    
+    var xml = data.responseXML;
+    var markers = xml.documentElement.getElementsByTagName("marker");
+    for (var i = 0; i < markers.length; i++) {
+    var name = markers[i].getAttribute("name");
+//    var photo = markers[i].getAttribute("photo");
+//    var urlTest = markers[i].getAttribute("urlTest");
+    var url = markers[i].getAttribute("url");
+    var point = new google.maps.LatLng(
+        parseFloat(markers[i].getAttribute("lat")),
+        parseFloat(markers[i].getAttribute("lng")));
+    var html = "<a href='" + url + "'>" + name + "</a>";
+    var marker = new google.maps.Marker({
+      map: map,
+      position: point,
+      
+    });
+    bindInfoWindow(marker, map, infoWindow, html);
+  }
 });
 }
+
+ function bindInfoWindow(marker, map, infoWindow, html) {
+     
+      google.maps.event.addListener(marker, 'click', function() {
+          
+        infoWindow.setContent(html);
+        infoWindow.open(map, marker);
+      });
+    }
+
+ function downloadUrl(url,callback) {
+     
+ var request = window.ActiveXObject ?
+     new ActiveXObject('Microsoft.XMLHTTP') :
+     new XMLHttpRequest;
+
+ request.onreadystatechange = function() {
+     
+   if (request.readyState == 4) {
+     request.onreadystatechange = doNothing;
+     callback(request, request.status);
+   }
+ };
+
+ request.open('GET', url, true);
+ request.send(null);
+}
+
+function doNothing() {}

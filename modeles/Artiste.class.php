@@ -1,5 +1,11 @@
 <?php
 
+/**
+* @brief class Artiste
+* @author David Lachambre
+* @version 1.0
+* @update 2016-01-13
+*/
 class Artiste {
 	
     private static $database;
@@ -13,9 +19,10 @@ class Artiste {
     }
 		
 	/**
-	 * @access public
-	 * @return Array
-	 */
+    * @brief Méthode qui tous les artistes dans la BDD.
+    * @access public
+    * @return array
+    */
 	public function getAllArtistes() 
 	{
 				
@@ -33,20 +40,21 @@ class Artiste {
     
     function chercheParArtiste($keyword) {
     
-    self::$database->query("SELECT titre, idOeuvre, prenomArtiste FROM oeuvres JOIN Artistes ON Artistes.idArtiste = Oeuvres.idArtiste WHERE prenomArtiste LIKE ? and authorise = true");
-                           
-    $keyword = $keyword.'%';
+        $infoOeuvres = array();
+            
+        self::$database->query("SELECT Oeuvres.titre, Oeuvres.idOeuvre, CONCAT(prenomArtiste, ' ', nomArtiste) AS nomCompletArtiste, nomCollectif, Artistes.idArtiste FROM Oeuvres JOIN OeuvresArtistes ON Oeuvres.idOeuvre = OeuvresArtistes.idOeuvre JOIN Artistes ON OeuvresArtistes.idArtiste = Artistes.idArtiste WHERE (nomArtiste IS NOT NULL OR nomCollectif IS NOT NULL) AND authorise = true AND (prenomArtiste LIKE :keyword OR nomArtiste LIKE :keyword OR nomCollectif LIKE :keyword) GROUP BY idArtiste");
 
-    self::$database->bind(1, $keyword);
-   
-    $results = array();
+        $keyword = '%'.$keyword.'%';
 
-   if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
-            $results = array("idOeuvre"=>$oeuvreBDD['idOeuvre'],"prenomArtiste"=>$oeuvreBDD['prenomArtiste']);
+        self::$database->bind(':keyword', $keyword);
+        $results = array();
+
+       if ($oeuvreBDD = self::$database->resultset()) {//Si trouvé dans la BDD
+            foreach ($oeuvreBDD as $oeuvre) {
+                $infoOeuvres[] = $oeuvre;
+            }
         }
-
-    return $results;
-
+        return $infoOeuvres;
     }
     
     /**
@@ -105,6 +113,47 @@ class Artiste {
         }
         else {
             return false;
+        }
+    }
+    
+    /**
+    * @brief Méthode qui récupère les artistes d'une oeuvre.
+    * @param int $idOeuvre
+    * @access public
+    * @return array
+    */
+    public function getArtistesbyOeuvreId ($idOeuvre) {
+        
+        $artistes = array();
+        
+        self::$database->query('SELECT * FROM Artistes JOIN OeuvresArtistes ON OeuvresArtistes.idArtiste = Artistes.idArtiste WHERE OeuvresArtistes.idOeuvre = :idOeuvre');
+        self::$database->bind(':idOeuvre', $idOeuvre);
+        
+        if ($lignes = self::$database->resultset()) {
+            foreach ($lignes as $ligne) {
+                $artistes[] = $ligne;
+            }
+            return $artistes;
+        }
+    }
+    
+    /**
+    * @brief Méthode qui crée le lien entre oeuvre et artistes dans la BDD.
+    * @param int $idOeuvre
+    * @param array $idArtistes
+    * @access public
+    * @return void
+    */
+    public function lierArtistesOeuvre ($idOeuvre, $idArtistes) {
+        
+        foreach ($idArtistes as $idArtiste) {
+            
+            self::$database->query('INSERT INTO OeuvresArtistes (idOeuvre, idArtiste) VALUES (:idOeuvre, :idArtiste)');
+        
+            self::$database->bind(':idOeuvre', $idOeuvre);
+            self::$database->bind(':idArtiste', $idArtiste);
+
+            self::$database->execute();
         }
     }
 }

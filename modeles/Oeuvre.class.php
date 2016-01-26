@@ -1,10 +1,10 @@
 <?php
 /**
- * @brief class Oeuvre
- * @author David Lachambre
- * @version 1.0
- * @update 2015-12-14
- */
+* @brief class Oeuvre
+* @author David Lachambre
+* @version 1.0
+* @update 2015-12-14
+*/
 class Oeuvre {
     
     /**
@@ -86,10 +86,10 @@ class Oeuvre {
     private $idArrondissement;
     
     /**
-    * @var string $idArtiste Artiste ayant créé l'oeuvre
+    * @var array $idArtistes Artistes ayant créé l'oeuvre
     * @access private
     */
-    private $idArtiste;
+    private $idArtistes;
     
     /**
     * @var string $authorise Détermine si l'oeuvre a passé l'étape de l'audit
@@ -140,14 +140,14 @@ class Oeuvre {
     * @param integer $idCollection
     * @param integer $idCategorie
     * @param integer $idArrondissement
-    * @param integer $idArtiste
+    * @param array $idArtistes
     * @param boolean $authorise
     * @param array $photos
     * @param array $commentaires
     * @access public
     * @return void
     */
-    public function setData($id, $titre, $noInterneMtl, $latitude, $longitude, $parc, $batiment, $adresse, $description, $idCollection, $idCategorie, $idSousCategorie, $idArrondissement, $idArtiste, $authorise, $photos, $commentaires) {
+    public function setData($id, $titre, $noInterneMtl, $latitude, $longitude, $parc, $batiment, $adresse, $description, $idCollection, $idCategorie, $idSousCategorie, $idArrondissement, $idArtistes, $authorise, $photos, $commentaires) {
         
         $this->id = $id;
         $this->titre = $titre;
@@ -162,7 +162,7 @@ class Oeuvre {
         $this->idCategorie = $idCategorie;
         $this->idSousCategorie = $idSousCategorie;
         $this->idArrondissement = $idArrondissement;
-        $this->idArtiste = $idArtiste;
+        $this->idArtistes = $idArtistes;
         $this->authorise = $authorise;
         $this->photos = $photos;
         $this->commentaires = $commentaires;
@@ -175,7 +175,7 @@ class Oeuvre {
     */
     public function getData() {
         
-        $resutlat = array("id"=>$this->id, "titre"=>$this->titre, "noInterneMtl"=>$this->noInterneMtl, "latitude"=>$this->latitude, "longitude"=>$this->longitude, "parc"=>$this->parc, "batiment"=>$this->batiment, "adresse"=>$this->adresse, "description"=>$this->description, "idCollection"=>$this->idCollection, "idCategorie"=>$this->idCategorie, "idArrondissement"=>$this->idArrondissement, "idArtiste"=>$this->idArtiste, "authorise"=>$this->authorise, "photos"=>$this->photos, "commentaires"=>$this->commentaires);
+        $resutlat = array("id"=>$this->id, "titre"=>$this->titre, "noInterneMtl"=>$this->noInterneMtl, "latitude"=>$this->latitude, "longitude"=>$this->longitude, "parc"=>$this->parc, "batiment"=>$this->batiment, "adresse"=>$this->adresse, "description"=>$this->description, "idCollection"=>$this->idCollection, "idCategorie"=>$this->idCategorie, "idArrondissement"=>$this->idArrondissement, "idArtistes"=>$this->idArtistes, "authorise"=>$this->authorise, "photos"=>$this->photos, "commentaires"=>$this->commentaires);
         
         return $resutlat;
     }
@@ -189,7 +189,7 @@ class Oeuvre {
     */
     public function getOeuvreById($id, $langue) {
         
-        self::$database->query('SELECT * FROM Oeuvres JOIN Collections ON Oeuvres.idCollection = Collections.idCollection JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN SousCategories ON Oeuvres.idSousCategorie = SousCategories.idSousCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement JOIN Artistes ON Artistes.idArtiste = Oeuvres.idArtiste WHERE Oeuvres.idOeuvre = :id AND Oeuvres.authorise = true');
+        self::$database->query('SELECT * FROM Oeuvres JOIN Collections ON Oeuvres.idCollection = Collections.idCollection JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN SousCategories ON Oeuvres.idSousCategorie = SousCategories.idSousCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement WHERE Oeuvres.idOeuvre = :id AND Oeuvres.authorise = true');
         
         //Lie les paramètres aux valeurs
         self::$database->bind(':id', $id);
@@ -202,16 +202,28 @@ class Oeuvre {
         return $infoOeuvre;
     }
     
-    public function getAllOeuvreWithPhoto() {
+    public function getAllOeuvresWithPhoto() {
     
     self::$database->query('SELECT * FROM oeuvres join photos on photos.idOeuvre = oeuvres.idOeuvre');
         if ($lignes = self::$database->resultset()) {
             foreach ($lignes as $ligne) {
-                $uneOeuvre = array("idOeuvre"=>$ligne['idOeuvre'], "titre"=>$ligne['titre'], "longitude"=>$ligne['longitude'], "latitude"=>$ligne['latitude'], "image"=>$ligne['image']);
-                $oeuvres[] = $uneOeuvre;
+                $oeuvres[] = $ligne;
             }
             return $oeuvres;
         }
+    }
+    
+    /**
+    * @brief Méthode qui supprime une oeuvre de la BDD.
+    * @param integer $id
+    * @access public
+    * @return void
+    */
+    public function supprimerOeuvre ($id) {
+        
+        self::$database->query('DELETE FROM Oeuvres WHERE idOeuvre = :id');
+        self::$database->bind(':id', $id);
+        self::$database->execute();
     }
     
     /**
@@ -226,12 +238,13 @@ class Oeuvre {
         foreach ($oeuvresVilleMtl as $oeuvreVilleMtl) {
             
             if (isset($oeuvreVilleMtl["NoInterne"])) {
+                $this->noInterneMtl = $oeuvreVilleMtl["NoInterne"];
                 $oeuvreMtlBDD = $this->getOeuvreByNoInterne($oeuvreVilleMtl["NoInterne"]);
                 
                 $this->getFKOeuvreByName($oeuvreVilleMtl);
                 
                 if (empty($oeuvreMtlBDD)) {
-                    $action = "inserer";
+                    $action = "ajouter";
                     $this->test2++;
                 }
                 else {
@@ -252,128 +265,79 @@ class Oeuvre {
     */
     private function getFKOeuvreByName($oeuvre) {
         //Collections
-        try {
-            $collection = new Collection();
-            $idCollection = false;
-            if (isset($oeuvre["NomCollection"])) {
-                $idCollection = $collection->getCollectionIdByName($oeuvre["NomCollection"]);//Récupère l'ID en fonction des noms passés en paramètres
-            }
-            else if (isset($oeuvre["NomCollectionAng"])) {
-                $idCollection = $collection->getCollectionIdByName($oeuvre["NomCollectionAng"]);//Récupère l'ID en fonction des noms passés en paramètres
-            }
-            if (!$idCollection) {//Si la collection n'existe pas...
-                try {
-                    $collection->ajouterCollection($oeuvre["NomCollection"], $oeuvre["NomCollectionAng"]);//Fait l'insertion si non trouvé dans la BDD
-                    $idCollection = $collection->getCollectionIdByName($oeuvre["NomCollection"]);//Récupère l'ID en fonction des noms passés en paramètres
-                }
-                catch(Exception $e) {
-                    echo "erreur lors de l'insertion : " . $e;
-                    exit;
-                }
-            }
-            $this->idCollection = $idCollection;//Mets à jour la propriété avec l'ID trouvé
+        $collection = new Collection();
+        $idCollection = false;
+        if (isset($oeuvre["NomCollection"])) {
+            $idCollection = $collection->getCollectionIdByName($oeuvre["NomCollection"]);//Récupère l'ID en fonction des noms passés en paramètres
         }
-        catch(Exception $e) {
-            echo "erreur lors de l'insertion : " . $e;
-            exit;
+        else if (isset($oeuvre["NomCollectionAng"])) {
+            $idCollection = $collection->getCollectionIdByName($oeuvre["NomCollectionAng"]);//Récupère l'ID en fonction des noms passés en paramètres
         }
+        if (!$idCollection) {//Si la collection n'existe pas...
+            $collection->ajouterCollection($oeuvre["NomCollection"], $oeuvre["NomCollectionAng"]);//Fait l'insertion si non trouvé dans la BDD
+            $idCollection = $collection->getCollectionIdByName($oeuvre["NomCollection"]);//Récupère l'ID en fonction des noms passés en paramètres
+        }
+        $this->idCollection = $idCollection;//Mets à jour la propriété avec l'ID trouvé
+        
         //Catégories
-        try {
-            $categorie = new Categorie();
-            $idCategorie = false;
-            if (isset($oeuvre["CategorieObjet"])) {
-                $idCategorie = $categorie->getCategorieIdByName($oeuvre["CategorieObjet"]);//Récupère l'ID en fonction des noms passés en paramètres
-            }
-            else if (isset($oeuvre["CategorieObjetAng"])) {
-                $idCategorie = $categorie->getCategorieIdByName($oeuvre["CategorieObjetAng"]);//Récupère l'ID en fonction des noms passés en paramètres
-            }
-            if (!$idCategorie) {//Si la catégorie n'existe pas...
-                try {
-                    $categorie->ajouterCategorie($oeuvre["CategorieObjet"], $oeuvre["CategorieObjetAng"]);//Fait l'insertion si non trouvé dans la BDD
-                    $idCategorie = $categorie->getCategorieIdByName($oeuvre["CategorieObjet"]);//Récupère l'ID en fonction des noms passés en paramètres
-                }
-                catch(Exception $e) {
-                    echo "erreur lors de l'insertion : " . $e;
-                    exit;
-                }
-            }
-            $this->idCategorie = $idCategorie;//Mets à jour la propriété avec l'ID trouvé
+        $categorie = new Categorie();
+        $idCategorie = false;
+        if (isset($oeuvre["CategorieObjet"])) {
+            $idCategorie = $categorie->getCategorieIdByName($oeuvre["CategorieObjet"]);//Récupère l'ID en fonction des noms passés en paramètres
         }
-        catch(Exception $e) {
-            echo "erreur lors de l'insertion : " . $e;
-            exit;
+        else if (isset($oeuvre["CategorieObjetAng"])) {
+            $idCategorie = $categorie->getCategorieIdByName($oeuvre["CategorieObjetAng"]);//Récupère l'ID en fonction des noms passés en paramètres
         }
+        if (!$idCategorie) {//Si la catégorie n'existe pas...
+            $categorie->ajouterCategorie($oeuvre["CategorieObjet"], $oeuvre["CategorieObjetAng"]);//Fait l'insertion si non trouvé dans la BDD
+            $idCategorie = $categorie->getCategorieIdByName($oeuvre["CategorieObjet"]);//Récupère l'ID en fonction des noms passés en paramètres
+        }
+        $this->idCategorie = $idCategorie;//Mets à jour la propriété avec l'ID trouvé
+
         //Sous-Catégories
-        try {
-            $souCategorie = new SousCategorie();
-            $idSousCategorie = false;
-            if (isset($oeuvre["SousCategorieObjet"])) {
-                $idSousCategorie = $souCategorie->getSousCategorieIdByName($oeuvre["SousCategorieObjet"]);//Récupère l'ID en fonction des noms passés en paramètres
-            }
-            else if (isset($oeuvre["SousCategorieObjetAng"])) {
-                $idSousCategorie = $souCategorie->getSousCategorieIdByName($oeuvre["SousCategorieObjetAng"]);//Récupère l'ID en fonction des noms passés en paramètres
-            }
-            if (!$idSousCategorie) {//Si la sous-catégorie n'existe pas...
-                try {
-                    $souCategorie->ajouterSousCategorie($oeuvre["SousCategorieObjet"], $oeuvre["SousCategorieObjetAng"]);//Fait l'insertion si non trouvé dans la BDD
-                    $idSousCategorie = $souCategorie->getSousCategorieIdByName($oeuvre["SousCategorieObjet"]);//Récupère l'ID en fonction des noms passés en paramètres
-                }
-                catch(Exception $e) {
-                    echo "erreur lors de l'insertion : " . $e;
-                    exit;
-                }
-            }
-            $this->idSousCategorie = $idSousCategorie;//Mets à jour la propriété avec l'ID trouvé
+
+        $souCategorie = new SousCategorie();
+        $idSousCategorie = false;
+        if (isset($oeuvre["SousCategorieObjet"])) {
+            $idSousCategorie = $souCategorie->getSousCategorieIdByName($oeuvre["SousCategorieObjet"]);//Récupère l'ID en fonction des noms passés en paramètres
         }
-        catch(Exception $e) {
-            echo "erreur lors de l'insertion : " . $e;
-            exit;
+        else if (isset($oeuvre["SousCategorieObjetAng"])) {
+            $idSousCategorie = $souCategorie->getSousCategorieIdByName($oeuvre["SousCategorieObjetAng"]);//Récupère l'ID en fonction des noms passés en paramètres
         }
+        if (!$idSousCategorie) {//Si la sous-catégorie n'existe pas...
+            $souCategorie->ajouterSousCategorie($oeuvre["SousCategorieObjet"], $oeuvre["SousCategorieObjetAng"]);//Fait l'insertion si non trouvé dans la BDD
+            $idSousCategorie = $souCategorie->getSousCategorieIdByName($oeuvre["SousCategorieObjet"]);//Récupère l'ID en fonction des noms passés en paramètres
+        }
+        $this->idSousCategorie = $idSousCategorie;//Mets à jour la propriété avec l'ID trouvé
+
         //Arrondissements
-        try {
-            $arrondissement = new Arrondissement();
-            $idArrondissement = false;
-            if (isset($oeuvre["Arrondissement"])) {
-                $idArrondissement = $arrondissement->getArrondissementIdByName($oeuvre["Arrondissement"]);//Récupère l'ID en fonction des noms passés en paramètres
-            }
-            if (!$idArrondissement) {//Si larrondissement n'existe pas...
-                try {
-                    $arrondissement->ajouterArrondissement($oeuvre["Arrondissement"], $oeuvre["Arrondissement"]);//Fait l'insertion si non trouvé dans la BDD
-                    $idArrondissement = $arrondissement->getArrondissementIdByName($oeuvre["Arrondissement"]);//Récupère l'ID en fonction des noms passés en paramètres
-                }
-                catch(Exception $e) {
-                    echo "erreur lors de l'insertion : " . $e;
-                    exit;
-                }
-            }
-            $this->idArrondissement = $idArrondissement;//Mets à jour la propriété avec l'ID trouvé
+
+        $arrondissement = new Arrondissement();
+        $idArrondissement = false;
+        if (isset($oeuvre["Arrondissement"])) {
+            $idArrondissement = $arrondissement->getArrondissementIdByName($oeuvre["Arrondissement"]);//Récupère l'ID en fonction des noms passés en paramètres
         }
-        catch(Exception $e) {
-            echo "erreur lors de l'insertion : " . $e;
-            exit;
+        if (!$idArrondissement) {//Si larrondissement n'existe pas...
+            $arrondissement->ajouterArrondissement($oeuvre["Arrondissement"], $oeuvre["Arrondissement"]);//Fait l'insertion si non trouvé dans la BDD
+            $idArrondissement = $arrondissement->getArrondissementIdByName($oeuvre["Arrondissement"]);//Récupère l'ID en fonction des noms passés en paramètres
         }
+        $this->idArrondissement = $idArrondissement;//Mets à jour la propriété avec l'ID trouvé
+
         //Artistes
-        try {
-            $artiste = new Artiste();
+        foreach ($oeuvre["Artistes"] as $artiste) {
+
+            $artisteVide = new Artiste();
             $idArtiste = false;
-            $idArtiste = $artiste->getArtisteIdByName($oeuvre["Artistes"][0]["Prenom"], $oeuvre["Artistes"][0]["Nom"], $oeuvre["Artistes"][0]["NomCollectif"]);//Récupère l'ID en fonction des noms passés en paramètres
-            
+            $idArtiste = $artisteVide->getArtisteIdByName($artiste["Prenom"], $artiste["Nom"], $artiste["NomCollectif"]);//Récupère l'ID en fonction des noms passés en paramètres
+
             if (!$idArtiste) {//Si l'artiste n'existe pas...
-                try {
-                    $artiste->ajouterArtiste($oeuvre["Artistes"][0]["Prenom"], $oeuvre["Artistes"][0]["Nom"], $oeuvre["Artistes"][0]["NomCollectif"]);//Fait l'insertion si non trouvé dans la BDD
-                    $idArtiste = $artiste->getArtisteIdByName($oeuvre["Artistes"][0]["Prenom"], $oeuvre["Artistes"][0]["Nom"], $oeuvre["Artistes"][0]["NomCollectif"]);//Récupère l'ID en fonction des noms passés en paramètres
-                }
-                catch(Exception $e) {
-                    echo "erreur lors de l'insertion : " . $e;
-                    exit;
-                }
+                $artisteVide->ajouterArtiste($artiste["Prenom"], $artiste["Nom"], $artiste["NomCollectif"]);//Fait l'insertion si non trouvé dans la BDD
+                $idArtiste = $artisteVide->getArtisteIdByName($artiste["Prenom"], $artiste["Nom"], $artiste["NomCollectif"]);//Récupère l'ID en fonction des noms passés en paramètres
             }
-            $this->idArtiste = $idArtiste;//Mets à jour la propriété avec l'ID trouvé
+            $idArtistes[] = $idArtiste;//Tableau de tous les artistes de l'eouvre
+
         }
-        catch(Exception $e) {
-            echo "erreur lors de l'insertion : " . $e;
-            exit;
-        }
+        $this->idArtistes = $idArtistes;//Mets à jour la propriété avec les ID trouvés
     }
     
     /**
@@ -385,37 +349,39 @@ class Oeuvre {
     */
     private function insererUpdaterOeuvreVille($oeuvre, $action) {
 
-        try {            
-            if ($action === "inserer") {//Requête pour insérer une oeuvre
-                self::$database->query('INSERT INTO Oeuvres (titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCollection, idCategorie, idSousCategorie, idArrondissement, idArtiste) VALUES (:titre, :noInterneMtl, :latitude, :longitude, :parc, :batiment, :adresse, :descriptionFR, :descriptionEN, :authorise, :idCollection, :idCategorie, :idSousCategorie, :idArrondissement, :idArtiste)');
-                
-                self::$database->bind(':descriptionFR', "Aucune description disponible");
-                self::$database->bind(':descriptionEN', "No description available.");
-                self::$database->bind(':authorise', true);
-            }
-            else if ($action === "updater") {//Requête pour mettre à jour une oeuvre
-                self::$database->query('UPDATE Oeuvres SET titre=:titre, latitude=:latitude, longitude=:longitude, parc=:parc, batiment=:batiment, adresse=:adresse, idCollection=:idCollection, idCategorie=:idCategorie, idSousCategorie=:idSousCategorie, idArrondissement=:idArrondissement, idArtiste=:idArtiste WHERE noInterneMtl = :noInterneMtl');
-            }
+        if ($action === "ajouter") {//Requête pour insérer une oeuvre
+        self::$database->query('INSERT INTO Oeuvres (titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCollection, idCategorie, idSousCategorie, idArrondissement) VALUES (:titre, :noInterneMtl, :latitude, :longitude, :parc, :batiment, :adresse, :descriptionFR, :descriptionEN, :authorise, :idCollection, :idCategorie, :idSousCategorie, :idArrondissement)');
 
-            self::$database->bind(':titre', $oeuvre["Titre"]);
-            self::$database->bind(':noInterneMtl', $oeuvre["NoInterne"]);
-            self::$database->bind(':latitude', $oeuvre["CoordonneeLatitude"]);
-            self::$database->bind(':longitude', $oeuvre["CoordonneeLongitude"]);
-            self::$database->bind(':parc', $oeuvre["Parc"]);
-            self::$database->bind(':batiment', $oeuvre["Batiment"]);
-            self::$database->bind(':adresse', $oeuvre["AdresseCivique"]);
-            self::$database->bind(':idCollection', $this->idCollection);
-            self::$database->bind(':idCategorie', $this->idCategorie);
-            self::$database->bind(':idSousCategorie', $this->idSousCategorie);
-            self::$database->bind(':idArrondissement', $this->idArrondissement);
-            self::$database->bind(':idArtiste', $this->idArtiste);
-            
-            self::$database->execute();
+        self::$database->bind(':descriptionFR', "Aucune description disponible");
+        self::$database->bind(':descriptionEN', "No description available.");
+        self::$database->bind(':authorise', true);
+
         }
-        catch(Exception $e) {
-            echo "erreur lors de l'insertion : " . $e;
-            exit;
-        }  
+        else if ($action === "updater") {//Requête pour mettre à jour une oeuvre
+            self::$database->query('UPDATE Oeuvres SET titre=:titre, latitude=:latitude, longitude=:longitude, parc=:parc, batiment=:batiment, adresse=:adresse, idCollection=:idCollection, idCategorie=:idCategorie, idSousCategorie=:idSousCategorie, idArrondissement=:idArrondissement WHERE noInterneMtl = :noInterneMtl');
+        }
+
+        self::$database->bind(':titre', $oeuvre["Titre"]);
+        self::$database->bind(':noInterneMtl', $oeuvre["NoInterne"]);
+        self::$database->bind(':latitude', $oeuvre["CoordonneeLatitude"]);
+        self::$database->bind(':longitude', $oeuvre["CoordonneeLongitude"]);
+        self::$database->bind(':parc', $oeuvre["Parc"]);
+        self::$database->bind(':batiment', $oeuvre["Batiment"]);
+        self::$database->bind(':adresse', $oeuvre["AdresseCivique"]);
+        self::$database->bind(':idCollection', $this->idCollection);
+        self::$database->bind(':idCategorie', $this->idCategorie);
+        self::$database->bind(':idSousCategorie', $this->idSousCategorie);
+        self::$database->bind(':idArrondissement', $this->idArrondissement);
+
+        self::$database->execute();
+
+        if ($action === "ajouter") {
+
+            $idOeuvre = $this->getOeuvreIdByNoInterne($this->noInterneMtl);//aller chercher id oeuvre insérée
+
+            $artiste = new Artiste();
+            $artiste->lierArtistesOeuvre($idOeuvre, $this->idArtistes);//Lier les artistes à l'oeuvre
+        }
     }
     
     /**
@@ -428,21 +394,15 @@ class Oeuvre {
         
         $oeuvreMtlBDD = array();
 
-        try {
-            self::$database->query('SELECT * FROM oeuvres JOIN Collections ON Oeuvres.idCollection = Collections.idCollection JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN SousCategories ON Categories.idCategorie = SousCategories.idSousCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement JOIN Artistes ON Artistes.idArtiste = Oeuvres.idArtiste WHERE Oeuvres.noInterneMtl = :noInterneMtl');
+        self::$database->query('SELECT * FROM oeuvres JOIN Collections ON Oeuvres.idCollection = Collections.idCollection JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN SousCategories ON Categories.idCategorie = SousCategories.idSousCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement WHERE Oeuvres.noInterneMtl = :noInterneMtl');
 
-            //Lie les paramètres aux valeurs
-            self::$database->bind(':noInterneMtl', $noInterneMtl);
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':noInterneMtl', $noInterneMtl);
 
-            if ($oeuvre = self::$database->uneLigne()) {//Si trouvé dans la BDD
-                $oeuvreMtlBDD = $oeuvre; 
-            }
-            return $oeuvreMtlBDD;
+        if ($oeuvre = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $oeuvreMtlBDD = $oeuvre; 
         }
-        catch(Exception $e) {
-            echo "erreur lors de l'insertion : " . $e;
-            exit;
-        }
+        return $oeuvreMtlBDD;
     }
     
     /**
@@ -455,24 +415,12 @@ class Oeuvre {
         self::$database->query('SELECT idUpdate FROM UpdateListeOeuvresVille');
         
         if ($date = self::$database->uneLigne()) {
-            try {
-                self::$database->query('UPDATE UpdateListeOeuvresVille SET dateDernierUpdate=CURDATE(), heureDernierUpdate=CURTIME() WHERE UpdateListeOeuvresVille.idUpdate = 1');
-                self::$database->execute();
-            }
-            catch(Exception $e) {
-                echo "erreur lors de l'insertion : " . $e;
-                exit;
-            } 
+            self::$database->query('UPDATE UpdateListeOeuvresVille SET dateDernierUpdate=CURDATE(), heureDernierUpdate=CURTIME() WHERE UpdateListeOeuvresVille.idUpdate = 1');
+            self::$database->execute();
         }
         else {
-            try {
-                self::$database->query('INSERT INTO UpdateListeOeuvresVille (dateDernierUpdate, heureDernierUpdate) VALUES (CURDATE(), CURTIME())');
-                self::$database->execute();
-            }
-            catch(Exception $e) {
-                echo "erreur lors de l'insertion : " . $e;
-                exit;
-            }
+            self::$database->query('INSERT INTO UpdateListeOeuvresVille (dateDernierUpdate, heureDernierUpdate) VALUES (CURDATE(), CURTIME())');
+            self::$database->execute();
         }
     }
     
@@ -513,26 +461,29 @@ class Oeuvre {
         
     function chercheParTitre($keyword) {
     
-        self::$database->query("SELECT titre, idOeuvre FROM oeuvres WHERE titre LIKE  ? and authorise = true");
+        $infoOeuvres = array();
+            
+        self::$database->query("SELECT titre, idOeuvre FROM oeuvres WHERE titre LIKE :keyword and authorise = true");
 
-        $keyword = $keyword.'%';
+        $keyword = '%'.$keyword.'%';
 
-        self::$database->bind(1, $keyword);
+        self::$database->bind(':keyword', $keyword);
         //var_dump(self::$database->bind(1, $keyword));
         //var_dump(self::$database->query("SELECT titre FROM oeuvres WHERE titre LIKE 'le%'"));
         $results = array();
 
-       if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
-            $results = array("idOeuvre"=>$oeuvreBDD['idOeuvre'],"titre"=>$oeuvreBDD['titre']);
+       if ($oeuvreBDD = self::$database->resultset()) {//Si trouvé dans la BDD
+            foreach ($oeuvreBDD as $oeuvre) {
+                $infoOeuvres[] = $oeuvre;
+            }
         }
-        return $results;
-
+        return $infoOeuvres;
     }
     
     public function getAllOeuvresByCategorie ($id) {
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN Artistes ON Artistes.idArtiste = Oeuvres.idArtiste WHERE Oeuvres.authorise = true AND Categories.idCategorie = :id GROUP BY Oeuvres.idOeuvre');
+        self::$database->query('SELECT * FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN OeuvresArtistes ON OeuvresArtistes.idOeuvre = Oeuvres.idOeuvre JOIN Artistes ON OeuvresArtistes.idArtiste = Artistes.idArtiste WHERE Oeuvres.authorise = true AND Categories.idCategorie = :id GROUP BY Oeuvres.idOeuvre');
             
         //Lie les paramètres aux valeurs
         self::$database->bind(':id', $id);
@@ -548,7 +499,23 @@ class Oeuvre {
     public function getAllOeuvresByArrondissement ($id) {
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN Artistes ON Artistes.idArtiste = Oeuvres.idArtiste JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement WHERE Oeuvres.authorise = true AND Arrondissements.idArrondissement = :id GROUP BY Oeuvres.idOeuvre');
+        self::$database->query('SELECT * FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN OeuvresArtistes ON OeuvresArtistes.idOeuvre = Oeuvres.idOeuvre JOIN Artistes ON OeuvresArtistes.idArtiste = Artistes.idArtiste JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement WHERE Oeuvres.authorise = true AND Arrondissements.idArrondissement = :id GROUP BY Oeuvres.idOeuvre');
+            
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':id', $id);
+        
+        if ($oeuvres = self::$database->resultset()) {
+            foreach ($oeuvres as $oeuvre) {
+                $infoOeuvres[] = $oeuvre;
+            }
+        }
+        return $infoOeuvres;
+    }
+    
+    public function getAllOeuvresByArtiste ($id) {
+        $infoOeuvres = array();
+        
+        self::$database->query('SELECT * FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN OeuvresArtistes ON OeuvresArtistes.idOeuvre = Oeuvres.idOeuvre JOIN Artistes ON OeuvresArtistes.idArtiste = Artistes.idArtiste JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement WHERE Oeuvres.authorise = true AND Artistes.idArtiste = :id GROUP BY Oeuvres.idOeuvre');
             
         //Lie les paramètres aux valeurs
         self::$database->bind(':id', $id);
@@ -568,9 +535,9 @@ class Oeuvre {
 	public function getAllOeuvres() 
 	{
 				
-        $infoOeuvress = array();
+        $infoOeuvres = array();
         
-        self::$database->query('SELECT idOeuvre, titre FROM Oeuvres');
+        self::$database->query('SELECT * FROM Oeuvres');
         
         if ($oeuvres = self::$database->resultset()) {
             foreach ($oeuvres as $oeuvre) {
@@ -579,5 +546,19 @@ class Oeuvre {
         }
         return $infoOeuvres;
 	}
+    
+    public function getOeuvreIdByNoInterne($noInterneMtl) {
+        
+        $idOeuvre = "";
+        
+        self::$database->query("SELECT idOeuvre FROM Oeuvres WHERE noInterneMtl = :noInterneMtl");
+        self::$database->bind(':noInterneMtl', $noInterneMtl);
+        
+
+       if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $idOeuvre = $oeuvreBDD['idOeuvre'];
+        }
+        return $idOeuvre;
+    }
 }
 ?>
