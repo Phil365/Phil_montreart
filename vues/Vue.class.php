@@ -122,6 +122,7 @@ class Vue {
                 </form>
             </div>
         </div>
+        <div class="dummy"><!--Ne mettez rien ici--></div>
     <?php
     }
     

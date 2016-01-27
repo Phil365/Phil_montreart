@@ -95,15 +95,7 @@ class Controler {
                 $this->accueil();
                 break;
             case $this->pOeuvre:
-                if($_GET['action'] == 'envoyer')
-                {
-                    $this->enregistrerOeuvre();
-                }
-                else
-                {
-                    $this->oeuvre();    
-                }
-                
+                $this->oeuvre();
                 break;
             case $this->pTrajet:
                 $this->trajet();
@@ -166,38 +158,26 @@ class Controler {
         $photo = new Photo();
         $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"]);
         
+        if (isset($_GET['action']) && $_GET['action'] == 'envoyerPhoto') {
+            $msgInsertPhoto = $photo->inserePhotoBdd($_GET["o"]);
+        }
+        else {
+            $msgInsertPhoto = null;
+        }
+        
         $artiste = new Artiste();
         $artistesOeuvre = $artiste->getArtistesbyOeuvreId ($_GET["o"]);
         
         $this->oVue = new VueOeuvre();
         $this->oVue->setDataGlobal('oeuvre', "page d'une oeuvre", $this->langueAffichage, $this->pOeuvre);
         $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre, $this->langueAffichage);
+        $this->oVue->setMsgPhoto($msgInsertPhoto);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
         $this->oVue->afficherPiedPage();
     }
-    
-     private function enregistrerOeuvre() {
-        
-        $oeuvre = new Oeuvre();
-        $oeuvreAffichee = $oeuvre->getOeuvreById($_GET["o"], $this->langueAffichage);
-        
-        $commentaire = new Commentaire();
-        $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
-        
-        $photo = new Photo();
-        $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"]);
-        $photosEnvoie = $photo->inserePhotoBdd($_GET["o"]);
-         
-        $this->oVue = new VueOeuvre();
-         $this->oVue->setDataGlobal('oeuvre', "page d'une oeuvre", $this->langueAffichage, $this->pOeuvre);
-        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $this->langueAffichage);      
-        $this->oVue->afficherMeta();
-        $this->oVue->afficherEntete();
-        $this->oVue->afficherBody();
-        $this->oVue->afficherPiedPage();
-    }
+
     /**
     * @brief Méthode qui appelle la vue d'affichage de la page de trajet
     * @access private
