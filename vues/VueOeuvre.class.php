@@ -37,9 +37,15 @@ class VueOeuvre extends Vue {
     
     /**
     * @var string $langue Langue d'affichage
-    * @access private
+    * @access protected
     */
     protected $langue;
+    
+    /**
+    * @var string $msgPhoto Message destiné à l'utilisateur lors de la soumission d'une photo unique
+    * @access protected
+    */
+    protected $msgPhoto;
     
     /**
     * @brief Constructeur. Initialise les propriétés communes de la classe mère
@@ -72,6 +78,17 @@ class VueOeuvre extends Vue {
     }
     
     /**
+    * @brief Méthode qui assigne une valeur à la propriété msgPhoto
+    * @param string $msg
+    * @access public
+    * @return void
+    */
+    public function setMsgPhoto($msg) {
+        
+        $this->msgPhoto = $msg;
+    }
+    
+    /**
     * @brief Méthode qui affiche le corps du document HTML
     * @access public
     * @return void
@@ -79,7 +96,6 @@ class VueOeuvre extends Vue {
     public function afficherBody() {
     ?> 
         <body>
-    <script type="text/javascript" src="js/main.js"></script>
     <?php
         if (empty($this->oeuvre)) {
             echo "<p>Cette oeuvre n'a pas été trouvée dans la base de données</p>";
@@ -113,9 +129,13 @@ class VueOeuvre extends Vue {
                     $idOeuvreencours=$this->oeuvre["idOeuvre"]
             ?>
 
-                    <form action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyer" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
-                        <h4 id="selectImageUpload">Select image to upload:</h4>
+                    <form name="formPhotoUnique" id="formPhotoUnique" action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerPhoto" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
+                        <h4 id="selectImageUpload">Sélectionnez une image :</h4>
                         <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
+                        <span id="erreurPhotoVide" class="erreur"></span><br>
+                        <span id="erreurPhotoSize" class="erreur"></span><br>
+                        <span id="erreurPhotoType" class="erreur"></span><br>
+                        <span class="erreur"> <?php if (isset($this->msgPhoto)) {echo $this->msgPhoto;} ?></span>
                         <input class='boutonMoyenne' type="submit" value="Upload Image" name="submit">
                     </form>
             <?php
@@ -204,7 +224,7 @@ class VueOeuvre extends Vue {
                             }
                             $imgPhoto = $this->commentaires[$i]['photoProfil'];
 
-                            echo "<img class='thumbnail' src = 'images/$imgPhoto'><br>";
+                            echo "<img class='thumbnail' src = '$imgPhoto'><br>";
                             echo "<h5 id='idUtilisateur'>".$this->commentaires[$i]["nomUsager"]."</h5>";
                             echo "<div class='ratingUtilisateur'><img src = 'images/$imgVote'></div>";
                             echo "<p>".$this->commentaires[$i]["texteCommentaire"]."</p>";

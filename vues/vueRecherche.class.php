@@ -48,7 +48,6 @@ class VueRecherche extends Vue {
     public function afficherBody() {
     ?> 
         <body>
-    <script type="text/javascript" src="js/main.js"></script>
     <?php
         
         $langue = $this->langue;
