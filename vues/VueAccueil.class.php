@@ -30,7 +30,6 @@ class VueAccueil extends Vue {
     */
     public function afficherBody() {
     ?>
-        <div class="dummy"><!--Ne mettez rien ici--></div>
 
            <div class="section1">
                 <div class="single-item">

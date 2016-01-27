@@ -45,7 +45,6 @@ class VueAdmin extends Vue{
               
             </div>
         </div> 
-        <div class="dummy"><!--    Ne mettez rien ici--></div>
         <div class="premiereColonne">
             <h2>Administration</h2>
              
