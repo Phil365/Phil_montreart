@@ -83,7 +83,7 @@ background-color: #6c0e1e;
 }
 body{
 background-color: #ffffff;
-font-family: 'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 max-width: 980px;
 overflow-y: scroll; 
 }
@@ -232,6 +232,7 @@ z-index: 3;
     width: 40px;
     height: auto;
     margin: 5px;
+    margin-top: 18px;
 }
 .infosOeuvre{
     float: left;
@@ -262,7 +263,7 @@ z-index: 3;
   
     text-align:center;
     background-color:#30A0D1;
-    font-family:'EB Garamond', serif;
+    font-family: 'Source Sans Pro', sans-serif;
     color:#fff;
     border:1px solid #ddd;
     padding:10px;
@@ -328,13 +329,30 @@ z-index: 3;
     width: 100%;
     overflow-y: scroll;
 }
+
+.rechercheResultTitre {
+    
+    margin-left: 30px;
+    margin-top: 20px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 20px;
+
+}
+
+
+.infoResult {
+    
+    margin-left: 30px;
+    font-size: 20px;
+
+}
 #formRevisionPhotos{
     display: none;
     max-width:600px;
     padding:10px 50px;
     border:2px solid #F8F274;
     border-radius:10px;
-    font-family:'EB Garamond', serif;
+    font-family: 'Source Sans Pro', sans-serif;
     background-color:#fff;
 }
 #formRevisionPhotos img{
@@ -428,7 +446,7 @@ top:-4px;
 width:30px;
 height:30px;
 background-color:#6c0e1e;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 font-size: 1.2em;
 color: #fff;
 cursor:pointer;
@@ -439,7 +457,7 @@ cursor:pointer;
 #div_form {
 position:absolute;
 top:17%;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 z-index: 8;
 display: none;
 }
@@ -458,7 +476,7 @@ margin-top:30px;
 border:1px solid #ccc;
 padding-left:40px;
 font-size:16px;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 border-radius: 5px;
 }
 
@@ -473,7 +491,7 @@ width:100%;
 text-align:center;
 display:block;
 background-color:#30A0D1;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 color:#fff;
 border:1px solid #ddd;
 padding:10px 0;
@@ -487,12 +505,12 @@ max-width:200px;
 padding:10px 50px;
 border:2px solid #F8F274;
 border-radius:10px;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 background-color:#fff;
 }
 #form_itineraire, #contribuer_article{
 padding:10px 50px 30px 50px;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 }
 #form_itineraire input[type="submit"]{
     float: right;
@@ -1026,7 +1044,7 @@ width: 270px;
 }
 
 .description{
-    margin-left: 10%;
+    margin-top: 10%;
     
 }
 

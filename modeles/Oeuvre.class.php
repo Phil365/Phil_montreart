@@ -560,5 +560,93 @@ class Oeuvre {
         }
         return $idOeuvre;
     }
+    
+    
+    
+    
+    
+    public function valideAjoutOeuvrePHP($titre) {
+        $erreur = false;
+        
+        $msgErreur=array();
+        $msg = "";
+
+        /*
+        $messageErreurTitre = "Veuillez entrer un titre";
+        $messageErreurAdresse = "Veuillez entrer une adresse";
+        $messageErreurDescription = "Veuillez entrer une description";
+        $messageErreurCategorie = "Veuillez entrer une catégorie";
+        $messageErreurArrondissement = "Veuillez choisir un arrondissement";
+        */
+        var_dump($titre);
+        if (!isset($titre)) {
+            
+            $erreur = true;
+            $msg .= "Veuillez entrer une banane";
+            //echo $messageErreurTitre;
+        }
+
+//        if (!isset($_GET["nomDuInputAdresse"])) {
+//
+//            $erreur = false;
+//            $msg .= "Veuillez entrer une adresse";
+//            //echo $messageErreurAdresse;
+//        }
+//
+//        if (!isset($_GET["nomDuInputDescription"])) {
+//
+//            $erreur = false;
+//            $msg .= "Veuillez entrer une description";
+//            //echo $messageErreurDescription;
+//        }
+//
+//        if (!isset($_GET["nomDuSelectCategorie"])) {
+//
+//            $erreur = true;
+//            $msg .= "Veuillez choisir une catégorie";
+//            //echo $messageErreurCategorie;
+//        }
+//
+//        if (!isset($_GET["nomDuSelectArrondissement"])) {
+//
+//            $erreur = false;
+//            $msg = "Veuillez choisir un arrondissement";
+//            //echo $messageErreurArrondissement;
+//        }
+
+
+        if (!$erreur) {
+
+            //DO NOTHING AND DANCE
+        }
+         else {
+
+            return $msg;
+        }
+    }
+
+
+
+
+        public function valideSuppOeuvrePHP() {
+        $erreur = false;
+        $messageErreurSelect = "Veuillez choisir une option";
+
+        if (!isset($_GET["nomDuSelect"])) {
+
+            $erreur = true;
+            echo $messageErreurSelect;
+        }
+
+
+        if (!erreurs) {
+
+            return true;
+        }
+         else {
+
+            return false;
+         }
+    }
 }
 ?>
