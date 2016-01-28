@@ -401,6 +401,143 @@ z-index: 3;
     border-bottom-right-radius: 5px;
     
 }
+
+.rechercheResultTitre {
+    
+    margin-left: 30px;
+    margin-top: 20px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 20px;
+
+}
+
+
+.infoResult {
+    
+    margin-left: 30px;
+    font-size: 20px;
+
+}
+
+.inputGestion {
+    margin-left: 30px;
+
+}
+
+.selectGestion {
+    margin-top: 20px;
+    margin-left: 30px;
+
+}
+
+.televersionTexteGestion {
+    margin-left: 30px;
+
+}
+
+.msgUser {
+    margin-left: 30px;
+    margin-bottom: 10px;
+
+}
+
+.titresFormGestion {
+    margin-top: 100px;
+
+}
+
+.fileToUploadGestion {
+    margin-left: 30px;
+}
+
+#premierTeleversionTexte {
+    margin-top: 80px;
+
+}
+
+#textAreaGestion {
+    margin-top: 30px;
+    margin-bottom: 50px;
+
+}
+
+#formRevisionPhotos{
+    display: none;
+    max-width:600px;
+    padding:10px 50px;
+    border:2px solid #F8F274;
+    border-radius:10px;
+    font-family: 'Source Sans Pro', sans-serif;
+    background-color:#fff;
+}
+#formRevisionPhotos img{
+    width: 50%;
+    margin-left: 20%;
+}
+#dateMisAJour{
+    position: relative;
+    top: 200px;
+}
+
+#results {
+
+    background-color: cornflowerblue;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    
+}
+
+#click1 {
+    margin-left: 40px;
+    background-color: #6c0e1e;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+
+}
+
+#click2 {
+    margin-left: 30px;
+    background-color: #6c0e1e;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+
+
+}
+
+#click3 {
+    margin-left: 30px;
+    background-color: #6c0e1e;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+
+}
+
+#click1:hover {
+    background-color: #B32A42;
+}
+
+#click2:hover {
+    background-color: #B32A42;
+}
+
+#click3:hover {
+    background-color: #B32A42;
+}
+
+
+#MAJgestion {
+    margin-top: 60px;
+    margin-left: 30px;
+
+}
+
+#misAJour {
+    margin-top: 30px;
+
+}
 /*-------------FIN PAGE ADMIN ---------------------*/
 /*========NAV PRINCIPALE=====*/
 
