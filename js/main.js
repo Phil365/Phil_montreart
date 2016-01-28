@@ -79,6 +79,124 @@ function validePhotoSubmit() {
 } // end function validateForm
 
 
+
+function valideAjoutOeuvreJS() {
+    var erreurs = false;
+    document.getElementById("erreurTitreOeuvre").innerHTML = "";
+    document.getElementById("erreurAdresseOeuvre").innerHTML = "";
+    document.getElementById("erreurDescription").innerHTML = "";
+    document.getElementById("erreurSelectCategorie").innerHTML = "";
+    document.getElementById("erreurSelectArrondissement").innerHTML = "";
+
+
+//    if (document.getElementById("nomDuInputTitre").value.trim() == "") {
+//        document.getElementById("erreurTitreOeuvre").innerHTML = "Veuillez entrer un titre";
+//        erreurs = true;
+//    }
+//
+//    if (document.getElementById("nomDuInputAdresse").value.trim() == "") {
+//        document.getElementById("erreurAdresseOeuvre").innerHTML = "Veuillez entrer une adresse";
+//        erreurs = true;
+//    }
+//
+//    if (document.getElementById("nomDuInputDescription").value.trim() == "") {
+//        document.getElementById("erreurDescription").innerHTML = "Veuillez entrer une description réglementaire";
+//        erreurs = true;
+//    }
+//
+//    if (document.getElementById("nomDuSelectCategorie").value == "") {
+//        document.getElementById("erreurSelectCategorie").innerHTML = "Veuillez choisir une option";
+//        erreurs = true;
+//    }
+//
+//    if (document.getElementById("nomDuSelectArrondissement").value == "") {
+//        document.getElementById("erreurSelectArrondissement").innerHTML = "Veuillez choisir un arrondissement";
+//        erreurs = true;
+//    }  
+
+//    if (!erreurs) {
+//        return true;
+//    }
+//    else {
+        return false;
+//    }
+} // end function validateForm
+
+
+
+
+/*
+function valideSupprimerOeuvreJS() {
+    var erreurs = false;
+    document.getElementById("erreurSelectSuppression").innerHTML = "";
+    
+
+    if (document.getElementById("nomDuSelect").value == "") {
+        document.getElementById("erreurSelectSupression").innerHTML = "Veuillez choisir une option";
+        erreurs = true;
+    }
+    } 
+    if (!erreurs) {
+        return true;
+    }
+    else {
+        return false;
+    }
+} // end function validateForm 
+*/
+
+
+
+
+
+function valideModifierOeuvreJS() {
+    var erreurs = false;
+    document.getElementById("erreurTitreOeuvre").innerHTML = "";
+    document.getElementById("erreurAdresseOeuvre").innerHTML = "";
+    document.getElementById("erreurDescription").innerHTML = "";
+    document.getElementById("erreurSelectCategorie").innerHTML = "";
+    document.getElementById("erreurSelectArrondissement").innerHTML = "";
+
+
+    if (document.getElementById("nomDuInputTitre").value.trim() == "") {
+        document.getElementById("erreurTitreOeuvre").innerHTML = "Veuillez entrer un titre";
+        erreurs = true;
+    }
+
+    if (document.getElementById("nomDuInputAdresse").value.trim() == "") {
+        document.getElementById("erreurAdresseOeuvre").innerHTML = "Veuillez entrer une adresse";
+        erreurs = true;
+    }
+
+    
+    if (document.getElementById("nomDuInputDescription").value.trim() == "") {
+        document.getElementById("erreurDescription").innerHTML = "Veuillez entrer une description réglementaire";
+        erreurs = true;
+    }
+
+    if (document.getElementById("nomDuSelectCategorie").value == "") {
+        document.getElementById("erreurSelectCategorie").innerHTML = "Veuillez choisir une option";
+        erreurs = true;
+    }
+
+    if (document.getElementById("nomDuSelectArrondissement").value == "") {
+        document.getElementById("erreurSelectArrondissement").innerHTML = "Veuillez choisir un arrondissement";
+        erreurs = true;
+    }  
+
+    if (!erreurs) {
+        return true;
+    }
+    else {
+        return false;
+    }
+} // end function validateForm
+
+
+
+
+
+
 function autoComplete(rechercheVoulue, nomServeur)
 {
     var MIN_LENGTH = 1;

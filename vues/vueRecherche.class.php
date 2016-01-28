@@ -57,22 +57,22 @@ class VueRecherche extends Vue {
         }
         else {
             if ( isset($this->oeuvres[0]["nomCategorie$langue"])) {
-                echo "<h1>Catégorie choisie : </h1>"."<p>". $this->oeuvres[0]["nomCategorie$langue"]."</p>";
+                echo "<h5 class='rechercheResultTitre'>Catégorie choisie : </h5>"."<p class='infoResult'>". $this->oeuvres[0]["nomCategorie$langue"]."</p>";
             }
             foreach ($this->oeuvres as $oeuvre) {
                 if ( isset($oeuvre["titre"])) {
-                    echo "<h5>Titre : </h5>"."<a href='http://localhost/?r=oeuvre&o=".$oeuvre["idOeuvre"]."'>". $oeuvre["titre"]."</a>";
+                    echo "<h5 class='rechercheResultTitre'>Titre : </h5>"."<a class='infoResult' href='http://localhost/?r=oeuvre&o=".$oeuvre["idOeuvre"]."'>". $oeuvre["titre"]."</a>";
                 }
                 if (isset($oeuvre["nomArtiste"])) {
-                    echo "<h5>Artiste : </h5>";
+                    echo "<h5 class='rechercheResultTitre'>Artiste : </h5>";
                     if ( isset($oeuvre["prenomArtiste"])) {
-                        echo  "<p>".$oeuvre["prenomArtiste"]." ";
+                        echo  "<p class='infoResult'>".$oeuvre["prenomArtiste"]." ";
                     }
                     echo  $oeuvre["nomArtiste"]."</p>";
                 }
                 if ( isset($oeuvre["description$langue"])) {
                     echo " <div class='description'>
-            <h5>Description :</h5>
+            <h5 class='rechercheResultTitre'>Description :</h5>
             <p class='noIndent'>".$oeuvre["description$langue"]."</p></div>";
                 }
             echo "<br><br>";

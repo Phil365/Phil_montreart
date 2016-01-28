@@ -233,11 +233,16 @@ class Controler {
         $photoAReviser = $photo->getPhotoById();
         $oeuvre = new Oeuvre;
         $oeuvre->updaterOeuvresVille();
+            if($_GET['action'] == 'soumetAdminOeuvre'){
+        $msgAjoutOeuvre = $oeuvre->valideAjoutOeuvrePHP($_POST["nomDuInputTitre"]);
+               
+            }
         $date = $oeuvre->getDateDernierUpdate();
         $this->oVue = new VueAdmin();
         $this->oVue->setDataGlobal("Admin", "page d'administration", $this->langueAffichage, $this->pAdmin);
         $this->oVue->setData($photoAllUnauthorized);
         $this->oVue->setData($photoAReviser);
+         $this->oVue->setMsgAjoutOeuvre($msgAjoutOeuvre);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
