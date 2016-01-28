@@ -10,11 +10,18 @@ header('Content-Type: text/html; charset=utf-8');//Affichage du UTF-8 par PHP.
 
 class VueSoumission extends Vue {
     
+    private $oeuvresBDD;
+    
+    private $arrondissementsBDD;
+    
+    private $categoriesBDD;
+    
     function __construct() {
         $this->titrePage = "MontréArt - Soumission";
         $this->descriptionPage = "La page de soumission d'une oeuvre du site MontréArt";
     }
     
+
       /**
     * @var array $arrondissements tableau des informations pour select arrondissements
     * @access private
@@ -35,6 +42,12 @@ class VueSoumission extends Vue {
     function setData($arrondissements, $sousCategories){
         $this->arrondissements= $arrondissements;
         $this->sousCategories = $sousCategories;
+    }
+    public function setData($oeuvresBDD, $arrondissementsBDD, $categoriesBDD) {
+        $this->oeuvresBDD = $oeuvresBDD;
+        $this->arrondissementsBDD = $arrondissementsBDD;
+        $this->categoriesBDD = $categoriesBDD;
+
     }
     
     /**
@@ -61,6 +74,7 @@ class VueSoumission extends Vue {
             <p class="noIndent">Vous avez trouvé une oeuvre, qui, selon vous, devrait être sur notre site?</p>
             <p class="noIndent">Veuillez remplir le formulaire ci-dessous avec les informations de l'oeuvre en question.
             Toute contribution sera sujette à une approbation de la part d'un administrateur.</p>
+
             
             <form action="?r=soumission&action=soumetOeuvre" name="contribuer_oeuvre" id="contribuer_oeuvre" method="post" enctype="multipart/form-data">
             <h3>Titre, si connu: </h3>
@@ -107,7 +121,42 @@ class VueSoumission extends Vue {
                 <input class="submit" type="submit" value="Envoyer" name="contr_article">
             
                 <div id="capcha"></div>
-            
+
+
+            <form method="POST" name="formAjoutOeuvre" action="?r=soumission" enctype="multipart/form-data">
+                <span class="erreur"></span>
+                <input type='text' name='titreAjout' value="" placeholder="Titre de l'oeuvre (si connu)"/>
+                <span class="erreur"></span>
+                <input type='text' name='prenomArtisteAjout' value="" placeholder="Prénom de l'artiste (si connu)"/>
+                <span class="erreur"></span>
+                <input type='text' name='nomArtisteAjout' value="" placeholder="Nom de l'artiste (si connu)"/>
+                <span class="erreur"></span>
+                <input type='text' name='adresseAjout' value="" placeholder="Adresse (obligatoire)"/>
+                <span class="erreur"></span>
+                <textarea name='descriptionAjout' placeholder="Description (obligatoire)"></textarea>
+                <select name="selectArrondissement">
+                    <option value="">Choisir un arrondissement</option>
+                    <?php
+                        foreach ($this->arrondissementsBDD as $arrondissement) {
+                            echo "<option value='".$arrondissement["idArrondissement"]."'>".$arrondissement["nomArrondissement"];
+                        }
+                        echo "</select>";
+                    ?>
+                </select><br>
+                <select name="selectSousCategorie">
+                    <option value="">Choisir une catégorie</option>
+                    <?php
+                        foreach ($this->categoriesBDD as $categorie) {
+                            echo "<option value='".$categorie["idSousCategorie"]."'>".$categorie["sousCategorie$this->langue"];
+                        }
+                        echo "</select>";
+                    ?>
+                </select>
+                    <h3>Téléversez l'image de l'oeuvre</h3>
+                <input type="file" name="fileToUpload" id="fileToUpload" value="">
+                <span class="erreur"></span>
+                <input class="boutonMoyenne" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
+
             </form>
         </main>
 

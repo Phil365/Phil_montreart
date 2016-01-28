@@ -18,7 +18,7 @@ $(document).ready(function(){
     $(".boutonRecherche").click(function(){
         
         $( ".barreRecherche").animate({
-            width: "toggle",
+            width: "toggle"
         });
     });
     
@@ -50,18 +50,154 @@ $(document).ready(function(){
     });
 });
 
-function validePhotoSubmit()
-{
-    if (document.getElementById("fileToUpload").files.length == 0)
-    {
-        alert("Ne peux pas etre vide");
+function validePhotoSubmit() {
+    var erreurs = false;
+    document.getElementById("erreurPhotoSize").innerHTML = "";
+    document.getElementById("erreurPhotoType").innerHTML = "";
+    document.getElementById("erreurPhotoVide").innerHTML = "";
+    
+    if (document.getElementById("fileToUpload").files.length == 0) {
+        document.getElementById("erreurPhotoVide").innerHTML = "Vous devez d'abord choisir un fichier.";
+        erreurs = true;
+    }
+    else {
+        if (document.getElementById("fileToUpload").files[0].size > 5000000) {
+            document.getElementById("erreurPhotoSize").innerHTML = "Votre fichier doit être inférieur à 5Mb.";
+            erreurs = true;
+        }
+        if (document.getElementById("fileToUpload").files[0].type != "image/png" && document.getElementById("fileToUpload").files[0].type != "image/jpg" && document.getElementById("fileToUpload").files[0].type != "image/jpeg") {
+            document.getElementById("erreurPhotoType").innerHTML = "Votre fichier doit être de type Jpeg ou Png.";
+            erreurs = true;
+        }
+    } 
+    if (!erreurs) {
+        return true;
+    }
+    else {
         return false;
-    } // end if  
-       return true;
+    }
 } // end function validateForm
 
 
-function autoComplete(rechercheVoulue)
+
+function valideAjoutOeuvreJS() {
+    var erreurs = false;
+    document.getElementById("erreurTitreOeuvre").innerHTML = "";
+    document.getElementById("erreurAdresseOeuvre").innerHTML = "";
+    document.getElementById("erreurDescription").innerHTML = "";
+    document.getElementById("erreurSelectCategorie").innerHTML = "";
+    document.getElementById("erreurSelectArrondissement").innerHTML = "";
+
+
+//    if (document.getElementById("nomDuInputTitre").value.trim() == "") {
+//        document.getElementById("erreurTitreOeuvre").innerHTML = "Veuillez entrer un titre";
+//        erreurs = true;
+//    }
+//
+//    if (document.getElementById("nomDuInputAdresse").value.trim() == "") {
+//        document.getElementById("erreurAdresseOeuvre").innerHTML = "Veuillez entrer une adresse";
+//        erreurs = true;
+//    }
+//
+//    if (document.getElementById("nomDuInputDescription").value.trim() == "") {
+//        document.getElementById("erreurDescription").innerHTML = "Veuillez entrer une description réglementaire";
+//        erreurs = true;
+//    }
+//
+//    if (document.getElementById("nomDuSelectCategorie").value == "") {
+//        document.getElementById("erreurSelectCategorie").innerHTML = "Veuillez choisir une option";
+//        erreurs = true;
+//    }
+//
+//    if (document.getElementById("nomDuSelectArrondissement").value == "") {
+//        document.getElementById("erreurSelectArrondissement").innerHTML = "Veuillez choisir un arrondissement";
+//        erreurs = true;
+//    }  
+
+//    if (!erreurs) {
+//        return true;
+//    }
+//    else {
+        return false;
+//    }
+} // end function validateForm
+
+
+
+
+/*
+function valideSupprimerOeuvreJS() {
+    var erreurs = false;
+    document.getElementById("erreurSelectSuppression").innerHTML = "";
+    
+
+    if (document.getElementById("nomDuSelect").value == "") {
+        document.getElementById("erreurSelectSupression").innerHTML = "Veuillez choisir une option";
+        erreurs = true;
+    }
+    } 
+    if (!erreurs) {
+        return true;
+    }
+    else {
+        return false;
+    }
+} // end function validateForm 
+*/
+
+
+
+
+
+function valideModifierOeuvreJS() {
+    var erreurs = false;
+    document.getElementById("erreurTitreOeuvre").innerHTML = "";
+    document.getElementById("erreurAdresseOeuvre").innerHTML = "";
+    document.getElementById("erreurDescription").innerHTML = "";
+    document.getElementById("erreurSelectCategorie").innerHTML = "";
+    document.getElementById("erreurSelectArrondissement").innerHTML = "";
+
+
+    if (document.getElementById("nomDuInputTitre").value.trim() == "") {
+        document.getElementById("erreurTitreOeuvre").innerHTML = "Veuillez entrer un titre";
+        erreurs = true;
+    }
+
+    if (document.getElementById("nomDuInputAdresse").value.trim() == "") {
+        document.getElementById("erreurAdresseOeuvre").innerHTML = "Veuillez entrer une adresse";
+        erreurs = true;
+    }
+
+    
+    if (document.getElementById("nomDuInputDescription").value.trim() == "") {
+        document.getElementById("erreurDescription").innerHTML = "Veuillez entrer une description réglementaire";
+        erreurs = true;
+    }
+
+    if (document.getElementById("nomDuSelectCategorie").value == "") {
+        document.getElementById("erreurSelectCategorie").innerHTML = "Veuillez choisir une option";
+        erreurs = true;
+    }
+
+    if (document.getElementById("nomDuSelectArrondissement").value == "") {
+        document.getElementById("erreurSelectArrondissement").innerHTML = "Veuillez choisir un arrondissement";
+        erreurs = true;
+    }  
+
+    if (!erreurs) {
+        return true;
+    }
+    else {
+        return false;
+    }
+} // end function validateForm
+
+
+
+
+
+
+function autoComplete(rechercheVoulue, nomServeur)
 {
     var MIN_LENGTH = 1;
     var url =  "ajaxControler.php?rAjax=autoComplete&rechercheVoulue=";
@@ -80,14 +216,14 @@ function autoComplete(rechercheVoulue)
                 $(results).each(function(key, value) {
 
                     if (rechercheVoulue=="titre") {
-                        $('#results').append('<div class="item">' + "<a href=http://localhost/?r=oeuvre&o="+value['idOeuvre']+">"+value['titre']+"</a>" +'</div>');
+                        $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=oeuvre&o="+value['idOeuvre']+">"+value['titre']+"</a></div>");
                     }
                     if (rechercheVoulue=="artiste") {
                         if (value['nomCollectif'] != null) {
-                            $('#results').append('<div class="item">' + "<a href=http://localhost/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCollectif']+"</a>" +'</div>');
+                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCollectif']+"</a></div>");
                         }
                         else {
-                            $('#results').append('<div class="item">' + "<a href=http://localhost/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCompletArtiste']+"</a>" +'</div>');
+                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCompletArtiste']+"</a></div>");
                         }
                     }
                 })

@@ -144,76 +144,54 @@ class Photo {
         
     }
 
-    public function inserePhotoBdd($idOeuvre) {
+    public function inserePhotoBdd($idOeuvre, $authorise) {
          
-        if (!$_FILES["fileToUpload"]["error"]) {
+        $msgUtilisateur = "";
+        $erreurs = false;
+        
+        if ($_FILES["fileToUpload"]["error"] != 4) {
 
             $message='';
             $target_dir = "images/images_soumises/";
             $temp = explode(".", $_FILES["fileToUpload"]["name"]);
-            $newfilename = round(microtime(true)) . '.' . end($temp);      
-            $target_file = $target_dir .$newfilename;
-            $uploadOk = 1;
+            $nouveauNomImage = round(microtime(true)) . '.' . end($temp);      
+            $target_file = $target_dir .$nouveauNomImage;
             $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
             $pic=($_FILES["fileToUpload"]["name"]);
             // Check if image file is a actual image or fake image
 
-            if(isset($_POST["submit"])) {
-
-                $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-                if($check !== false) {
-                    echo "File is an image - " . $check["mime"] . ".";
-                    $uploadOk = 1;
+            if (isset($_POST["submit"]) || isset($_POST["boutonAjoutOeuvre"])) {
+                
+                if ($_FILES["fileToUpload"]["size"] > 5000000 || ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                    && $imageFileType != "gif")) {
+                    $erreurs = true;
+                    $msgUtilisateur = "Votre fichier doit être de type Jpeg ou Png et inférieur à 5Mb.<br>";
                 }
-                else {
-                    echo "File is not an image.";
-                    $uploadOk = 0;
-                }
-            }
-            // Check if file already exists
-            /*    if (file_exists($target_file)) {
-            echo "Sorry, file already exists.";
-            $uploadOk = 0;
-            }*/
-            // Check file size
-            if ($_FILES["fileToUpload"]["size"] > 500000 ) {
-                echo "Sorry, your file is too large.";
-                $uploadOk = 0;
-            }
+                if (!$erreurs) {
+                    self::$database->query("INSERT INTO photos (image, authorise, idOeuvre) VALUES ('images/images_soumises/$nouveauNomImage', :authorise, :idOeuvre)");
+//                    self::$database->bind(':newfilename', $nouveauNomImage);
+                    self::$database->bind(':idOeuvre', $idOeuvre);
+                    self::$database->bind(':authorise', $authorise);
 
-            // Allow certain file formats
-            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-                && $imageFileType != "gif" ) {
-                echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-                $uploadOk = 0;
-            }
-            // Check if $uploadOk is set to 0 by an error
-            if ($uploadOk == 0) {
-                echo "Sorry, your file was not uploaded.";
-                // if everything is ok, try to upload file
-            }
-            else {   
-
-                self::$database->query("INSERT INTO photos VALUES ('','$newfilename',false,'$idOeuvre')");
-
-                $result =  self::$database->execute();
-
-                if (!$result) {
-                    die('Invalid query: ' . mysql_error ());
-                }
-                if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-
-                    "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
-                }
-                else {
-                    "Sorry, there was an error uploading your file.";
+                    try {
+                        $result = self::$database->execute();
+                        move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+                    }
+                    catch(Exception $e) {
+                        $erreurs = true;
+                        $msgUtilisateur = "erreur lors du traitement".$e->getMessage();
+                    }
                 }
             }
         }
         else {
-            echo "<script>alert(\"Veuillez mettre une image\")</script>"; 
-            $uploadOk = 0;
+            $erreurs = true;
+            $msgUtilisateur = "Vous devez d'abord choisir une image.";
         }
+        if (!$erreurs) {
+            $msgUtilisateur = "Succès !";
+        }
+        return $msgUtilisateur;
     }
 }
 ?>

@@ -37,7 +37,7 @@ class Vue {
 		<meta name="viewport" content="width=device-width">
 		
         <!-- POLICES -->
-        <link href="https://fonts.googleapis.com/css?family=EB+Garamond%7CNoto+Serif" rel="stylesheet" type="text/css">
+<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:600,400' rel='stylesheet' type='text/css'>
         
         <!-- CSS -->
         <link rel="stylesheet" type="text/css" href="./css/styles.css">
@@ -95,7 +95,7 @@ class Vue {
             </div>
             
             <nav>
-                <a href="?r=accueil">Accueil</a>
+                <a href="?r=accueil" id="NavAccueil">Accueil</a>
                 <a href="?r=trajet">Trajet</a>
                 <a href="?r=soumission">Soumettre une oeuvre</a>
                 <?php if ($_GET["r"] == "admin") {
@@ -122,6 +122,7 @@ class Vue {
                 </form>
             </div>
         </div>
+        <div class="dummy"><!--Ne mettez rien ici--></div>
     <?php
     }
     

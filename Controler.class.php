@@ -49,6 +49,7 @@ class Controler {
     private $pProfil = "profil";
     private $pRecherche = "recherche";
     private $pAdmin = "admin";
+    private $pGestion = "gestion";
     
     /**
     * @var string $langueAffichage Langue d'affichage du site
@@ -95,15 +96,7 @@ class Controler {
                 $this->accueil();
                 break;
             case $this->pOeuvre:
-                if($_GET['action'] == 'envoyer')
-                {
-                    $this->enregistrerOeuvre();
-                }
-                else
-                {
-                    $this->oeuvre();    
-                }
-                
+                $this->oeuvre();
                 break;
             case $this->pTrajet:
                 $this->trajet();
@@ -122,6 +115,9 @@ class Controler {
                 break;
             case $this->pAdmin:
                 $this->admin();
+                break;
+            case $this->pGestion:
+                $this->gestion();
                 break;
             case 'selectArrondissement';
                 $this->creerSelectArrondissement();
@@ -164,7 +160,14 @@ class Controler {
         $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
         
         $photo = new Photo();
-        $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"]);
+        $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"], false);
+        
+        if (isset($_GET['action']) && $_GET['action'] == 'envoyerPhoto') {
+            $msgInsertPhoto = $photo->inserePhotoBdd($_GET["o"], false);
+        }
+        else {
+            $msgInsertPhoto = null;
+        }
         
         $artiste = new Artiste();
         $artistesOeuvre = $artiste->getArtistesbyOeuvreId ($_GET["o"]);
@@ -172,6 +175,7 @@ class Controler {
         $this->oVue = new VueOeuvre();
         $this->oVue->setDataGlobal('oeuvre', "page d'une oeuvre", $this->langueAffichage, $this->pOeuvre);
         $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre, $this->langueAffichage);
+        $this->oVue->setMsgPhoto($msgInsertPhoto);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
@@ -179,27 +183,7 @@ class Controler {
         
         
     }
-    
-     private function enregistrerOeuvre() {
-        
-        $oeuvre = new Oeuvre();
-        $oeuvreAffichee = $oeuvre->getOeuvreById($_GET["o"], $this->langueAffichage);
-        
-        $commentaire = new Commentaire();
-        $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
-        
-        $photo = new Photo();
-        $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"]);
-        $photosEnvoie = $photo->inserePhotoBdd($_GET["o"]);
-         
-        $this->oVue = new VueOeuvre();
-         $this->oVue->setDataGlobal('oeuvre', "page d'une oeuvre", $this->langueAffichage, $this->pOeuvre);
-        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $this->langueAffichage);      
-        $this->oVue->afficherMeta();
-        $this->oVue->afficherEntete();
-        $this->oVue->afficherBody();
-        $this->oVue->afficherPiedPage();
-    }
+
     /**
     * @brief Méthode qui appelle la vue d'affichage de la page de trajet
     * @access private
@@ -226,8 +210,25 @@ class Controler {
         
         $nouvelSousCategorie = new SousCategorie();
         $sousCategories = $nouvelSousCategorie->getAllSousCategories('FR');
+
+        $oeuvre = new Oeuvre();
+        $arrondissement = new Arrondissement();
+        $categorie = new SousCategorie();
+        
+        $authorise = false;
+        
+        if(isset($_POST['boutonAjoutOeuvre'])) {
+
+            $oeuvre->ajouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
+        }
+        
+        $oeuvresBDD = $oeuvre->getAllOeuvres();
+        $arrondissementsBDD = $arrondissement->getAllArrondissements();
+        $categorieBDD = $categorie->getAllSousCategories($this->langueAffichage);
+
         $this->oVue = new VueSoumission();
         $this->oVue->setDataGlobal('soumission', "page de soumission d'oeuvre", $this->langueAffichage, $this->pSoumission);
+        $this->oVue->setData($oeuvresBDD, $arrondissementsBDD, $categorieBDD);
         $this->oVue->afficherMeta();
         $this->oVue->setData($arrondissements, $sousCategories);
         $this->oVue->afficherEntete();
@@ -256,22 +257,77 @@ class Controler {
         $this->oVue->afficherBody();
         $this->oVue->afficherPiedPage();
     }
-     /**
+    /**
     * @brief Méthode qui appelle la vue d'affichage de la page admin
     * @access private
     * @return void
     */
-    private function admin(){
-        $photo = new Photo();
-        $photoAllUnauthorized = $photo->getAllUnauthorizedPhoto();
-        $photoAReviser = $photo->getPhotoById();
-        $oeuvre = new Oeuvre;
-        $oeuvre->updaterOeuvresVille();
+//    private function admin(){
+//        
+//        $photo = new Photo();
+//        $photoAllUnauthorized = $photo->getAllUnauthorizedPhoto();
+//        $photoAReviser = $photo->getPhotoById();
+//        $oeuvre = new Oeuvre;
+//        $oeuvre->updaterOeuvresVille();
+//        $date = $oeuvre->getDateDernierUpdate();
+//        $this->oVue = new VueAdmin();
+//        $this->oVue->setDataGlobal("Admin", "page d'administration", $this->langueAffichage, $this->pAdmin);
+//        $this->oVue->setData($photoAllUnauthorized);
+//        $this->oVue->setData($photoAReviser);
+//        $this->oVue->afficherMeta();
+//        $this->oVue->afficherEntete();
+//        $this->oVue->afficherBody();
+//        $this->oVue->afficherPiedPage();
+//    }
+    
+    /**
+    * @brief Méthode qui appelle la vue d'affichage de la page gestion
+    * @access private
+    * @return void
+    */
+    private function gestion() {
+        
+        $oeuvre = new Oeuvre();
+        $arrondissement = new Arrondissement();
+        $categorie = new SousCategorie();
+        
+        if (isset($_POST["misAJour"])) {
+            $oeuvre->updaterOeuvresVille();
+        }
         $date = $oeuvre->getDateDernierUpdate();
-        $this->oVue = new VueAdmin();
-        $this->oVue->setDataGlobal("Admin", "page d'administration", $this->langueAffichage, $this->pAdmin);
-        $this->oVue->setData($photoAllUnauthorized);
-        $this->oVue->setData($photoAReviser);
+        
+        if (isset($_GET["ajouterOeuvre"])) {
+            $oeuvreAModifier = $oeuvre->afficheArticlePourModif(1);
+        }
+        else {
+            $oeuvreAModifier = "";
+        }
+        
+        //Suppression d'une oeuvre.
+        if (isset($_POST["boutonSuppOeuvre"]) && $_POST["selectOeuvreSupp"] != "") {
+            $oeuvre->supprimerOeuvre($_POST["selectOeuvreSupp"]);
+        }
+        
+        //Ajout d'une oeuvre.
+        $authorise = true;
+        
+        if(isset($_POST['boutonAjoutOeuvre'])) {
+
+            $oeuvre->ajouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
+        }
+        
+        //Modification d'une oeuvre ici.
+        
+        
+        
+        
+        $oeuvresBDD = $oeuvre->getAllOeuvres();
+        $arrondissementsBDD = $arrondissement->getAllArrondissements();
+        $categorieBDD = $categorie->getAllSousCategories($this->langueAffichage);
+        
+        $this->oVue = new VueGestion();
+        $this->oVue->setDataGlobal("Gestion", "page de gestion par l'administrateur", $this->langueAffichage, $this->pGestion);
+        $this->oVue->setData($date, $oeuvreAModifier, $oeuvresBDD, $arrondissementsBDD, $categorieBDD);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();

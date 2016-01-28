@@ -37,7 +37,7 @@ function googleMap () {
     $oeuvre = new Oeuvre();
     $infoOeuvre = $oeuvre->getAllOeuvres();
     
-    $urlOeuvre = "http://".$_SERVER['SERVER_NAME']."?r=oeuvre&o=";
+    $urlOeuvre = "http://".$_SERVER['HTTP_HOST']."?r=oeuvre&o=";
 
     // ADD TO XML DOCUMENT NODE
     for ($i = 0; $i < count($infoOeuvre); $i++) {
@@ -81,12 +81,14 @@ function afficherSelectRecherche () {
     
     if (isset($_GET["typeRecherche"]) && $_GET["typeRecherche"] != "") {
         
+        $nomServeur = $_SERVER["HTTP_HOST"];
+        
         if ($_GET["typeRecherche"] == "artiste") {
-            echo '<input class="text" type="text" placeholder="Entrez le nom de l\'artiste" id="keyword" name="inputArtiste" onkeyup="autoComplete(\'artiste\')">';
+            echo '<input class="text" type="text" placeholder="Entrez le nom de l\'artiste" id="keyword" name="inputArtiste" onkeyup="autoComplete(\'artiste\', \''.$nomServeur.'\')">';
             echo '<div id="results"></div>';
         }
         else if ($_GET["typeRecherche"] == "titre") {
-            echo '<input class="text" type="text" placeholder="Entrez le titre de l\'oeuvre" id="keyword" name="inputOeuvre" onkeyup="autoComplete(\'titre\')">';
+            echo '<input class="text" type="text" placeholder="Entrez le titre de l\'oeuvre" id="keyword" name="inputOeuvre" onkeyup="autoComplete(\'titre\', \''.$nomServeur.'\')">';
             echo '<div id="results"></div>';
         }
         else if ($_GET["typeRecherche"] == "arrondissement") {

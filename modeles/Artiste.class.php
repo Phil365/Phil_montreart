@@ -156,5 +156,15 @@ class Artiste {
             self::$database->execute();
         }
     }
+    
+    public function lierArtistesOeuvrePoursoummision ($idOeuvre, $idArtiste) {
+        
+        self::$database->query('INSERT INTO OeuvresArtistes (idOeuvre, idArtiste) VALUES (:idOeuvre, :idArtiste)');
+
+        self::$database->bind(':idOeuvre', $idOeuvre);
+        self::$database->bind(':idArtiste', $idArtiste);
+
+        self::$database->execute();  
+    }
 }
 ?>
