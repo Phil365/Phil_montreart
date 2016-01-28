@@ -732,6 +732,10 @@ header{
     background-color: #f2f2f2;
     cursor: pointer;
 }
+#map {
+    height: 300px !important;
+    margin: 0 auto;
+}
 /*======================================== Style reponse recherche ====================================================*/
 
 /*======================================== FIN DU STYLES POUR MOBILE ====================================================*/
@@ -821,7 +825,8 @@ width: 270px;
     max-width: 200px;
 }
 #map {
-    height: 100%;
+    height: 300px !important;
+    margin: 0 auto;
 }
 /*--------------- FIN STYLES SLIDER----------------*/
 }
@@ -1178,6 +1183,10 @@ margin-left: 40px;
 .description{
     top: 100px;
 }
+}
+#map {
+    height: 300px !important;
+    margin: 0 auto;
 }
 /*
 @media (min-width: 1200px){
