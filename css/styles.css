@@ -72,7 +72,7 @@ width: extend-to-zoom;
 zoom: 1.0;
 }
 html,body{
-min-height: 100%; 
+min-height: 100%;
 margin: 0;
 padding: 0;
 border-bottom-left-radius: 10px;
@@ -82,6 +82,7 @@ html{
 background-color: #6c0e1e;
 }
 body{
+
 background-color: #ffffff;
 font-family: 'EB Garamond', serif;
 max-width: 980px;
@@ -170,17 +171,19 @@ main{
     height: 300px;
     width: 100%;
     margin-top: 40px;
+    margin-bottom: 20px;
     border: 2px solid #30A0D1;
 }
 .section4{
     
-    height: 300px;
+    height: auto;
     width: 100%;
+    margin-bottom: 20px;
     border: 2px solid #b812ea;
 }
 .section5{
     
-    height: 300px;
+    height: auto;
     width: 100%;
     border: 2px solid #5dea12;
 }
@@ -190,15 +193,15 @@ main{
 }
 .section5 img{
     width: 100%;
+    height: auto;
+    
 }
 footer{
 background: #30A0D1;
 width: 100%;
-height: 75px;
-float: left;
-clear: both;
+min-height: 75px;
 position: relative;
-bottom: 0;
+bottom: -90px;
 font-family: 'Noto Serif', serif;
 font-size: .8em;
 letter-spacing: .6px;
@@ -240,7 +243,7 @@ z-index: 3;
  
 }
 .boutonMoyenne{
-  
+    width:auto;
     text-align:center;
     background-color:#30A0D1;
     font-family:'EB Garamond', serif;
@@ -284,12 +287,27 @@ z-index: 3;
     height: auto;
     padding-left: 10px;
 }
+.sectionCommentaires .thumbnail{
+    display: inline-block;
+    margin: 10px;
+    float: left;
+    clear: left;
+}
+.sectionCommentaires h4{
+    float: left;
+    clear: none;
+}
 .sectionCommentaires p{
     margin: 20px 10px 30px 10px;
 }
 .sectionCommentaires .boutonMoyenne{
    
     margin: 20px 10px;
+}
+.unCommentaire{
+    width: 98%;
+    border-bottom: 2px solid rgba(179, 42, 66, 0.65);
+    
 }
 .aside1{
     width: 100%;
@@ -303,6 +321,7 @@ z-index: 3;
     padding-left: 10px;
     margin-top: 20px;
 }
+
 .thumbnail{
     width: 50px;
     height: 50px;
@@ -438,9 +457,13 @@ padding:20px 35px;
 margin:-10px -50px;
 text-align:center;
 }
-
+input{
+    width:82%;
+}
+select{
+    width: 92%;
+}
 input, select {
-width:82%;
 padding:10px;
 margin-top:30px;
 border:1px solid #ccc;
@@ -450,6 +473,9 @@ font-family:'EB Garamond', serif;
 border-radius: 5px;
 }
 
+textarea{
+    margin-top: 30px;
+}
 select:focus, textarea, textarea:focus {
     border-radius: 5px;
 }
@@ -478,13 +504,23 @@ border-radius:10px;
 font-family:'EB Garamond', serif;
 background-color:#fff;
 }
-#form_itineraire, #contribuer_article{
+#form_itineraire, #contribuer_oeuvre{
 padding:10px 50px 30px 50px;
 font-family:'EB Garamond', serif;
 }
 #form_itineraire input[type="submit"]{
     float: right;
     width: 100px; 
+}
+#formContribuerPhoto h3{
+   margin-left: 3%;
+    color: #b32a42;
+}
+#formContribuerPhoto h4{
+    margin-left: 60px;
+    color: #000000;
+    text-align: center;
+    line-height: 1.6em;
 }
 
 /*--------------------------FIN STYLES FORMULAIRES -------------------------*/
@@ -550,7 +586,14 @@ header{
     text-align: center;
 }
 
-.barreRechercheContenu input, select {
+.barreRechercheContenu input {
+    height: 22px;
+    width: 92%;
+    font-size: 14px;
+    padding: 0;
+    margin: 0 auto 5px auto;
+}
+.barreRechercheContenu select {
     height: 22px;
     width: 92%;
     font-size: 14px;
@@ -693,21 +736,52 @@ text-align: center;
 padding: 0 .3em;
 line-height: 30px;
 }
+.section1{
+   margin-bottom: 20px; 
+}
+.section5 img{
+    width: 70%;
+    margin-left: 15%;
+}
+/*--------------------STYLES SLIDER----------------*/
+    .single-item{
+    width: 99%;
+    text-align: center;
+}
 
+  
+.slick-slide{
+width: 270px;
+
+}
+.slick-slide img {
+   
+    display: block;
+    width: 50%;
+    margin-left: 25%;
+}
+.gm-style .photomap {
+    max-width: 200px;
+}
+#map {
+    height: 100%;
+}
+/*--------------- FIN STYLES SLIDER----------------*/
 }
 @media (min-width: 800px){
     
 html{
     width: 100%;
-    height: auto;
+    height: 100%;
 }
 
 
 body{
     width: 100%;
-    position: absolute;
     height: auto;
     margin: 0 auto;
+    position: relative;
+    bottom: 0;
 }
     
 header{
@@ -743,7 +817,7 @@ z-index: 4;
 margin:10px;
 }
 main{
-width: 70%;
+width: 60%;
 }
 
 .textStandard, .noIndent{
@@ -755,6 +829,12 @@ margin-right: 20px;
 }
 .dummy{
     height: 110px;
+}
+.slick-slide img {
+   
+    display: block;
+    width: 98%;
+    margin-left: 2%;
 }
 .aside1{
     width: 30%;
@@ -770,7 +850,8 @@ margin-right: 20px;
     position: relative;
     right: -30%;
     top: 300px;
-} 
+}
+
 .section1{
     
     height: 300px;
@@ -795,7 +876,7 @@ margin-right: 20px;
     height: 300px;
     width: 20%;
     position: relative;
-    top: 4px;
+    top: 24px;
     margin-right: 0;
 }
 .section3 p{
@@ -824,6 +905,10 @@ margin-right: 20px;
     top: -300px;
     left: 22%;
 }
+.section5 img{
+    width: 100%;
+    margin: 0 auto;
+}
 #itineraire{
 width: 40%; 
 }
@@ -835,15 +920,80 @@ width: 40%;
 .lienPageMembre{
     display: none;
 }    
-.infosOeuvre{
-    width: 20%;
-    height: 300px;
-}
+
+
 .sliderOeuvre{
-    width: 80%;
+    width:60%;
     height: auto;
-    top: -300px;
+    
 }
+#btnContribuerPhoto{
+   
+    float: left;
+    clear: none;
+   
+}
+#formContribuerPhoto{
+  display: block;
+    width: 60%;
+    
+}
+.infosOeuvre{
+    width: 38%;
+    display: block;
+    position: absolute;
+    top: 155px;
+    right: 0;
+    float: right;
+    border-left: 4px solid #6c0e1e;
+}
+.description{
+    display: block;
+    width: 100%;
+    height: auto;
+    position: relative;
+    top: 210px;
+}
+
+.description h3{
+    position: relative;
+    left: -190px;
+}
+/*
+.description p{
+     position: relative;
+    left: -190px;
+}
+*/
+.sectionCommentaires{
+ 
+    width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+    top: 210px;
+}
+#sponsorsPageOeuvre{
+    display: block;
+    width: 100%;
+    height: 300px;;
+    position: relative;
+    top: 210px;
+    
+}
+
+.description, .sectionCommentaires, #sponsorsPageOeuvre{
+    margin-top: 70px;
+    
+}
+footer{
+    width: 100%;
+    border-radius: 10px;
+    padding: 0;
+    margin-top: 20px;
+}
+
+
 /*------------- PAGE ADMIN 800px ET+ -----------------------*/
     .premiereColonne{
         width: 58%;
@@ -887,20 +1037,17 @@ width: 40%;
 /*========================================  STYLES POUR DESKTOP ====================================================*/
 @media (min-width: 1024px){
 html{
+    
     width: 980px;
     margin: 0 auto;
-    position: relative;
+    
 }
 body{
     width: 100%;
-    height: auto;
-    position: absolute;
-    margin: 0px 0 0 50%;
-    left: -50%;
+   
 }
 header{
     width: 980px;
-   
     margin: 0 auto;
     height: 86px;
 }
@@ -927,11 +1074,11 @@ top: -140px;
 max-width: 800px;
 margin-left: 40px;
 }
-footer{
-    width: 100%;
-    margin-top: 20px;
-    border-radius: 10px;
-    padding: 0;
+.infosOeuvre{
+   top: 166px; 
+ }
+.description{
+    top: 100px;
 }
 }
 /*
@@ -1016,47 +1163,7 @@ width: 270px;
     margin-left: 10%;
 }
 }*/
-/*@media (min-width: 1300px){
-   
-html{
-width: 76%;
-margin-left: 13%;    
-}
-header, nav{
-width: 76%;
-}
-}
-@media (min-width: 1400px){
-   
-html{
-width: 68%;
-margin-left: 16%;    
-}
-header, nav{
-width: 68%;
-}
-}
-@media (min-width: 1600px){
-  
-html{
-width: 60%;
-margin-left: 20%;   
-}
-header, nav{
-width: 60%;
-}
-}
-@media (min-width: 1800px){
 
-html{
-width: 54%;
-margin-left: 23%;
-}
-    
-header, nav{
-width: 54%;
-}
-    
-}*/
+
 /*========================================FIN DU STYLES POUR DESKTOP ====================================================*/
 

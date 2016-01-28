@@ -91,7 +91,7 @@ class Vue {
             </div>
             <div class="boutonRecherche">
                 <div class="flecheRecherche"></div>
-                <img class="iconeRecherche" src="../images/flecheRecherche.png">
+                <img class="iconeRecherche" src="./images/flecheRecherche.png">
             </div>
             
             <nav>
