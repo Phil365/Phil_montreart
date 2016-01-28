@@ -41,9 +41,9 @@ class VueGestion extends Vue {
 
 //        $titre='';
 //        $titre = $this->oeuvreAModifier['titre'];
-        $msgAjout = "succès ajout";
-        $msgSupp = "succès suppression";
-        $msgModif = "succès modif";
+        $msgAjout = "";
+        $msgSupp = "";
+        $msgModif = "";
         if (!isset($this->dateDernierUpdate["dateDernierUpdate"])) {
             $date = "Jamais mis à jour";
         }
@@ -80,8 +80,8 @@ class VueGestion extends Vue {
             <div id="Onglet-1">
                 <h2>Ajouter une oeuvre</h2>
                           
-                
                 <form method="POST" name="formAjoutOeuvre" action="?r=gestion" enctype="multipart/form-data">
+                    
                     <span class="erreur"></span>
                     <input type='text' name='titreAjout' value="" placeholder="Titre de l'oeuvre (si connu)"/>
                     <span class="erreur"></span>
@@ -115,7 +115,6 @@ class VueGestion extends Vue {
                     <span class="erreur"></span>
                     <input class="boutonMoyenne" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
                 </form>
-
                 <span class="msgUser">
                 <?php
                 echo $msgAjout;
@@ -123,7 +122,8 @@ class VueGestion extends Vue {
                 </span>
             </div> 
             
-            <!--- jQuery pour afficher les onglets 
+            <!--- jQuery pour afficher les onglets -->
+
             <script type="text/javascript">
 
                 /**

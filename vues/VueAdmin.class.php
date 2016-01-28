@@ -16,6 +16,12 @@ class VueAdmin extends Vue{
     
     private $date;
     
+    /**
+    * @var string $msgAjoutOeuvre Message destiné à l'utilisateur lors de la soumission
+    * @access protected
+    */
+    protected $msgAjoutOeuvre;
+    
     function __construct(){
         $this->titrePage = "MontréArt - Gestion";
         $this->descriptionPage = "La page de gestion du site MontréArt";
@@ -26,6 +32,12 @@ class VueAdmin extends Vue{
       
         $this->photoAllUnauthorized = $photoAllUnauthorized;
        //var_dump($photoAllUnauthorized);
+    }
+    
+    
+    public function setMsgAjoutOeuvre($msg) {
+        
+        $this->msgAjoutOeuvre = $msg;
     }
        
 
@@ -47,8 +59,27 @@ class VueAdmin extends Vue{
         </div> 
         <div class="premiereColonne">
             <h2>Administration</h2>
-             
-    <div id="dateMisAJour">
+            
+            
+        <form name="formadmin" id="formPhotoUnique" action="?r=admin&action=soumetAdminOeuvre" method="post">
+            <input type="text" id="nomDuInputTitre" name="nomDuInputTitre">
+            <input type="text" id="nomDuInputAdresse">
+            <input type="text" id="nomDuInputDescription">
+            <input type="text" id="nomDuSelectCategorie">
+            <input type="text" id="nomDuSelectArrondissement">
+    
+            <span id="erreurTitreOeuvre" class="erreur"></span><br>
+            <span id="erreurAdresseOeuvre" class="erreur"></span><br>
+            <span id="erreurDescription" class="erreur"></span><br>
+            <span id="erreurSelectCategorie" class="erreur"></span><br>
+            <span id="erreurSelectArrondissement" class="erreur"></span><br>
+            <span class="erreur"> <?php if (isset($this->msgAjoutOeuvre)) {echo $this->msgAjoutOeuvre;} ?></span> 
+            <input class='boutonMoyenne' type="submit" value="Valider form" name="submit">
+        </form>
+            
+
+            <!--<input type="submit">-->
+                <div id="dateMisAJour">
                 <p>Dernière mise à jour: </p>
         <?php
     $oeuvre = new Oeuvre();

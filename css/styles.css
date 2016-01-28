@@ -32,7 +32,7 @@ vertical-align: baseline;
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
-/*display: block;*/
+display: block;
 }
 body {
 line-height: 1;
@@ -72,8 +72,8 @@ width: extend-to-zoom;
 zoom: 1.0;
 }
 html,body{
-/*min-height: 100%; */
-margin: 0 auto;
+min-height: 100%; 
+margin: 0;
 padding: 0;
 border-bottom-left-radius: 10px;
 border-bottom-right-radius: 10px;
@@ -83,46 +83,46 @@ background-color: #6c0e1e;
 }
 body{
 background-color: #ffffff;
-font-family: 'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 max-width: 980px;
 overflow-y: scroll; 
 }
 
 h2{
-font-family: 'Noto Serif', serif;
+font-family: 'Source Sans Pro', sans-serif;
 font-size: 1.6em;
 color: #6c0e1e;
 margin: 60px 10px 30px 10px;
 }
 
 h3{
-font-family: 'Noto Serif', serif;
+font-family: 'Source Sans Pro', sans-serif;
 color: #6c0e1e;
 font-size: 1.2em;
 margin-top: 1em;
 }
 h4{
-font-family: 'Noto Serif', serif;
+font-family: 'Source Sans Pro', sans-serif;
 color: #6c0e1e;
 font-size: 1em;
 margin-top: 1em;
 }
 h5{
-font-family: 'Noto Serif', serif;
+font-family: 'Source Sans Pro', sans-serif;
 color: #6c0e1e;  
 font-size: .9em;
 }
 a{
-font-family: 'Noto Serif', serif;
+font-family: 'Source Sans Pro', sans-serif;
 color: #000000;
 text-decoration: none;
 }
-.erreur {
-    color: red;
-}
+
+
 
 .textStandard{
-font-family: 'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
+font-weight: 400;
 font-size: .9em;
 line-height: 1.4em;
 letter-spacing: .9px;
@@ -132,7 +132,7 @@ margin: 40px 10px;
 
 }
 .noIndent{
-font-family: 'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 font-size: 1.2em;
 line-height: 1.4em;
 letter-spacing: .9px;
@@ -198,14 +198,14 @@ main{
     width: 100%;
 }
 footer{
-background: #30A0D1;
+background: #659CEF;
 width: 100%;
 height: 75px;
 float: left;
 clear: both;
 position: relative;
 bottom: 0;
-font-family: 'Noto Serif', serif;
+font-family: 'Source Sans Pro', sans-serif;
 font-size: .8em;
 letter-spacing: .6px;
 line-height: 1.6em;
@@ -232,6 +232,7 @@ z-index: 3;
     width: 40px;
     height: auto;
     margin: 5px;
+    margin-top: 18px;
 }
 .infosOeuvre{
     float: left;
@@ -262,7 +263,7 @@ z-index: 3;
   
     text-align:center;
     background-color:#30A0D1;
-    font-family:'EB Garamond', serif;
+    font-family: 'Source Sans Pro', sans-serif;
     color:#fff;
     border:1px solid #ddd;
     padding:10px;
@@ -328,13 +329,30 @@ z-index: 3;
     width: 100%;
     overflow-y: scroll;
 }
+
+.rechercheResultTitre {
+    
+    margin-left: 30px;
+    margin-top: 20px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 20px;
+
+}
+
+
+.infoResult {
+    
+    margin-left: 30px;
+    font-size: 20px;
+
+}
 #formRevisionPhotos{
     display: none;
     max-width:600px;
     padding:10px 50px;
     border:2px solid #F8F274;
     border-radius:10px;
-    font-family:'EB Garamond', serif;
+    font-family: 'Source Sans Pro', sans-serif;
     background-color:#fff;
 }
 #formRevisionPhotos img{
@@ -344,6 +362,14 @@ z-index: 3;
 #dateMisAJour{
     position: relative;
     top: 200px;
+}
+
+#results {
+
+    background-color: cornflowerblue;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    
 }
 /*-------------FIN PAGE ADMIN ---------------------*/
 /*========NAV PRINCIPALE=====*/
@@ -371,19 +397,33 @@ z-index: 2;
 
 
 nav a{
-font-family: 'Noto Serif', serif;
-font-size: .8em;
-color: #6c0e1e;
+font-family: 'Source Sans Pro', sans-serif;
+font-size: .7em;
+/*color: #6c0e1e;*/
+color: white;
 text-decoration: none;
 padding: .2em .3em;
 line-height: 36px;
-border-right: #6c0e1e solid 2px;
+background-color: #659CEF;
+border-radius: 5px;
 }
+
+nav a:hover {
+background-color: #6c0e1e;
+color: white;
+}
+
+
 .ici{/*--cette class est pour marquer la page actuelle dans le nav--*/
 font-weight: 600;
 }
 nav a:active{
 color:  #b95364;
+}
+
+nav a:first-child {
+    margin-left: 9%;
+    
 }
 
 /*====fin=NAV PRINCIPALE=====*/
@@ -406,7 +446,7 @@ top:-4px;
 width:30px;
 height:30px;
 background-color:#6c0e1e;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 font-size: 1.2em;
 color: #fff;
 cursor:pointer;
@@ -417,7 +457,7 @@ cursor:pointer;
 #div_form {
 position:absolute;
 top:17%;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 z-index: 8;
 display: none;
 }
@@ -436,7 +476,7 @@ margin-top:30px;
 border:1px solid #ccc;
 padding-left:40px;
 font-size:16px;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 border-radius: 5px;
 }
 
@@ -451,7 +491,7 @@ width:100%;
 text-align:center;
 display:block;
 background-color:#30A0D1;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 color:#fff;
 border:1px solid #ddd;
 padding:10px 0;
@@ -465,12 +505,12 @@ max-width:200px;
 padding:10px 50px;
 border:2px solid #F8F274;
 border-radius:10px;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 background-color:#fff;
 }
 #form_itineraire, #contribuer_article{
 padding:10px 50px 30px 50px;
-font-family:'EB Garamond', serif;
+font-family: 'Source Sans Pro', sans-serif;
 }
 #form_itineraire input[type="submit"]{
     float: right;
@@ -498,7 +538,7 @@ header{
     position: relative;
     top: -50px;
     left: 70px;
-    font-family: 'Noto Serif', serif;
+    font-family: 'Source Sans Pro', sans-serif;
     color: #6c0e1e;
     font-size: 1.4em;
     z-index: 4;
@@ -512,7 +552,7 @@ header{
 
 .barreRecherche{
     text-align: center;
-    font-family: 'Noto Serif', bold;
+    font-family: 'Source Sans Pro', sans-serif;
     display: block;
     float: right;
     background: #B32A42;
@@ -562,19 +602,20 @@ header{
     margin: 0 auto;
     position: absolute;
     left: 8px;
-    top: 28%;
+    top: 10%;
     height: 40px;
     display: block;
 }
 
 .flecheRecherche {
+
     float: right;
     background: #B32A42;
-    width: 30px;
-    height: 30px;
+    width: 15px;
+    height: 15px;
     position: absolute;
-    left: -17px;
-    top: 28px;
+    left: -10px;
+    top: 17px;
     transform: rotate(45deg);
     border-bottom-left-radius: 5px;
     border-left: solid 2px #6c0e1e;
@@ -596,16 +637,29 @@ header{
     padding: 0px 10px 10px 10px;
 }
 
+/*#NavAccueil {
+
+    text-align: center;
+    margin-left: 35px;*/
+
+.nav a {
+    /*text-align: center;*/
+
+}
+    
+}
+
 /*======================================== Style reponse recherche====================================================*/
 
 #results {
-    background: #F5F077;
+    /*background: #F5F077;*/
     width: 92%;
     border: 1px solid #c0c0c0;
     display: none;
     text-align: center;
     margin: auto;
     border-radius: 5px;
+    /*color: white;*/
 }
 
 #results .item {
@@ -617,6 +671,7 @@ header{
 
 #results .item:last-child {
     border-bottom: 0px;
+    padding-bottom: 4px;
 }
 
 #results .item:hover {
@@ -639,6 +694,10 @@ top:58px;
 nav a{
 font-size: 1em;    
 }
+    
+nav a:first-child {
+    margin-left: 20%;
+}
 #icon_menu{
 margin-left: 2%;
 margin-right: 20%;
@@ -659,9 +718,6 @@ float: right;
 margin-right: 2%;
 }
     
-nav a:first-child {
-    margin-left: 20%;
-}
 .dummy{
     height: 98px;
 }
@@ -680,7 +736,7 @@ nav a{
 font-size: 1.2em;
 letter-spacing: .4px;
 text-align: center;
-padding: 0 .3em;
+padding: 0 20px;
 line-height: 30px;
 }   
 }
@@ -711,7 +767,7 @@ height: 60px;
 nav{
     top: 76px;
     width: 100%;
-    margin-left: 0;
+    /*margin-left: 0px;*/
 }
 
 #recherche{
@@ -756,21 +812,22 @@ margin-right: 20px;
 } 
 .section1{
     
-    height: 300px;
+    /*height: 300px;
     width: 30%;
     display: block;
-    margin-right: 0;
+    margin-right: 0;*/
 }
 
 .section2{
    
     height: 300px;
-    width: 70%;
-    float: left;
-    clear: none;
-    position: relative;
-    top: -300px;
-    left: 30%;
+    display: block;
+    width: 100%;
+    /* float: left; */
+    /* clear: none; */
+    /* position: relative; */
+    /* top: -300px; */
+    /* left: 30%; */
     margin-left: 0;
    
 }
@@ -813,6 +870,26 @@ margin-right: 20px;
     width: 80%;
     height: auto;
     top: -300px;
+}
+    
+.flecheRecherche {
+    
+    float: right;
+    background: #B32A42;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    left: -17px;
+    top: 28px;
+    transform: rotate(45deg);
+    border-bottom-left-radius: 5px;
+    border-left: solid 2px #6c0e1e;
+    border-bottom: solid 2px #6c0e1e;
+}
+    
+ .iconeRecherche {
+    
+    top: 28%;
 }
 /*------------- PAGE ADMIN 800px ET+ -----------------------*/
     .premiereColonne{
@@ -967,7 +1044,7 @@ width: 270px;
 }
 
 .description{
-    margin-left: 10%;
+    margin-top: 10%;
     
 }
 

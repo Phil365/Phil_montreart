@@ -31,15 +31,15 @@ class VueAccueil extends Vue {
     public function afficherBody() {
     ?>
 
-           <div class="section1">
+           <!--<div class="section1">
                 <div class="single-item">
-                <?php
-                    for ($i = 0; $i < count($this->photosAll); $i++) {
-                        $imgPhoto = $this->photosAll[$i]['image'];
-                        echo "<div><img src ='$imgPhoto'></div>";
-                    }
+                <?php 
+                    //for ($i = 0; $i < count($this->photosAll); $i++) {
+                        //$imgPhoto = $this->photosAll[$i]['image'];
+                        //echo "<div><img src ='$imgPhoto'></div>";
+                    //}
                 ?>
-                </div>
+            </div> 
 
                 <script type="text/javascript">
                     $(document).ready(function(){
@@ -56,7 +56,7 @@ class VueAccueil extends Vue {
                         });
                     });
                  </script>
-            </div>
+            </div> -->
             <div class="section2">
                 <div id="map" style="width: 100%; height: 100%;">
                 </div>
