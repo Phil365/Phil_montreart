@@ -38,9 +38,21 @@ class VueGestion extends Vue {
     * @return void
     */
     public function afficherBody() {
-
-//        $titre='';
-//        $titre = $this->oeuvreAModifier['titre'];
+// var_dump($this->oeuvreAModifier);
+        $titreModif='';
+        $adresse='';
+        $idSousCategorie='';
+        $idArrondissement='';
+        $descriptionFR='';
+        
+        if (isset($this->oeuvreAModifier['titre']) && isset($this->oeuvreAModifier['adresse']) && isset($this->oeuvreAModifier['idSousCategorie']) && isset($this->oeuvreAModifier['idArrondissement']) && isset($this->oeuvreAModifier['descriptionFR'])){
+        $titreModif = $this->oeuvreAModifier['titre'];
+        $adresse = $this->oeuvreAModifier['adresse'];
+        $idSousCategorie = $this->oeuvreAModifier['idSousCategorie'];
+        $idArrondissement = $this->oeuvreAModifier['idArrondissement'];
+        $descriptionFR = $this->oeuvreAModifier['descriptionFR'];
+        }
+     
         $msgAjout = "";
         $msgSupp = "";
         $msgModif = "";
@@ -63,10 +75,10 @@ class VueGestion extends Vue {
         <div>
             <?php
             //Ajout des autres liens si l'usager est de type administrateur.
-                echo '<a id ="click1" href="?r=gestion">Ajouter oeuvre</a>';
-                echo '<a id ="click2" href="?r=gestion">Supprimer oeuvre</a>';
-                echo '<a id ="click3" href="?r=gestion">Modifier oeuvre</a>';
-                echo "<h3>Dernière mise à jour des oeuvres de la ville :</h3>";
+                //echo '<a id ="click1" href="?r=gestion">Ajouter oeuvre</a>';
+                //echo '<a id ="click2" href="?r=gestion">Supprimer oeuvre</a>';
+                //echo '<a id ="click3" href="?r=gestion">Modifier oeuvre</a>';
+                echo "<h3 id ='MAJgestion'>Dernière mise à jour des oeuvres de la ville :</h3>";
                 echo $date;
             ?>
             
@@ -80,19 +92,19 @@ class VueGestion extends Vue {
             <div id="Onglet-1">
                 <h2>Ajouter une oeuvre</h2>
                           
-                <form method="POST" name="formAjoutOeuvre" action="?r=gestion" enctype="multipart/form-data">
-                    
-                    <span class="erreur"></span>
-                    <input type='text' name='titreAjout' value="" placeholder="Titre de l'oeuvre (si connu)"/>
-                    <span class="erreur"></span>
-                    <input type='text' name='prenomArtisteAjout' value="" placeholder="Prénom de l'artiste (si connu)"/>
-                    <span class="erreur"></span>
-                    <input type='text' name='nomArtisteAjout' value="" placeholder="Nom de l'artiste (si connu)"/>
-                    <span class="erreur"></span>
-                    <input type='text' name='adresseAjout' value="" placeholder="Adresse (obligatoire)"/>
-                    <span class="erreur"></span>
-                    <textarea name='descriptionAjout' placeholder="Description (obligatoire)"></textarea>
-                    <select name="selectArrondissement">
+                <form method="POST" name="formAjoutOeuvre" onsubmit="return valideAjoutOeuvreJS();" action="?r=gestion" enctype="multipart/form-data" >
+                   <br> <span  id="erreurTitreOeuvre" class="erreur"></span><br>                  
+                    <input type='text' class="inputGestion" name='titreAjout' id='titreAjout' placeholder="Titre de l'oeuvre"/>
+                   <br> <span class="erreur" id="erreurPrenomArtisteAjout"></span><br>
+                    <input type='text' class="inputGestion" name='prenomArtisteAjout' id='prenomArtisteAjout' value="" placeholder="Prénom de l'artiste"/>
+                  <br>  <span class="erreur" id="erreurNomArtisteAjout"></span><br>
+                    <input type='text' class="inputGestion" name='nomArtisteAjout' id='nomArtisteAjout' value="" placeholder="Nom de l'artiste "/>
+                  <br>  <span class="erreur" id="erreurAdresseOeuvre"></span><br>
+                    <input type='text' class="inputGestion" name='adresseAjout' id='adresseAjout' value="" placeholder="Adresse "/>
+                  <br>  <span class="erreur" id="erreurDescription"></span><br>
+                    <textarea name='descriptionAjout' class="inputGestion" id='descriptionAjout' placeholder="Description "></textarea>
+                  <br>  <span class="erreur" id="erreurSelectArrondissement"></span><br>
+                    <select name="selectArrondissement"  id="selectArrondissement" class="selectGestion">
                         <option value="">Choisir un arrondissement</option>
                         <?php
                             foreach ($this->arrondissementsBDD as $arrondissement) {
@@ -101,7 +113,8 @@ class VueGestion extends Vue {
                             echo "</select>";
                         ?>
                     </select><br>
-                    <select name="selectSousCategorie">
+                 <br>   <span class="erreur" id="erreurSelectSousCategorie"></span><br>
+                    <select name="selectSousCategorie"  id="selectSousCategorie" class="selectGestion">
                         <option value="">Choisir une catégorie</option>
                         <?php
                             foreach ($this->categoriesBDD as $categorie) {
@@ -109,10 +122,12 @@ class VueGestion extends Vue {
                             }
                             echo "</select>";
                         ?>
-                    </select>
-                    <h3>Téléversez l'image de l'oeuvre</h3>
-                    <input type="file" name="fileToUpload" id="fileToUpload" value="">
-                    <span class="erreur"></span>
+                    </select>                    
+                    <h3 class="televersionTexteGestion">Téléversez l'image de l'oeuvre</h3>
+                    <input type="file" name="fileToUpload" id="fileToUpload" value="" class="fileToUploadGestion">
+                   <span id="erreurPhotoVide" class="erreur"></span><br>
+                        <span id="erreurPhotoSize" class="erreur"></span><br>
+                        <span id="erreurPhotoType" class="erreur"></span><br>
                     <input class="boutonMoyenne" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
                 </form>
                 <span class="msgUser">
@@ -178,10 +193,10 @@ class VueGestion extends Vue {
 
             <div id="Onglet-2">  
                 <h2>Supprimer une oeuvre</h2>
-                <form method="POST" name="formSuppOeuvre" action="?r=gestion">
+                <form method="POST" name="formSuppOeuvre" action="?r=gestion"  onsubmit="return valideSupprimerOeuvreJS();">
 
-                    <span class="erreur"></span>
-                    <select name="selectOeuvreSupp">
+                    <span class="erreur" id='erreurSelectSupression'></span>
+                    <select name="selectOeuvreSupp" id='selectOeuvreSupp' class="selectGestion">
                         <?php
                         echo "<option value=''>choisir une oeuvre</option>";
                         foreach ($this->oeuvresBDD as $oeuvre) {
@@ -199,34 +214,8 @@ class VueGestion extends Vue {
                 ?>  
                 </span>
             </div> 
-
-            <!-- ----- MODIFICATION OEUVRE ------- -->
-
-            <div id="Onglet-1">
-                <h2>Modifier une oeuvre</h2>
-                <form method="POST" name="formModifOeuvre" action="?r=gestion">
-                    <span class="erreur"></span>
-                    <input type='text' name='titreModif' value="" placeholder="Titre de l'oeuvre (si connu)"/>
-                    <span class="erreur"></span>
-                    <input type='text' name='auteurModif' value="" placeholder="Auteur de l'oeuvre (si connu)"/>
-                    <span class="erreur"></span>
-                    <input type='text' name='adresseModif' value="" placeholder="Adresse (obligatoire)"/>
-                    <span class="erreur"></span>
-                    <textarea name='descriptionModif' placeholder="Description (obligatoire)"></textarea>
-                    <h3>Téléversez l'image de l'oeuvre</h3>
-                    <input type="file" name="fileToUpload" id="fileToUpload">
-                    <span class="erreur"></span>
-                    <input class="boutonMoyenne" type='submit' name='boutonModifOeuvre' value='Modifer'>
-                </form>
-
-                <span class="msgUser">
-                <?php
-                echo $msgModif;
-                ?>  
-                </span>
-            </div> 
         </div>
      <?php
-    }
+    } 
 }
 ?>
