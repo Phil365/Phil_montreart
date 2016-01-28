@@ -144,7 +144,7 @@ class Photo {
         
     }
 
-    public function inserePhotoBdd($idOeuvre) {
+    public function inserePhotoBdd($idOeuvre, $authorise) {
          
         $msgUtilisateur = "";
         $erreurs = false;
@@ -160,7 +160,7 @@ class Photo {
             $pic=($_FILES["fileToUpload"]["name"]);
             // Check if image file is a actual image or fake image
 
-            if ($_POST["submit"]) {
+            if (isset($_POST["submit"]) || isset($_POST["boutonAjoutOeuvre"])) {
                 
                 if ($_FILES["fileToUpload"]["size"] > 5000000 || ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
                     && $imageFileType != "gif")) {
@@ -168,9 +168,10 @@ class Photo {
                     $msgUtilisateur = "Votre fichier doit être de type Jpeg ou Png et inférieur à 5Mb.<br>";
                 }
                 if (!$erreurs) {
-                    self::$database->query("INSERT INTO photos (image, authorise, idOeuvre) VALUES ('images/images_soumises/$nouveauNomImage', false, :idOeuvre)");
+                    self::$database->query("INSERT INTO photos (image, authorise, idOeuvre) VALUES ('images/images_soumises/$nouveauNomImage', :authorise, :idOeuvre)");
 //                    self::$database->bind(':newfilename', $nouveauNomImage);
                     self::$database->bind(':idOeuvre', $idOeuvre);
+                    self::$database->bind(':authorise', $authorise);
 
                     try {
                         $result = self::$database->execute();

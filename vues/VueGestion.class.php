@@ -41,9 +41,9 @@ class VueGestion extends Vue {
 
 //        $titre='';
 //        $titre = $this->oeuvreAModifier['titre'];
-        $msgAjout = "succès ajout";
-        $msgSupp = "succès suppression";
-        $msgModif = "succès modif";
+        $msgAjout = "";
+        $msgSupp = "";
+        $msgModif = "";
         if (!isset($this->dateDernierUpdate["dateDernierUpdate"])) {
             $date = "Jamais mis à jour";
         }
@@ -66,7 +66,6 @@ class VueGestion extends Vue {
                 echo '<a id ="click1" href="?r=gestion">Ajouter oeuvre</a>';
                 echo '<a id ="click2" href="?r=gestion">Supprimer oeuvre</a>';
                 echo '<a id ="click3" href="?r=gestion">Modifier oeuvre</a>';
-        
                 echo "<h3>Dernière mise à jour des oeuvres de la ville :</h3>";
                 echo $date;
             ?>
@@ -81,8 +80,8 @@ class VueGestion extends Vue {
             <div id="Onglet-1">
                 <h2>Ajouter une oeuvre</h2>
                           
-                
-                <form method="POST" name="formAjoutOeuvre" action="?r=gestion&action=ajouterOeuvre" enctype="multipart/form-data">
+                <form method="POST" name="formAjoutOeuvre" action="?r=gestion" enctype="multipart/form-data">
+                    
                     <span class="erreur"></span>
                     <input type='text' name='titreAjout' value="" placeholder="Titre de l'oeuvre (si connu)"/>
                     <span class="erreur"></span>
@@ -112,27 +111,10 @@ class VueGestion extends Vue {
                         ?>
                     </select>
                     <h3>Téléversez l'image de l'oeuvre</h3>
-                    <input type="file" name="fileToUpload" id="fileToUpload">
+                    <input type="file" name="fileToUpload" id="fileToUpload" value="">
                     <span class="erreur"></span>
                     <input class="boutonMoyenne" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
                 </form>
-                
-                
-                
-<!--
-                <form name="formPhotoUnique" id="formPhotoUnique" action="?r=gestion&action=envoyerPhoto" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
-                    <h4 id="selectImageUpload">Sélectionnez une image :</h4>
-                    <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
-                    <span id="erreurPhotoVide" class="erreur"></span><br>
-                    <span id="erreurPhotoSize" class="erreur"></span><br>
-                    <span id="erreurPhotoType" class="erreur"></span><br>
-                    <span class="erreur"></span>
-                    <input class='boutonMoyenne' type="submit" value="Upload Image" name="submit">
-                </form>
--->
-                
-                
-                
                 <span class="msgUser">
                 <?php
                 echo $msgAjout;
@@ -141,6 +123,7 @@ class VueGestion extends Vue {
             </div> 
             
             <!--- jQuery pour afficher les onglets -->
+
             <script type="text/javascript">
 
                 /**

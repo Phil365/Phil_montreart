@@ -537,7 +537,7 @@ class Oeuvre {
 				
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres');
+        self::$database->query('SELECT * FROM Oeuvres ORDER BY titre');
         
         if ($oeuvres = self::$database->resultset()) {
             foreach ($oeuvres as $oeuvre) {
@@ -561,9 +561,73 @@ class Oeuvre {
         return $idOeuvre;
     }
     
+    /**
+    * @brief Méthode qui insert ou update les oeuvres de la ville dans la BDD en fonction de l'action passée en paramètre.
+    * @param array $oeuvre
+    * @param string $action
+    * @access private
+    * @return void
+    */
+    public function ajouterOeuvre($titre, $adresse, $prenomArtiste, $nomArtiste, $description, $sousCategorie, $arrondissement, $authorise, $langue) {
+  
     
-    
-    
+        $artiste = new Artiste();
+        $artiste->ajouterArtiste($prenomArtiste, $nomArtiste, null);
+        $idArtisteAjoute = $artiste->getArtisteIdByName($prenomArtiste, $nomArtiste, null);
+        
+        self::$database->query('INSERT INTO Oeuvres ( titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCollection, idCategorie, idSousCategorie, idArrondissement) VALUES (:titre, null, null, null, null, null, :adresse, :descriptionFR, :descriptionEN, :authorise, null, null, :idSousCategorie, :idArrondissement)');
+
+        if ($langue == "FR") {
+            self::$database->bind(':descriptionFR', $description.$langue);
+            self::$database->bind(':descriptionEN', "");
+        }
+        else if ($langue == "EN") {
+            self::$database->bind(':descriptionEN', $description.$langue);
+            self::$database->bind(':descriptionFR', "");
+        }
+        self::$database->bind(':authorise', $authorise);        
+        self::$database->bind(':titre', $titre);       
+        self::$database->bind(':adresse', $adresse);       
+        self::$database->bind(':idSousCategorie', $sousCategorie);
+        self::$database->bind(':idArrondissement', $arrondissement);
+        self::$database->execute();
+
+        $idOeuvre = $this->getIdOeuvreByTitreandAdresse($titre, $adresse);//aller chercher id oeuvre insérée
+        
+        
+        $artiste->lierArtistesOeuvrePoursoummision($idOeuvre, $idArtisteAjoute);//Lier les artistes à l'oeuvre
+        
+        $photo = new Photo();
+        $msgInsertPhoto = $photo->inserePhotoBdd($idOeuvre, $authorise);
+    }
+     public function getIdOeuvreByTitreandAdresse($titre,$adresse) {
+        
+        $idOeuvre = "";
+        
+        self::$database->query("SELECT idOeuvre FROM Oeuvres WHERE titre = :titre and adresse = :adresse");
+        self::$database->bind(':titre', $titre);
+         self::$database->bind(':adresse', $adresse);
+        
+
+       if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $idOeuvre = $oeuvreBDD['idOeuvre'];
+        }
+        return $idOeuvre;
+    }
+      public function afficheArticlePourModif($id) {
+        
+        $oeuvreMtlBDD = array();
+
+        self::$database->query('SELECT * FROM oeuvres  WHERE Oeuvres.idOeuvre = :id');
+
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':id', $id);
+
+        if ($oeuvre = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $oeuvreMtlBDD = $oeuvre; 
+        }
+        return $oeuvreMtlBDD;
+    }
     
     public function valideAjoutOeuvrePHP($titre) {
         $erreur = false;
@@ -625,10 +689,7 @@ class Oeuvre {
         }
     }
 
-
-
-
-        public function valideSuppOeuvrePHP() {
+    public function valideSuppOeuvrePHP() {
         $erreur = false;
         $messageErreurSelect = "Veuillez choisir une option";
 
