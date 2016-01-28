@@ -103,16 +103,7 @@ class VueOeuvre extends Vue {
         else {
             
     ?>
-    <?php echo "<div class='dummy'><!--    Ne mettez rien ici--></div>
-    <div class='aside1'  id='DevenirMembre'>
-            Devenir membre a ses avantages!
-        </div>
-        
- 
-        <div class='aside2' id='sponsors'>
-            Sponsors
-        </div>
-    <main id='pageOeuvres'>";
+    <?php echo "<div class='dummy'><!--    Ne mettez rien ici--></div>";
                 
                     echo "<div class='sliderOeuvre'>";
                     if ($this->photos) {//Si des photos existent pour cette oeuvre...
@@ -125,9 +116,10 @@ class VueOeuvre extends Vue {
                         $imgDefaut = "images/imgDefaut".$this->langue.".png";
                         echo "<img src = '$imgDefaut'>";
                     }
-                   //fin div sliderOeuvre
+                    echo "</div>"; //fin div sliderOeuvre
                     $idOeuvreencours=$this->oeuvre["idOeuvre"]
             ?>
+
 
                     <form name="formPhotoUnique" id="formPhotoUnique" action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerPhoto" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
                         <h4 id="selectImageUpload">Sélectionnez une image :</h4>
@@ -137,17 +129,18 @@ class VueOeuvre extends Vue {
                         <span id="erreurPhotoType" class="erreur"></span><br>
                         <span class="erreur"> <?php if (isset($this->msgPhoto)) {echo $this->msgPhoto;} ?></span>
                         <input class='boutonMoyenne' type="submit" value="Upload Image" name="submit">
+
                     </form>
             <?php
                     echo "<div class='infosOeuvre'>
-                    <h5>Titre: </h5>";
+                    <h4>Titre: </h4>";
                 echo  "<p>".$this->oeuvre['titre']."</p>"; 
-                    echo "<br><h5>Classement:</h5>
+                    echo "<h4>Classement:</h4>
                 <div class='rating'>
                     
                 </div>";
                 
-                    echo "<h5>Artiste(s) : </h5><p>";
+                    echo "<h4>Artiste(s) : </h4><p>";
                     foreach ($this->artistes as $artiste) {
                         if (isset($artiste["nomArtiste"])) {
                             
@@ -166,42 +159,43 @@ class VueOeuvre extends Vue {
                     }
         
                     if (isset($this->oeuvre["nomCollection" . $this->langue])) {
-                        echo "<h5>Collection : </h5>"."<p>". $this->oeuvre["nomCollection" . $this->langue]."</p>";
+                        echo "<h4>Collection : </h4>"."<p>". $this->oeuvre["nomCollection" . $this->langue]."</p>";
                     }
                     if (isset($this->oeuvre["nomCategorie" . $this->langue])) {
-                        echo "<h5>Catégorie : </h5>"."<p>". $this->oeuvre["nomCategorie" . $this->langue]."</p>";
+                        echo "<h4>Catégorie : </h4>"."<p>". $this->oeuvre["nomCategorie" . $this->langue]."</p>";
                     }
                     if (isset($this->oeuvre["sousCategorie" . $this->langue])) {
-                        echo "<h5>Sous-catégorie : </h5>"."<p>". $this->oeuvre["sousCategorie" . $this->langue]."</p>";
+                        echo "<h4>Sous-catégorie : </h4>"."<p>". $this->oeuvre["sousCategorie" . $this->langue]."</p>";
                     }
                 ?>
                 
                 <?php
                     if ( $this->oeuvre["parc"]) {
-                        echo "<br><h5>Parc : </h5>"."<p>". $this->oeuvre["parc"]."</p>";
+                        echo "<h4>Parc : </h4>"."<p>". $this->oeuvre["parc"]."</p>";
                     }
                     if ( $this->oeuvre["batiment"]) {
-                        echo "<br><h5>Bâtiment : </h5>"."<p>". $this->oeuvre["batiment"]."</p>";
+                        echo "<h4>Bâtiment : </h4>"."<p>". $this->oeuvre["batiment"]."</p>";
                     }
                     if ( $this->oeuvre["adresse"]) {
-                        echo "<br><h5>Adresse : </h5>"."<p>". $this->oeuvre["adresse"]."</p>";
+                        echo "<h4>Adresse : </h4>"."<p>". $this->oeuvre["adresse"]."</p>";
                     }
                     if ( $this->oeuvre["nomArrondissement"]) {
-                        echo "<br><h5>Arrondissement : </h5>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
+                        echo "<h4>Arrondissement : </h4>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
                     }
-                    echo "<a class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</a></div>";//fin div infosOeuvre
+                    echo "<button class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</button></div>";//fin div infosOeuvre
                     
                     if (isset($this->oeuvre["description" . $this->langue])) {
-                        echo " <div class='description'>
-                <h5>Description :</h5>
+                        echo "<div class='description'>
+                <h3>Description :</h3>
                 <p class='noIndent'>".$this->oeuvre["description" . $this->langue]."</p></div>";
-                    }
+                    }//fin div description
                     
                    
                     echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser Commentaire</button>";
                   
                     if ($this->commentaires) {//Si des commentaires existent pour cette oeuvre dans la langue d'affichage...
                         for ($i = 0; $i < count($this->commentaires); $i++) {
+                            echo "<div class='unCommentaire'>";
                             switch ($this->commentaires[$i]['voteCommentaire']) {//Sélection de l'image d'étoile appropriée selon le vote
                                 case 1:
                                     $imgVote = "etoiles_1.png";
@@ -224,16 +218,25 @@ class VueOeuvre extends Vue {
                             }
                             $imgPhoto = $this->commentaires[$i]['photoProfil'];
 
+
                             echo "<img class='thumbnail' src = '$imgPhoto'><br>";
                             echo "<h5 id='idUtilisateur'>".$this->commentaires[$i]["nomUsager"]."</h5>";
+
                             echo "<div class='ratingUtilisateur'><img src = 'images/$imgVote'></div>";
-                            echo "<p>".$this->commentaires[$i]["texteCommentaire"]."</p>";
+                            echo "<p>".$this->commentaires[$i]["texteCommentaire"]."</p>"."</div>";
+                            //fin div unCommentaire
                         }
                     }
                     else {
-                        echo "Aucun commentaire";
-                    }
-                    echo "</div></main></body>";//fin divs sectionCommentaires affichageComm
+                        echo "<p>Aucun commentaire</p>";
+                    }//fin div commentaires 
+            echo "</div> 
+     
+                <div id='sponsorsPageOeuvre'>
+                    Sponsors
+                </div>";
+                    echo "</body>";
+           
                 ?>
             
     <?php

@@ -180,6 +180,8 @@ class Controler {
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
         $this->oVue->afficherPiedPage();
+        
+        
     }
 
     /**
@@ -203,7 +205,12 @@ class Controler {
     * @return void
     */
     private function soumission() {
+        $nouvelArrondissement = new Arrondissement();
+        $arrondissements = $nouvelArrondissement->getAllArrondissements();
         
+        $nouvelSousCategorie = new SousCategorie();
+        $sousCategories = $nouvelSousCategorie->getAllSousCategories('FR');
+
         $oeuvre = new Oeuvre();
         $arrondissement = new Arrondissement();
         $categorie = new SousCategorie();
@@ -218,14 +225,22 @@ class Controler {
         $oeuvresBDD = $oeuvre->getAllOeuvres();
         $arrondissementsBDD = $arrondissement->getAllArrondissements();
         $categorieBDD = $categorie->getAllSousCategories($this->langueAffichage);
-        
+
         $this->oVue = new VueSoumission();
         $this->oVue->setDataGlobal('soumission', "page de soumission d'oeuvre", $this->langueAffichage, $this->pSoumission);
         $this->oVue->setData($oeuvresBDD, $arrondissementsBDD, $categorieBDD);
         $this->oVue->afficherMeta();
+        $this->oVue->setData($arrondissements, $sousCategories);
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
         $this->oVue->afficherPiedPage();
+        
+      /*   $oeuvre = new Oeuvre();
+        
+            if($_GET['action'] == 'soumetOeuvre')
+            {  $oeuvreAjouter = $oeuvre->ajouterOeuvre($_POST['titre'],$_POST['adresse'], $_POST['description'], $_POST['idArtiste'], $_POST['idSousCategorie'], $_POST['idArrondissement'], $_POST['photo']);
+             var_dump($_POST['idArrondissement']);
+            }*/ 
     }
     
     /**
@@ -358,6 +373,7 @@ class Controler {
         $this->oVue->afficherPiedPage();
     }
     
+
     // Placer les méthodes du controleur ici.
 }
 ?>

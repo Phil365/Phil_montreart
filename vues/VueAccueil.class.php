@@ -57,11 +57,11 @@ class VueAccueil extends Vue {
                     });
                  </script>
             </div> -->
-            <div class="section2">
+<!--        <div class="section2">-->
                 <div id="map" style="width: 100%; height: 100%;">
                 </div>
                 <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMap"></script>
-            </div> 
+<!--            </div> -->
             <div class="section3">
                     section3 Oeuvre en Vedette
             </div>

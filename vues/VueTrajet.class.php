@@ -24,9 +24,8 @@ class VueTrajet extends Vue {
     ?>
          <div class="dummy"><!--    Ne mettez rien ici--></div>
         
-         <div class="section1" id="carte"></div>
-         <div class="section2" id="itineraire">
-            <form action="#" id="form_itineraire" method="post" name="form_itineraire">
+         <div class="section1" id="itineraire">
+             <form action="#" id="form_itineraire" method="post" name="form_itineraire">
                 <h3>Point A</h3>
                 <input type="text" name="pointA" value="">
                 <h3>Point B</h3>
@@ -34,17 +33,13 @@ class VueTrajet extends Vue {
                 
                 <input class="submit" type="submit" value="Envoyer" name="Envoyer">
             </form>
+            </div>
+         <div class="section2" id="carte">
+           
          </div>
-    
-    
-    
-    
-        <div class="section3" id="OeuvreEnVedette">
-    
-            Oeuvre en Vedette
-        </div>
         
-        <div class="section4" id="VotreTrajet">Votre trajet</div>
+        <div class="section4" id="votreTrajet">Votre trajet
+        </div>
         
         <div class="section5">
             sponsors section5
