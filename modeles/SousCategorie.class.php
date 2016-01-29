@@ -19,9 +19,11 @@ class SousCategorie {
     }
 		
 	/**
-	 * @access public
-	 * @return Array
-	 */
+    * @brief Méthode qui récupère toutes les sous-catégories dans la BDD.
+    * @param string $langue
+    * @access public
+    * @return array
+    */
 	public function getAllSousCategories($langue) {
 				
         $infoSousCategories = array();
@@ -42,7 +44,7 @@ class SousCategorie {
     /**
     * @brief Méthode qui récupère l'ID en fonction du nom passé en paramètre, s'il existe.
     * @param string $nomSousCategorie
-    * @access private
+    * @access public
     * @return string ou boolean
     */
     public function getSousCategorieIdByName($nomSousCategorie) {
@@ -79,25 +81,5 @@ class SousCategorie {
             exit;
         } 
     }
-    
-//    function chercheParCategorie($keyword) {
-//        
-//    
-//    self::$database->query("SELECT idCategorie, nomCategorie ".$langue." FROM Categories;");
-//                           /*SELECT nomCategorieFR, nomCategorieEN  FROM categories JOIN oeuvres ON oeuvres.idCategorie = categories.idCategorie Group By nomCategorieFR*/
-//                           /*SELECT nomCategorieFR, nomCategorieEN, idOeuvre FROM categories, oeuvres Where oeuvres.idCategorie = categories.idCategorie Group By idOeuvre*/
-//    $keyword = $keyword.'%';
-//
-//    self::$database->bind(1, $keyword);
-//    
-//    $results = array();
-//
-//   if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
-//        $results = array("idOeuvre"=>$oeuvreBDD['idOeuvre'],"titre"=>$oeuvreBDD['titre']);
-//    }
-//
-//    return $results;
-//
-//    }
 }
 ?>

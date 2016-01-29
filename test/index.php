@@ -25,6 +25,7 @@ require_once "../lib/BDD/BaseDeDonnees.class.php";
     <body>
 <?php
         
+//inclusion de tous les fichiers test.
 foreach(glob('./*.*') as $nomFichier){
     if ($nomFichier != "./gabarit.test.php" && $nomFichier != "./index.php") {
         require_once ($nomFichier);

@@ -19,9 +19,10 @@ class Arrondissement {
     }
 		
 	/**
-	 * @access public
-	 * @return Array
-	 */
+    * @brief Méthode qui récupère tous les arrondissements dans la BDD.
+    * @access public
+    * @return array
+    */
 	public function getAllArrondissements() 
 	{
 				
@@ -40,7 +41,7 @@ class Arrondissement {
     /**
     * @brief Méthode qui récupère l'ID en fonction du nom passé en paramètre, s'il existe.
     * @param string $nomArrondissement
-    * @access private
+    * @access public
     * @return string ou boolean
     */
     public function getArrondissementIdByName($nomArrondissement) {
@@ -61,7 +62,7 @@ class Arrondissement {
     /**
     * @brief Méthode qui ajoute un arrondissement à la BDD.
     * @param string $nomArrondissement
-    * @access private
+    * @access public
     * @return void
     */
     public function ajouterArrondissement($nomArrondissement) {
@@ -75,22 +76,5 @@ class Arrondissement {
             exit;
         } 
     }
-    
-//    function chercheParArrondissement($keyword) {
-//    
-//    self::$database->query("SELECT nomArrondissement, idOeuvre FROM arrondissements, oeuvres Where oeuvres.idArrondissement = arrondissements.idArrondissement Group By nomArrondissement");
-//                           
-//    $keyword = $keyword.'%';
-//
-//    self::$database->bind(1, $keyword);
-//    
-//    $results = array();
-//
-//   if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
-//            $results = array("idOeuvre"=>$oeuvreBDD['idOeuvre'],"titre"=>$oeuvreBDD['titre']);
-//        }
-//
-//    return $results;
-//    }
 }
 ?>

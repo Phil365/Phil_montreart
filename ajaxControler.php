@@ -11,8 +11,7 @@
  */
 require_once("./config.php");
 	
-// Mettre ici le code de gestion de la requête AJAX
-        
+// Mettre ici le code de gestion de la requête AJAX 
 switch ($_GET['rAjax']) {//requête
     case 'googleMap':
         googleMap();
@@ -28,6 +27,11 @@ switch ($_GET['rAjax']) {//requête
         break;
 }
 
+/**
+* @brief Fonction qui récupère les infos pour populer la carte de Google Map
+* @access public
+* @return void
+*/
 function googleMap () {
     
     $dom = new DOMDocument("1.0");
@@ -55,6 +59,11 @@ function googleMap () {
     
 }
 
+/**
+* @brief Fonction qui récupère des noms de la BDD en fonction des lettres entrées par l'utilisateur
+* @access public
+* @return string
+*/
 function autoComplete () {
     
     if (!isset($_GET['keyword'])) {
@@ -77,6 +86,11 @@ function autoComplete () {
     echo json_encode($data);
 }
 
+/**
+* @brief Fonction qui affiche le 2e select de la barre de recherche en fonction du choix de l'utilisateur
+* @access public
+* @return void
+*/
 function afficherSelectRecherche () {
     
     if (isset($_GET["typeRecherche"]) && $_GET["typeRecherche"] != "") {
@@ -120,6 +134,11 @@ function afficherSelectRecherche () {
     }
 }
 
+/**
+* @brief Fonction qui affiche le bouton submit de la recherche si l'utilisateur a choisi arrondissement ou catégorie
+* @access public
+* @return void
+*/
 function afficherBoutonRecherche () {
     if ((isset($_GET["selectArrondissement"]) && $_GET["selectArrondissement"] != "") || (isset($_GET["selectCategorie"]) && $_GET["selectCategorie"] != "")) {
         echo '<input type="submit" name="boutonRecherche" value="Rechercher">';

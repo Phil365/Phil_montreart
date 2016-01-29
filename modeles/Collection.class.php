@@ -19,12 +19,14 @@ class Collection {
     }
 		
 	/**
-	 * @access public
-	 * @return Array
-	 */
+    * @brief Méthode qui récupère toutes les collections dans la BDD.
+    * @param string $langue
+    * @access public
+    * @return array
+    */
 	public function getAllCollections($langue) {
 				
-        $infoCCollections = array();
+        $infoCollections = array();
         
         self::$database->query('SELECT idCategorie, nomCategorie' . $langue . ' FROM Categories');
         
@@ -36,7 +38,7 @@ class Collection {
                 $infoCollections[] = $collection;
             }
         }
-        return $infoCCollections;
+        return $infoCollections;
 	}
     
     /**
@@ -79,25 +81,5 @@ class Collection {
             exit;
         } 
     }
-    
-//    function chercheParCategorie($keyword) {
-//        
-//    
-//    self::$database->query("SELECT idCategorie, nomCategorie ".$langue." FROM Categories;");
-//                           /*SELECT nomCategorieFR, nomCategorieEN  FROM categories JOIN oeuvres ON oeuvres.idCategorie = categories.idCategorie Group By nomCategorieFR*/
-//                           /*SELECT nomCategorieFR, nomCategorieEN, idOeuvre FROM categories, oeuvres Where oeuvres.idCategorie = categories.idCategorie Group By idOeuvre*/
-//    $keyword = $keyword.'%';
-//
-//    self::$database->bind(1, $keyword);
-//    
-//    $results = array();
-//
-//   if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
-//        $results = array("idOeuvre"=>$oeuvreBDD['idOeuvre'],"titre"=>$oeuvreBDD['titre']);
-//    }
-//
-//    return $results;
-//
-//    }
 }
 ?>

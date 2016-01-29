@@ -38,7 +38,13 @@ class Artiste {
         return $infoArtistes;
 	}
     
-    function chercheParArtiste($keyword) {
+    /**
+    * @brief Méthode qui cherche les noms d'artistes en fonction des keywords.
+    * @param string $keyword
+    * @access public
+    * @return array
+    */
+    public function chercheParArtiste($keyword) {
     
         $infoOeuvres = array();
             
@@ -157,6 +163,13 @@ class Artiste {
         }
     }
     
+    /**
+    * @brief Méthode qui lie les artistes à une oeuvres dans la BDD.
+    * @param int $idOeuvre
+    * @param int $idArtiste
+    * @access public
+    * @return void
+    */
     public function lierArtistesOeuvrePoursoummision ($idOeuvre, $idArtiste) {
         
         self::$database->query('INSERT INTO OeuvresArtistes (idOeuvre, idArtiste) VALUES (:idOeuvre, :idArtiste)');

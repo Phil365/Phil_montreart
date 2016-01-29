@@ -89,52 +89,48 @@ function valideAjoutOeuvreJS() {
     document.getElementById("erreurSelectArrondissement").innerHTML = "";
 
 
-//    if (document.getElementById("nomDuInputTitre").value.trim() == "") {
-//        document.getElementById("erreurTitreOeuvre").innerHTML = "Veuillez entrer un titre";
-//        erreurs = true;
-//    }
-//
-//    if (document.getElementById("nomDuInputAdresse").value.trim() == "") {
-//        document.getElementById("erreurAdresseOeuvre").innerHTML = "Veuillez entrer une adresse";
-//        erreurs = true;
-//    }
-//
-//    if (document.getElementById("nomDuInputDescription").value.trim() == "") {
-//        document.getElementById("erreurDescription").innerHTML = "Veuillez entrer une description réglementaire";
-//        erreurs = true;
-//    }
-//
-//    if (document.getElementById("nomDuSelectCategorie").value == "") {
-//        document.getElementById("erreurSelectCategorie").innerHTML = "Veuillez choisir une option";
-//        erreurs = true;
-//    }
-//
-//    if (document.getElementById("nomDuSelectArrondissement").value == "") {
-//        document.getElementById("erreurSelectArrondissement").innerHTML = "Veuillez choisir un arrondissement";
-//        erreurs = true;
-//    }  
+    if (document.getElementById("titreAjout").value.trim() == "") {
+        document.getElementById("erreurTitreOeuvre").innerHTML = "Veuillez entrer un titre";
+        erreurs = true;
+    }
 
-//    if (!erreurs) {
-//        return true;
-//    }
-//    else {
+    if (document.getElementById("adresseAjout").value.trim() == "") {
+        document.getElementById("erreurAdresseOeuvre").innerHTML = "Veuillez entrer une adresse";
+        erreurs = true;
+    }
+
+    if (document.getElementById("descriptionAjout").value.trim() == "") {
+        document.getElementById("erreurDescription").innerHTML = "Veuillez entrer une description";
+        erreurs = true;
+    }
+
+    if (document.getElementById("selectSousCategorie").value == "") {
+        document.getElementById("erreurSelectCategorie").innerHTML = "Veuillez choisir une catégorie";
+        erreurs = true;
+    }
+
+    if (document.getElementById("selectArrondissement").value == "") {
+        document.getElementById("erreurSelectArrondissement").innerHTML = "Veuillez choisir un arrondissement";
+        erreurs = true;
+    }  
+
+    if (!erreurs) {
+        return true;
+    }
+    else {
         return false;
-//    }
+    }
 } // end function validateForm
 
 
-
-
-/*
 function valideSupprimerOeuvreJS() {
     var erreurs = false;
     document.getElementById("erreurSelectSuppression").innerHTML = "";
     
 
-    if (document.getElementById("nomDuSelect").value == "") {
-        document.getElementById("erreurSelectSupression").innerHTML = "Veuillez choisir une option";
+    if (document.getElementById("selectOeuvreSupp").value == "") {
+        document.getElementById("erreurSelectSuppression").innerHTML = "Veuillez choisir une option";
         erreurs = true;
-    }
     } 
     if (!erreurs) {
         return true;
@@ -142,45 +138,39 @@ function valideSupprimerOeuvreJS() {
     else {
         return false;
     }
-} // end function validateForm 
-*/
-
-
-
+} // end function validateForm
 
 
 function valideModifierOeuvreJS() {
-    var erreurs = false;
-    document.getElementById("erreurTitreOeuvre").innerHTML = "";
-    document.getElementById("erreurAdresseOeuvre").innerHTML = "";
-    document.getElementById("erreurDescription").innerHTML = "";
-    document.getElementById("erreurSelectCategorie").innerHTML = "";
-    document.getElementById("erreurSelectArrondissement").innerHTML = "";
-
-
-    if (document.getElementById("nomDuInputTitre").value.trim() == "") {
-        document.getElementById("erreurTitreOeuvre").innerHTML = "Veuillez entrer un titre";
-        erreurs = true;
-    }
-
-    if (document.getElementById("nomDuInputAdresse").value.trim() == "") {
-        document.getElementById("erreurAdresseOeuvre").innerHTML = "Veuillez entrer une adresse";
-        erreurs = true;
-    }
-
     
-    if (document.getElementById("nomDuInputDescription").value.trim() == "") {
-        document.getElementById("erreurDescription").innerHTML = "Veuillez entrer une description réglementaire";
+    var erreurs = false;
+    document.getElementById("erreurTitreOeuvreModif").innerHTML = "";
+    document.getElementById("erreurAdresseOeuvreModif").innerHTML = "";
+    document.getElementById("erreurDescriptionModif").innerHTML = "";
+    document.getElementById("erreurSelectCategorieModif").innerHTML = "";
+    document.getElementById("erreurSelectArrondissementModif").innerHTML = "";
+
+    if (document.getElementById("titreModif").value.trim() == "") {
+        document.getElementById("erreurTitreOeuvreModif").innerHTML = "Veuillez entrer le titre";
+        erreurs = true;
+    }
+    if (document.getElementById("adresseModif").value.trim() == "") {
+        document.getElementById("erreurAdresseOeuvreModif").innerHTML = "Veuillez entrer l'adresse";
         erreurs = true;
     }
 
-    if (document.getElementById("nomDuSelectCategorie").value == "") {
-        document.getElementById("erreurSelectCategorie").innerHTML = "Veuillez choisir une option";
+    if (document.getElementById("descriptionModif").value.trim() == "") {
+        document.getElementById("erreurDescriptionModif").innerHTML = "Veuillez entrer une description";
         erreurs = true;
     }
 
-    if (document.getElementById("nomDuSelectArrondissement").value == "") {
-        document.getElementById("erreurSelectArrondissement").innerHTML = "Veuillez choisir un arrondissement";
+    if (document.getElementById("selectSousCategorieModif").value == "") {
+        document.getElementById("erreurSelectCategorieModif").innerHTML = "Veuillez choisir une catégorie";
+        erreurs = true;
+    }
+
+    if (document.getElementById("selectArrondissementModif").value == "") {
+        document.getElementById("erreurSelectArrondissementModif").innerHTML = "Veuillez choisir un arrondissement";
         erreurs = true;
     }  
 

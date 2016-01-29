@@ -1,6 +1,7 @@
 <?php
 /**
  * @brief Class VueTrajet
+ * @author Cristina Mahneke
  * @author David Lachambre
  * @version 1.0
  * @update 2015-12-16
