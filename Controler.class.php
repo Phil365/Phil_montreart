@@ -248,23 +248,23 @@ class Controler {
     * @access private
     * @return void
     */
-//    private function admin(){
-//        
-//        $photo = new Photo();
-//        $photoAllUnauthorized = $photo->getAllUnauthorizedPhoto();
-//        $photoAReviser = $photo->getPhotoById();
-//        $oeuvre = new Oeuvre;
-//        $oeuvre->updaterOeuvresVille();
-//        $date = $oeuvre->getDateDernierUpdate();
-//        $this->oVue = new VueAdmin();
-//        $this->oVue->setDataGlobal("Admin", "page d'administration", $this->langueAffichage, $this->pAdmin);
-//        $this->oVue->setData($photoAllUnauthorized);
-//        $this->oVue->setData($photoAReviser);
-//        $this->oVue->afficherMeta();
-//        $this->oVue->afficherEntete();
-//        $this->oVue->afficherBody();
-//        $this->oVue->afficherPiedPage();
-//    }
+    private function admin(){
+        
+        $photo = new Photo();
+        $photoAllUnauthorized = $photo->getAllUnauthorizedPhoto();
+        $photoAReviser = $photo->getPhotoById();
+        $oeuvre = new Oeuvre;
+        $oeuvre->updaterOeuvresVille();
+        $date = $oeuvre->getDateDernierUpdate();
+        $this->oVue = new VueAdmin();
+        $this->oVue->setDataGlobal("Admin", "page d'administration", $this->langueAffichage, $this->pAdmin);
+        $this->oVue->setData($photoAllUnauthorized);
+        $this->oVue->setData($photoAReviser);
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
+    }
     
     /**
     * @brief Méthode qui appelle la vue d'affichage de la page gestion
@@ -272,7 +272,7 @@ class Controler {
     * @return void
     */
     private function gestion() {
-       
+        
         $oeuvre = new Oeuvre();
         $arrondissement = new Arrondissement();
         $categorie = new SousCategorie();
@@ -280,15 +280,8 @@ class Controler {
         if (isset($_POST["misAJour"])) {
             $oeuvre->updaterOeuvresVille();
         }
+        //Affichage de la date de dernière mise à jour des oeuvres de la ville.
         $date = $oeuvre->getDateDernierUpdate();
-        
-        if (isset($_GET["action"]) && ($_GET["action"] == "modifierOeuvre") && isset($_POST['selectOeuvreModif'])) {
-            $oeuvreAModifier = $oeuvre->afficheArticlePourModif($_POST['selectOeuvreModif']);
-             
-        }
-        else {
-            $oeuvreAModifier = "";
-        }
         
         //Suppression d'une oeuvre.
         if (isset($_POST["boutonSuppOeuvre"]) && $_POST["selectOeuvreSupp"] != "") {
@@ -299,22 +292,30 @@ class Controler {
         $authorise = true;
         
         if(isset($_POST['boutonAjoutOeuvre'])) {
-
             $oeuvre->ajouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
         }
         
-        //Modification d'une oeuvre ici.
+        //Modification d'une oeuvre.
+        if (isset($_GET["action"]) && ($_GET["action"] == "modifierOeuvre") && isset($_POST["selectOeuvreModif"])) {
+            $oeuvreAModifier = $oeuvre->getOeuvreById($_POST['selectOeuvreModif'], $this->langueAffichage);
+        }
+        else {
+            $oeuvreAModifier = "";
+        }
         
-        
-        
-        
+        //Tente la modif et récupère les messages d'erreur si présents.
+        $msgErreursModif = array();
+        if (isset($_POST["boutonModifOeuvre"])) {
+            $msgErreursModif = $oeuvre->modifierOeuvre($_POST["selectOeuvreModif"], $_POST["titreModif"], $_POST["adresseModif"], $_POST["descriptionModif"], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $this->langueAffichage);
+        }
+                
         $oeuvresBDD = $oeuvre->getAllOeuvres();
         $arrondissementsBDD = $arrondissement->getAllArrondissements();
         $categorieBDD = $categorie->getAllSousCategories($this->langueAffichage);
         
         $this->oVue = new VueGestion();
         $this->oVue->setDataGlobal("Gestion", "page de gestion par l'administrateur", $this->langueAffichage, $this->pGestion);
-        $this->oVue->setData($date, $oeuvreAModifier, $oeuvresBDD, $arrondissementsBDD, $categorieBDD);
+        $this->oVue->setData($date, $oeuvreAModifier, $oeuvresBDD, $arrondissementsBDD, $categorieBDD, $msgErreursModif);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
@@ -322,7 +323,7 @@ class Controler {
     }
     
     /**
-    * @brief Méthode qui appelle la déclenche la mise à jour des données de la ville de Montréal
+    * @brief Méthode qui fait la mise à jour des données de la ville de Montréal
     * @access private
     * @return void
     */
@@ -332,6 +333,11 @@ class Controler {
         $oeuvre->updaterOeuvresVille();
     }   
     
+    /**
+    * @brief Méthode qui affiche les résultats de la recherche utilisateur
+    * @access private
+    * @return void
+    */
     private function recherche() {
         
         $oeuvres = array();
