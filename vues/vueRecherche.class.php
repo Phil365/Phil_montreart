@@ -16,10 +16,6 @@ class VueRecherche extends Vue {
     * @access private
     */
     private $oeuvres;
-    /**
-    * @var array $photos Photos associées à l'oeuvre
-    * @access private
-    */
     
     function __construct() {        
         $this->titrePage = "MontréArt - Recherche";

@@ -1,35 +1,75 @@
 <?php
 /**
- * @brief Class VueTrajet
+ * @brief Class VueGestion
+ * @author David Lachambre
  * @author Cristina Mahneke
  * @version 1.0
- * @update 2015-01-14
+ * @update 2016-01-14
  * 
  */
 header('Content-Type: text/html; charset=utf-8');//Affichage du UTF-8 par PHP.
 
 class VueGestion extends Vue {
     
+    /**
+    * @var string $dateDernierUpdate date de la dernière mise à jour des oeuvres de la villes dans la BDD.
+    * @access private
+    */
     private $dateDernierUpdate;
     
+    /**
+    * @var array $oeuvreAModifier Oeuvre qui doit être modifiée par l'administrateur.
+    * @access private
+    */
     private $oeuvreAModifier;
     
+    /**
+    * @var array $oeuvresBDD Toutes les oeuvres de la BDD.
+    * @access private
+    */
     private $oeuvresBDD;
     
+    /**
+    * @var array $arrondissementsBDD Tous les arrondissements de la BDD.
+    * @access private
+    */
     private $arrondissementsBDD;
     
+    /**
+    * @var array $categoriesBDD Toutes les catégories de la BDD.
+    * @access private
+    */
     private $categoriesBDD;
+    
+    /**
+    * @var array $msgErreursModif Tous les messages d'erreurs liés à la tentative de modification d'une oeuvre.
+    * @access private
+    */
+    private $msgErreursModif;
     
     function __construct() {
         
     }
     
-    public function setData($dateDernierUpdate, $oeuvreAModifier, $oeuvresBDD, $arrondissementsBDD, $categoriesBDD) {
+    /**
+    * @brief Méthode qui affecte des valeurs aux propriétés privées
+    * @param string $dateDernierUpdate
+    * @param array $oeuvreAModifier
+    * @param array $oeuvresBDD
+    * @param array $arrondissementsBDD
+    * @param array $categoriesBDD
+    * @param array $msgErreursModif
+    * @access public
+    * @return void
+    */
+    public function setData($dateDernierUpdate, $oeuvreAModifier, $oeuvresBDD, $arrondissementsBDD, $categoriesBDD, $msgErreursModif) {
+        
         $this->dateDernierUpdate = $dateDernierUpdate;
         $this->oeuvreAModifier = $oeuvreAModifier;
         $this->oeuvresBDD = $oeuvresBDD;
         $this->arrondissementsBDD = $arrondissementsBDD;
         $this->categoriesBDD = $categoriesBDD;
+        $this->msgErreursModif = $msgErreursModif;
     }
        
     /**
@@ -38,19 +78,26 @@ class VueGestion extends Vue {
     * @return void
     */
     public function afficherBody() {
-// var_dump($this->oeuvreAModifier);
+        
         $titreModif='';
         $adresse='';
         $idSousCategorie='';
         $idArrondissement='';
-        $descriptionFR='';
+        $description='';
         
-        if (isset($this->oeuvreAModifier['titre']) && isset($this->oeuvreAModifier['adresse']) && isset($this->oeuvreAModifier['idSousCategorie']) && isset($this->oeuvreAModifier['idArrondissement']) && isset($this->oeuvreAModifier['descriptionFR'])){
-        $titreModif = $this->oeuvreAModifier['titre'];
-        $adresse = $this->oeuvreAModifier['adresse'];
-        $idSousCategorie = $this->oeuvreAModifier['idSousCategorie'];
-        $idArrondissement = $this->oeuvreAModifier['idArrondissement'];
-        $descriptionFR = $this->oeuvreAModifier['descriptionFR'];
+        if (!empty($this->oeuvreAModifier)){//S'il y a une oeuvre à modifier...
+            
+            $titreModif = $this->oeuvreAModifier['titre'];
+            $adresse = $this->oeuvreAModifier['adresse'];
+            $idSousCategorie = $this->oeuvreAModifier['idSousCategorie'];
+            $idArrondissement = $this->oeuvreAModifier['idArrondissement'];
+            if ($this->langue == "FR") {
+                $description = $this->oeuvreAModifier['descriptionFR'];
+            }
+            else if ($this->langue == "EN") {
+                $description = $this->oeuvreAModifier['descriptionEN'];
+            }
+        
         }
      
         $msgAjout = "";
@@ -62,22 +109,11 @@ class VueGestion extends Vue {
         else {
             $date = "<br>La dernière mise à jour a été effectuée le " . $this->dateDernierUpdate["dateDernierUpdate"] . " à " . $this->dateDernierUpdate["heureDernierUpdate"];
         }
-        
-        /*----- MÉMORISATION DES SECTIONS OUVERTES -----*/
-
-//        session_start();
-//        if (!isset($_SESSION['sectionGestion'])) {//Pour empêcher le jQuery de fermer les sections après chaque soumission de formulaire.
-//            $_SESSION['sectionGestion'] = 0;
-//        }
     ?>
         <h2>Administration</h2>
 
         <div>
             <?php
-            //Ajout des autres liens si l'usager est de type administrateur.
-                //echo '<a id ="click1" href="?r=gestion">Ajouter oeuvre</a>';
-                //echo '<a id ="click2" href="?r=gestion">Supprimer oeuvre</a>';
-                //echo '<a id ="click3" href="?r=gestion">Modifier oeuvre</a>';
                 echo "<h3 id ='MAJgestion'>Dernière mise à jour des oeuvres de la ville :</h3>";
                 echo $date;
             ?>
@@ -93,17 +129,21 @@ class VueGestion extends Vue {
                 <h2>Ajouter une oeuvre</h2>
                           
                 <form method="POST" name="formAjoutOeuvre" onsubmit="return valideAjoutOeuvreJS();" action="?r=gestion" enctype="multipart/form-data" >
-                   <br> <span  id="erreurTitreOeuvre" class="erreur"></span><br>                  
                     <input type='text' class="inputGestion" name='titreAjout' id='titreAjout' placeholder="Titre de l'oeuvre"/>
-                   <br> <span class="erreur" id="erreurPrenomArtisteAjout"></span><br>
+                    <br> <span  id="erreurTitreOeuvre" class="erreur"></span><br>                  
+                   
                     <input type='text' class="inputGestion" name='prenomArtisteAjout' id='prenomArtisteAjout' value="" placeholder="Prénom de l'artiste"/>
-                  <br>  <span class="erreur" id="erreurNomArtisteAjout"></span><br>
+                    <br> <span class="erreur" id="erreurPrenomArtisteAjout"></span><br>
+                  
                     <input type='text' class="inputGestion" name='nomArtisteAjout' id='nomArtisteAjout' value="" placeholder="Nom de l'artiste "/>
-                  <br>  <span class="erreur" id="erreurAdresseOeuvre"></span><br>
+                    <br>  <span class="erreur" id="erreurNomArtisteAjout"></span><br>
+                  
                     <input type='text' class="inputGestion" name='adresseAjout' id='adresseAjout' value="" placeholder="Adresse "/>
-                  <br>  <span class="erreur" id="erreurDescription"></span><br>
+                    <br>  <span class="erreur" id="erreurAdresseOeuvre"></span><br>
+                  
                     <textarea name='descriptionAjout' class="inputGestion" id='descriptionAjout' placeholder="Description "></textarea>
-                  <br>  <span class="erreur" id="erreurSelectArrondissement"></span><br>
+                    <br>  <span class="erreur" id="erreurDescription"></span><br>
+                  
                     <select name="selectArrondissement"  id="selectArrondissement" class="selectGestion">
                         <option value="">Choisir un arrondissement</option>
                         <?php
@@ -112,8 +152,8 @@ class VueGestion extends Vue {
                             }
                             echo "</select>";
                         ?>
-                    </select><br>
-                 <br>   <span class="erreur" id="erreurSelectSousCategorie"></span><br>
+                    </select>
+                    <br>  <span class="erreur" id="erreurSelectArrondissement"></span><br>
                     <select name="selectSousCategorie"  id="selectSousCategorie" class="selectGestion">
                         <option value="">Choisir une catégorie</option>
                         <?php
@@ -122,7 +162,8 @@ class VueGestion extends Vue {
                             }
                             echo "</select>";
                         ?>
-                    </select>                    
+                    </select>   
+                    <br><span class="erreur" id="erreurSelectCategorie"></span><br>
                     <h3 class="televersionTexteGestion">Téléversez l'image de l'oeuvre</h3>
                     <input type="file" name="fileToUpload" id="fileToUpload" value="" class="fileToUploadGestion">
                    <span id="erreurPhotoVide" class="erreur"></span><br>
@@ -195,7 +236,6 @@ class VueGestion extends Vue {
                 <h2>Supprimer une oeuvre</h2>
                 <form method="POST" name="formSuppOeuvre" action="?r=gestion"  onsubmit="return valideSupprimerOeuvreJS();">
 
-                    <span class="erreur" id='erreurSelectSupression'></span>
                     <select name="selectOeuvreSupp" id='selectOeuvreSupp' class="selectGestion">
                         <?php
                         echo "<option value=''>choisir une oeuvre</option>";
@@ -205,6 +245,7 @@ class VueGestion extends Vue {
                         echo "</select>";
                         ?>
                     </select>
+                    <br><span class="erreur" id='erreurSelectSuppression'></span><br>
 
                     <input class="boutonMoyenne" type='submit' name='boutonSuppOeuvre' value='Supprimer'>
                 </form>
@@ -214,8 +255,91 @@ class VueGestion extends Vue {
                 ?>  
                 </span>
             </div> 
+            
+            <!-- ----- MODIFICATION OEUVRE ------- -->
+
+           <div id="Onglet-3">
+                <h2>Modifier une oeuvre</h2>
+                <form method="POST" name="formModifOeuvre" id='formModifSelectOeuvre' action="?r=gestion&action=modifierOeuvre" onsubmit="return valideModifierOeuvreJS();">
+                     
+                    <select name="selectOeuvreModif" id='selectOeuvreModif' onchange="this.form.submit()">
+                        <?php
+                        echo "<option value=''>choisir une oeuvre</option>";
+                        foreach ($this->oeuvresBDD as $oeuvre) {
+                            if ($_POST["selectOeuvreModif"] == $oeuvre["idOeuvre"]) {
+                                $selection = "selected";
+                            }
+                            else {
+                                $selection = "";
+                            }
+                            echo "<option value='".$oeuvre["idOeuvre"]."'".$selection.">".$oeuvre["titre"]."</option>";
+                        }
+                ?>
+                        </select>
+                        <span class="erreur" id='erreurSelectModif'></span>
+
+                <?php
+                    if (isset($_POST['selectOeuvreModif']) && $_POST['selectOeuvreModif'] != "") {
+                ?>                                
+                    <input type='text' class="inputGestion" name='titreModif' id='titreModif' placeholder="Titre de l'oeuvre" value='<?php echo $titreModif?>'/>
+                    <br><span class="erreur" id="erreurTitreOeuvreModif"><?php if (isset($this->msgErreursModif["errTitre"])) {echo $this->msgErreursModif["errTitre"];} ?></span>
+                        
+                    <input type='text' class="inputGestion" name='adresseModif' id='adresseModif'  placeholder="Adresse " value='<?php echo $adresse?>'/>
+                    <br><span class="erreur" id="erreurAdresseOeuvreModif"><?php if (isset($this->msgErreursModif["errAdresse"])) {echo $this->msgErreursModif["errAdresse"];} ?></span>
+
+                    <br>
+                    <textarea name='descriptionModif' class="inputGestion" id='descriptionModif' placeholder="Description "><?php echo $description?></textarea>
+                    <br><span class="erreur" id="erreurDescriptionModif"><?php if (isset($this->msgErreursModif["errDescription"])) {echo $this->msgErreursModif["errDescription"];} ?></span>
+
+                    <select name="selectArrondissement"  id="selectArrondissementModif" class="selectGestion">
+                        
+                        <option value="">Choisir un arrondissement</option>
+                        <?php
+                            foreach ($this->arrondissementsBDD as $arrondissement) {
+                                if ($arrondissement["idArrondissement"] == $idArrondissement) {
+                                    $selection = "selected";
+                                }
+                                else {
+                                    $selection = "";
+                                }
+                                echo "<option value='".$arrondissement["idArrondissement"]."'".$selection.">".$arrondissement["nomArrondissement"];
+                            }
+                        
+                        ?>
+                    </select>
+                    <br><span class="erreur" id="erreurSelectArrondissementModif"><?php if (isset($this->msgErreursModif["errArrondissement"])) {echo $this->msgErreursModif["errArrondissement"];} ?></span>
+                    
+                    <select name="selectSousCategorie" id="selectSousCategorieModif" class="selectGestion">
+                        
+                        <option value="">Choisir une catégorie</option>
+                        <?php
+                            foreach ($this->categoriesBDD as $categorie) {
+                                if ($categorie["idSousCategorie"] == $idSousCategorie) {
+                                    $selection = "selected";
+                                }
+                                else {
+                                    $selection = "";
+                                }
+                                echo "<option value='".$categorie["idSousCategorie"]."'".$selection.">".$categorie["sousCategorie$this->langue"];
+                            }
+                            echo "</select>";
+                        ?>
+                    </select> 
+                    <br><span class="erreur" id="erreurSelectCategorieModif"><?php if (isset($this->msgErreursModif["errCategorie"])) {echo $this->msgErreursModif["errCategorie"];} ?></span>
+                        
+                    <br><input class="boutonMoyenne" type='submit' name='boutonModifOeuvre' value='Modifer'>
+                </form>
+              
+
+                <span class="msgUser">
+                <?php
+                echo $msgModif;
+                ?>  
+                </span>
+            </div> 
         </div>
      <?php
+        }
     } 
 }
 ?>

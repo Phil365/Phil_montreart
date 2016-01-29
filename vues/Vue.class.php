@@ -15,6 +15,11 @@ class Vue {
     protected $langue;
     private $pageActuelle;
     
+    /**
+    * @brief Méthode qui donne des valeurs aux propriétés globales à toutes les vues.
+    * @access public
+    * @return void
+    */
     public function setDataGlobal($titrePage, $descriptionPage, $langue, $pageActuelle) {
         $this->titrePage = $titrePage;
         $this->descriptionPage = $descriptionPage;

@@ -30,38 +30,9 @@ class VueAccueil extends Vue {
     */
     public function afficherBody() {
     ?>
-
-           <!--<div class="section1">
-                <div class="single-item">
-                <?php 
-                    //for ($i = 0; $i < count($this->photosAll); $i++) {
-                        //$imgPhoto = $this->photosAll[$i]['image'];
-                        //echo "<div><img src ='$imgPhoto'></div>";
-                    //}
-                ?>
-            </div> 
-
-                <script type="text/javascript">
-                    $(document).ready(function(){
-                        $('.single-item').slick({
-                            autoplay: true,
-                            autoplaySpeed: 2000,
-                            dots: false,
-                            infinite: true,
-                            speed: 500,
-                            fade: true,
-                            cssEase: 'linear',
-                            adaptiveHeight: false,
-                            adaptiveWidth: true
-                        });
-                    });
-                 </script>
-            </div> -->
-<!--        <div class="section2">-->
-                <div id="map" style="width: 100%; height: 100%;">
-                </div>
-                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMap"></script>
-<!--            </div> -->
+            <div id="map" style="width: 100%; height: 100%;">
+            </div>
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMap"></script>
             <div class="section3">
                     section3 Oeuvre en Vedette
             </div>

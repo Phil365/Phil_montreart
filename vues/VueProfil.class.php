@@ -37,13 +37,7 @@ class VueProfil extends Vue {
         
         <div class="section2" id="mesPunaises">Mes punaises</div>
         
-        
-    
-    
-    
-    
-    
-        
+
         <div class="section3" id="OeuvreEnVedette">
     
             Oeuvre en Vedette
@@ -89,9 +83,3 @@ class VueProfil extends Vue {
                 </form>
             </div>
         </div>
-
-    <?php
-    }
-}
-    
-?>

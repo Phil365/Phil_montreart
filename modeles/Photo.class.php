@@ -89,7 +89,13 @@ class Photo {
         }
         return $infoPhotos;
     }
-       public function getAllPhoto() {
+    
+    /**
+    * @brief Méthode qui récupère toutes les photos de la BDD.
+    * @access public
+    * @return array
+    */
+    public function getAllPhoto() {
         
         $photoAll = array();
         
@@ -104,12 +110,13 @@ class Photo {
         }
         return $photoAll;
     }
-      /**
+    
+    /**
     * @brief méthode qui récupère toutes les photos n'aillant pas encore été vetés par l'administrateur
     * @access public
     * @return array
     */
-         public function getAllUnauthorizedPhoto() {
+    public function getAllUnauthorizedPhoto() {
         
         $photoAllUnauthorized = array();
         
@@ -144,6 +151,13 @@ class Photo {
         
     }
 
+    /**
+    * @brief Méthode qui insère une photo dans la BDD.
+    * @param string $idOeuvre
+    * @param boolean $authorise
+    * @access public
+    * @return string
+    */
     public function inserePhotoBdd($idOeuvre, $authorise) {
          
         $msgUtilisateur = "";
@@ -189,7 +203,7 @@ class Photo {
             $msgUtilisateur = "Vous devez d'abord choisir une image.";
         }
         if (!$erreurs) {
-            $msgUtilisateur = "Succès !";
+            $msgUtilisateur = "Complété avec succès !";
         }
         return $msgUtilisateur;
     }

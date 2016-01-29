@@ -115,6 +115,7 @@ class Oeuvre {
     private static $database;
     
     private $test;
+    private $test2;
     
     function __construct() {
         
@@ -202,8 +203,13 @@ class Oeuvre {
         return $infoOeuvre;
     }
     
+    /**
+    * @brief Méthode qui récupère toutes les oeuvres avec une photo.
+    * @access public
+    * @return array
+    */
     public function getAllOeuvresWithPhoto() {
-    
+    $oeuvres = array();
     self::$database->query('SELECT * FROM oeuvres join photos on photos.idOeuvre = oeuvres.idOeuvre');
         if ($lignes = self::$database->resultset()) {
             foreach ($lignes as $ligne) {
@@ -459,7 +465,13 @@ class Oeuvre {
         }
     }
         
-    function chercheParTitre($keyword) {
+    /**
+    * @brief Méthode qui cherche les oeuvres en fonction du titre partiel passé en paramètre.
+    * @param string $keyword
+    * @access public
+    * @return array
+    */
+    public function chercheParTitre($keyword) {
     
         $infoOeuvres = array();
             
@@ -480,6 +492,12 @@ class Oeuvre {
         return $infoOeuvres;
     }
     
+    /**
+    * @brief Méthode qui cherche toutes les oeuvres par catégorie.
+    * @param integer $id
+    * @access public
+    * @return array
+    */
     public function getAllOeuvresByCategorie ($id) {
         $infoOeuvres = array();
         
@@ -496,6 +514,12 @@ class Oeuvre {
         return $infoOeuvres;
     }
     
+    /**
+    * @brief Méthode qui cherche toutes les oeuvres par arrondissement.
+    * @param integer $id
+    * @access public
+    * @return array
+    */
     public function getAllOeuvresByArrondissement ($id) {
         $infoOeuvres = array();
         
@@ -512,6 +536,12 @@ class Oeuvre {
         return $infoOeuvres;
     }
     
+    /**
+    * @brief Méthode qui cherche toutes les oeuvres par artiste.
+    * @param integer $id
+    * @access public
+    * @return array
+    */
     public function getAllOeuvresByArtiste ($id) {
         $infoOeuvres = array();
         
@@ -529,9 +559,10 @@ class Oeuvre {
     }
     
     /**
-	 * @access public
-	 * @return Array
-	 */
+    * @brief Méthode qui cherche toutes les oeuvres.
+    * @access public
+    * @return array
+    */
 	public function getAllOeuvres() 
 	{
 				
@@ -547,6 +578,12 @@ class Oeuvre {
         return $infoOeuvres;
 	}
     
+    /**
+    * @brief Méthode qui cherche toutes les oeuvres par catégorie.
+    * @param integer $noInterneMtl
+    * @access public
+    * @return string
+    */
     public function getOeuvreIdByNoInterne($noInterneMtl) {
         
         $idOeuvre = "";
@@ -562,10 +599,17 @@ class Oeuvre {
     }
     
     /**
-    * @brief Méthode qui insert ou update les oeuvres de la ville dans la BDD en fonction de l'action passée en paramètre.
-    * @param array $oeuvre
-    * @param string $action
-    * @access private
+    * @brief Méthode qui insert une oeuvre de la ville dans la BDD.
+    * @param string $titre
+    * @param string $adresse
+    * @param string $prenomArtiste
+    * @param string $nomArtiste
+    * @param string $description
+    * @param string $sousCategorie
+    * @param string $arrondissement
+    * @param boolean $authorise
+    * @param string $langue
+    * @access public
     * @return void
     */
     public function ajouterOeuvre($titre, $adresse, $prenomArtiste, $nomArtiste, $description, $sousCategorie, $arrondissement, $authorise, $langue) {
@@ -600,7 +644,103 @@ class Oeuvre {
         $photo = new Photo();
         $msgInsertPhoto = $photo->inserePhotoBdd($idOeuvre, $authorise);
     }
-     public function getIdOeuvreByTitreandAdresse($titre,$adresse) {
+    
+    /**
+    * @brief Méthode qui insert une oeuvre de la ville dans la BDD.
+    * @param integer $idOeuvre
+    * @param string $titre
+    * @param string $adresse
+    * @param string $description
+    * @param string $sousCategorie
+    * @param string $arrondissement
+    * @param string $langue
+    * @access public
+    * @return void
+    */
+    public function modifierOeuvre($idOeuvre, $titre, $adresse, $description, $sousCategorie, $arrondissement, $langue) {
+  
+        
+        $msgErreurs = $this->validerModifOeuvre($titre, $adresse, $description, $sousCategorie, $arrondissement);//Validation des champs obligatoires.
+        
+        if (!empty($msgErreurs)) {
+            return $msgErreurs;//Retourne le/les message(s) d'erreur de la validation.
+        }
+        else {
+            try {
+                self::$database->query('UPDATE Oeuvres SET titre= :titre, adresse= :adresse, descriptionFR= :descriptionFR, descriptionEN= :descriptionEN, idSousCategorie= :idSousCategorie, idArrondissement= :idArrondissement WHERE idOeuvre = :idOeuvre');
+
+                if ($langue == "FR") {
+                    self::$database->bind(':descriptionFR', $description);   
+                    self::$database->bind(':descriptionEN', null);   
+                }
+                else if ($langue == "EN") {
+                    self::$database->bind(':descriptionFR', null);   
+                    self::$database->bind(':descriptionEN', $description);   
+                }
+                self::$database->bind(':titre', $titre);       
+                self::$database->bind(':adresse', $adresse);       
+                self::$database->bind(':idSousCategorie', $sousCategorie);
+                self::$database->bind(':idArrondissement', $arrondissement);
+                self::$database->bind(':idOeuvre', $idOeuvre);
+                
+                self::$database->execute();
+            }
+            catch(Exception $e) {
+                $msgErreurs["errRequete"] = $e->getMessage();
+                return $msgErreurs;//Retourne le message d'erreur de la requête SQL.
+            }
+            return $msgErreurs;//array vide = succès.       
+        }
+    }
+    
+    /**
+    * @brief Méthode qui valide les champs obligatoires lors d'une modification.
+    * @param string $titre
+    * @param string $adresse
+    * @param string $description
+    * @param string $sousCategorie
+    * @param string $arrondissement
+    * @access public
+    * @return array
+    */
+    private function validerModifOeuvre($titre, $adresse, $description, $sousCategorie, $arrondissement) {
+        
+        $msgErreurs = array();//Initialise les messages d'erreur à un tableau vide.
+        
+        $titre = trim($titre);
+        if (empty($titre)) {
+            $msgErreurs["errTitre"] = "Veuillez entrer un titre";
+        }
+        $adresse = trim($adresse);
+        if (empty($adresse)) {
+            $msgErreurs["errAdresse"] = "Veuillez entrer une adresse";
+        }
+
+        $description = trim($description);
+        if (empty($description)) {
+            $msgErreurs["errDescription"] = "Veuillez entrer une description";
+        }
+
+        $sousCategorie = trim($sousCategorie);
+        if (empty($sousCategorie)) {
+            $msgErreurs["errCategorie"] = "Veuillez entrer une catégorie";
+        }
+
+        $arrondissement = trim($arrondissement);
+        if (empty($arrondissement)) {
+            $msgErreurs["errArrondissement"] = "Veuillez entrer un arrondissement";
+        }
+        return $msgErreurs;
+    }
+    
+    /**
+    * @brief Méthode qui récupère l'id d'une oeuvre en fonction de son titre et son adresse.
+    * @param string $titre
+    * @param string $adresse
+    * @access public
+    * @return string
+    */
+    public function getIdOeuvreByTitreandAdresse($titre,$adresse) {
         
         $idOeuvre = "";
         
@@ -613,101 +753,6 @@ class Oeuvre {
             $idOeuvre = $oeuvreBDD['idOeuvre'];
         }
         return $idOeuvre;
-    }
-      public function afficheArticlePourModif($id) {
-        
-        $oeuvreMtlBDD = array();
-
-        self::$database->query('SELECT * FROM oeuvres  WHERE Oeuvres.idOeuvre = :id');
-
-        //Lie les paramètres aux valeurs
-        self::$database->bind(':id', $id);
-
-        if ($oeuvre = self::$database->uneLigne()) {//Si trouvé dans la BDD
-            $oeuvreMtlBDD = $oeuvre; 
-        }
-        return $oeuvreMtlBDD;
-    }
-    
-    public function valideAjoutOeuvrePHP($titre) {
-        $erreur = false;
-        
-        $msgErreur=array();
-        $msg = "";
-
-        /*
-        $messageErreurTitre = "Veuillez entrer un titre";
-        $messageErreurAdresse = "Veuillez entrer une adresse";
-        $messageErreurDescription = "Veuillez entrer une description";
-        $messageErreurCategorie = "Veuillez entrer une catégorie";
-        $messageErreurArrondissement = "Veuillez choisir un arrondissement";
-        */
-        var_dump($titre);
-        if (!isset($titre)) {
-            
-            $erreur = true;
-            $msg .= "Veuillez entrer une banane";
-            //echo $messageErreurTitre;
-        }
-
-//        if (!isset($_GET["nomDuInputAdresse"])) {
-//
-//            $erreur = false;
-//            $msg .= "Veuillez entrer une adresse";
-//            //echo $messageErreurAdresse;
-//        }
-//
-//        if (!isset($_GET["nomDuInputDescription"])) {
-//
-//            $erreur = false;
-//            $msg .= "Veuillez entrer une description";
-//            //echo $messageErreurDescription;
-//        }
-//
-//        if (!isset($_GET["nomDuSelectCategorie"])) {
-//
-//            $erreur = true;
-//            $msg .= "Veuillez choisir une catégorie";
-//            //echo $messageErreurCategorie;
-//        }
-//
-//        if (!isset($_GET["nomDuSelectArrondissement"])) {
-//
-//            $erreur = false;
-//            $msg = "Veuillez choisir un arrondissement";
-//            //echo $messageErreurArrondissement;
-//        }
-
-
-        if (!$erreur) {
-
-            //DO NOTHING AND DANCE
-        }
-         else {
-
-            return $msg;
-        }
-    }
-
-    public function valideSuppOeuvrePHP() {
-        $erreur = false;
-        $messageErreurSelect = "Veuillez choisir une option";
-
-        if (!isset($_GET["nomDuSelect"])) {
-
-            $erreur = true;
-            echo $messageErreurSelect;
-        }
-
-
-        if (!erreurs) {
-
-            return true;
-        }
-         else {
-
-            return false;
-         }
     }
     public function ajouterOeuvrePourTest($titre, $adresse, $prenomArtiste, $nomArtiste, $description, $sousCategorie, $arrondissement, $authorise, $langue) {
   
