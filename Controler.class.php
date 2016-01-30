@@ -211,9 +211,18 @@ class Controler {
         
         $authorise = false;
         
-        if(isset($_POST['boutonAjoutOeuvre'])) {
-
-            $oeuvre->ajouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
+         //Ajout d'une oeuvre.
+        
+        if(isset($_POST['boutonSoumissionOeuvre'])&& ($_GET["action"] == "soumettreOeuvre")) {
+            $oeuvreASoumettre=$oeuvre->ajouterOeuvre($_POST['titreSoumis'], $_POST['adresseSoumis'], $_POST['prenomArtisteSoumis'], $_POST['nomArtisteSoumis'], $_POST['descriptionSoumis'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
+        }else{
+            $oeuvreASoumettre = '';
+        }
+        
+        //Essaie l'ajoute et récupère les messages d'erreur si présents.
+        $msgErreursSoumission = array();
+        if (isset($_POST["boutonSoumissionOeuvre"])) {
+            $msgErreursAjout = $oeuvre->AjouterOeuvre($_POST['titreSoumis'], $_POST['adresseSoumis'], $_POST['prenomArtisteSoumis'], $_POST['nomArtisteSoumis'], $_POST['descriptionSoumis'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
         }
         
         $oeuvresBDD = $oeuvre->getAllOeuvres();
@@ -222,7 +231,7 @@ class Controler {
         
         $this->oVue = new VueSoumission();
         $this->oVue->setDataGlobal('soumission', "page de soumission d'oeuvre", $this->langueAffichage, $this->pSoumission);
-        $this->oVue->setData($oeuvresBDD, $arrondissementsBDD, $categorieBDD);
+        $this->oVue->setData($oeuvresBDD, $arrondissementsBDD, $categorieBDD, $oeuvreASoumettre, $msgErreursSoumission);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
@@ -286,13 +295,22 @@ class Controler {
         //Suppression d'une oeuvre.
         if (isset($_POST["boutonSuppOeuvre"]) && $_POST["selectOeuvreSupp"] != "") {
             $oeuvre->supprimerOeuvre($_POST["selectOeuvreSupp"]);
+        }else{
+            
+            $oeuvreAjouter = '';
         }
         
         //Ajout d'une oeuvre.
         $authorise = true;
         
-        if(isset($_POST['boutonAjoutOeuvre'])) {
-            $oeuvre->ajouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
+        if(isset($_POST['boutonAjoutOeuvre'])&& ($_GET["action"] == "ajouterOeuvre")) {
+            $oeuvreAjouter=$oeuvre->ajouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
+        }
+        
+        //Essaie l'ajoute et récupère les messages d'erreur si présents.
+        $msgErreursAjout = array();
+        if (isset($_POST["boutonAjoutOeuvre"])) {
+            $msgErreursAjout = $oeuvre->AjouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
         }
         
         //Modification d'une oeuvre.
@@ -315,7 +333,7 @@ class Controler {
         
         $this->oVue = new VueGestion();
         $this->oVue->setDataGlobal("Gestion", "page de gestion par l'administrateur", $this->langueAffichage, $this->pGestion);
-        $this->oVue->setData($date, $oeuvreAModifier, $oeuvresBDD, $arrondissementsBDD, $categorieBDD, $msgErreursModif);
+        $this->oVue->setData($date, $oeuvreAModifier,$oeuvreAjouter, $oeuvresBDD, $arrondissementsBDD, $categorieBDD, $msgErreursModif, $msgErreursAjout);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
