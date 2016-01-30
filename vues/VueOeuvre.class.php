@@ -103,7 +103,7 @@ class VueOeuvre extends Vue {
         else {
             
     ?>
-    <?php echo "<div class='dummy'><!--    Ne mettez rien ici--></div>";
+    <?php 
                 
                     echo "<div class='sliderOeuvre'>";
                     if ($this->photos) {//Si des photos existent pour cette oeuvre...

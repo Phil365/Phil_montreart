@@ -614,37 +614,49 @@ class Oeuvre {
     */
     public function ajouterOeuvre($titre, $adresse, $prenomArtiste, $nomArtiste, $description, $sousCategorie, $arrondissement, $authorise, $langue) {
   
-    
-        $artiste = new Artiste();
-        $artiste->ajouterArtiste($prenomArtiste, $nomArtiste, null);
-        $idArtisteAjoute = $artiste->getArtisteIdByName($prenomArtiste, $nomArtiste, null);
+     $msgErreurs = $this->validerFormOeuvre($titre, $adresse, $description, $sousCategorie, $arrondissement);//Validation des champs obligatoires.
         
-        self::$database->query('INSERT INTO Oeuvres ( titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCollection, idCategorie, idSousCategorie, idArrondissement) VALUES (:titre, null, null, null, null, null, :adresse, :descriptionFR, :descriptionEN, :authorise, null, null, :idSousCategorie, :idArrondissement)');
-
-        if ($langue == "FR") {
-            self::$database->bind(':descriptionFR', $description.$langue);
-            self::$database->bind(':descriptionEN', "");
+        if (!empty($msgErreurs)) {
+            return $msgErreurs;//Retourne le/les message(s) d'erreur de la validation.
         }
-        else if ($langue == "EN") {
-            self::$database->bind(':descriptionEN', $description.$langue);
-            self::$database->bind(':descriptionFR', "");
-        }
-        self::$database->bind(':authorise', $authorise);        
-        self::$database->bind(':titre', $titre);       
-        self::$database->bind(':adresse', $adresse);       
-        self::$database->bind(':idSousCategorie', $sousCategorie);
-        self::$database->bind(':idArrondissement', $arrondissement);
-        self::$database->execute();
+        else {
+            try {
+                $artiste = new Artiste();
+                $artiste->ajouterArtiste($prenomArtiste, $nomArtiste, null);
+                $idArtisteAjoute = $artiste->getArtisteIdByName($prenomArtiste, $nomArtiste, null);
 
-        $idOeuvre = $this->getIdOeuvreByTitreandAdresse($titre, $adresse);//aller chercher id oeuvre insérée
-        
-        
-        $artiste->lierArtistesOeuvrePoursoummision($idOeuvre, $idArtisteAjoute);//Lier les artistes à l'oeuvre
-        
-        $photo = new Photo();
-        $msgInsertPhoto = $photo->inserePhotoBdd($idOeuvre, $authorise);
+                self::$database->query('INSERT INTO Oeuvres ( titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCollection, idCategorie, idSousCategorie, idArrondissement) VALUES (:titre, null, null, null, null, null, :adresse, :descriptionFR, :descriptionEN, :authorise, null, null, :idSousCategorie, :idArrondissement)');
+
+                if ($langue == "FR") {
+                    self::$database->bind(':descriptionFR', $description.$langue);
+                    self::$database->bind(':descriptionEN', "");
+                }
+                else if ($langue == "EN") {
+                    self::$database->bind(':descriptionEN', $description.$langue);
+                    self::$database->bind(':descriptionFR', "");
+                }
+                self::$database->bind(':authorise', $authorise);        
+                self::$database->bind(':titre', $titre);       
+                self::$database->bind(':adresse', $adresse);       
+                self::$database->bind(':idSousCategorie', $sousCategorie);
+                self::$database->bind(':idArrondissement', $arrondissement);
+                self::$database->execute();
+            
+                $idOeuvre = $this->getIdOeuvreByTitreandAdresse($titre, $adresse);//aller chercher id oeuvre insérée
+
+
+                $artiste->lierArtistesOeuvrePoursoummision($idOeuvre, $idArtisteAjoute);//Lier les artistes à l'oeuvre
+
+                $photo = new Photo();
+                $msgInsertPhoto = $photo->inserePhotoBdd($idOeuvre, $authorise);
+            }
+        catch(Exception $e) {
+                $msgErreurs["errRequete"] = $e->getMessage();
+                return $msgErreurs;//Retourne le message d'erreur de la requête SQL.
+            }
+            return $msgErreurs;//array vide = succès.  
+        }
     }
-    
     /**
     * @brief Méthode qui insert une oeuvre de la ville dans la BDD.
     * @param integer $idOeuvre
@@ -660,7 +672,7 @@ class Oeuvre {
     public function modifierOeuvre($idOeuvre, $titre, $adresse, $description, $sousCategorie, $arrondissement, $langue) {
   
         
-        $msgErreurs = $this->validerModifOeuvre($titre, $adresse, $description, $sousCategorie, $arrondissement);//Validation des champs obligatoires.
+        $msgErreurs = $this->validerFormOeuvre($titre, $adresse, $description, $sousCategorie, $arrondissement);//Validation des champs obligatoires.
         
         if (!empty($msgErreurs)) {
             return $msgErreurs;//Retourne le/les message(s) d'erreur de la validation.
@@ -703,7 +715,7 @@ class Oeuvre {
     * @access public
     * @return array
     */
-    private function validerModifOeuvre($titre, $adresse, $description, $sousCategorie, $arrondissement) {
+    private function validerFormOeuvre($titre, $adresse, $description, $sousCategorie, $arrondissement) {
         
         $msgErreurs = array();//Initialise les messages d'erreur à un tableau vide.
         
@@ -715,7 +727,9 @@ class Oeuvre {
         if (empty($adresse)) {
             $msgErreurs["errAdresse"] = "Veuillez entrer une adresse";
         }
-
+        if (!preg_match("#^[A-ÿ0-9.,' ]+[A-ÿ0-9.,' ]*$#",$adresse)) {
+                $msgErreurs["errAdresse"] = "Uniquement des lettres, des chiffres, des signes de ponctuation (tels que . , ') et des espaces sont permises";
+        }
         $description = trim($description);
         if (empty($description)) {
             $msgErreurs["errDescription"] = "Veuillez entrer une description";

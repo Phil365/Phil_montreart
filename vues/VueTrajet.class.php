@@ -23,7 +23,7 @@ class VueTrajet extends Vue {
     */
     public function afficherBody() {
     ?>
-         <div class="dummy"><!--    Ne mettez rien ici--></div>
+         
         
          <div class="section1" id="itineraire">
              <form action="#" id="form_itineraire" method="post" name="form_itineraire">
@@ -39,11 +39,11 @@ class VueTrajet extends Vue {
            
          </div>
         
-        <div class="section4" id="votreTrajet">Votre trajet
+        <div id="votreTrajet"><p>Votre trajet</p>
         </div>
         
-        <div class="section5">
-            sponsors section5
+        <div id="sponsorsTrajet">
+            <p>sponsors</p>
         </div>
     <?php
     }
