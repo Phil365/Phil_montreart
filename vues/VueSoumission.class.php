@@ -36,10 +36,10 @@ class VueSoumission extends Vue {
     private $oeuvreASoumettre;
     
      /**
-    * @var array $msgErreursSoumission Tous les messages d'erreurs liés à la tentative de insertion d'une oeuvre.
+    * @var array $msgErreurs Tous les messages d'erreurs liés à la tentative de insertion d'une oeuvre.
     * @access private
     */
-    private $msgErreursSoumission;
+    private $msgErreurs;
     
     function __construct() {
         $this->titrePage = "MontréArt - Soumission";
@@ -54,12 +54,11 @@ class VueSoumission extends Vue {
     * @access public
     * @return void
     */
-    public function setData($oeuvresBDD, $arrondissementsBDD, $categoriesBDD, $oeuvreASoumettre, $msgErreursSoumission) {
+    public function setData($oeuvresBDD, $arrondissementsBDD, $categoriesBDD, $msgErreurs) {
         $this->oeuvresBDD = $oeuvresBDD;
         $this->arrondissementsBDD = $arrondissementsBDD;
         $this->categoriesBDD = $categoriesBDD;
-        $this->oeuvreASoumettre =$oeuvreASoumettre;
-        $this->msgErreursSoumission = $msgErreursSoumission;
+        $this->msgErreurs = $msgErreurs;
     }
     
     /**
@@ -68,31 +67,26 @@ class VueSoumission extends Vue {
     * @return void
     */
     public function afficherBody() {
-        $titreSoumis='';
-        $prenomArtisteSoumis='';
-        $nomArtisteSoumis='';
-        $idSousCategorieSoumis='';
-        $adresseSoumis = '';
-        $idArrondissementSoumis='';
-        $descriptionSoumis='';
-        
-        if (!empty($this->oeuvreASoumettre)){//S'il y a une oeuvre à ajouter...
-             
-            $titreSoumis = $this->oeuvreASoumettre['titre'];
-            $adresseSoumis = $this->oeuvreASoumettre['adresse'];
-            $prenomArtisteSoumis= $this->oeuvreASoumettre['prenomArtiste'];
-            $nomArtisteSoumis= $this->oeuvreASoumettre['nomArtiste'];
-            $idSousCategorieSoumis= $this->oeuvreASoumettre['idSousCategorie'];
-            $idArrondissementSoumis = $this->oeuvreASoumettre['idArrondissement'];
-            if ($this->langue == "FR") {
-                $descriptionSoumis = $this->oeuvreASoumettre['descriptionFR'];
-            }
-            else if ($this->langue == "EN") {
-                $descriptionSoumis = $this->oeuvreASoumettre['descriptionEN'];
-            }
-        
+
+        //AJOUT  OEUVRE
+
+        //Si l'ajout est complété avec succès...
+        if (isset($_POST["boutonAjoutOeuvre"]) && empty($this->msgErreurs)) {
+            $msgAjout = "<div style='color:green' class='erreur'>Ajout complété !</div>";
+            $_POST["titreAjout"] = "";
+            $_POST["prenomArtisteAjout"] = "";
+            $_POST["nomArtisteAjout"] = "";
+            $_POST["adresseAjout"] = "";
+            $_POST["descriptionAjout"] = "";
+            $_POST["selectArrondissement"] = "";
+            $_POST["selectCategorie"] = "";
         }
-        //var_dump($oeuvreASoumettre);
+        else if (isset($this->msgErreurs["errRequeteAjout"])) {
+            $msgAjout = $this->msgErreurs["errRequeteAjout"];
+        }
+        else {
+            $msgAjout = "";
+        }
     ?>
        
         
@@ -111,61 +105,65 @@ class VueSoumission extends Vue {
             <p class="noIndent">Veuillez remplir le formulaire ci-dessous avec les informations de l'oeuvre en question.
             Toute contribution sera sujette à une approbation de la part d'un administrateur.</p>
 
-              <form method="POST" name="formSoumissionOeuvre" onsubmit="return valideAjoutOeuvreJS();" action="?r=soumission&action=soumettreOeuvre" enctype="multipart/form-data" >
-                    <input type='text' class="inputGestion" name='titreSoumis' id='titreAjout' placeholder="Titre de l'oeuvre" value="<?php echo  $titreSoumis?>"/>
-                    <br> <span  id="erreurTitreOeuvre" class="erreur"></span><br>                  
-                   
-                    <input type='text' class="inputGestion" name='prenomArtisteSoumis' id='prenomArtisteAjout' value="<?php echo  $prenomArtisteSoumis?>" placeholder="Prénom de l'artiste"/>
-                    <br> <span class="erreur" id="erreurPrenomArtisteAjout"></span><br>
-                  
-                    <input type='text' class="inputGestion" name='nomArtisteSoumis' id='nomArtisteAjout' value="<?php echo $nomArtisteSoumis ?>" placeholder="Nom de l'artiste "/>
-                    <br>  <span class="erreur" id="erreurNomArtisteAjout"></span><br>
-                  
-                    <input type='text' class="inputGestion" name='adresseSoumis' id='adresseAjout' value="<?php echo $adresseSoumis ?>" placeholder="Adresse "/>
-                    <br>  <span class="erreur" id="erreurAdresseOeuvre"></span><br>
-                  
-                    <textarea name='descriptionSoumis' class="inputGestion" id='descriptionAjout' placeholder="Description "><?php echo $descriptionSoumis ?></textarea>
-                    <br>  <span class="erreur" id="erreurDescription"></span><br>
-                  
-                    <select name="selectArrondissement"  id="selectArrondissement" class="selectGestion">
-                        <option value="">Choisir un arrondissement</option>
-                        <?php
-                            foreach ($this->arrondissementsBDD as $arrondissement) {
-                                if ($arrondissement["idArrondissement"] == $idArrondissementSoumis) {
-                                    $selection = "selected";
-                                }
-                                else {
-                                    $selection = "";
-                                }
-                                echo "<option value='".$arrondissement["idArrondissement"]."'".$selection.">".$arrondissement["nomArrondissement"];
+                 
+            <form method="POST" name="formAjoutOeuvre" onsubmit="return valideAjoutOeuvre();" action="?r=soumission" enctype="multipart/form-data" >
+                <input type='text' class="inputGestion" name='titreAjout' id='titreAjout' placeholder="Titre de l'oeuvre" value="<?php echo  $_POST["titreAjout"]; ?>"/>
+                <br> <span  id="erreurTitreOeuvre" class="erreur"><?php if (isset($this->msgErreurs["errTitre"])) {echo $this->msgErreurs["errTitre"];} ?></span><br>                  
+
+                <input type='text' class="inputGestion" name='prenomArtisteAjout' id='prenomArtisteAjout' value="<?php echo  $_POST["prenomArtisteAjout"]; ?>" placeholder="Prénom de l'artiste"/>
+
+                <input type='text' class="inputGestion" name='nomArtisteAjout' id='nomArtisteAjout' value="<?php echo $_POST["nomArtisteAjout"]; ?>" placeholder="Nom de l'artiste "/>
+
+                <input type='text' class="inputGestion" name='adresseAjout' id='adresseAjout' value="<?php echo $_POST["adresseAjout"]; ?>" placeholder="Adresse "/>
+                <br>  <span class="erreur" id="erreurAdresseOeuvre"><?php if (isset($this->msgErreurs["errAdresse"])) {echo $this->msgErreurs["errAdresse"];} ?></span><br>
+
+                <textarea name='descriptionAjout' class="inputGestion textAreaGestion" id='descriptionAjout' placeholder="Description "><?php echo $_POST["descriptionAjout"]; ?></textarea>
+                <br>  <span class="erreur" id="erreurDescription"><?php if (isset($this->msgErreurs["errDescription"])) {echo $this->msgErreurs["errDescription"];} ?></span><br>
+
+                <select name="selectArrondissement"  id="selectArrondissement" class="selectGestion">
+                    <option value="">Choisir un arrondissement</option>
+                    <?php
+                        foreach ($this->arrondissementsBDD as $arrondissement) {
+                            if ($arrondissement["idArrondissement"] == $_POST["selectArrondissement"]) {
+                                $selection = "selected";
                             }
-                        
-                        ?>
-                    </select>
-                    <br>  <span class="erreur" id="erreurSelectArrondissement"></span><br>
-                    <select name="selectSousCategorie"  id="selectSousCategorie" class="selectGestion">
-                        <option value="">Choisir une catégorie</option>
-                        <?php
-                            foreach ($this->categoriesBDD as $categorie) {
-                                if ($categorie["idSousCategorie"] == $idSousCategorieSoumis) {
-                                    $selection = "selected";
-                                }
-                                else {
-                                    $selection = "";
-                                }
-                                echo "<option value='".$categorie["idSousCategorie"]."'".$selection.">".$categorie["sousCategorie$this->langue"];
+                            else {
+                                $selection = "";
                             }
-                            echo "</select>";
-                        ?>
-                    </select>   
-                    <br><span class="erreur" id="erreurSelectCategorie"></span><br>
-                    <h3 class="televersionTexteGestion">Téléversez l'image de l'oeuvre</h3>
-                    <input type="file" name="fileToUpload" id="fileToUpload" value="" class="fileToUploadGestion">
-                   <span id="erreurPhotoVide" class="erreur"></span><br>
-                        <span id="erreurPhotoSize" class="erreur"></span><br>
-                        <span id="erreurPhotoType" class="erreur"></span><br>
-                    <input class="boutonMoyenne" type='submit' name='boutonSoumissionOeuvre' value='Soumettre'>
-                </form>
+                            echo "<option value='".$arrondissement["idArrondissement"]."'".$selection.">".$arrondissement["nomArrondissement"];
+                        }
+
+                    ?>
+                </select>
+                <br>  <span class="erreur" id="erreurSelectArrondissement"><?php if (isset($this->msgErreurs["errArrondissement"])) {echo $this->msgErreurs["errArrondissement"];} ?></span><br>
+                <select name="selectCategorie"  id="selectCategorie" class="selectGestion">
+                    <option value="">Choisir une catégorie</option>
+                    <?php
+                        foreach ($this->categoriesBDD as $categorie) {
+                            if ($categorie["idCategorie"] == $_POST["selectCategorie"]) {
+                                $selection = "selected";
+                            }
+                            else {
+                                $selection = "";
+                            }
+                            echo "<option value='".$categorie["idCategorie"]."'".$selection.">".$categorie["nomCategorie$this->langue"];
+                        }
+                        echo "</select>";
+                    ?>
+                </select>   
+                <br><span class="erreur" id="erreurSelectCategorie"><?php if (isset($this->msgErreurs["errCategorie"])) {echo $this->msgErreurs["errCategorie"];} ?></span><br>
+                <h3 class="televersionTexteGestion">Téléversez l'image de l'oeuvre</h3>
+                <input type="file" name="fileToUpload" id="fileToUpload" class="fileToUploadGestion">
+               <span id="erreurPhotoVide" class="erreur"><?php if (isset($this->msgErreurs["errPhoto"])) {echo $this->msgErreurs["errPhoto"];} ?></span><br>
+                    <span id="erreurPhotoSize" class="erreur"></span><br>
+                    <span id="erreurPhotoType" class="erreur"></span><br>
+                <input class="boutonMoyenne" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
+            </form>
+            <span class="msgUser">
+            <?php
+            echo $msgAjout;
+            ?>  
+            </span>
         </main>
 
     <?php

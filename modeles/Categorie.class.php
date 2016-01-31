@@ -68,36 +68,110 @@ class Categorie {
     * @return void
     */
     public function ajouterCategorie($nomCategorieFR, $nomCategorieEN) {
-        try {
-            self::$database->query('INSERT INTO Categories (nomCategorieFR, nomCategorieEN) VALUES (:nomCategorieFR, :nomCategorieEN)');
-            self::$database->bind(':nomCategorieFR', $nomCategorieFR);
-            self::$database->bind(':nomCategorieEN', $nomCategorieEN);
-            self::$database->execute();
+        
+        $msgErreurs = $this->validerFormAjoutCategorie($nomCategorieFR, $nomCategorieEN);//Validation des champs obligatoires.
+        
+        if (!empty($msgErreurs)) {
+            return $msgErreurs;//Retourne le/les message(s) d'erreur de la validation.
         }
-        catch(Exception $e) {
-            echo "erreur lors de l'insertion : " . $e;
-            exit;
-        } 
+        else {
+            try {
+                self::$database->query('INSERT INTO Categories (nomCategorieFR, nomCategorieEN) VALUES (:nomCategorieFR, :nomCategorieEN)');
+                self::$database->bind(':nomCategorieFR', $nomCategorieFR);
+                self::$database->bind(':nomCategorieEN', $nomCategorieEN);
+                self::$database->execute();
+            }
+            catch(Exception $e) {
+                $msgErreurs["errRequeteAjoutCat"] = $e->getMessage();
+            }
+        }
+        return $msgErreurs;
     }
     
-//    function chercheParCategorie($keyword) {
-//        
-//    
-//    self::$database->query("SELECT idCategorie, nomCategorie ".$langue." FROM Categories;");
-//                           /*SELECT nomCategorieFR, nomCategorieEN  FROM categories JOIN oeuvres ON oeuvres.idCategorie = categories.idCategorie Group By nomCategorieFR*/
-//                           /*SELECT nomCategorieFR, nomCategorieEN, idOeuvre FROM categories, oeuvres Where oeuvres.idCategorie = categories.idCategorie Group By idOeuvre*/
-//    $keyword = $keyword.'%';
-//
-//    self::$database->bind(1, $keyword);
-//    
-//    $results = array();
-//
-//   if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
-//        $results = array("idOeuvre"=>$oeuvreBDD['idOeuvre'],"titre"=>$oeuvreBDD['titre']);
-//    }
-//
-//    return $results;
-//
-//    }
+    /**
+    * @brief Méthode qui supprime une catégorie à la BDD.
+    * @param string $id
+    * @access public
+    * @return void
+    */
+    public function supprimerCategorie($id) {
+        
+        $msgErreurs = $this->validerFormSuppCategorie($id);//Validation des champs obligatoires.
+        
+        if (!empty($msgErreurs)) {
+            return $msgErreurs;//Retourne le/les message(s) d'erreur de la validation.
+        }
+        else {
+            try {
+                self::$database->query('DELETE FROM Categories WHERE idCategorie = :id');
+                self::$database->bind(':id', $id);
+                self::$database->execute();
+            }
+            catch(Exception $e) {
+                $msgErreurs["errRequeteSuppCat"] = $e->getMessage();
+                
+            } 
+        }
+        return $msgErreurs;
+    }
+    
+    /**
+    * @brief Méthode qui valide les champs obligatoires lors d'un ajout.
+    * @param string $nomCategorieFR
+    * @param string $nomCategorieEN
+    * @access private
+    * @return array
+    */
+    private function validerFormAjoutCategorie($nomCategorieFR, $nomCategorieEN) {
+        
+        $msgErreurs = array();//Initialise les messages d'erreur à un tableau vide.
+        
+        self::$database->query('SELECT idCategorie FROM Categories WHERE nomCategorieFR = :categorieFR OR nomCategorieEN = :categorieEN');
+        
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':categorieFR', $nomCategorieFR);
+        self::$database->bind(':categorieEN', $nomCategorieEN);
+        
+        if ($categorie = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $msgErreurs["errRequeteAjoutCat"] = "Cette catégorie existe déjà";
+            return $msgErreurs;
+        }
+        
+        $nomCategorieFR = trim($nomCategorieFR);
+        if (empty($nomCategorieFR)) {
+            $msgErreurs["errAjoutCategorieFR"] = "Veuillez entrer un nom de catégorie en français";
+        }
+        $nomCategorieEN = trim($nomCategorieEN);
+        if (empty($nomCategorieEN)) {
+            $msgErreurs["errAjoutCategorieEN"] = "Veuillez entrer un nom de catégorie en anglais";
+        }
+        return $msgErreurs;
+    }
+    
+    /**
+    * @brief Méthode qui valide les champs obligatoires lors d'une suppression d'oeuvre.
+    * @param string $id
+    * @access private
+    * @return array
+    */
+    private function validerFormSuppCategorie($id) {
+        
+        $msgErreurs = array();//Initialise les messages d'erreur à un tableau vide.
+        
+        self::$database->query('SELECT idOeuvre FROM Oeuvres WHERE idCategorie = :idCategorie');
+        
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':idCategorie', $id);
+        
+        if ($categorie = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $msgErreurs["errRequeteSuppCat"] = "Cette catégorie ne peut être supprimée car une oeuvre y réfère";
+            return $msgErreurs;
+        }
+        
+        if (empty($id)) {
+            $msgErreurs["errSelectCategorieSupp"] = "Veuillez choisir une catégorie à supprimer";
+        }
+        return $msgErreurs;
+    }
 }
 ?>

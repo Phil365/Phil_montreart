@@ -165,8 +165,7 @@ class Photo {
         
         if ($_FILES["fileToUpload"]["error"] != 4) {
 
-            $message='';
-            $target_dir = "images/images_soumises/";
+            $target_dir = "images/photosOeuvres/";
             $temp = explode(".", $_FILES["fileToUpload"]["name"]);
             $nouveauNomImage = round(microtime(true)) . '.' . end($temp);      
             $target_file = $target_dir .$nouveauNomImage;
@@ -182,7 +181,7 @@ class Photo {
                     $msgUtilisateur = "Votre fichier doit être de type Jpeg ou Png et inférieur à 5Mb.<br>";
                 }
                 if (!$erreurs) {
-                    self::$database->query("INSERT INTO photos (image, authorise, idOeuvre) VALUES ('images/images_soumises/$nouveauNomImage', :authorise, :idOeuvre)");
+                    self::$database->query("INSERT INTO photos (image, authorise, idOeuvre) VALUES ('images/photosOeuvres/$nouveauNomImage', :authorise, :idOeuvre)");
 //                    self::$database->bind(':newfilename', $nouveauNomImage);
                     self::$database->bind(':idOeuvre', $idOeuvre);
                     self::$database->bind(':authorise', $authorise);
@@ -201,9 +200,6 @@ class Photo {
         else {
             $erreurs = true;
             $msgUtilisateur = "Vous devez d'abord choisir une image.";
-        }
-        if (!$erreurs) {
-            $msgUtilisateur = "Complété avec succès !";
         }
         return $msgUtilisateur;
     }

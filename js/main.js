@@ -1,8 +1,9 @@
 /**
 * @file Script contenant les fonctions de base
 * @author Jonathan Martel (jmartel@gmail.com)
+* @author David Lachambre
 * @version 0.1
-* @update 2013-12-11
+* @update 2016-01-30
 * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
 * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
 *
@@ -50,37 +51,49 @@ $(document).ready(function(){
     });
 });
 
+/* --------------------------------------------------------------------
+========================= DÉBUT VALIDATION JS =========================
+-------------------------------------------------------------------- */
+
+/**
+* @brief Fonction de validation de soumission d'une photo
+* @access public
+* @return boolean
+*/
 function validePhotoSubmit() {
     var erreurs = false;
-    document.getElementById("erreurPhotoSize").innerHTML = "";
-    document.getElementById("erreurPhotoType").innerHTML = "";
-    document.getElementById("erreurPhotoVide").innerHTML = "";
+    var msg = "";
     
     if (document.getElementById("fileToUpload").files.length == 0) {
-        document.getElementById("erreurPhotoVide").innerHTML = "Vous devez d'abord choisir un fichier.";
+        msg = "Vous devez d'abord choisir un fichier.";
         erreurs = true;
     }
     else {
         if (document.getElementById("fileToUpload").files[0].size > 5000000) {
-            document.getElementById("erreurPhotoSize").innerHTML = "Votre fichier doit être inférieur à 5Mb.";
+            if (msg != "") {
+                msg += "<br>";
+            }
+            msg += "Votre fichier doit être inférieur à 5Mb.";
             erreurs = true;
         }
         if (document.getElementById("fileToUpload").files[0].type != "image/png" && document.getElementById("fileToUpload").files[0].type != "image/jpg" && document.getElementById("fileToUpload").files[0].type != "image/jpeg") {
-            document.getElementById("erreurPhotoType").innerHTML = "Votre fichier doit être de type Jpeg ou Png.";
+            if (msg != "") {
+                msg += "<br>";
+            }
+            msg += "Votre fichier doit être de type Jpeg ou Png.";
             erreurs = true;
         }
-    } 
-    if (!erreurs) {
-        return true;
     }
-    else {
-        return false;
-    }
-} // end function validateForm
+    document.getElementById("msg").innerHTML = msg;
+    return (!erreurs);
+}
 
-
-
-function valideAjoutOeuvreJS() {
+/**
+* @brief Fonction de validation de soumission d'une oeuvre
+* @access public
+* @return boolean
+*/
+function valideAjoutOeuvre() {
     var erreurs = false;
     document.getElementById("erreurTitreOeuvre").innerHTML = "";
     document.getElementById("erreurAdresseOeuvre").innerHTML = "";
@@ -104,7 +117,7 @@ function valideAjoutOeuvreJS() {
         erreurs = true;
     }
 
-    if (document.getElementById("selectSousCategorie").value == "") {
+    if (document.getElementById("selectCategorie").value == "") {
         document.getElementById("erreurSelectCategorie").innerHTML = "Veuillez choisir une catégorie";
         erreurs = true;
     }
@@ -113,17 +126,16 @@ function valideAjoutOeuvreJS() {
         document.getElementById("erreurSelectArrondissement").innerHTML = "Veuillez choisir un arrondissement";
         erreurs = true;
     }  
+    return (!erreurs);
+}
 
-    if (!erreurs) {
-        return true;
-    }
-    else {
-        return false;
-    }
-} // end function validateForm
-
-
-function valideSupprimerOeuvreJS() {
+/**
+* @brief Fonction de validation de suppresion d'une oeuvre
+* @access public
+* @return boolean
+*/
+function valideSupprimerOeuvre() {
+    
     var erreurs = false;
     document.getElementById("erreurSelectSuppression").innerHTML = "";
     
@@ -132,16 +144,15 @@ function valideSupprimerOeuvreJS() {
         document.getElementById("erreurSelectSuppression").innerHTML = "Veuillez choisir une option";
         erreurs = true;
     } 
-    if (!erreurs) {
-        return true;
-    }
-    else {
-        return false;
-    }
-} // end function validateForm
+    return (!erreurs);
+}
 
-
-function valideModifierOeuvreJS() {
+/**
+* @brief Fonction de validation de modification d'une oeuvre
+* @access public
+* @return boolean
+*/
+function valideModifierOeuvre() {
     
     var erreurs = false;
     document.getElementById("erreurTitreOeuvreModif").innerHTML = "";
@@ -164,7 +175,7 @@ function valideModifierOeuvreJS() {
         erreurs = true;
     }
 
-    if (document.getElementById("selectSousCategorieModif").value == "") {
+    if (document.getElementById("selectCategorieModif").value == "") {
         document.getElementById("erreurSelectCategorieModif").innerHTML = "Veuillez choisir une catégorie";
         erreurs = true;
     }
@@ -173,20 +184,58 @@ function valideModifierOeuvreJS() {
         document.getElementById("erreurSelectArrondissementModif").innerHTML = "Veuillez choisir un arrondissement";
         erreurs = true;
     }  
+    return (!erreurs);
+}
 
-    if (!erreurs) {
-        return true;
+/**
+* @brief Fonction de validation de l'ajout d'une catégorie
+* @access public
+* @return boolean
+*/
+function valideAjoutCategorie() {
+    
+    var erreurs = false;
+    document.getElementById("erreurAjoutCategorieFR").innerHTML = "";
+    document.getElementById("erreurAjoutCategorieEN").innerHTML = "";
+    
+
+    if (document.getElementById("categorieFrAjout").value == "") {
+        document.getElementById("erreurAjoutCategorieFR").innerHTML = "Veuillez inscrire le nom de la catégorie en français";
+        erreurs = true;
     }
-    else {
-        return false;
+    if (document.getElementById("categorieEnAjout").value == "") {
+        document.getElementById("erreurAjoutCategorieEN").innerHTML = "Veuillez inscrire le nom de la catégorie en anglais";
+        erreurs = true;
     }
-} // end function validateForm
+    return (!erreurs);
+}
 
+/**
+* @brief Fonction de validation de suppresion d'une catégorie
+* @access public
+* @return boolean
+*/
+function valideSuppCategorie() {
+    
+    var erreurs = false;
+    document.getElementById("erreurSelectSuppCategorie").innerHTML = "";    
 
+    if (document.getElementById("selectCategorieSupp").value == "") {
+        document.getElementById("erreurSelectSuppCategorie").innerHTML = "Veuillez choisir une catégorie à supprimer";
+        erreurs = true;
+    }
+    return (!erreurs);
+}
 
+/* --------------------------------------------------------------------
+========================== FIN VALIDATION JS ==========================
+-------------------------------------------------------------------- */
 
-
-
+/**
+* @brief Fonction d'autocomplete pour la recherche
+* @access public
+* @return void
+*/
 function autoComplete(rechercheVoulue, nomServeur)
 {
     var MIN_LENGTH = 1;
@@ -231,63 +280,76 @@ function autoComplete(rechercheVoulue, nomServeur)
     })
 }
 
+/**
+* @brief Fonction d'initialisation Google Map
+* @access public
+* @return void
+*/
 function initMap() {
 
-  var map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 11,
-    center: new google.maps.LatLng(45.512090, -73.550979),
-    mapTypeId: 'roadmap'
-  });
-var infoWindow = new google.maps.InfoWindow();
-
-downloadUrl("ajaxControler.php?rAjax=googleMap", function(data) {
-    
-    var xml = data.responseXML;
-    var markers = xml.documentElement.getElementsByTagName("marker");
-    for (var i = 0; i < markers.length; i++) {
-    var name = markers[i].getAttribute("name");
-//    var photo = markers[i].getAttribute("photo");
-//    var urlTest = markers[i].getAttribute("urlTest");
-    var url = markers[i].getAttribute("url");
-    var point = new google.maps.LatLng(
-        parseFloat(markers[i].getAttribute("lat")),
-        parseFloat(markers[i].getAttribute("lng")));
-    var html = "<a href='" + url + "'>" + name + "</a>";
-    var marker = new google.maps.Marker({
-      map: map,
-      position: point,
-      
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 11,
+        center: new google.maps.LatLng(45.512090, -73.550979),
+        mapTypeId: 'roadmap'
     });
-    bindInfoWindow(marker, map, infoWindow, html);
-  }
-});
+    var infoWindow = new google.maps.InfoWindow();
+
+    downloadUrl("ajaxControler.php?rAjax=googleMap", function(data) {
+
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+        for (var i = 0; i < markers.length; i++) {
+            var name = markers[i].getAttribute("name");
+            //    var photo = markers[i].getAttribute("photo");
+            //    var urlTest = markers[i].getAttribute("urlTest");
+            var url = markers[i].getAttribute("url");
+            var point = new google.maps.LatLng(
+            parseFloat(markers[i].getAttribute("lat")),
+            parseFloat(markers[i].getAttribute("lng")));
+            var html = "<a href='" + url + "'>" + name + "</a>";
+            var marker = new google.maps.Marker({
+                map: map,
+                position: point,
+            });
+            bindInfoWindow(marker, map, infoWindow, html);
+        }
+    });
 }
 
- function bindInfoWindow(marker, map, infoWindow, html) {
+/**
+* @brief Fonction de mise en page pour la Google Map
+* @access public
+* @return void
+*/
+function bindInfoWindow(marker, map, infoWindow, html) {
      
-      google.maps.event.addListener(marker, 'click', function() {
-          
-        infoWindow.setContent(html);
-        infoWindow.open(map, marker);
-      });
-    }
+  google.maps.event.addListener(marker, 'click', function() {
 
- function downloadUrl(url,callback) {
+    infoWindow.setContent(html);
+    infoWindow.open(map, marker);
+  });
+}
+
+/**
+* @brief Fonction Ajax pour la Google Map
+* @access public
+* @return void
+*/
+function downloadUrl(url,callback) {
      
- var request = window.ActiveXObject ?
-     new ActiveXObject('Microsoft.XMLHTTP') :
-     new XMLHttpRequest;
+    var request = window.ActiveXObject ?
+    new ActiveXObject('Microsoft.XMLHTTP') :
+    new XMLHttpRequest;
 
- request.onreadystatechange = function() {
-     
-   if (request.readyState == 4) {
-     request.onreadystatechange = doNothing;
-     callback(request, request.status);
-   }
- };
+    request.onreadystatechange = function() {
 
- request.open('GET', url, true);
- request.send(null);
+        if (request.readyState == 4) {
+            request.onreadystatechange = doNothing;
+            callback(request, request.status);
+        }
+    };
+    request.open('GET', url, true);
+    request.send(null);
 }
 
 function doNothing() {}
