@@ -3,9 +3,7 @@
 
 require_once "../var.init.php";
 require_once "../modeles/Oeuvre.class.php";
-require_once "../modeles/Collection.class.php";
 require_once "../modeles/Categorie.class.php";
-require_once "../modeles/SousCategorie.class.php";
 require_once "../modeles/Arrondissement.class.php";
 require_once "../modeles/Artiste.class.php";
 require_once "../modeles/Commentaire.class.php";

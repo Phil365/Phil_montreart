@@ -3,17 +3,17 @@
 <?php
     $oeuvre = new Oeuvre();
     $arrondissement = new Arrondissement();
-     $categorie = new SousCategorie();
+     $categorie = new Categorie();
     
     $idOeuvre= "";
     $arrondissementsBDD = $arrondissement->getAllArrondissements();
-    $categoriesBDD = $categorie->getAllSousCategories('FR');
+    $categoriesBDD = $categorie->getAllCategories('FR');
   
  
 
     if (isset($_GET["testajoutOeuvre"])) {      
-           if (!empty($_GET["titreAjout"]) && !empty($_GET["prenomArtisteAjout"]) && !empty($_GET["adresseAjout"]) && !empty($_GET["descriptionAjout"]) && !empty($_GET["nomArtisteAjout"])  && !empty($_GET["selectArrondissement"])  && !empty($_GET["selectSousCategorie"])){
-            $oeuvre->ajouterOeuvrePourTest($_GET['titreAjout'], $_GET['adresseAjout'], $_GET['prenomArtisteAjout'], $_GET['nomArtisteAjout'], $_GET['descriptionAjout'], $_GET["selectSousCategorie"], $_GET["selectArrondissement"], true, 'FR');   
+           if (!empty($_GET["titreAjout"]) && !empty($_GET["prenomArtisteAjout"]) && !empty($_GET["adresseAjout"]) && !empty($_GET["descriptionAjout"]) && !empty($_GET["nomArtisteAjout"])  && !empty($_GET["selectArrondissement"])  && !empty($_GET["selectCategorie"])){
+            $oeuvre->ajouterOeuvrePourTest($_GET['titreAjout'], $_GET['adresseAjout'], $_GET['prenomArtisteAjout'], $_GET['nomArtisteAjout'], $_GET['descriptionAjout'], $_GET["selectCategorie"], $_GET["selectArrondissement"], true, 'FR');   
                 $idOeuvre = $oeuvre->getIdOeuvreByTitreandAdresse($_GET['titreAjout'],  $_GET['adresseAjout']);//aller chercher id oeuvre insérée
        
      }
@@ -38,11 +38,11 @@
                         echo "</select>";
                     ?>
                 </select><br>
-                <select name="selectSousCategorie">
+                <select name="selectCategorie">
                     <option value="">Choisir une catégorie</option>
                     <?php
                         foreach ($categoriesBDD as $categorie) {
-                            echo "<option value='".$categorie["idSousCategorie"]."'>".$categorie["sousCategorieFR"];
+                            echo "<option value='".$categorie["idCategorie"]."'>".$categorie["nomCategorieFR"];
                         }
                         echo "</select>";
                     ?>
