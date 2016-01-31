@@ -344,7 +344,6 @@ class Controler {
         if (isset($_POST["boutonAjoutCategorie"])) {
             $msgErreurs = $categorie->ajouterCategorie($_POST["categorieFrAjout"], $_POST["categorieEnAjout"]);
         }
-        var_dump($msgErreurs);
         
         //Suppression d'une catégorie
         if (isset($_POST["boutonSuppCategorie"])) {

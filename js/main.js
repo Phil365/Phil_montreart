@@ -95,6 +95,9 @@ function validePhotoSubmit() {
 */
 function valideAjoutOeuvre() {
     var erreurs = false;
+    var champsPhoto = document.getElementById("fileToUpload");
+    var msgErreurPhoto = "";
+    
     document.getElementById("erreurTitreOeuvre").innerHTML = "";
     document.getElementById("erreurAdresseOeuvre").innerHTML = "";
     document.getElementById("erreurDescription").innerHTML = "";
@@ -111,7 +114,15 @@ function valideAjoutOeuvre() {
         document.getElementById("erreurAdresseOeuvre").innerHTML = "Veuillez entrer une adresse";
         erreurs = true;
     }
-
+    else {
+        var adresseAuthorisee = new RegExp("^[0-9]+[A-ÿ.,' \-]+$", "i");//doit avoir la forme d'adresse chiffre suivi d'un ou plusieurs noms.
+        var resultat = adresseAuthorisee.exec(document.getElementById("adresseAjout").value);
+        if (!resultat) {
+            document.getElementById("erreurAdresseOeuvre").innerHTML = "Votre adresse doit débuter par le numéro civique, suivi du nom de la rue";
+            erreurs = true;
+        }
+    }
+    
     if (document.getElementById("descriptionAjout").value.trim() == "") {
         document.getElementById("erreurDescription").innerHTML = "Veuillez entrer une description";
         erreurs = true;
@@ -126,6 +137,23 @@ function valideAjoutOeuvre() {
         document.getElementById("erreurSelectArrondissement").innerHTML = "Veuillez choisir un arrondissement";
         erreurs = true;
     }  
+    
+    if (champsPhoto.value != "") {
+        var fichiersAuthorises = new RegExp("(.jpg|.jpeg|.png)$", "i");//doit se terminer par une des extensions suivantes.
+        var resultat = fichiersAuthorises.exec(champsPhoto.value);
+        if (!resultat) {
+            msgErreurPhoto = "Seules les images de type \"JPG\" ou \"PNG\" sont acceptées.";
+            erreurs = true;
+        }
+        if (champsPhoto.files[0].size > 5000000) {//Si plus gros que 5Mb...
+            if (msgErreurPhoto != "") {
+                msgErreurPhoto += "<br>";
+            }
+            msgErreurPhoto += "Votre image ne doit pas dépasser 5Mb.";
+            erreurs = true;
+        }
+    }
+    document.getElementById("erreurPhoto").innerHTML = msgErreurPhoto;
     return (!erreurs);
 }
 

@@ -711,6 +711,7 @@ header{
 .erreur {
     color:red;
     margin-left: 30px;
+    display: block;
 }
 
 #logo{
