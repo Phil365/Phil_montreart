@@ -22,8 +22,7 @@ class VueProfil extends Vue {
     */
     public function afficherBody() {
     ?>
-         <div class="dummy"><!--    Ne mettez rien ici--></div>
-            <!-- Espace de l'utilisateur -->
+         
         
             
         <div class="section1" id="profileUser">
