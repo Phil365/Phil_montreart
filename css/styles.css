@@ -58,9 +58,11 @@ border-spacing: 0;
 /*============================COULEURS:
 rouge fonce: #B32A42;
 rouge tres fonce: #6c0e1e;
+rouge tres fonce(cristina) 2: #70212F;
 rose: #F05570;
 bleu fonce: #1781B2;
-bleu moyenne: #30A0D1;
+bleu moyenne: #659CEF;
+bleu moyenne josianne: #659CEF;
 jaune: #F8F274;
 ================================FIN COULEURS*/
 @viewport{
@@ -78,7 +80,7 @@ border-bottom-left-radius: 10px;
 border-bottom-right-radius: 10px;
 }
 html{
-background-color: #6c0e1e;
+background-color: #70212F;
 }
 body{
 
@@ -91,25 +93,25 @@ overflow-y: scroll;
 h2{
 font-family: 'Source Sans Pro', sans-serif;
 font-size: 1.6em;
-color: #6c0e1e;
+color: #70212F;
 margin: 60px 10px 30px 10px;
 }
 
 h3{
 font-family: 'Source Sans Pro', sans-serif;
-color: #6c0e1e;
+color: #70212F;
 font-size: 1.2em;
 margin-top: 1em;
 }
 h4{
 font-family: 'Source Sans Pro', sans-serif;
-color: #6c0e1e;
+color: #70212F;
 font-size: 1em;
 margin-top: 1em;
 }
 h5{
 font-family: 'Source Sans Pro', sans-serif;
-color: #6c0e1e;  
+color: #70212F;  
 font-size: .9em;
 }
 a{
@@ -171,7 +173,7 @@ main{
     width: 100%;
     margin-top: 40px;
     margin-bottom: 20px;
-    border: 2px solid #30A0D1;
+    border: 2px solid #659CEF;
 }
 .section4{
     
@@ -196,7 +198,7 @@ main{
     
 }
 footer{
-background: #659CEF;
+background: #B32A42;
 width: 100%;
 min-height: 75px;
 position: relative;
@@ -245,7 +247,7 @@ z-index: 3;
 .boutonMoyenne{
     width:auto;
     text-align:center;
-    background-color:#30A0D1;
+    background-color:#659CEF;
     font-family: 'Source Sans Pro', sans-serif;
     color:#fff;
     border:1px solid #ddd;
@@ -328,6 +330,18 @@ z-index: 3;
 }
 .ratingUtilisateur{
     height: 30px;
+}
+#votreTrajet{
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+    border: 2px solid #9547ce;
+}
+#sponsorsTrajet{
+    width: 100%;
+    height: 300px;
+    margin-top: 20px;
+    border: 2px solid #47ce51;
 }
 /*------------- PAGE ADMIN -----------------------*/
 .premiereColonne{
@@ -484,7 +498,7 @@ z-index: 3;
 
 #click1 {
     margin-left: 40px;
-    background-color: #6c0e1e;
+    background-color: #70212F;
     border-radius: 5px;
     color: white;
     padding: 5px;
@@ -493,7 +507,7 @@ z-index: 3;
 
 #click2 {
     margin-left: 30px;
-    background-color: #6c0e1e;
+    background-color: #70212F;
     border-radius: 5px;
     color: white;
     padding: 5px;
@@ -503,7 +517,7 @@ z-index: 3;
 
 #click3 {
     margin-left: 30px;
-    background-color: #6c0e1e;
+    background-color: #70212F;
     border-radius: 5px;
     color: white;
     padding: 5px;
@@ -550,7 +564,7 @@ nav {
 display: block;
 width: 100%;
 background-color: #ffffff;
-border-top: #6c0e1e solid 4px;
+border-top: #70212F solid 4px;
 border-bottom: #F8F274 solid 4px;
 position: fixed;
 top: 49px;
@@ -561,7 +575,7 @@ z-index: 2;
 nav a{
 font-family: 'Source Sans Pro', sans-serif;
 font-size: .7em;
-/*color: #6c0e1e;*/
+/*color: #70212F;*/
 color: white;
 text-decoration: none;
 padding: .2em .3em;
@@ -571,13 +585,14 @@ border-radius: 5px;
 }
 
 nav a:hover {
-background-color: #6c0e1e;
+background-color: #79a8f0;
 color: white;
 }
 
 
 .ici{/*--cette class est pour marquer la page actuelle dans le nav--*/
-font-weight: 600;
+    font-weight: 600;
+    background: #70212F;
 }
 nav a:active{
 color:  #b95364;
@@ -607,7 +622,7 @@ right:-4px;
 top:-4px;
 width:30px;
 height:30px;
-background-color:#6c0e1e;
+background-color:#70212F;
 font-family: 'Source Sans Pro', sans-serif;
 font-size: 1.2em;
 color: #fff;
@@ -625,7 +640,7 @@ display: none;
 }
 
 #div_form h2 {
-color: #6c0e1e;
+color: #70212F;
 padding:20px 35px;
 margin:-10px -50px;
 text-align:center;
@@ -659,7 +674,7 @@ text-decoration:none;
 width:100%;
 text-align:center;
 display:block;
-background-color:#30A0D1;
+background-color:#659CEF;
 font-family: 'Source Sans Pro', sans-serif;
 color:#fff;
 border:1px solid #ddd;
@@ -695,6 +710,9 @@ font-family: 'Source Sans Pro', sans-serif;
     text-align: center;
     line-height: 1.6em;
 }
+#formPhotoUnique h4{
+    margin-left: 20px;
+}
 
 /*--------------------------FIN STYLES FORMULAIRES -------------------------*/
 
@@ -723,7 +741,7 @@ header{
     top: -50px;
     left: 70px;
     font-family: 'Source Sans Pro', sans-serif;
-    color: #6c0e1e;
+    color: #70212F;
     font-size: 1.4em;
     z-index: 4;
 }
@@ -744,7 +762,7 @@ header{
     height: 100%;
     position: relative;
     z-index: 5;
-    border-left: solid 2px #6c0e1e;
+    border-left: solid 2px #70212F;
 }
 
 .barreRechercheContenu {
@@ -786,7 +804,7 @@ header{
     height: 100%;
     position: relative;
     z-index: 5;
-    border-left: solid 2px #6c0e1e;
+    border-left: solid 2px #70212F;
 }
 
 .iconeRecherche {
@@ -809,8 +827,8 @@ header{
     top: 17px;
     transform: rotate(45deg);
     border-bottom-left-radius: 5px;
-    border-left: solid 2px #6c0e1e;
-    border-bottom: solid 2px #6c0e1e;
+    border-left: solid 2px #70212F;
+    border-bottom: solid 2px #70212F;
 }
 
 #submitRecherche{
@@ -969,308 +987,308 @@ width: 270px;
 }
 @media (min-width: 800px){
     
-html{
+    html{
+        width: 100%;
+        height: 100%;
+    }
+
+
+    body{
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+        position: relative;
+        bottom: 0;
+    }
+
+    header{
+    background-image: url(../images/Banniere.png);
+    background-size: 100% 100%;
+    height: 76px;
     width: 100%;
-    height: 100%;
-}
+    }
 
+    #titre{
+    left: 100px;
+    font-weight: 900;
+    }
+    #logo{
+    width: 60px;
+    height: 60px;
+    }
+    nav{
+        top: 76px;
+        width: 100%;
+        /*margin-left: 0px;*/
+    }
 
-body{
-    width: 100%;
-    height: auto;
-    margin: 0 auto;
-    position: relative;
-    bottom: 0;
-}
-    
-header{
-background-image: url(../images/Banniere.png);
-background-size: 100% 100%;
-height: 76px;
-width: 100%;
-}
-    
-#titre{
-left: 100px;
-font-weight: 900;
-}
-#logo{
-width: 60px;
-height: 60px;
-}
-nav{
-    top: 76px;
-    width: 100%;
-    /*margin-left: 0px;*/
-}
-
-#recherche{
-width: 40%;
-position: fixed;
-top: 0px;
-right: 55px;
-background: #00acc2;
-z-index: 4;
-}
-#loupe{
-margin:10px;
-}
-main{
-width: 60%;
-}
-
-.textStandard, .noIndent{
-margin: 40px 20px;
-}
-h2{
-margin-left: 20px;
-margin-right: 20px;
-}
-.dummy{
-    height: 110px;
-}
-.slick-slide img {
-   
-    display: block;
-    width: 98%;
-    margin-left: 2%;
-}
-.aside1{
-    width: 30%;
-    height: 300px;
-    float: right;
-    position: relative;
-    left: 0
-}
-.aside2{
-    width: 30%;
-    height: 300px;
-    float: right;
-    position: relative;
-    right: -30%;
-    top: 300px;
-}
-
-.section1{
-    
-
-    height: 300px;
+    #recherche{
     width: 40%;
-    display: block;
-    position: relative;
-    margin-right: 0;
-    margin-bottom: 20px;
-
-    /*height: 300px;
-    width: 30%;
-    display: block;
-    margin-right: 0;*/
-
-}
-
-.section2{
-   
-    height: 300px;
-
-    width: 58%;
-    float: left;
-    position: relative;
-    top: -320px;
-    left: 41%;
-
-    display: block;
-    width: 100%;
-    /* float: left; */
-    /* clear: none; */
-    /* position: relative; */
-    /* top: -300px; */
-    /* left: 30%; */
-    margin-left: 0;
-
-}
-.section3{
-    
-    height: 300px;
-    width: 20%;
-    position: relative;
-    top: 24px;
-    margin-right: 0;
-}
-.section3 p{
-    display: inline-block;
-    position: relative;
-    top: -300px;
-}
-.section4{
-   
-    height: 300px;
-    width: 59%;
-    float: left;
-    clear: none;
-    position: relative;
-    top: -300px;
-    left: 21%;
-}
-
-.section5{
-    
-    height: 300px;
-    width: 18%;
-    float: left;
-    clear: none;
-    position: relative;
-    top: -300px;
-    left: 22%;
-}
-.section5 img{
-    width: 100%;
-    margin: 0 auto;
-}
-#itineraire{
-width: 40%; 
-}
-#votreTrajet{
-    width: 50%;
-    position: relative;
-    left: 2%;
-}
-.lienPageMembre{
-    display: none;
-}    
-
-
-.sliderOeuvre{
-    width:60%;
-    height: auto;
-    
-}
-#btnContribuerPhoto{
-   
-    float: left;
-    clear: none;
-   
-}
-#formContribuerPhoto{
-  display: block;
+    position: fixed;
+    top: 0px;
+    right: 55px;
+    background: #00acc2;
+    z-index: 4;
+    }
+    #loupe{
+    margin:10px;
+    }
+    main{
     width: 60%;
-    
-}
-.infosOeuvre{
-    width: 38%;
-    display: block;
-    position: absolute;
-    top: 155px;
-    right: 0;
-    float: right;
-    border-left: 4px solid #6c0e1e;
-}
-.description{
-    display: block;
-    width: 100%;
-    height: auto;
-    position: relative;
-    top: 210px;
-}
-
-.description h3{
-    position: relative;
-    left: -190px;
-}
-
-/*
-.description p{
-     position: relative;
-    left: -190px;
-}
-*/
-.sectionCommentaires{
- 
-    width: 100%;
-    height: auto;
-    display: block;
-    position: relative;
-    top: 210px;
-}
-#sponsorsPageOeuvre{
-    display: block;
-    width: 100%;
-    height: 300px;;
-    position: relative;
-    top: 210px;
-    
-}
-
-.description, .sectionCommentaires, #sponsorsPageOeuvre{
-    margin-top: 70px;
-    
-}
-footer{
-    width: 100%;
-    border-radius: 10px;
-    padding: 0;
-    margin-top: 20px;
-}
-
-
-
-    
-.flecheRecherche {
-    
-    float: right;
-    background: #B32A42;
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    left: -17px;
-    top: 28px;
-    transform: rotate(45deg);
-    border-bottom-left-radius: 5px;
-    border-left: solid 2px #6c0e1e;
-    border-bottom: solid 2px #6c0e1e;
-}
-    
- .iconeRecherche {
-    
-    top: 28%;
-}
-
-/*------------- PAGE ADMIN 800px ET+ -----------------------*/
-    .premiereColonne{
-        width: 58%;
-        height: 500px;
-         border-right: 4px solid #F8F274;
     }
-    .deuxiemmeColonne{
+
+    .textStandard, .noIndent{
+    margin: 40px 20px;
+    }
+    h2{
+    margin-left: 20px;
+    margin-right: 20px;
+    }
+    .dummy{
+        height: 110px;
+    }
+    .slick-slide img {
+
+        display: block;
+        width: 98%;
+        margin-left: 2%;
+    }
+    .aside1{
+        width: 30%;
+        height: 300px;
+        float: right;
+        position: relative;
+        left: 0
+    }
+    .aside2{
+        width: 30%;
+        height: 300px;
+        float: right;
+        position: relative;
+        right: -30%;
+        top: 300px;
+    }
+
+    .section1{
+
+        height: 300px;
+        width: 40%;
+        display: block;
+        position: relative;
+        margin-right: 0;
+        margin-bottom: 20px;
+
+    }
+
+    .section2{
+
+        height: 300px;
+
+        width: 57%;
+        float: left;
+        position: relative;
+        top: -320px;
+        left: 41%;
+        display: block;
+        margin-left: 0;
+
+    }
+    .section3{
+
+        height: 300px;
+        width: 20%;
+        position: relative;
+        top: 24px;
+        margin-right: 0;
+    }
+    .section3 p{
+        display: inline-block;
+        position: relative;
+        top: -300px;
+    }
+    .section4{
+
+        height: 300px;
+        width: 59%;
         float: left;
         clear: none;
         position: relative;
-        top: -500px;
-        right: -59%;
-        width: 20%;
-        height: 500px;
-        overflow-y: scroll;
+        top: -300px;
+        left: 21%;
     }
-    .troisiemmeColonne{
+
+    .section5{
+
+        height: 300px;
+        width: 18%;
         float: left;
         clear: none;
         position: relative;
-        top: -500px;
-        right: -60%;
-        width: 20%;
-        height: 500px;
-        overflow-y: scroll;
+        top: -300px;
+        left: 22%;
     }
-    .listeCommentaires{
+    .section5 img{
         width: 100%;
-        overflow-y: scroll;
+        margin: 0 auto;
     }
-    .listeOeuvres{
+    #itineraire{
+    width: 40%; 
+    }
+    #votreTrajet{
+        width: 50%;
+        height: 300px;
+        border: 2px solid #9717e6;
+        margin-left: 20px;
+        margin-top:70px;
+
+    }
+    #sponsorsTrajet{
+        width: 30%;
+        height: 300px;
+        margin-left: 20px;
+        margin-top:50px;
+        border: 2px solid #47ce51;
+    }
+    .lienPageMembre{
+        display: none;
+    }    
+
+
+    .sliderOeuvre{
+        width:60%;
+        height: auto;
+
+    }
+    #btnContribuerPhoto{
+
+        float: left;
+        clear: none;
+
+    }
+    #formContribuerPhoto{
+      display: block;
+        width: 60%;
+
+    }
+    .infosOeuvre{
+        width: 38%;
+        display: block;
+        position: absolute;
+        top: 155px;
+        right: 0;
+        float: right;
+        border-left: 4px solid #70212F;
+    }
+    .description{
+        display: block;
         width: 100%;
-        overflow-y: scroll;
+        height: auto;
+        position: relative;
+        top: 210px;
     }
 
+    .description h3{
+        position: relative;
+        left: -190px;
+    }
+
+    /*
+    .description p{
+         position: relative;
+        left: -190px;
+    }
+    */
+    .sectionCommentaires{
+
+        width: 100%;
+        height: auto;
+        display: block;
+        position: relative;
+        top: 210px;
+    }
+    #sponsorsPageOeuvre{
+        display: block;
+        width: 100%;
+        height: 200px;;
+        position: relative;
+        top: 210px;
+        
+    }
+
+    .description, .sectionCommentaires, #sponsorsPageOeuvre{
+        margin-top: 70px;
+
+    }
+    .sectionCommentaires h3{
+        margin-left: 15px;
+    }
+    footer{
+        width: 100%;
+        border-radius: 10px;
+        padding: 0;
+        margin-top: 20px;
+    }
+
+
+
+
+    .flecheRecherche {
+
+        float: right;
+        background: #B32A42;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        left: -17px;
+        top: 28px;
+        transform: rotate(45deg);
+        border-bottom-left-radius: 5px;
+        border-left: solid 2px #70212F;
+        border-bottom: solid 2px #70212F;
+    }
+
+     .iconeRecherche {
+
+        top: 28%;
+    }
+
+    /*------------- PAGE ADMIN 800px ET+ -----------------------*/
+        .premiereColonne{
+            width: 58%;
+            height: 500px;
+             border-right: 4px solid #F8F274;
+        }
+        .deuxiemmeColonne{
+            float: left;
+            clear: none;
+            position: relative;
+            top: -500px;
+            right: -59%;
+            width: 20%;
+            height: 500px;
+            overflow-y: scroll;
+        }
+        .troisiemmeColonne{
+            float: left;
+            clear: none;
+            position: relative;
+            top: -500px;
+            right: -60%;
+            width: 20%;
+            height: 500px;
+            overflow-y: scroll;
+        }
+        .listeCommentaires{
+            width: 100%;
+            overflow-y: scroll;
+        }
+        .listeOeuvres{
+            width: 100%;
+            overflow-y: scroll;
+        }
+}
 /*-------------FIN PAGE ADMIN ---------------------*/    
-}
+
 /*======================================== FIN DU STYLES POUR TABLETTE ====================================================*/
 
 
@@ -1320,94 +1338,12 @@ margin-left: 40px;
 .description{
     top: 100px;
 }
-}
+
 #map {
     height: 300px !important;
     margin: 0 auto;
 }
-/*
-@media (min-width: 1200px){
-    
-html{
-width: 80%;
-margin-left: 10%;
 
 }
-
-header, nav{
-width: 80%;
-}
-
-.single-item{
-    width: 99%;
-    text-align: center;
-}*/
- /* h3{
-    padding: 20px;
-  }*/
-  /*
-.slick-slide{
-width: 270px;
-
-}
-.slick-slide img {
-   
-    display: block;
-    width: 100%;
-}
-.gm-style .photomap {
-    max-width: 200px;
-}
-#map {
-    height: 100%;
-}
-
-.sliderOeuvre{
-    width: 50%;
-    height: auto;
-    top: 0px;
-    
-}
-
-.sliderOeuvre img{
-    width: 100%;
-    margin-left: 10%;
-}
-
-.infosOeuvre{
-    width: 50%;
-    height: 300px;
-    margin-left: 10%;
-}
-
-.description{
-    margin-top: 10%;
-    
-}
-
-.sectionCommentaires{
-    float:left;
-    clear: left;
-    width: 100%;
-    margin-top: 100px;
-    margin-left: 10%;
-    display: block;
-    
-}
-
-#boutonCommentaire {
- float: right;  
-}
-
-#boutonDirection {
- float: right;
-}
-
-#selectImageUpload {
-    margin-left: 10%;
-}
-}*/
-
-
 /*========================================FIN DU STYLES POUR DESKTOP ====================================================*/
 
