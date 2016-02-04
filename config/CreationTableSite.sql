@@ -16,29 +16,15 @@ adresse VARCHAR(100),
 descriptionFR TEXT,
 descriptionEN TEXT,
 authorise boolean NOT NULL,
-idCollection INT,
 idCategorie INT,
-idSousCategorie INT,
 idArrondissement INT,
 PRIMARY KEY (idOeuvre) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS Collections ;
-CREATE TABLE Collections (idCollection INT  AUTO_INCREMENT NOT NULL,
-nomCollectionFR VARCHAR(50) UNIQUE,
-nomCollectionEN VARCHAR(50) UNIQUE,
-PRIMARY KEY (idCollection) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS Categories ;
 CREATE TABLE Categories (idCategorie INT  AUTO_INCREMENT NOT NULL,
 nomCategorieFR VARCHAR(50) UNIQUE,
 nomCategorieEN VARCHAR(50) UNIQUE,
 PRIMARY KEY (idCategorie) ) ENGINE=InnoDB;
-
-DROP TABLE IF EXISTS SousCategories ;
-CREATE TABLE SousCategories (idSousCategorie INT  AUTO_INCREMENT NOT NULL,
-sousCategorieFR VARCHAR(50),
-sousCategorieEN VARCHAR(50),
-PRIMARY KEY (idSousCategorie) ) ENGINE=InnoDB;
 
 DROP TABLE IF EXISTS Arrondissements ;
 CREATE TABLE Arrondissements (idArrondissement INT  AUTO_INCREMENT NOT NULL,
@@ -94,43 +80,52 @@ dateVisite DATE,
 PRIMARY KEY (idOeuvre,
  idUtilisateur) ) ENGINE=InnoDB;
 
-ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idSousCategorie FOREIGN KEY (idSousCategorie) REFERENCES SousCategories (idSousCategorie);
-ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idCollection FOREIGN KEY (idCollection) REFERENCES Collections (idCollection);
+
+
+
 ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idCategorie FOREIGN KEY (idCategorie) REFERENCES Categories (idCategorie);
 ALTER TABLE Oeuvres ADD CONSTRAINT FK_Oeuvres_idArrondissement FOREIGN KEY (idArrondissement) REFERENCES Arrondissements (idArrondissement);
+
 ALTER TABLE OeuvresArtistes ADD CONSTRAINT FK_OeuvresArtistes_idArtiste FOREIGN KEY (idArtiste) REFERENCES Artistes (idArtiste) ON DELETE CASCADE;
 ALTER TABLE OeuvresArtistes ADD CONSTRAINT FK_OeuvresArtistes_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
+
 ALTER TABLE Photos ADD CONSTRAINT FK_Photos_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
+
 ALTER TABLE Commentaires ADD CONSTRAINT FK_Commentaires_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
-ALTER TABLE Commentaires ADD CONSTRAINT FK_Commentaires_idUtilisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs (idUtilisateur);
-ALTER TABLE Visitent ADD CONSTRAINT FK_Visitent_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre);
+ALTER TABLE Commentaires ADD CONSTRAINT FK_Commentaires_idUtilisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs (idUtilisateur) ON DELETE CASCADE;
+
+ALTER TABLE Visitent ADD CONSTRAINT FK_Visitent_idOeuvre FOREIGN KEY (idOeuvre) REFERENCES Oeuvres (idOeuvre) ON DELETE CASCADE;
 ALTER TABLE Visitent ADD CONSTRAINT FK_Visitent_idUtilisateur FOREIGN KEY (idUtilisateur) REFERENCES Utilisateurs (idUtilisateur) ON DELETE CASCADE;
 
-INSERT INTO Collections VALUES (1,"Art public","Public art");
-INSERT INTO Categories VALUES (1,"Beaux-arts","Fine Arts");
-INSERT INTO SousCategories VALUES (1,"Sculpture","Sculpture");
-INSERT INTO SousCategories VALUES (2,"Installation","Installation");
+
+
+
+INSERT INTO Categories VALUES (1,"Sculpture","Sculpture");
+INSERT INTO Categories VALUES (2,"Installation","Installation");
+
 INSERT INTO Arrondissements VALUES (1,"Côte-des-Neiges–Notre-Dame-de-Grâce");
 INSERT INTO Arrondissements VALUES (2,"Ville-Marie");
 INSERT INTO Arrondissements VALUES (3,"Rosemont–La Petite-Patrie");
+
 INSERT INTO Artistes VALUES (1,null,null, null);
 INSERT INTO Artistes VALUES (2,"Patrick","Coutu", null);
 INSERT INTO Artistes VALUES (3,"Jocelyne","Alloucherie", null);
-INSERT INTO Oeuvres VALUES (1,"Source", 962,45.466405,-73.631648,"Parc Benny","Centre sportif Notre-Dame-de Grâce","6445, avenue Monkland, Montréal","super magnifique","super beautyfull",true,1,1,1,1);
-INSERT INTO Oeuvres VALUES ( 2,"Porte de jour",1099,45.512090,-73.550979,"Square Dalhousie",null,null,"super magnifique","super beautyfull",true,1,1,1,2);
-INSERT INTO Oeuvres VALUES ( 3,"Regarder les pommetiers", 1119,45.561585,-73.562673,"Jardin botanique","Jardin botanique","4101, rue Sherbrooke Est, Montréal (QC) H1X 2B2","super magnifique","super beautyfull",true,1,1,1,3);
-INSERT INTO Oeuvres VALUES ( 4,"Le chat de Gaspar", null, null, null, null, null, "3306 pie-ix montreal", "c'est un chat semble t'il magnifique", null,true,1,1,1,1);
-INSERT INTO Oeuvres VALUES ( 5,"Intemporel", null, null, null, null, null, "5985 Turenne Montreal", null, "Arts it's like a box of chocolate you never know what you're getting",false,1,1,1,2);
+
+INSERT INTO Oeuvres VALUES (1,"Source", 962,45.466405,-73.631648,"Parc Benny","Centre sportif Notre-Dame-de Grâce","6445, avenue Monkland, Montréal","super magnifique","super beautiful",true,1,1);
+INSERT INTO Oeuvres VALUES ( 2,"Porte de jour",1099,45.512090,-73.550979,"Square Dalhousie",null,null,"super magnifique","super beautyfull",true,2,2);
+INSERT INTO Oeuvres VALUES ( 3,"Regarder les pommetiers", 1119,45.561585,-73.562673,"Jardin botanique","Jardin botanique","4101, rue Sherbrooke Est, Montréal (QC) H1X 2B2","super magnifique","super beautiful",true,2,3);
+
 INSERT INTO OeuvresArtistes VALUES (1, 2);
 INSERT INTO OeuvresArtistes VALUES (2, 3);
 INSERT INTO OeuvresArtistes VALUES (3, 3);
 INSERT INTO OeuvresArtistes VALUES (4, 1);
 INSERT INTO OeuvresArtistes VALUES (4, 3);
 INSERT INTO OeuvresArtistes VALUES (5, 2);
-INSERT INTO Photos VALUES (1,"images/source.jpg",true,1);
-INSERT INTO Photos VALUES (2,"images/porte.jpg",true,2);
-INSERT INTO Photos VALUES (3,"images/pommetiers.jpg",true,3);
-INSERT INTO Photos VALUES (4,"images/lion.jpg",true,5);
-INSERT INTO Photos VALUES (5,"images/chat.jpg",false,4);
+
+INSERT INTO Photos VALUES (1,"images/photosOeuvres/source.jpg",true,1);
+INSERT INTO Photos VALUES (2,"images/photosOeuvres/porte.jpg",true,2);
+INSERT INTO Photos VALUES (3,"images/photosOeuvres/pommetiers.jpg",true,3);
+
 INSERT INTO Utilisateurs VALUES ( 1,"dlachambre", "dl12345","David","Lachambre","dlachambre@montreart.net", "J'aime les marches sur la plage et le tricot extrême.", "images/photoProfilDefaut.jpg", true);
+
 INSERT INTO Commentaires VALUES (1,"Trop hot !", 5, "FR", true, 3, 1);

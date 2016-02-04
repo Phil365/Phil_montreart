@@ -74,7 +74,6 @@ width: extend-to-zoom;
 zoom: 1.0;
 }
 html,body{
-min-height: 100%;
 margin: 0;
 padding: 0;
 border-bottom-left-radius: 10px;
@@ -149,7 +148,6 @@ font-style: italic;
 }
 .dummy{
     height: 89px;
-    margin-bottom: 30px;
 }
 main{
      width: 100%;
@@ -430,18 +428,15 @@ z-index: 3;
     
     margin-left: 30px;
     font-size: 20px;
-
 }
 
-.inputGestion {
+.inputGestion, .selectGestion {
     margin-left: 30px;
-
 }
 
 .selectGestion {
     margin-top: 20px;
-    margin-left: 30px;
-
+    width: 87.5%;
 }
 
 .televersionTexteGestion {
@@ -469,9 +464,9 @@ z-index: 3;
 
 }
 
-#textAreaGestion {
-    margin-top: 30px;
-    margin-bottom: 50px;
+.textAreaGestion {
+    width:45%;
+    height: 100px;
 
 }
 
@@ -733,6 +728,7 @@ header{
 
 .erreur {
     color:red;
+    margin-left: 30px;
 }
 
 #logo{

@@ -40,23 +40,60 @@ class Controler {
     private $metaPageOeuvre;
     
     /**
-    * @var string $pageActuelle Page présentement affichée par l'utilisateur
-    * @access private
-    */
-    private $pAccueil = "accueil";
-    private $pOeuvre = "oeuvre";
-    private $pTrajet = "trajet";
-    private $pSoumission = "soumission";
-    private $pProfil = "profil";
-    private $pRecherche = "recherche";
-    private $pAdmin = "admin";
-    private $pGestion = "gestion";
-    
-    /**
     * @var string $langueAffichage Langue d'affichage du site
     * @access private
     */
     private $langueAffichage;
+    
+    /**
+    * @var string $pAccueil Page accueil
+    * @access private
+    */
+    private $pAccueil;
+    
+    /**
+    * @var string $pOeuvre Page d'une oeuvre
+    * @access private
+    */
+    private $pOeuvre;
+    
+    /**
+    * @var string $pTrajet Page de trajet
+    * @access private
+    */
+    private $pTrajet;
+    
+    /**
+    * @var string $pSoumission Page soumission d'une oeuvre
+    * @access private
+    */
+    private $pSoumission;
+    
+    /**
+    * @var string $pProfil Page de profil utilisateur
+    * @access private
+    */
+    private $pProfil;
+    
+    /**
+    * @var string $pRecherche Page d'affichage des résultats de la recherche
+    * @access private
+    */
+    private $pRecherche;
+    
+    /**
+    * @var string $pAdmin Page admin (à fusionner avec gestion)
+    * @access private
+    */
+    private $pAdmin;
+    
+    /**
+    * @var string $pGestion Page de gestion pour l'administrateur
+    * @access private
+    */
+    private $pGestion;
+    
+    
     
     /**
     * @brief Constructeur, initialise les propriétés
@@ -72,19 +109,12 @@ class Controler {
         $this->pProfil = "profil";
         $this->pRecherche = "recherche";
         $this->pAdmin = "admin";
+        $this->pGestion = "gestion";
         
         $this->oCookie = new Cookie();
         $this->langueAffichage = $this->oCookie->getLangue();
-        
-//        if ($this->langueAffichage == "EN") {
-//            $this->metaPageAccueil = ["titre"=>"MontreArt - Home Page", "description"=>""];
-//            $this->metaPageOeuvre = ["titre"=>"Montréart - Art Page", "description"=>""];
-//        }
-//        else {
-//            $this->metaPageAccueil = ["titre"=>"MontréArt - page d'accueil", "description"=>""];
-//            $this->metaPageOeuvre = ["titre"=>"Montréart - page d'une oeuvre", "description"=>""];
-//        }
     }
+    
     /**
     * @brief Traite la requête GET
     * @access public
@@ -108,9 +138,6 @@ class Controler {
             case $this->pProfil:
                 $this->profil();
                 break;
-            case 'updateOeuvresVille':
-                $this->updateOeuvresVille();
-                break;
             case $this->pRecherche:
                 $this->recherche();
                 break;
@@ -120,8 +147,6 @@ class Controler {
             case $this->pGestion:
                 $this->gestion();
                 break;
-            case 'selectArrondissement';
-                $this->creerSelectArrondissement();
             default:
                 $this->accueil();
                 break;
@@ -207,31 +232,24 @@ class Controler {
         
         $oeuvre = new Oeuvre();
         $arrondissement = new Arrondissement();
-        $categorie = new SousCategorie();
+        $categorie = new Categorie();
         
+        //Ajout d'une oeuvre.
         $authorise = false;
         
-         //Ajout d'une oeuvre.
-        
-        if(isset($_POST['boutonSoumissionOeuvre'])&& ($_GET["action"] == "soumettreOeuvre")) {
-            $oeuvreASoumettre=$oeuvre->ajouterOeuvre($_POST['titreSoumis'], $_POST['adresseSoumis'], $_POST['prenomArtisteSoumis'], $_POST['nomArtisteSoumis'], $_POST['descriptionSoumis'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
-        }else{
-            $oeuvreASoumettre = '';
-        }
-        
-        //Essaie l'ajoute et récupère les messages d'erreur si présents.
-        $msgErreursSoumission = array();
-        if (isset($_POST["boutonSoumissionOeuvre"])) {
-            $msgErreursAjout = $oeuvre->AjouterOeuvre($_POST['titreSoumis'], $_POST['adresseSoumis'], $_POST['prenomArtisteSoumis'], $_POST['nomArtisteSoumis'], $_POST['descriptionSoumis'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
+        //Essaie l'ajout et récupère les messages d'erreur si présents.
+        $msgErreurs = array();
+        if (isset($_POST["boutonAjoutOeuvre"])) {
+            $msgErreurs = $oeuvre->AjouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
         }
         
         $oeuvresBDD = $oeuvre->getAllOeuvres();
         $arrondissementsBDD = $arrondissement->getAllArrondissements();
-        $categorieBDD = $categorie->getAllSousCategories($this->langueAffichage);
+        $categorieBDD = $categorie->getAllCategories($this->langueAffichage);
         
         $this->oVue = new VueSoumission();
         $this->oVue->setDataGlobal('soumission', "page de soumission d'oeuvre", $this->langueAffichage, $this->pSoumission);
-        $this->oVue->setData($oeuvresBDD, $arrondissementsBDD, $categorieBDD, $oeuvreASoumettre, $msgErreursSoumission);
+        $this->oVue->setData($oeuvresBDD, $arrondissementsBDD, $categorieBDD, $msgErreurs);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
@@ -257,7 +275,7 @@ class Controler {
     * @access private
     * @return void
     */
-    private function admin(){
+    private function admin() {
         
         $photo = new Photo();
         $photoAllUnauthorized = $photo->getAllUnauthorizedPhoto();
@@ -284,37 +302,33 @@ class Controler {
         
         $oeuvre = new Oeuvre();
         $arrondissement = new Arrondissement();
-        $categorie = new SousCategorie();
+        $categorie = new Categorie();
+        $msgErreurs = array();
+        $oeuvreAjouter = '';
         
+        //Mise à jour des oeuvres de la ville de Montréal
         if (isset($_POST["misAJour"])) {
             $oeuvre->updaterOeuvresVille();
         }
+        
         //Affichage de la date de dernière mise à jour des oeuvres de la ville.
         $date = $oeuvre->getDateDernierUpdate();
         
         //Suppression d'une oeuvre.
-        if (isset($_POST["boutonSuppOeuvre"]) && $_POST["selectOeuvreSupp"] != "") {
-            $oeuvre->supprimerOeuvre($_POST["selectOeuvreSupp"]);
-        }else{
-            
-            $oeuvreAjouter = '';
+        if (isset($_POST["boutonSuppOeuvre"])) {
+            $msgErreurs = $oeuvre->supprimerOeuvre($_POST["selectOeuvreSupp"]);
         }
         
         //Ajout d'une oeuvre.
         $authorise = true;
         
-        if(isset($_POST['boutonAjoutOeuvre'])&& ($_GET["action"] == "ajouterOeuvre")) {
-            $oeuvreAjouter=$oeuvre->ajouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
-        }
-        
-        //Essaie l'ajoute et récupère les messages d'erreur si présents.
-        $msgErreursAjout = array();
+        //Essaie l'ajout et récupère les messages d'erreur si présents.
         if (isset($_POST["boutonAjoutOeuvre"])) {
-            $msgErreursAjout = $oeuvre->AjouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
+            $msgErreurs = $oeuvre->AjouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
         }
         
         //Modification d'une oeuvre.
-        if (isset($_GET["action"]) && ($_GET["action"] == "modifierOeuvre") && isset($_POST["selectOeuvreModif"])) {
+        if (isset($_POST["selectOeuvreModif"]) && $_POST["selectOeuvreModif"] != "") {
             $oeuvreAModifier = $oeuvre->getOeuvreById($_POST['selectOeuvreModif'], $this->langueAffichage);
         }
         else {
@@ -322,34 +336,33 @@ class Controler {
         }
         
         //Tente la modif et récupère les messages d'erreur si présents.
-        $msgErreursModif = array();
         if (isset($_POST["boutonModifOeuvre"])) {
-            $msgErreursModif = $oeuvre->modifierOeuvre($_POST["selectOeuvreModif"], $_POST["titreModif"], $_POST["adresseModif"], $_POST["descriptionModif"], $_POST["selectSousCategorie"], $_POST["selectArrondissement"], $this->langueAffichage);
+            $msgErreurs = $oeuvre->modifierOeuvre($_POST["selectOeuvreModif"], $_POST["titreModif"], $_POST["adresseModif"], $_POST["descriptionModif"], $_POST["selectCategorieModif"], $_POST["selectArrondissementModif"], $this->langueAffichage);
         }
-                
+        
+        //Ajout d'une catégorie
+        if (isset($_POST["boutonAjoutCategorie"])) {
+            $msgErreurs = $categorie->ajouterCategorie($_POST["categorieFrAjout"], $_POST["categorieEnAjout"]);
+        }
+        var_dump($msgErreurs);
+        
+        //Suppression d'une catégorie
+        if (isset($_POST["boutonSuppCategorie"])) {
+            $msgErreurs = $categorie->supprimerCategorie($_POST["selectCategorieSupp"]);
+        }
+        
         $oeuvresBDD = $oeuvre->getAllOeuvres();
         $arrondissementsBDD = $arrondissement->getAllArrondissements();
-        $categorieBDD = $categorie->getAllSousCategories($this->langueAffichage);
+        $categorieBDD = $categorie->getAllCategories($this->langueAffichage);
         
         $this->oVue = new VueGestion();
         $this->oVue->setDataGlobal("Gestion", "page de gestion par l'administrateur", $this->langueAffichage, $this->pGestion);
-        $this->oVue->setData($date, $oeuvreAModifier,$oeuvreAjouter, $oeuvresBDD, $arrondissementsBDD, $categorieBDD, $msgErreursModif, $msgErreursAjout);
+        $this->oVue->setData($date, $oeuvreAModifier,$oeuvreAjouter, $oeuvresBDD, $arrondissementsBDD, $categorieBDD, $msgErreurs);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
         $this->oVue->afficherPiedPage();
     }
-    
-    /**
-    * @brief Méthode qui fait la mise à jour des données de la ville de Montréal
-    * @access private
-    * @return void
-    */
-    private function updateOeuvresVille() {
-        
-        $oeuvre = new Oeuvre();
-        $oeuvre->updaterOeuvresVille();
-    }   
     
     /**
     * @brief Méthode qui affiche les résultats de la recherche utilisateur

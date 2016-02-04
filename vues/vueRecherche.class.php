@@ -53,7 +53,7 @@ class VueRecherche extends Vue {
         }
         else {
             if ( isset($this->oeuvres[0]["nomCategorie$langue"])) {
-                echo "<h5 class='rechercheResultTitre'>Catégorie choisie : </h5>"."<p class='infoResult'>". $this->oeuvres[0]["nomCategorie$langue"]."</p>";
+                echo "<h1 class='rechercheResultTitre'>Résultats de la recherche :";
             }
             foreach ($this->oeuvres as $oeuvre) {
                 if ( isset($oeuvre["titre"])) {
@@ -67,12 +67,10 @@ class VueRecherche extends Vue {
                     echo  $oeuvre["nomArtiste"]."</p>";
                 }
                 if ( isset($oeuvre["description$langue"])) {
-                    echo " <div class='description'>
-            <h5 class='rechercheResultTitre'>Description :</h5>
-            <p class='noIndent'>".$oeuvre["description$langue"]."</p></div>";
+                    echo "<h5 class='rechercheResultTitre'>Description :</h5>
+            <p class='infoResult'>".$oeuvre["description$langue"]."</p>";
                 }
-            echo "<br><br>";
-
+                echo "<br><br>";
             }
         }
     }

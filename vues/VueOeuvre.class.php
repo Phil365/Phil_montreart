@@ -94,152 +94,133 @@ class VueOeuvre extends Vue {
     * @return void
     */
     public function afficherBody() {
-    ?> 
-        <body>
-    <?php
+    ?>
+
+    <body>
+        <?php
         if (empty($this->oeuvre)) {
             echo "<p>Cette oeuvre n'a pas été trouvée dans la base de données</p>";
         }
         else {
-            
+            echo "<div class='sliderOeuvre'>";
+            if ($this->photos) {//Si des photos existent pour cette oeuvre...
+                for ($i = 0; $i < count($this->photos); $i++) {
+                    $imgPhoto = $this->photos[$i]['image'];
+                    echo "<img src = '$imgPhoto'>";
+                }
+            }
+            else {//Image par défaut
+                $imgDefaut = "images/imgDefaut".$this->langue.".png";
+                echo "<img src = '$imgDefaut'>";
+            }
+            echo "</div>"; //fin div sliderOeuvre
+            $idOeuvreencours=$this->oeuvre["idOeuvre"];
+
+            echo "<div class='infosOeuvre'>
+            <h4>Titre: </h4>";
+        echo  "<p>".$this->oeuvre['titre']."</p>"; 
+            echo "<h4>Classement:</h4>
+        <div class='rating'>
+
+        </div>";
+
+        echo "<h4>Artiste(s) : </h4><p>";
+        foreach ($this->artistes as $artiste) {
+            if (isset($artiste["nomArtiste"])) {
+
+                if (isset($artiste["prenomArtiste"])) {
+                    echo  $artiste["prenomArtiste"]." ";
+                }
+                echo  $artiste["nomArtiste"];
+            }
+            else if (isset($artiste["nomCollectif"])) {
+                echo $artiste["nomCollectif"];
+            }
+            else {
+                echo "artiste inconnu";
+            }
+            echo "<br>";
+        }
+        echo "</p>";
+
+        if (isset($this->oeuvre["nomCategorie" . $this->langue])) {
+            echo "<h4>Catégorie : </h4>"."<p>". $this->oeuvre["nomCategorie" . $this->langue]."</p>";
+        }
+
+        if ( $this->oeuvre["parc"]) {
+            echo "<h4>Parc : </h4>"."<p>". $this->oeuvre["parc"]."</p>";
+        }
+        if ( $this->oeuvre["batiment"]) {
+            echo "<h4>Bâtiment : </h4>"."<p>". $this->oeuvre["batiment"]."</p>";
+        }
+        if ( $this->oeuvre["adresse"]) {
+            echo "<h4>Adresse : </h4>"."<p>". $this->oeuvre["adresse"]."</p>";
+        }
+        if ( $this->oeuvre["nomArrondissement"]) {
+            echo "<h4>Arrondissement : </h4>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
+        }
+        echo "<button class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</button></div>";//fin div infosOeuvre
+
+        if (isset($this->oeuvre["description" . $this->langue])) {
+            echo "<div>
+            <h3>Description :</h3>
+            <p>".$this->oeuvre["description" . $this->langue]."</p></div>";
+        }//fin div description
     ?>
-    <?php 
-                
-                    echo "<div class='sliderOeuvre'>";
-                    if ($this->photos) {//Si des photos existent pour cette oeuvre...
-                        for ($i = 0; $i < count($this->photos); $i++) {
-                            $imgPhoto = $this->photos[$i]['image'];
-                            echo "<img src = '$imgPhoto'>";
-                        }
-                    }
-                    else {//Image par défaut
-                        $imgDefaut = "images/imgDefaut".$this->langue.".png";
-                        echo "<img src = '$imgDefaut'>";
-                    }
-                    echo "</div>"; //fin div sliderOeuvre
-                    $idOeuvreencours=$this->oeuvre["idOeuvre"]
-            ?>
-
-
-                    <form name="formPhotoUnique" id="formPhotoUnique" action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerPhoto" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
-                        <h4 id="selectImageUpload">Sélectionnez une image :</h4>
-                        <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
-                        <span id="erreurPhotoVide" class="erreur"></span><br>
-                        <span id="erreurPhotoSize" class="erreur"></span><br>
-                        <span id="erreurPhotoType" class="erreur"></span><br>
-                        <span class="erreur"> <?php if (isset($this->msgPhoto)) {echo $this->msgPhoto;} ?></span>
-                        <input class='boutonMoyenne' type="submit" value="Upload Image" name="submit">
-
-                    </form>
-            <?php
-                    echo "<div class='infosOeuvre'>
-                    <h4>Titre: </h4>";
-                echo  "<p>".$this->oeuvre['titre']."</p>"; 
-                    echo "<h4>Classement:</h4>
-                <div class='rating'>
-                    
-                </div>";
-                
-                    echo "<h4>Artiste(s) : </h4><p>";
-                    foreach ($this->artistes as $artiste) {
-                        if (isset($artiste["nomArtiste"])) {
-                            
-                            if (isset($artiste["prenomArtiste"])) {
-                                echo  $artiste["prenomArtiste"]." ";
-                            }
-                            echo  $artiste["nomArtiste"];
-                        }
-                        else if (isset($artiste["nomCollectif"])) {
-                            echo $artiste["nomCollectif"];
-                        }
-                        else {
-                            echo "artiste inconnu";
-                        }
-                        echo "</p>";
-                    }
-        
-                    if (isset($this->oeuvre["nomCollection" . $this->langue])) {
-                        echo "<h4>Collection : </h4>"."<p>". $this->oeuvre["nomCollection" . $this->langue]."</p>";
-                    }
-                    if (isset($this->oeuvre["nomCategorie" . $this->langue])) {
-                        echo "<h4>Catégorie : </h4>"."<p>". $this->oeuvre["nomCategorie" . $this->langue]."</p>";
-                    }
-                    if (isset($this->oeuvre["sousCategorie" . $this->langue])) {
-                        echo "<h4>Sous-catégorie : </h4>"."<p>". $this->oeuvre["sousCategorie" . $this->langue]."</p>";
-                    }
-                ?>
-                
+                <form name="formPhotoUnique" id="formPhotoUnique" action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerPhoto" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
+                    <h4 id="selectImageUpload">Soumettez une nouvelle image pour cette oeuvre :</h4>
+                    <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
+                    <br>
+                    <input class='boutonMoyenne' type="submit" value="Soumettre" name="submit">
+                    <br>
+                    <span id="msg" class="erreur"><?php if (isset($this->msgPhoto)) {echo $this->msgPhoto;} ?></span>
+                </form>
                 <?php
-                    if ( $this->oeuvre["parc"]) {
-                        echo "<h4>Parc : </h4>"."<p>". $this->oeuvre["parc"]."</p>";
-                    }
-                    if ( $this->oeuvre["batiment"]) {
-                        echo "<h4>Bâtiment : </h4>"."<p>". $this->oeuvre["batiment"]."</p>";
-                    }
-                    if ( $this->oeuvre["adresse"]) {
-                        echo "<h4>Adresse : </h4>"."<p>". $this->oeuvre["adresse"]."</p>";
-                    }
-                    if ( $this->oeuvre["nomArrondissement"]) {
-                        echo "<h4>Arrondissement : </h4>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
-                    }
-                    echo "<button class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</button></div>";//fin div infosOeuvre
-                    
-                    if (isset($this->oeuvre["description" . $this->langue])) {
-                        echo "<div class='description'>
-                <h3>Description :</h3>
-                <p class='noIndent'>".$this->oeuvre["description" . $this->langue]."</p></div>";
-                    }//fin div description
-                    
-                   
-                    echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser Commentaire</button>";
-                  
-                    if ($this->commentaires) {//Si des commentaires existent pour cette oeuvre dans la langue d'affichage...
-                        for ($i = 0; $i < count($this->commentaires); $i++) {
-                            echo "<div class='unCommentaire'>";
-                            switch ($this->commentaires[$i]['voteCommentaire']) {//Sélection de l'image d'étoile appropriée selon le vote
-                                case 1:
-                                    $imgVote = "etoiles_1.png";
-                                    break;
-                                case 2:
-                                    $imgVote = "etoiles_2.png";
-                                    break;
-                                case 3:
-                                    $imgVote = "etoiles_3.png";
-                                    break;
-                                case 4:
-                                    $imgVote = "etoiles_4.png";
-                                    break;
-                                case 5:
-                                    $imgVote = "etoiles_5.png";
-                                    break;
-                                default:
-                                    $imgVote = "etoiles_0.png";
-                                    break;
-                            }
-                            $imgPhoto = $this->commentaires[$i]['photoProfil'];
+                echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser un commentaire</button>";
 
-
-                            echo "<img class='thumbnail' src = '$imgPhoto'><br>";
-                            echo "<h5 id='idUtilisateur'>".$this->commentaires[$i]["nomUsager"]."</h5>";
-
-                            echo "<div class='ratingUtilisateur'><img src = 'images/$imgVote'></div>";
-                            echo "<p>".$this->commentaires[$i]["texteCommentaire"]."</p>"."</div>";
-                            //fin div unCommentaire
+                if ($this->commentaires) {//Si des commentaires existent pour cette oeuvre dans la langue d'affichage...
+                    for ($i = 0; $i < count($this->commentaires); $i++) {
+                        echo "<div class='unCommentaire'>";
+                        switch ($this->commentaires[$i]['voteCommentaire']) {//Sélection de l'image d'étoile appropriée selon le vote
+                            case 1:
+                                $imgVote = "etoiles_1.png";
+                                break;
+                            case 2:
+                                $imgVote = "etoiles_2.png";
+                                break;
+                            case 3:
+                                $imgVote = "etoiles_3.png";
+                                break;
+                            case 4:
+                                $imgVote = "etoiles_4.png";
+                                break;
+                            case 5:
+                                $imgVote = "etoiles_5.png";
+                                break;
+                            default:
+                                $imgVote = "etoiles_0.png";
+                                break;
                         }
+                        $imgPhoto = $this->commentaires[$i]['photoProfil'];
+
+
+                        echo "<img class='thumbnail' src = '$imgPhoto'><br>";
+                        echo "<h5 id='idUtilisateur'>".$this->commentaires[$i]["nomUsager"]."</h5>";
+
+                        echo "<div class='ratingUtilisateur'><img src = 'images/$imgVote'></div>";
+                        echo "<p>".$this->commentaires[$i]["texteCommentaire"]."</p>"."</div>";
+                        //fin div unCommentaire
                     }
-                    else {
-                        echo "<p>Aucun commentaire</p>";
-                    }//fin div commentaires 
+                }
+                else {
+                    echo "<p>Aucun commentaire</p>";
+                }//fin div commentaires 
             echo "</div> 
-     
-                <div id='sponsorsPageOeuvre'>
-                    Sponsors
-                </div>";
-                    echo "</body>";
-           
-                ?>
-            
-    <?php
+
+            <div id='sponsorsPageOeuvre'>
+                Sponsors
+            </div>";
+            echo "</body>";
         }
     }
 }
