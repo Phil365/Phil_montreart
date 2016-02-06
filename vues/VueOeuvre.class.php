@@ -48,6 +48,12 @@ class VueOeuvre extends Vue {
     protected $msgPhoto;
     
     /**
+    * @var string $msgCommentaire Message destiné à l'utilisateur lors de la soumission d'un commentaire
+    * @access protected
+    */
+    protected $msgCommentaire;
+    
+    /**
     * @brief Constructeur. Initialise les propriétés communes de la classe mère
     * @access public
     * @return voids
@@ -86,6 +92,16 @@ class VueOeuvre extends Vue {
     public function setMsgPhoto($msg) {
         
         $this->msgPhoto = $msg;
+    }
+     /**
+    * @brief Méthode qui assigne une valeur à la propriété msgCommentaire
+    * @param string $msgComm
+    * @access public
+    * @return void
+    */
+    public function setMsgCommentaire($msgComm) {
+        
+        $this->MsgCommentaire = $msgComm;
     }
     
     /**
@@ -175,9 +191,30 @@ class VueOeuvre extends Vue {
                     <br>
                     <span id="msg" class="erreur"><?php if (isset($this->msgPhoto)) {echo $this->msgPhoto;} ?></span>
                 </form>
+        
+                <form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();" >            <p><h3>Commentaire</h3></p>    
+                <input type="hidden" name="idOeuvreencours" value="<?php echo $idOeuvreencours ?>">
+                <textarea name='commentaireAjout' id='commentaireAjout' ></textarea>
+                <div class="cont">
+                  <div class="stars">
+                      <input class="star star-5" name='vote' id="star-5-2" type="radio" name="star" value='5'/>
+                      <label class="star star-5" for="star-5-2"></label>
+                      <input class="star star-4"  name='vote'id="star-4-2" type="radio" name="star" value='4'/>
+                      <label class="star star-4" for="star-4-2"></label>
+                      <input class="star star-3" name='vote' id="star-3-2" type="radio" name="star" checked="checked" value='3'/>
+                      <label class="star star-3" for="star-3-2"></label>
+                      <input class="star star-2" name='vote' id="star-2-2" type="radio" name="star" value='2'/>
+                      <label class="star star-2" for="star-2-2"></label>
+                      <input class="star star-1"  name='vote' id="star-1-2" type="radio" name="star" value='1'/>
+                      <label class="star star-1" for="star-1-2"></label>
+                  </div>
+                </div>
+                <input  class='boutonMoyenne'  type='submit' name='ajoutCommentaire' value='Ajouter Commentaire'  >
+            <br>
+                    <span id="erreurCommentaire" class="erreur"><?php if (isset($this->MsgCommentaire)) {echo $this->MsgCommentaire;} ?></span>
+            </form>
                 <?php
-                echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser un commentaire</button>";
-
+//                echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser un commentaire</button>";
                 if ($this->commentaires) {//Si des commentaires existent pour cette oeuvre dans la langue d'affichage...
                     for ($i = 0; $i < count($this->commentaires); $i++) {
                         echo "<div class='unCommentaire'>";
@@ -207,7 +244,7 @@ class VueOeuvre extends Vue {
                         echo "<img class='thumbnail' src = '$imgPhoto'><br>";
                         echo "<h5 id='idUtilisateur'>".$this->commentaires[$i]["nomUsager"]."</h5>";
 
-                        echo "<div class='ratingUtilisateur'><img src = 'images/$imgVote'></div>";
+                        echo "<div class='ratingUtilisateur'><p><img src = 'images/$imgVote'></div></p>";
                         echo "<p>".$this->commentaires[$i]["texteCommentaire"]."</p>"."</div>";
                         //fin div unCommentaire
                     }
