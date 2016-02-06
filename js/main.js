@@ -194,7 +194,7 @@ function valideModifierOeuvre() {
 */
 function valideAjoutCategorie() {
     
-    var erreurs = false;
+    var erreursComm = false;
     document.getElementById("erreurAjoutCategorieFR").innerHTML = "";
     document.getElementById("erreurAjoutCategorieEN").innerHTML = "";
     
@@ -227,6 +227,20 @@ function valideSuppCategorie() {
     return (!erreurs);
 }
 
+/**
+* @brief Fonction de validation d'ajout commentaire oeuvre
+* @access public
+* @return boolean
+*/
+function valideAjoutCommentaireOeuvre() {
+    var erreurs = false;
+    document.getElementById("erreurCommentaire").innerHTML = "";
+    if (document.getElementById("commentaireAjout").value.trim() == "") {
+        document.getElementById("erreurCommentaire").innerHTML = "Veuillez entrer un commentaire";
+        erreurs = true;
+    }
+    return (!erreurs);
+}
 /* --------------------------------------------------------------------
 ========================== FIN VALIDATION JS ==========================
 -------------------------------------------------------------------- */
