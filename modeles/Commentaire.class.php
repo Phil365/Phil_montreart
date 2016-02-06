@@ -105,5 +105,35 @@ class Commentaire {
         }
         return $infoCommentaires;
     }
-}
+    
+     public function ajoutCommentairesByOeuvre($idOeuvre, $langue, $texte, $vote, $idUtilisateur, $authorise) {
+        $msgUtilisateur = "";
+        $erreurs = false;
+       
+         
+        if (isset($_POST["ajoutCommentaire"])) {      
+           if (!empty($_POST["commentaireAjout"])){
+              
+       self::$database->query('INSERT INTO Commentaires ( texteCommentaire, voteCommentaire, langueCommentaire, authorise, idOeuvre, idUtilisateur) VALUES (:texte, :vote, :langue, :authorise, :id, :idUtilisateur)');
+        
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':id', $idOeuvre);
+        self::$database->bind(':langue', $langue);
+        self::$database->bind(':texte', $texte);
+        self::$database->bind(':vote', $vote);
+        self::$database->bind(':idUtilisateur', $idUtilisateur);
+        self::$database->bind(':authorise', $authorise);
+        self::$database->execute();
+        $msgUtilisateur = "Succes";       
+            //$msgUtilisateur = var_dump($texte, $vote, $langue, $authorise, $idOeuvre, $idUtilisateur);
+        }
+        else {
+        
+         $msgUtilisateur = "ne laissez rien en blanc";
+        } 
+      
+    }
+         return $msgUtilisateur;
+     }
+}    
 ?>

@@ -184,7 +184,7 @@ class Controler {
         
         $commentaire = new Commentaire();
         $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
-        
+                
         $photo = new Photo();
         $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"], false);
         
@@ -194,7 +194,12 @@ class Controler {
         else {
             $msgInsertPhoto = null;
         }
-        
+        if (isset($_GET['action']) && $_GET['action'] == 'envoyerCommentaire') {             
+        $msgInsertCommentaire = $commentaire->ajoutCommentairesByOeuvre($_POST['idOeuvreencours'], $this->langueAffichage, $_POST['commentaireAjout'],$_POST['vote'], 1, false); 
+        }
+        else {
+            $msgInsertCommentaire = null;
+        }    
         $artiste = new Artiste();
         $artistesOeuvre = $artiste->getArtistesbyOeuvreId ($_GET["o"]);
         
@@ -202,6 +207,7 @@ class Controler {
         $this->oVue->setDataGlobal('oeuvre', "page d'une oeuvre", $this->langueAffichage, $this->pOeuvre);
         $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre, $this->langueAffichage);
         $this->oVue->setMsgPhoto($msgInsertPhoto);
+        $this->oVue->setMsgCommentaire($msgInsertCommentaire);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
