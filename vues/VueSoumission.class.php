@@ -106,7 +106,7 @@ class VueSoumission extends Vue {
             Toute contribution sera sujette à une approbation de la part d'un administrateur.</p>
 
                  
-            <form method="POST" name="formAjoutOeuvre" onsubmit="return valideAjoutOeuvre();" action="?r=soumission" enctype="multipart/form-data" >
+            <form method="POST" name="formAjoutOeuvre" onsubmit="return valideAjoutOeuvre(false);" action="?r=soumission" enctype="multipart/form-data" >
                 <input type='text' class="inputGestion" name='titreAjout' id='titreAjout' placeholder="Titre de l'oeuvre" value="<?php echo  $_POST["titreAjout"]; ?>"/>
                 <br> <span  id="erreurTitreOeuvre" class="erreur"><?php if (isset($this->msgErreurs["errTitre"])) {echo $this->msgErreurs["errTitre"];} ?></span><br>                  
 
@@ -157,7 +157,7 @@ class VueSoumission extends Vue {
                <span id="erreurPhoto" class="erreur"><?php if (isset($this->msgErreurs["errPhoto"])) {echo $this->msgErreurs["errPhoto"];} ?></span><br>
                 <input class="boutonMoyenne" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
             </form>
-            <span class="msgUser">
+            <span class="msgUser" id="msgAjout">
             <?php
             echo $msgAjout;
             ?>  

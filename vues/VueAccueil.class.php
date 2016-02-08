@@ -30,7 +30,7 @@ class VueAccueil extends Vue {
     */
     public function afficherBody() {
     ?>
-            <div id="map" style="width: 100%; height: 100%;">
+            <div id="map">
             </div>
             <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMap"></script>
             <div class="section3">
@@ -42,7 +42,7 @@ class VueAccueil extends Vue {
 Bienvenue sur le site de Montréart, où les oeuvres publiques les plus fantastiques en ville sont répertoriées. Idéal pour en apprendre sur les artistes les plus branchés, des techniques de création des plus diverses et des pièces d'art à couper le souffle. Vous pourrez vous balader et partager vos trouvailles avec vos propres photos, et exprimer vos opinions en ligne. En plus de découvrir l'art d'ici, vous avec la possibilité de gagner des rabais incroyables grâce à notre système dès que vous vous trouvez proche d'une oeuvre! Partez à l'aventure, ça en vaut le coup!
                 </p>
             </div>
-            <div class="section5">
+            <div class="section5 clear">
                 <img src="images/Sponsors.png">
             </div>
     <?php

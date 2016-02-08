@@ -171,7 +171,7 @@ class VueOeuvre extends Vue {
                     <h4 id="selectImageUpload">Soumettez une nouvelle image pour cette oeuvre :</h4>
                     <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
                     <br>
-                    <input class='boutonMoyenne' type="submit" value="Soumettre" name="submit">
+                    <input class='boutonMoyenne' type="submit" value="Soumettre" name="soumettrePhotoUnique">
                     <br>
                     <span id="msg" class="erreur"><?php if (isset($this->msgPhoto)) {echo $this->msgPhoto;} ?></span>
                 </form>

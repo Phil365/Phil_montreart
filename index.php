@@ -9,7 +9,7 @@
  * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
  * 
  */
-	 /***************************************************/
+    /***************************************************/
     /** Fichier de configuration, contient l'autoloader **/
     /***************************************************/
 	require_once("./config.php");

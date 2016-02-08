@@ -13,6 +13,15 @@
 
 //INITIALISATION FONCTIONS JQUERY
 $(document).ready(function(){
+
+    //Accordéon Jquery pour l'onglet des soumissions dans la page de gestion
+    $( "#accordeon" ).accordion({
+        active: false,
+        collapsible: true,
+        animate: 400,
+        heightStyle: "content"
+    });
+
     
     //SLIDE BARRE DE RECHERCHE
     $(".barreRecherche").hide();
@@ -26,7 +35,7 @@ $(document).ready(function(){
     //AJAX SELECT TYPE DE RECHERCHE
     $(".barreRecherche").on("change", ".typeRecherche", function(){
         
-        $.get("ajaxControler.php?rAjax=selectTypeRecherche&typeRecherche="+this.value, function(reponse){
+        $.get("ajaxControler.php?rAjax=afficherSelectRecherche&typeRecherche="+this.value, function(reponse){
             //ceci est la fonction de callback
             //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
             $(".deuxiemeSelectRecherche").html(reponse);
@@ -35,7 +44,7 @@ $(document).ready(function(){
     });
     //AJAX SELECT CATEGORIE
     $(".barreRecherche").on("change", ".selectCategorie", function(){
-        $.get("ajaxControler.php?rAjax=selectRecherche&selectCategorie="+this.value, function(reponse){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRecherche&selectCategorie="+this.value, function(reponse){
             //ceci est la fonction de callback
             //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
             $(".submitRecherche").html(reponse);
@@ -49,6 +58,241 @@ $(document).ready(function(){
             $(".submitRecherche").html(reponse);
         });
     });
+    
+    $(document).ready(function(){
+        /**
+        * @brief fonctions jQuery qui affiche et masque les sections en fonction du lien cliqué par l'utilisateur.
+        */
+        //------------ DEBUT ONGLETS JQUERY PAGE GESTION -------------
+
+        //ONGLET 1
+        $("#lienGestion1").click(function(){
+            
+            if ($( "#Onglet-1" ).is( ":visible" )){//Si l'onglet est visible...
+                $("#Onglet-1").slideToggle(500);
+            }
+            else {
+                if ($("#Onglet-2").is(":visible") || $("#Onglet-3" ).is(":visible") || $( "#Onglet-4").is( ":visible") || $("#Onglet-5").is(":visible") || $("#Onglet-6").is(":visible") || $( "#Onglet-7" ).is( ":visible" )) {
+                    $("#Onglet-1").delay(400).slideToggle(500);
+                }
+                else {
+                    $("#Onglet-1").slideToggle(500);
+                }
+                
+            }
+            $("#Onglet-2").slideUp(450);
+            $("#Onglet-3").slideUp(350);
+            $("#Onglet-4").slideUp(350);
+            $("#Onglet-5").slideUp(350);
+            $("#Onglet-6").slideUp(350);
+            $("#Onglet-7").slideUp(350);
+        });
+        //ONGLET 2
+        $("#lienGestion2").click(function(){//Si l'onglet est visible...
+            if ($( "#Onglet-2" ).is( ":visible" )) {
+                $("#Onglet-2").slideToggle(500);
+            }
+            else {
+                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                    $("#Onglet-2").delay(500).slideToggle(750);
+                }
+                else {
+                    $("#Onglet-2").slideToggle(750);
+                }
+                //---------------------------------------------------------------------------------------------------
+                //Requête Ajax pour récupérer les catégories de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+                $.post('ajaxControler.php?rAjax=recupererCategories', 
+                    function(reponse){
+
+                    var categories = jQuery.parseJSON(reponse);
+                    var options = "<option value=''>choisir une catégorie</option>";
+                    var langue = getCookie("langue");
+
+                    //Choix du contenu du select en fonction de la langue
+                    if (langue == "FR") {
+                        $(categories).each(function(index, categorie) {
+                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieFR + '</option>';
+                        })
+                    }
+                    else if (langue = "EN") {
+                        $(categories).each(function(index, categorie) {
+                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieEN + '</option>';
+                        })
+                    }
+
+                    $("#selectCategorie").html(options);
+                });
+                //---------------------------------------------------------------------------------------------------
+            }
+            $("#Onglet-1").slideUp(350);
+            $("#Onglet-3").slideUp(350);
+            $("#Onglet-4").slideUp(350);
+            $("#Onglet-5").slideUp(350);
+            $("#Onglet-6").slideUp(350);
+            $("#Onglet-7").slideUp(350);
+        });
+        //ONGLET 3
+        $("#lienGestion3").click(function(){
+            if ($( "#Onglet-3" ).is( ":visible" )) {//Si l'onglet est visible...
+                $("#Onglet-3").slideToggle(500);
+            }
+            else {
+                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                    $("#Onglet-3").delay(400).slideToggle(500);
+                }
+                else {
+                    $("#Onglet-3").slideToggle(500);
+                }
+                //---------------------------------------------------------------------------------------------------
+                //Requête Ajax pour récupérer les oeuvres de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+                $.post('ajaxControler.php?rAjax=recupererOeuvres', 
+                    function(reponse){
+
+                    var oeuvres = jQuery.parseJSON(reponse);
+                    var options = "<option value=''>choisir une oeuvre</option>";
+                    
+                    $(oeuvres).each(function(index, oeuvre) {
+                        options += '<option value="' + oeuvre.idOeuvre + '">' + oeuvre.titre + '</option>';
+                    })
+                    $("#selectOeuvreSupp").html(options);
+                });
+                //---------------------------------------------------------------------------------------------------
+            }
+            $("#Onglet-1").slideUp(350);
+            $("#Onglet-2").slideUp(450);
+            $("#Onglet-4").slideUp(350);
+            $("#Onglet-5").slideUp(350);
+            $("#Onglet-6").slideUp(350);
+            $("#Onglet-7").slideUp(350);
+        });
+        //ONGLET 4
+        $("#lienGestion4").click(function(){
+            if ($( "#Onglet-4" ).is( ":visible" )) {//Si l'onglet est visible...
+                $("#Onglet-4").slideToggle(500);
+            }
+            else {
+                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                    $("#Onglet-4").delay(400).slideToggle(500);
+                }
+                else {
+                    $("#Onglet-4").slideToggle(500);
+                }
+                //---------------------------------------------------------------------------------------------------
+                //Requête Ajax pour récupérer les oeuvres de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+                $.post('ajaxControler.php?rAjax=recupererOeuvres', 
+                    function(reponse){
+
+                    var oeuvres = jQuery.parseJSON(reponse);
+                    var options = "<option value=''>choisir une oeuvre</option>";
+                    
+                    $(oeuvres).each(function(index, oeuvre) {
+                        options += '<option value="' + oeuvre.idOeuvre + '">' + oeuvre.titre + '</option>';
+                    })
+                    $("#selectOeuvreModif").html(options);
+                });
+                //---------------------------------------------------------------------------------------------------
+            }
+            $("#Onglet-1").slideUp(350);
+            $("#Onglet-2").slideUp(450);
+            $("#Onglet-3").slideUp(350);
+            $("#Onglet-5").slideUp(350);
+            $("#Onglet-6").slideUp(350);
+            $("#Onglet-7").slideUp(350);
+        });
+        //ONGLET 5
+        $("#lienGestion5").click(function(){
+            if ($( "#Onglet-5" ).is( ":visible" )) {//Si l'onglet est visible...
+                $("#Onglet-5").slideToggle(500);
+            }
+            else {
+                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                    $("#Onglet-5").delay(400).slideToggle(500);
+                }
+                else {
+                    $("#Onglet-5").slideToggle(500);
+                }
+            }
+            $("#Onglet-1").slideUp(350);
+            $("#Onglet-2").slideUp(450);
+            $("#Onglet-3").slideUp(350);
+            $("#Onglet-4").slideUp(350);
+            $("#Onglet-6").slideUp(350);
+            $("#Onglet-7").slideUp(350);
+        });
+        //ONGLET 6
+        $("#lienGestion6").click(function(){
+            if ($( "#Onglet-6" ).is( ":visible" )) {//Si l'onglet est visible...
+                $("#Onglet-6").slideToggle(500);
+            }
+            else {
+                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                    $("#Onglet-6").delay(400).slideToggle(500);
+                }
+                else {
+                    $("#Onglet-6").slideToggle(500);
+                }
+                //---------------------------------------------------------------------------------------------------
+                //Requête Ajax pour récupérer les catégories de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+                $.post('ajaxControler.php?rAjax=recupererCategories', 
+                    function(reponse){
+
+                    var categories = jQuery.parseJSON(reponse);
+                    var options = "<option value=''>choisir une catégorie</option>";
+                    var langue = getCookie("langue");
+
+                    //Choix du contenu du select en fonction de la langue
+                    if (langue == "FR") {
+                        $(categories).each(function(index, categorie) {
+                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieFR + '</option>';
+                        })
+                    }
+                    else if (langue = "EN") {
+                        $(categories).each(function(index, categorie) {
+                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieEN + '</option>';
+                        })
+                    }
+
+                    $("#selectCategorieSupp").html(options);
+                });
+                //---------------------------------------------------------------------------------------------------
+            }
+            $("#Onglet-1").slideUp(350);
+            $("#Onglet-2").slideUp(450);
+            $("#Onglet-3").slideUp(350);
+            $("#Onglet-4").slideUp(350);
+            $("#Onglet-5").slideUp(350);
+            $("#Onglet-7").slideUp(350);
+        });
+        //ONGLET 7
+        $("#lienGestion7").click(function(){
+            if ($( "#Onglet-7" ).is( ":visible" )) {//Si l'onglet est visible...
+                $("#Onglet-7").slideToggle(500);
+            }
+            else {
+                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" )) {
+                    $("#Onglet-7").delay(400).slideToggle(500);
+                }
+                else {
+                    $("#Onglet-7").slideToggle(500);
+                }
+            }
+            $("#Onglet-1").slideUp(350);
+            $("#Onglet-2").slideUp(450);
+            $("#Onglet-3").slideUp(350);
+            $("#Onglet-4").slideUp(350);
+            $("#Onglet-5").slideUp(350);
+            $("#Onglet-6").slideUp(350);
+        });
+            //Toutes les sections sont cachées au chargement de la page.
+            $("#Onglet-1").hide();
+            $("#Onglet-2").hide();
+            $("#Onglet-3").hide();
+            $("#Onglet-4").hide();
+            $("#Onglet-5").hide();
+            $("#Onglet-6").hide();
+            $("#Onglet-7").hide();
+    });
+    //------------ FIN ONGLETS JQUERY PAGE GESTION -------------
 });
 
 /* --------------------------------------------------------------------
@@ -89,176 +333,510 @@ function validePhotoSubmit() {
 }
 
 /**
-* @brief Fonction de validation de soumission d'une oeuvre
+* @brief Fonction de validation de soumission d'une oeuvre. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
 * @access public
 * @return boolean
 */
-function valideAjoutOeuvre() {
-    var erreurs = false;
-    var champsPhoto = document.getElementById("fileToUpload");
-    var msgErreurPhoto = "";
+function valideAjoutOeuvre(droitsAdmin) {
     
+    var erreurs = false;
+    var photo = document.getElementById("fileToUpload");
+    var msgErreurPhoto = "";
+    var description = document.getElementById("descriptionAjout").value.trim();
+    var idCategorie = document.getElementById("selectCategorie").value;
+    var idArrondissement = document.getElementById("selectArrondissement").value;
+    var adresse = document.getElementById("adresseAjout").value.trim();
+    var titre = document.getElementById("titreAjout").value.trim();
+    var prenomArtiste = document.getElementById("prenomArtisteAjout").value.trim();
+    var nomArtiste = document.getElementById("nomArtisteAjout").value.trim();
+    
+    //-----------------------------------------
+    //Réinitialisation des messgages d'erreur.
     document.getElementById("erreurTitreOeuvre").innerHTML = "";
     document.getElementById("erreurAdresseOeuvre").innerHTML = "";
     document.getElementById("erreurDescription").innerHTML = "";
     document.getElementById("erreurSelectCategorie").innerHTML = "";
     document.getElementById("erreurSelectArrondissement").innerHTML = "";
+    document.getElementById("erreurPhoto").innerHTML = "";
+    document.getElementById("msgAjout").innerHTML = "";
 
-
-    if (document.getElementById("titreAjout").value.trim() == "") {
+    //-----------------------------------------
+    //Validation des champs.
+    if (titre == "") {
         document.getElementById("erreurTitreOeuvre").innerHTML = "Veuillez entrer un titre";
         erreurs = true;
     }
 
-    if (document.getElementById("adresseAjout").value.trim() == "") {
+    if (adresse == "") {
         document.getElementById("erreurAdresseOeuvre").innerHTML = "Veuillez entrer une adresse";
         erreurs = true;
     }
     else {
         var adresseAuthorisee = new RegExp("^[0-9]+[A-ÿ.,' \-]+$", "i");//doit avoir la forme d'adresse chiffre suivi d'un ou plusieurs noms.
-        var resultat = adresseAuthorisee.exec(document.getElementById("adresseAjout").value);
+        var resultat = adresseAuthorisee.exec(adresse);
         if (!resultat) {
             document.getElementById("erreurAdresseOeuvre").innerHTML = "Votre adresse doit débuter par le numéro civique, suivi du nom de la rue";
             erreurs = true;
         }
     }
     
-    if (document.getElementById("descriptionAjout").value.trim() == "") {
+    if (description == "") {
         document.getElementById("erreurDescription").innerHTML = "Veuillez entrer une description";
         erreurs = true;
     }
 
-    if (document.getElementById("selectCategorie").value == "") {
+    if (idCategorie == "") {
         document.getElementById("erreurSelectCategorie").innerHTML = "Veuillez choisir une catégorie";
         erreurs = true;
     }
 
-    if (document.getElementById("selectArrondissement").value == "") {
+    if (idArrondissement == "") {
         document.getElementById("erreurSelectArrondissement").innerHTML = "Veuillez choisir un arrondissement";
         erreurs = true;
     }  
     
-    if (champsPhoto.value != "") {
+    if (photo.value != "") {
         var fichiersAuthorises = new RegExp("(.jpg|.jpeg|.png)$", "i");//doit se terminer par une des extensions suivantes.
-        var resultat = fichiersAuthorises.exec(champsPhoto.value);
+        var resultat = fichiersAuthorises.exec(photo.value);
         if (!resultat) {
             msgErreurPhoto = "Seules les images de type \"JPG\" ou \"PNG\" sont acceptées.";
             erreurs = true;
         }
-        if (champsPhoto.files[0].size > 5000000) {//Si plus gros que 5Mb...
+        if (photo.files[0].size > 5000000) {//Si plus gros que 5Mb...
             if (msgErreurPhoto != "") {
                 msgErreurPhoto += "<br>";
             }
             msgErreurPhoto += "Votre image ne doit pas dépasser 5Mb.";
             erreurs = true;
         }
+        document.getElementById("erreurPhoto").innerHTML = msgErreurPhoto;
     }
-    document.getElementById("erreurPhoto").innerHTML = msgErreurPhoto;
-    return (!erreurs);
+    
+    //-----------------------------------------
+    //Requête AJAX si aucune erreur.
+    if (!erreurs) {
+        $.post('ajaxControler.php?rAjax=ajouterOeuvre&admin='+droitsAdmin, {titre: titre, adresse: adresse, prenomArtiste: prenomArtiste, nomArtiste: nomArtiste, description: description, idCategorie: idCategorie, idArrondissement: idArrondissement, photo: photo.value}, 
+            function(reponse){
+
+                var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+
+            if (msgErreurs.length == 0) {//Si aucune erreur...
+                
+                document.getElementById("descriptionAjout").value = "";
+                document.getElementById("selectCategorie").value = "";
+                document.getElementById("selectArrondissement").value = "";
+                document.getElementById("adresseAjout").value = "";
+                document.getElementById("titreAjout").value = "";
+                document.getElementById("prenomArtisteAjout").value = "";
+                document.getElementById("nomArtisteAjout").value = "";
+                
+                $("#msgAjout").html("<span style='color:green'>Oeuvre ajoutée !</span>");
+            }
+            else {//Sinon indique les erreurs à l'utilisateur.
+                $(msgErreurs).each(function(index, valeur) {
+                    if (valeur.errRequeteAjout) {
+                        $("#msgAjout").html(valeur.errRequeteAjout);
+                    }
+                    if (valeur.errTitre) {
+                        $("#erreurTitreOeuvre").html(valeur.errTitre);
+                    }
+                    if (valeur.errAdresse) {
+                        $("#erreurAdresseOeuvre").html(valeur.errAdresse);
+                    }
+                    if (valeur.errDescription) {
+                        $("#erreurDescription").html(valeur.errDescription);
+                    }
+                    if (valeur.errCategorie) {
+                        $("#erreurSelectCategorie").html(valeur.errCategorie);
+                    }
+                    if (valeur.errArrondissement) {
+                        $("#erreurSelectArrondissement").html(valeur.errArrondissement);
+                    }
+                })
+            }
+            if (document.getElementById("fileToUpload").value != "") {//Si l'utilisateur a soumis un fichier photo...
+                //Nouvelle requête Ajax pour connaître l'id de la nouvelle oeuvre créée.
+                $.post('ajaxControler.php?rAjax=recupererIdOeuvre', {titre: titre, adresse: adresse}, 
+                    function(idOeuvre){
+
+                        //Soumission Ajax de la photo une fois la création de l'oeuvre complétée et l'id de l'oeuvre connue.
+                        var fd = new FormData();
+                        fd.append( 'fileToUpload', $('#fileToUpload')[0].files[0]);
+
+                        $.ajax({
+                            url: 'ajaxControler.php?rAjax=ajouterPhoto&idOeuvre='+idOeuvre+'&admin='+droitsAdmin,
+                            data: fd,
+                            processData: false,
+                            contentType: false,
+                            type: 'POST',
+                            success: function(msgErreurs){
+
+                                if (msgErreurs != "") {//Si erreur avec l'insertion de la photo...
+                                    $("#erreurPhoto").html(msgErreurs);
+                                }
+                                else {
+                                    document.getElementById("fileToUpload").value = "";
+                                }
+                            }
+                        });
+                });
+            }
+        });
+    }
+    return false;//Retourne toujours false pour que le formulaire ne soit pas soumit.
 }
 
 /**
-* @brief Fonction de validation de suppresion d'une oeuvre
+* @brief Fonction de validation de suppresion d'une oeuvre. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
 * @access public
 * @return boolean
 */
 function valideSupprimerOeuvre() {
     
     var erreurs = false;
+    var idOeuvre = document.getElementById("selectOeuvreSupp").value;
+    document.getElementById("msgSupp").innerHTML = "";
+    
+    //-----------------------------------------
+    //Réinitialisation des messgages d'erreur.
     document.getElementById("erreurSelectSuppression").innerHTML = "";
     
-
-    if (document.getElementById("selectOeuvreSupp").value == "") {
+    //-----------------------------------------
+    //Validation des champs.
+    if (idOeuvre == "") {
         document.getElementById("erreurSelectSuppression").innerHTML = "Veuillez choisir une option";
         erreurs = true;
-    } 
-    return (!erreurs);
+    }
+    
+    //-----------------------------------------
+    //Requête AJAX si aucune erreur.
+    if (!erreurs) {
+        $.post('ajaxControler.php?rAjax=supprimerOeuvre', {idOeuvre: idOeuvre}, 
+            function(reponse){
+
+                var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+
+                if (msgErreurs.length == 0) {//Si aucune erreur...
+                    document.getElementById("selectOeuvreSupp").value = "";
+
+                    $("#msgSupp").html("<span style='color:green'>Oeuvre supprimée !</span>");
+
+                    //Requête Ajax pour récupérer les oeuvres de la BDD afin de mettre le select à jour.
+                    $.post('ajaxControler.php?rAjax=recupererOeuvres', 
+                        function(reponse){
+
+                        var oeuvres = jQuery.parseJSON(reponse);
+                        var options = "<option value=''>choisir une oeuvre</option>";
+
+                        $(oeuvres).each(function(index, oeuvre) {
+                            options += '<option value="' + oeuvre.idOeuvre + '">' + oeuvre.titre + '</option>';
+                        })
+                        $("#selectOeuvreSupp").html(options);
+                    });
+                }
+                else {//Sinon indique les erreurs à l'utilisateur.
+                    $(msgErreurs).each(function(index, valeur) {
+                        if (valeur.errRequeteSupp) {
+                            $("#msgSupp").html(valeur.errRequeteSupp);
+                        }
+                        if (valeur.errSelectOeuvreSupp) {
+                            $("#erreurSelectSuppression").html(valeur.errSelectOeuvreSupp);
+                        }
+                    })
+                }
+        });
+    }
+    return false;//Retourne toujours false pour que le formulaire ne soit pas soumit.
 }
 
 /**
-* @brief Fonction de validation de modification d'une oeuvre
+* @brief Fonction de validation de modification d'une oeuvre. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
 * @access public
 * @return boolean
 */
 function valideModifierOeuvre() {
     
     var erreurs = false;
+    var titre = document.getElementById("titreModif").value.trim();
+    var adresse = document.getElementById("adresseModif").value.trim();
+    var description = document.getElementById("descriptionModif").value.trim();
+    var idCategorie = document.getElementById("selectCategorieModif").value;
+    var idArrondissement = document.getElementById("selectArrondissementModif").value;
+    var idOeuvre = document.getElementById("selectOeuvreModif").value;
+    
     document.getElementById("erreurTitreOeuvreModif").innerHTML = "";
     document.getElementById("erreurAdresseOeuvreModif").innerHTML = "";
     document.getElementById("erreurDescriptionModif").innerHTML = "";
     document.getElementById("erreurSelectCategorieModif").innerHTML = "";
     document.getElementById("erreurSelectArrondissementModif").innerHTML = "";
+    document.getElementById("msgModif").innerHTML = "";
 
-    if (document.getElementById("titreModif").value.trim() == "") {
+    if (titre == "") {
         document.getElementById("erreurTitreOeuvreModif").innerHTML = "Veuillez entrer le titre";
         erreurs = true;
     }
-    if (document.getElementById("adresseModif").value.trim() == "") {
+    if (adresse == "") {
         document.getElementById("erreurAdresseOeuvreModif").innerHTML = "Veuillez entrer l'adresse";
         erreurs = true;
     }
 
-    if (document.getElementById("descriptionModif").value.trim() == "") {
+    if (description == "") {
         document.getElementById("erreurDescriptionModif").innerHTML = "Veuillez entrer une description";
         erreurs = true;
     }
 
-    if (document.getElementById("selectCategorieModif").value == "") {
+    if (idCategorie == "") {
         document.getElementById("erreurSelectCategorieModif").innerHTML = "Veuillez choisir une catégorie";
         erreurs = true;
     }
 
-    if (document.getElementById("selectArrondissementModif").value == "") {
+    if (idArrondissement == "") {
         document.getElementById("erreurSelectArrondissementModif").innerHTML = "Veuillez choisir un arrondissement";
         erreurs = true;
-    }  
-    return (!erreurs);
+    }
+    
+    //-----------------------------------------
+    //Requête AJAX si aucune erreur.
+    if (!erreurs) {
+
+        $.post('ajaxControler.php?rAjax=modifierOeuvre', {idOeuvre: idOeuvre, titre: titre, adresse: adresse, description: description, idCategorie: idCategorie, idArrondissement: idArrondissement}, 
+            function(reponse){
+
+                var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+
+                if (msgErreurs.length == 0) {//Si aucune erreur...
+                    document.getElementById("titreModif").value = "";
+                    document.getElementById("adresseModif").value = "";
+                    document.getElementById("descriptionModif").value = "";
+                    document.getElementById("selectCategorieModif").value = "";
+                    document.getElementById("selectArrondissementModif").value = "";
+                    document.getElementById("selectOeuvreModif").value = "";
+                    $('#formModif').html('');
+
+                    $("#msgModif").html("<span style='color:green'>Oeuvre modifiée !</span>");
+                }
+                else {//Sinon indique les erreurs à l'utilisateur.
+                    $(msgErreurs).each(function(index, valeur) {
+                        if (valeur.errRequeteAjout) {
+                            $("#msgModif").html(valeur.errRequeteAjout);
+                        }
+                        if (valeur.errTitre) {
+                            $("#erreurTitreOeuvreModif").html(valeur.errTitre);
+                        }
+                        if (valeur.errAdresse) {
+                            $("#erreurAdresseOeuvreModif").html(valeur.errAdresse);
+                        }
+                        if (valeur.errDescription) {
+                            $("#erreurDescriptionModif").html(valeur.errDescription);
+                        }
+                        if (valeur.errCategorie) {
+                            $("#erreurSelectCategorieModif").html(valeur.errCategorie);
+                        }
+                        if (valeur.errArrondissement) {
+                            $("#erreurSelectArrondissementModif").html(valeur.errArrondissement);
+                        }
+                    })
+                }
+        });
+    }
+    return false;//Retourne toujours false pour que le formulaire ne soit pas soumit.
 }
 
 /**
-* @brief Fonction de validation de l'ajout d'une catégorie
+* @brief Fonction de validation de l'ajout d'une catégorie. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
 * @access public
 * @return boolean
 */
 function valideAjoutCategorie() {
     
     var erreurs = false;
+    var categorieFr, categorieEn;
+    
+    //-----------------------------------------
+    //Réinitialisation des messgages d'erreur.
     document.getElementById("erreurAjoutCategorieFR").innerHTML = "";
     document.getElementById("erreurAjoutCategorieEN").innerHTML = "";
+    document.getElementById("msgAjoutCat").innerHTML = "";
     
-
-    if (document.getElementById("categorieFrAjout").value == "") {
+    //-----------------------------------------
+    //Validation des champs.
+    categorieFr = document.getElementById("categorieFrAjout").value.trim();
+    if (categorieFr == "") {
         document.getElementById("erreurAjoutCategorieFR").innerHTML = "Veuillez inscrire le nom de la catégorie en français";
         erreurs = true;
     }
-    if (document.getElementById("categorieEnAjout").value == "") {
+    
+    categorieEn = document.getElementById("categorieEnAjout").value.trim();
+    if (categorieEn == "") {
         document.getElementById("erreurAjoutCategorieEN").innerHTML = "Veuillez inscrire le nom de la catégorie en anglais";
         erreurs = true;
     }
-    return (!erreurs);
+    //-----------------------------------------
+    //Requête AJAX si aucune erreur.
+    if (!erreurs) {
+        $.post('ajaxControler.php?rAjax=ajouterCategorie', {categorieFr: categorieFr, categorieEn: categorieEn}, 
+            function(reponse){
+
+                var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+
+                if (msgErreurs.length == 0) {//Si aucune erreur...
+                    document.getElementById("categorieFrAjout").value = "";
+                    document.getElementById("categorieEnAjout").value = "";
+                    $("#msgAjoutCat").html("<span style='color:green'>Catégorie ajoutée !</span>");
+                }
+                else {//Sinon indique les erreurs à l'utilisateur.
+                    $(msgErreurs).each(function(index, valeur) {
+                        if (valeur.errRequeteAjoutCat) {
+                            $("#msgAjoutCat").html(valeur.errRequeteAjoutCat);
+                        }
+                        if (valeur.errAjoutCategorieFR) {
+                            $("#erreurAjoutCategorieFR").html(valeur.errAjoutCategorieFR);
+                        }
+                        if (valeur.errAjoutCategorieEN) {
+                            $("#erreurAjoutCategorieEN").html(valeur.errAjoutCategorieEN);
+                        }
+                    })
+                }
+        });
+    }
+    return false;//Retourne toujours false pour que le formulaire ne soit pas soumit.
 }
 
 /**
-* @brief Fonction de validation de suppresion d'une catégorie
+* @brief Fonction de validation de suppresion d'une catégorie. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
 * @access public
 * @return boolean
 */
 function valideSuppCategorie() {
     
     var erreurs = false;
+    var idCategorie;
+    
+    //-----------------------------------------
+    //Réinitialisation des messgages d'erreur.
     document.getElementById("erreurSelectSuppCategorie").innerHTML = "";    
+    document.getElementById("msgSuppCat").innerHTML = "";
 
-    if (document.getElementById("selectCategorieSupp").value == "") {
+    //-----------------------------------------
+    //Validation des champs.
+    idCategorie = document.getElementById("selectCategorieSupp").value;
+    if (idCategorie == "") {
         document.getElementById("erreurSelectSuppCategorie").innerHTML = "Veuillez choisir une catégorie à supprimer";
         erreurs = true;
     }
-    return (!erreurs);
+    
+    //-----------------------------------------
+    //Requête AJAX si aucune erreur.
+    if (!erreurs) {
+        $.post('ajaxControler.php?rAjax=supprimerCategorie', {idCategorie: idCategorie}, 
+            function(reponse){
+
+                var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+
+                if (msgErreurs.length == 0) {//Si aucune erreur...
+                    document.getElementById("selectCategorieSupp").value = "";
+
+                    $("#msgSuppCat").html("<span style='color:green'>Catégorie supprimée !</span>");
+
+                    //Requête Ajax pour récupérer les catégories de la BDD afin de mettre le select à jour.
+                    $.post('ajaxControler.php?rAjax=recupererCategories', 
+                        function(reponse){
+
+                        var categories = jQuery.parseJSON(reponse);
+                        var options = "<option value=''>choisir une catégorie</option>";
+                        var langue = getCookie("langue");
+
+                        //Choix du contenu du select en fonction de la langue
+                        if (langue == "FR") {
+                            $(categories).each(function(index, categorie) {
+                                options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieFR + '</option>';
+                            })
+                        }
+                        else if (langue = "EN") {
+                            $(categories).each(function(index, categorie) {
+                                options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieEN + '</option>';
+                            })
+                        }
+
+                        $("#selectCategorieSupp").html(options);
+                    });
+                }
+                else {//Sinon indique les erreurs à l'utilisateur.
+                    $(msgErreurs).each(function(index, valeur) {
+                        if (valeur.errSelectCategorieSupp) {
+                            $("#erreurSelectSuppCategorie").html(valeur.errSelectCategorieSupp);
+                        }
+                        if (valeur.errRequeteSuppCat) {
+                            $("#msgSuppCat").html(valeur.errRequeteSuppCat);
+                        }
+                    })
+                }
+        });
+    }    
+    return false;//Retourne toujours false pour que le formulaire ne soit pas soumit.
 }
 
 /* --------------------------------------------------------------------
 ========================== FIN VALIDATION JS ==========================
 -------------------------------------------------------------------- */
+/**
+* @brief Fonction qui mets à jour les oeuvres de la BDD avec les oeuvres de la ville et mets à jour l'affichage dans la page de gestion.
+* @access public
+* @return void
+*/
+function updateOeuvresVille() {
+    
+    $("#msgUpdateDate").html("<span style='color:green'>En traitement...</span>");
+    
+    $.post('ajaxControler.php?rAjax=updateOeuvresVille',
+        function(reponse){
 
+            var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+
+            if (msgErreurs.length == 0) {//Si aucune erreur...
+
+                $("#msgUpdateDate").html("<span style='color:green'>Mise à jour complétée !</span>");
+
+                //Récupération de la nouvelle date de mise à jour.
+                $.post('ajaxControler.php?rAjax=updateDate',
+                    function(reponse){
+                        var tableauDate = jQuery.parseJSON(reponse);
+
+                        var date = "Dernière mise à jour : Le " + tableauDate["dateDernierUpdate"] + " à " + tableauDate["heureDernierUpdate"];
+                        $("#affichageDate").html(date);
+                    });
+            }
+            else {//Sinon indique les erreurs à l'utilisateur.
+                $(msgErreurs).each(function(index, valeur) {
+                    if (valeur.errUrl) {
+                        $("#msgUpdateDate").html(valeur.errUrl);
+                    }
+                })
+            }
+    });
+    return false;
+}
+
+/**
+* @brief Fonction qui affiche le formulaire de modification d'une oeuvre après sélection de l'oeuvre à modifier par l'utilisateur.
+* @access public
+* @return void
+*/
+function afficherFormModif() {
+    
+    var idOeuvre = document.getElementById("selectOeuvreModif").value;
+    if (idOeuvre != "") {
+        
+        $.post('ajaxControler.php?rAjax=afficherFormModif', {idOeuvre: idOeuvre}, 
+            function(reponse){
+                $('#formModif').html(reponse);
+        });
+    }
+    else {
+        $('#formModif').html('');
+    }
+    
+}
 /**
 * @brief Fonction d'autocomplete pour la recherche
 * @access public
@@ -381,3 +959,20 @@ function downloadUrl(url,callback) {
 }
 
 function doNothing() {}
+
+/**
+* @brief Fonction qui récupère la valeur d'un cookie selon le nom passé en paramètre
+* @access public
+* @return void
+* @author W3Schools
+*/
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
+}
