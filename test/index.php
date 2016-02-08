@@ -19,6 +19,7 @@ require_once "../lib/BDD/BaseDeDonnees.class.php";
 		<title>Tests unitaires</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link href="../css/styles.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
     </head>
     <body>
 <?php

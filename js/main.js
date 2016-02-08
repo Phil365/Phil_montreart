@@ -654,6 +654,7 @@ function valideAjoutCategorie() {
     
     //-----------------------------------------
     //Réinitialisation des messgages d'erreur.
+
     document.getElementById("erreurAjoutCategorieFR").innerHTML = "";
     document.getElementById("erreurAjoutCategorieEN").innerHTML = "";
     document.getElementById("msgAjoutCat").innerHTML = "";
@@ -776,6 +777,20 @@ function valideSuppCategorie() {
     return false;//Retourne toujours false pour que le formulaire ne soit pas soumit.
 }
 
+/**
+* @brief Fonction de validation d'ajout commentaire oeuvre
+* @access public
+* @return boolean
+*/
+function valideAjoutCommentaireOeuvre() {
+    var erreurs = false;
+    document.getElementById("erreurCommentaire").innerHTML = "";
+    if (document.getElementById("commentaireAjout").value.trim() == "") {
+        document.getElementById("erreurCommentaire").innerHTML = "Veuillez entrer un commentaire";
+        erreurs = true;
+    }
+    return (!erreurs);
+}
 /* --------------------------------------------------------------------
 ========================== FIN VALIDATION JS ==========================
 -------------------------------------------------------------------- */

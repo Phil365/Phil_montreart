@@ -48,6 +48,12 @@ class VueOeuvre extends Vue {
     protected $msgPhoto;
     
     /**
+    * @var string $msgCommentaire Message destiné à l'utilisateur lors de la soumission d'un commentaire
+    * @access protected
+    */
+    protected $msgCommentaire;
+    
+    /**
     * @brief Constructeur. Initialise les propriétés communes de la classe mère
     * @access public
     * @return voids
@@ -86,6 +92,16 @@ class VueOeuvre extends Vue {
     public function setMsgPhoto($msg) {
         
         $this->msgPhoto = $msg;
+    }
+     /**
+    * @brief Méthode qui assigne une valeur à la propriété msgCommentaire
+    * @param string $msgComm
+    * @access public
+    * @return void
+    */
+    public function setMsgCommentaire($msgComm) {
+        
+        $this->MsgCommentaire = $msgComm;
     }
     
     /**
@@ -161,12 +177,15 @@ class VueOeuvre extends Vue {
         }
         echo "<button class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</button></div>";//fin div infosOeuvre
 
+        echo "<div class='borderMobile' id='premiereBordureMobile'></div>";    
         if (isset($this->oeuvre["description" . $this->langue])) {
             echo "<div>
-            <h3>Description :</h3>
+            <h3 class='titresPageOeuvre' id='descriptionTitreOeuvre'>Description :</h3>
             <p>".$this->oeuvre["description" . $this->langue]."</p></div>";
         }//fin div description
     ?>
+
+
                 <form name="formPhotoUnique" id="formPhotoUnique" action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerPhoto" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
                     <h4 id="selectImageUpload">Soumettez une nouvelle image pour cette oeuvre :</h4>
                     <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
@@ -175,9 +194,32 @@ class VueOeuvre extends Vue {
                     <br>
                     <span id="msg" class="erreur"><?php if (isset($this->msgPhoto)) {echo $this->msgPhoto;} ?></span>
                 </form>
-                <?php
-                echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser un commentaire</button>";
 
+                <div class='borderMobile'></div>
+        
+                <form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();" >            <p><h3 class='titresPageOeuvre'>Commentaire :</h3></p>    
+                <input type="hidden" name="idOeuvreencours" value="<?php echo $idOeuvreencours ?>">
+                <textarea name='commentaireAjout' id='commentaireAjout' ></textarea>
+                <div class="cont">
+                  <div class="stars">
+                      <input class="star star-5" name='vote' id="star-5-2" type="radio" name="star" value='5'/>
+                      <label class="star star-5" for="star-5-2"></label>
+                      <input class="star star-4"  name='vote'id="star-4-2" type="radio" name="star" value='4'/>
+                      <label class="star star-4" for="star-4-2"></label>
+                      <input class="star star-3" name='vote' id="star-3-2" type="radio" name="star" checked="checked" value='3'/>
+                      <label class="star star-3" for="star-3-2"></label>
+                      <input class="star star-2" name='vote' id="star-2-2" type="radio" name="star" value='2'/>
+                      <label class="star star-2" for="star-2-2"></label>
+                      <input class="star star-1"  name='vote' id="star-1-2" type="radio" name="star" value='1'/>
+                      <label class="star star-1" for="star-1-2"></label>
+                  </div>
+                </div>
+                <input  class='boutonMoyenne'  type='submit' name='ajoutCommentaire' value='Ajouter Commentaire'  >
+            <br>
+                    <span id="erreurCommentaire" class="erreur"><?php if (isset($this->MsgCommentaire)) {echo $this->MsgCommentaire;} ?></span>
+            </form>
+                <?php
+//                echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser un commentaire</button>";
                 if ($this->commentaires) {//Si des commentaires existent pour cette oeuvre dans la langue d'affichage...
                     for ($i = 0; $i < count($this->commentaires); $i++) {
                         echo "<div class='unCommentaire'>";
@@ -207,7 +249,7 @@ class VueOeuvre extends Vue {
                         echo "<img class='thumbnail' src = '$imgPhoto'><br>";
                         echo "<h5 id='idUtilisateur'>".$this->commentaires[$i]["nomUsager"]."</h5>";
 
-                        echo "<div class='ratingUtilisateur'><img src = 'images/$imgVote'></div>";
+                        echo "<div class='ratingUtilisateur'><p><img src = 'images/$imgVote'></div></p>";
                         echo "<p>".$this->commentaires[$i]["texteCommentaire"]."</p>"."</div>";
                         //fin div unCommentaire
                     }
@@ -215,11 +257,8 @@ class VueOeuvre extends Vue {
                 else {
                     echo "<p>Aucun commentaire</p>";
                 }//fin div commentaires 
-            echo "</div> 
-
-            <div id='sponsorsPageOeuvre'>
-                Sponsors
-            </div>";
+            echo "</div>";
+            echo "<div class='borderMobile'></div>";
             echo "</body>";
         }
     }
