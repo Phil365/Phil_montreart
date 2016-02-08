@@ -32,7 +32,7 @@ class VueTrajet extends Vue {
                 <h3>Point B</h3>
                 <input type="text" name="pointB" value="">
                 
-                <input class="submit" type="submit" value="Envoyer" name="Envoyer">
+                <input class="submit" id="envoyerTrajetBouton" type="submit" value="Envoyer" name="Envoyer">
             </form>
             </div>
          <div class="section2" id="carte">
@@ -42,9 +42,6 @@ class VueTrajet extends Vue {
         <div id="votreTrajet"><p>Votre trajet</p>
         </div>
         
-        <div id="sponsorsTrajet">
-            <p>sponsors</p>
-        </div>
     <?php
     }
 }

@@ -49,7 +49,7 @@ class VueRecherche extends Vue {
         $langue = $this->langue;
         
         if (empty($this->oeuvres)) {
-            echo "<p>Aucune oeuvre n'a été trouvée selon vos critères de recherche</p>";
+            echo "<p id='aucuneOeuvre'>Aucune oeuvre n'a été trouvée selon vos critères de recherche</p>";
         }
         else {
             if ( isset($this->oeuvres[0]["nomCategorie$langue"])) {
