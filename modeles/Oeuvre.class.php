@@ -102,13 +102,13 @@ class Oeuvre {
     */
     private static $database;
     
-    private $test;
-    private $test2;
+    private $nbPassesUpdater;
+    private $nbPassesAjouter;
     
     function __construct() {
         
-        $this->test = 0;
-        $this->test2 = 0;
+        $this->nbPassesUpdater = 0;
+        $this->nbPassesAjouter = 0;
         
         if (!isset(self::$database)) {//Connection à la BDD si pas déjà connecté
             
@@ -254,28 +254,39 @@ class Oeuvre {
     */
     public function updaterOeuvresVille() {
         
-        $oeuvresVilleMtl = json_decode(file_get_contents("http://donnees.ville.montreal.qc.ca/dataset/2980db3a-9eb4-4c0e-b7c6-a6584cb769c9/resource/18705524-c8a6-49a0-bca7-92f493e6d329/download/oeuvresdonneesouvertes.json"), true);
+        $msgErreurs = array();
         
-        foreach ($oeuvresVilleMtl as $oeuvreVilleMtl) {
+        $jsonVilleMtl = @file_get_contents("http://donnees.ville.montreal.qc.ca/dataset/2980db3a-9eb4-4c0e-b7c6-a6584cb769c9/resource/18705524-c8a6-49a0-bca7-92f493e6d329/download/oeuvresdonneesouvertes.json");
+        
+        if ($jsonVilleMtl) {
             
-            if (isset($oeuvreVilleMtl["NoInterne"])) {
-                $this->noInterneMtl = $oeuvreVilleMtl["NoInterne"];
-                $oeuvreMtlBDD = $this->getOeuvreByNoInterne($oeuvreVilleMtl["NoInterne"]);
-                
-                $this->getFKOeuvreByName($oeuvreVilleMtl);
-                
-                if (empty($oeuvreMtlBDD)) {
-                    $action = "ajouter";
-                    $this->test2++;
+            $oeuvresVilleMtl = json_decode($jsonVilleMtl, true);
+            
+            foreach ($oeuvresVilleMtl as $oeuvreVilleMtl) {
+
+                if (isset($oeuvreVilleMtl["NoInterne"])) {
+                    $this->noInterneMtl = $oeuvreVilleMtl["NoInterne"];
+                    $oeuvreMtlBDD = $this->getOeuvreByNoInterne($oeuvreVilleMtl["NoInterne"]);
+
+                    $this->getFKOeuvreByName($oeuvreVilleMtl);
+
+                    if (empty($oeuvreMtlBDD)) {
+                        $action = "ajouter";
+                        $this->nbPassesAjouter++;
+                    }
+                    else {
+                        $action = "updater";
+                        $this->nbPassesUpdater++;
+                    }
+                    $this->insererUpdaterOeuvreVille($oeuvreVilleMtl, $action);
                 }
-                else {
-                    $action = "updater";
-                    $this->test++;
-                }
-                $this->insererUpdaterOeuvreVille($oeuvreVilleMtl, $action);
             }
+            $this->changerDateUpdate();
         }
-        $this->changerDateUpdate();
+        else {
+            $msgErreurs["errUrl"] = "Le fichier de la ville de Montréal n'a pas été trouvé.";
+        }
+        return $msgErreurs;
     }
     
     /**
@@ -420,14 +431,14 @@ class Oeuvre {
     */
     public function getDateDernierUpdate() {
         
+        $date = array();
+            
         self::$database->query('SELECT * FROM UpdateListeOeuvresVille');
         
-        if ($date = self::$database->uneLigne()) {
-            return $date;
+        if ($dateBDD = self::$database->uneLigne()) {
+            $date = $dateBDD;
         }
-        else {
-            return array();
-        }
+        return $date;
     }
     
     /**
@@ -437,14 +448,14 @@ class Oeuvre {
     */
     public function afficherTestJson() {
         //Test pour déterminer si toutes les oeuvres ont été insérées dans la BDD.
-        if (($this->test + $this->test2) > 0) {
+        if (($this->nbPassesUpdater + $this->nbPassesAjouter) > 0) {
             echo "<p>Le contenu doit être rechargé une fois pour voir les résultats :</p>";
             echo "<br>";
-            echo "Nombre d'oeuvres du Json présentes dans la BDD Montreart : " . $this->test;
+            echo "Nombre d'oeuvres du Json présentes dans la BDD Montreart : " . $this->nbPassesUpdater;
             echo "<br>";
-            echo "Nombre d'oeuvres du Json manquantes dans la BDD Montreart : " . $this->test2;
+            echo "Nombre d'oeuvres du Json manquantes dans la BDD Montreart : " . $this->nbPassesAjouter;
             echo "<br>";
-            echo "Nombre total d'oeuvres dans le Json de la ville : " . ($this->test + $this->test2);
+            echo "Nombre total d'oeuvres dans le Json de la ville : " . ($this->nbPassesUpdater + $this->nbPassesAjouter);
         }
     }
         
@@ -597,6 +608,7 @@ class Oeuvre {
     */
     public function ajouterOeuvre($titre, $adresse, $prenomArtiste, $nomArtiste, $description, $categorie, $arrondissement, $authorise, $langue) {
   
+        $msgErreurs = array();//Validation des champs obligatoires.
         $msgErreurs = $this->validerFormOeuvre($titre, $adresse, $description, $categorie, $arrondissement);//Validation des champs obligatoires.
         
         if (!empty($msgErreurs)) {
@@ -611,11 +623,11 @@ class Oeuvre {
                 self::$database->query('INSERT INTO Oeuvres ( titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCategorie, idArrondissement) VALUES (:titre, null, null, null, null, null, :adresse, :descriptionFR, :descriptionEN, :authorise, :idCategorie, :idArrondissement)');
 
                 if ($langue == "FR") {
-                    self::$database->bind(':descriptionFR', $description.$langue);
+                    self::$database->bind(':descriptionFR', $description);
                     self::$database->bind(':descriptionEN', "");
                 }
                 else if ($langue == "EN") {
-                    self::$database->bind(':descriptionEN', $description.$langue);
+                    self::$database->bind(':descriptionEN', $description);
                     self::$database->bind(':descriptionFR', "");
                 }
                 self::$database->bind(':authorise', $authorise);        
@@ -627,13 +639,15 @@ class Oeuvre {
             
                 $idOeuvre = $this->getIdOeuvreByTitreandAdresse($titre, $adresse);//aller chercher id oeuvre insérée
 
-
                 $artiste->lierArtistesOeuvrePoursoummision($idOeuvre, $idArtisteAjoute);//Lier les artistes à l'oeuvre
 
-                $photo = new Photo();
-                $msgInsertPhoto = $photo->inserePhotoBdd($idOeuvre, $authorise);
-                if ($msgInsertPhoto != "" && $_FILES["fileToUpload"]["error"] != 4) {
-                    $msgErreurs["errPhoto"] = $msgInsertPhoto;
+                if (isset($_FILES["fileToUpload"])) {
+                    
+                    $photo = new Photo();
+                    $msgInsertPhoto = $photo->ajouterPhoto(1, true);
+                    if ($msgInsertPhoto != "" && $_FILES["fileToUpload"]["error"] != 4) {
+                        $msgErreurs["errPhoto"] = $msgInsertPhoto;
+                    }
                 }
             }
             catch(Exception $e) {

@@ -10,7 +10,6 @@
  * @update 2015-12-14
  * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
  * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
- * 
  */
 
 class Controler {
@@ -121,6 +120,8 @@ class Controler {
     * @return void
     */
      public function gerer() {
+         
+        session_start();//Initialisation de la session utilisateur.
         
         switch ($_GET['r']) {//requête
             case $this->pAccueil:
@@ -189,7 +190,7 @@ class Controler {
         $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"], false);
         
         if (isset($_GET['action']) && $_GET['action'] == 'envoyerPhoto') {
-            $msgInsertPhoto = $photo->inserePhotoBdd($_GET["o"], false);
+            $msgInsertPhoto = $photo->ajouterPhoto($_GET["o"], false);
         }
         else {
             $msgInsertPhoto = null;
@@ -314,7 +315,7 @@ class Controler {
         
         //Mise à jour des oeuvres de la ville de Montréal
         if (isset($_POST["misAJour"])) {
-            $oeuvre->updaterOeuvresVille();
+            $msgErreurs = $oeuvre->updaterOeuvresVille();
         }
         
         //Affichage de la date de dernière mise à jour des oeuvres de la ville.
@@ -327,7 +328,7 @@ class Controler {
         
         //Ajout d'une oeuvre.
         $authorise = true;
-        
+
         //Essaie l'ajout et récupère les messages d'erreur si présents.
         if (isset($_POST["boutonAjoutOeuvre"])) {
             $msgErreurs = $oeuvre->AjouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
@@ -350,7 +351,6 @@ class Controler {
         if (isset($_POST["boutonAjoutCategorie"])) {
             $msgErreurs = $categorie->ajouterCategorie($_POST["categorieFrAjout"], $_POST["categorieEnAjout"]);
         }
-        var_dump($msgErreurs);
         
         //Suppression d'une catégorie
         if (isset($_POST["boutonSuppCategorie"])) {

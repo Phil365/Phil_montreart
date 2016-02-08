@@ -56,95 +56,115 @@ border-spacing: 0;
 
 /*========================================  STYLES GENERAUX ====================================================*/
 /*============================COULEURS:
-rouge fonce: #B32A42;
-rouge tres fonce: #6c0e1e;
-rouge tres fonce(cristina) 2: #70212F;
+rouge: #B32A42;
+rouge fonce: #70212F;
 rose: #F05570;
 bleu fonce: #1781B2;
-bleu moyenne: #659CEF;
-bleu moyenne josianne: #659CEF;
+bleu moyen: #659CEF;
 jaune: #F8F274;
 ================================FIN COULEURS*/
-@viewport{
-zoom: 1.0;
-width: extend-to-zoom;
-}
-@-ms-viewport{
-width: extend-to-zoom;
-zoom: 1.0;
-}
-html,body{
-margin: 0;
-padding: 0;
-border-bottom-left-radius: 10px;
-border-bottom-right-radius: 10px;
-}
-html{
-background-color: #70212F;
-}
-body{
-
-background-color: #ffffff;
-font-family: 'Source Sans Pro', sans-serif;
-max-width: 980px;
-overflow-y: scroll; 
+@viewport {
+    zoom: 1.0;
+    width: extend-to-zoom;
 }
 
-h2{
-font-family: 'Source Sans Pro', sans-serif;
-font-size: 1.6em;
-color: #70212F;
-margin: 60px 10px 30px 10px;
+@-ms-viewport {
+    width: extend-to-zoom;
+    zoom: 1.0;
 }
 
-h3{
-font-family: 'Source Sans Pro', sans-serif;
-color: #70212F;
-font-size: 1.2em;
-margin-top: 1em;
-}
-h4{
-font-family: 'Source Sans Pro', sans-serif;
-color: #70212F;
-font-size: 1em;
-margin-top: 1em;
-}
-h5{
-font-family: 'Source Sans Pro', sans-serif;
-color: #70212F;  
-font-size: .9em;
-}
-a{
-font-family: 'Source Sans Pro', sans-serif;
-color: #000000;
-text-decoration: none;
+html {
+    background-color: #70212F;
 }
 
-.textStandard{
-font-family: 'Source Sans Pro', sans-serif;
-font-weight: 400;
-font-size: .9em;
-line-height: 1.4em;
-letter-spacing: .9px;
-font-weight: 500;
-text-indent: 50px;
-margin: 40px 10px;
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Source Sans Pro', sans-serif;
+    max-width: 980px;
+}
 
+.global {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: #ffffff;
+    padding-bottom: 30px;
 }
-.noIndent{
-font-family: 'Source Sans Pro', sans-serif;
-font-size: 1.2em;
-line-height: 1.4em;
-letter-spacing: .9px;
-font-weight: 500;
-margin: 40px 10px;
-text-indent: 0;
+
+h1 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 2em;
+    color: #70212F;
+    margin: 40px 10px 20px 10px;
+    text-align: center;
+    font-weight: bolder;
 }
-.bold{
-font-weight: 700;
+
+h2 {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1.6em;
+    color: #70212F;
+    margin: 60px 10px 30px 10px;
+    font-weight: bold;
 }
-.cursive{
-font-style: italic;
+
+h3 {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #70212F;
+    font-size: 1.2em;
+    margin-top: 1em;
+}
+
+h4 {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #70212F;
+    font-size: 1em;
+    margin-top: 1em;
+}
+
+h5 {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #70212F;
+    font-size: .9em;
+}
+
+a {
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #000000;
+    text-decoration: none;
+}
+
+p {
+    margin-top: 10px;
+}
+
+.textStandard {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 400;
+    font-size: .9em;
+    line-height: 1.4em;
+    letter-spacing: .9px;
+    font-weight: 500;
+    text-indent: 50px;
+    margin: 40px 10px;
+}
+
+.noIndent {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1.2em;
+    line-height: 1.4em;
+    letter-spacing: .9px;
+    font-weight: 500;
+    margin: 40px 10px;
+    text-indent: 0;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.cursive {
+    font-style: italic;
 }
 .dummy{
     height: 89px;
@@ -171,7 +191,6 @@ main{
     
     height: 300px;
     width: 100%;
-    margin-top: 40px;
     margin-bottom: 20px;
     border: 2px solid #659CEF;
 }
@@ -179,7 +198,6 @@ main{
     
     height: auto;
     width: 100%;
-    margin-bottom: 20px;
     border: 2px solid #b812ea;
 }
 .section5{
@@ -197,12 +215,12 @@ main{
     height: auto;
     
 }
+
 footer{
 background: #B32A42;
 width: 100%;
 min-height: 75px;
 position: relative;
-bottom: -90px;
 font-family: 'Source Sans Pro', sans-serif;
 font-size: .8em;
 letter-spacing: .6px;
@@ -250,12 +268,12 @@ z-index: 3;
     background-color:#659CEF;
     font-family: 'Source Sans Pro', sans-serif;
     color:#fff;
-    border:1px solid #ddd;
     padding:10px;
     font-size:1.2em;
     cursor:pointer;
     border-radius:5px;
-    margin: 30px; 
+    margin: 30px;
+    border: none;
 }
 .infosOeuvre{
     width: 100%;
@@ -347,7 +365,48 @@ z-index: 3;
     margin-top: 20px;
     border: 2px solid #47ce51;
 }
-/*------------- PAGE ADMIN -----------------------*/
+/*------------- PAGE GESTION -----------------------*/
+
+.boutonHover:active {
+    filter: brightness(125%);
+}
+.boutonHover:hover {/*Anim mouse over des boutons de la page gestion*/
+    animation-name: hoverBouton;
+    animation-duration: .3s;
+}
+@keyframes hoverBouton {
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.boutonSoumission {
+    text-align: left;
+}
+
+#accordeon h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#accordeon div {
+    width: 92%;
+    margin: 0 auto;
+}
+
+#accordeon a {
+    margin-bottom: 10px;
+    display: block;
+    background-color: #e2e2e2;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#accordeon span {
+    float: right;
+}
+
 .premiereColonne{
     display: block;
     width: 100%;
@@ -385,6 +444,18 @@ z-index: 3;
 
 }
 
+.containerLiensGestion {
+    text-align: center;
+}
+
+.boutonsLiens {
+    width: 15%;
+    display: inline-block;
+    background: #B32A42;
+    border-radius: 8px;
+    margin: 20px;
+    font-weight: bold;
+}
 
 .infoResult {
     
@@ -541,9 +612,10 @@ z-index: 3;
 }
 
 
-#MAJgestion {
-    margin-top: 60px;
+.MAJgestion {
+    margin-top: 30px;
     margin-left: 30px;
+    display: block;
 
 }
 
@@ -610,96 +682,108 @@ nav a:first-child {
 /*====fin=NAV PRINCIPALE=====*/
 /*--------------------------STYLES FORMULAIRES -------------------------*/
 #div_bgform {
-width:100%;
-height:100%;
-position:absolute;
-top:0;
-left:0;
-background-color:rgba(90, 89, 89, 0.73);
-overflow:auto;
-z-index: 7;
-display: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(90, 89, 89, 0.73);
+    overflow: auto;
+    z-index: 7;
+    display: none;
 }
+
 #fermer {
-position:absolute;
-right:-4px;
-top:-4px;
-width:30px;
-height:30px;
-background-color:#70212F;
-font-family: 'Source Sans Pro', sans-serif;
-font-size: 1.2em;
-color: #fff;
-cursor:pointer;
-border-radius: 16px;
-font-family: sans-serif;
-cursor:pointer;
+    position: absolute;
+    right: -4px;
+    top: -4px;
+    width: 30px;
+    height: 30px;
+    background-color: #70212F;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 1.2em;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 16px;
+    font-family: sans-serif;
+    cursor: pointer;
 }
+
 #div_form {
-position:absolute;
-top:17%;
-font-family: 'Source Sans Pro', sans-serif;
-z-index: 8;
-display: none;
+    position: absolute;
+    top: 17%;
+    font-family: 'Source Sans Pro', sans-serif;
+    z-index: 8;
+    display: none;
 }
 
 #div_form h2 {
-color: #70212F;
-padding:20px 35px;
-margin:-10px -50px;
-text-align:center;
-}
-input{
-    width:82%;
-}
-select{
-    width: 92%;
-}
-input, select {
-padding:10px;
-margin-top:30px;
-border:1px solid #ccc;
-padding-left:40px;
-font-size:16px;
-font-family: 'Source Sans Pro', sans-serif;
-border-radius: 5px;
+    color: #70212F;
+    padding: 20px 35px;
+    margin: -10px -50px;
+    text-align: center;
 }
 
-textarea{
-    margin-top: 30px;
-    margin-left: 30px;
+input {
+    width: 82%;
 }
-select:focus, textarea, textarea:focus {
+
+select {
+    width: 92%;
+}
+
+input,
+select {
+    padding: 10px;
+    margin-top: 30px;
+    border: 1px solid #ccc;
+    padding-left: 40px;
+    font-size: 16px;
+    font-family: 'Source Sans Pro', sans-serif;
     border-radius: 5px;
 }
 
+textarea {
+    margin-top: 30px;
+    margin-left: 30px;
+}
+
+select:focus,
+textarea,
+textarea:focus {
+    border-radius: 5px;
+}
 
 .submit {
-text-decoration:none;
-width:100%;
-text-align:center;
-display:block;
-background-color:#659CEF;
-font-family: 'Source Sans Pro', sans-serif;
-color:#fff;
-border:1px solid #ddd;
-padding:10px 0;
-font-size:20px;
-cursor:pointer;
-border-radius:5px;
-margin: 30px 0;
+    text-decoration: none;
+    width: 100%;
+    text-align: center;
+    display: block;
+    background-color: #659CEF;
+    font-family: 'Source Sans Pro', sans-serif;
+    color: #fff;
+    border: 1px solid #ddd;
+    padding: 10px 0;
+    font-size: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 30px 0;
 }
-#formlogin, #form_profil {
-max-width:200px;
-padding:10px 50px;
-border:2px solid #F8F274;
-border-radius:10px;
-font-family: 'Source Sans Pro', sans-serif;
-background-color:#fff;
+
+#formlogin,
+#form_profil {
+    max-width: 200px;
+    padding: 10px 50px;
+    border: 2px solid #F8F274;
+    border-radius: 10px;
+    font-family: 'Source Sans Pro', sans-serif;
+    background-color: #fff;
 }
-#form_itineraire, #contribuer_oeuvre{
-padding:10px 50px 30px 50px;
-font-family: 'Source Sans Pro', sans-serif;
+
+#form_itineraire,
+#contribuer_oeuvre {
+    padding: 10px 50px 30px 50px;
+    font-family: 'Source Sans Pro', sans-serif;
 }
 #form_itineraire input[type="submit"]{
     float: right;
@@ -768,6 +852,9 @@ header{
 .erreur {
     color:red;
     margin-left: 30px;
+    margin-top: 10px;
+    display: block;
+    font-weight: bold;
 }
 
 #logo{
@@ -1037,6 +1124,7 @@ margin-left: 35px;
 #map {
     height: 300px !important;
     margin: 0 auto;
+    border-bottom: solid 4px #F8F274;
 }
 /*======================================== Style reponse recherche ====================================================*/
 
@@ -1044,93 +1132,88 @@ margin-left: 35px;
 
 
 /*========================================  STYLES POUR TABLETTE ====================================================*/
-@media (min-width: 480px){
-header{
-    height: 57px;
-}
-nav{
-top:58px;    
-}
-nav a{
-font-size: 1em;    
-}
-    
-nav a:first-child {
-    margin-left: 20%;
-}
-#icon_menu{
-margin-left: 2%;
-margin-right: 20%;
-}
-#logo{
-height: 52px;
-width: 52px;
-margin: 7px;
-}
-#titre{
-  font-size: 1.8em;  
-}
-#barreRecherche{
-top:-98px;
-}
-#loupe{
-float: right;
-margin-right: 2%;
-}
-    
-.dummy{
-    height: 98px;
-}
-#div_form {
-left:50%;
-margin-left:-202px;
-}
-#formlogin {
-max-width:300px;
-}
-#formlogin, #contribuer_article, #form_profil{
-    max-width:300px;
-}
-nav a{
-
-font-size: 1.2em;
-letter-spacing: .4px;
-text-align: center;
-padding: 0 20px;
-line-height: 30px;
-}
-.section1{
-   margin-bottom: 20px; 
-}
-.section5 img{
-    width: 70%;
-    margin-left: 15%;
-}
-/*--------------------STYLES SLIDER----------------*/
-    .single-item{
-    width: 99%;
-    text-align: center;
-}
-
-  
-.slick-slide{
-width: 270px;
-
-}
-.slick-slide img {
-   
-    display: block;
-    width: 50%;
-    margin-left: 25%;
-}
-.gm-style .photomap {
-    max-width: 200px;
-}
-#map {
-    height: 300px !important;
-    margin: 0 auto;
-}
-/*--------------- FIN STYLES SLIDER----------------*/
+@media (min-width: 480px) {
+    header {
+        height: 57px;
+    }
+    nav {
+        top: 58px;
+    }
+    nav a {
+        font-size: 1em;
+    }
+    nav a:first-child {
+        margin-left: 20%;
+    }
+    #icon_menu {
+        margin-left: 2%;
+        margin-right: 20%;
+    }
+    #logo {
+        height: 52px;
+        width: 52px;
+        margin: 7px;
+    }
+    #titre {
+        font-size: 1.8em;
+    }
+    #barreRecherche {
+        top: -98px;
+    }
+    #loupe {
+        float: right;
+        margin-right: 2%;
+    }
+    .dummy {
+        height: 98px;
+    }
+    #div_form {
+        left: 50%;
+        margin-left: -202px;
+    }
+    #formlogin {
+        max-width: 300px;
+    }
+    #formlogin,
+    #contribuer_article,
+    #form_profil {
+        max-width: 300px;
+    }
+    nav a {
+        font-size: 1.2em;
+        letter-spacing: .4px;
+        text-align: center;
+        padding: 0 20px;
+        line-height: 30px;
+    }
+    .section1 {
+        margin-bottom: 20px;
+    }
+    .section5 img {
+        width: 70%;
+        margin-left: 15%;
+    }
+    /*--------------------STYLES SLIDER----------------*/
+    .single-item {
+        width: 99%;
+        text-align: center;
+    }
+    .slick-slide {
+        width: 270px;
+    }
+    .slick-slide img {
+        display: block;
+        width: 50%;
+        margin-left: 25%;
+    }
+    .gm-style .photomap {
+        max-width: 200px;
+    }
+    #map {
+        height: 300px !important;
+        margin: 0 auto;
+    }
+    /*--------------- FIN STYLES SLIDER----------------*/
 }
 @media (min-width: 800px){
     
@@ -1261,7 +1344,7 @@ width: 270px;
         clear: none;
         position: relative;
         top: -300px;
-        left: 21%;
+        left: 21.3%;
     }
 
     .section5{
@@ -1272,7 +1355,7 @@ width: 270px;
         clear: none;
         position: relative;
         top: -300px;
-        left: 22%;
+        left: 22.2%;
     }
     .section5 img{
         width: 100%;
@@ -1406,43 +1489,43 @@ width: 270px;
 
 
     .ratingUtilisateur img {
-    width: 8%;
-
+        width: 8%;
+    }
     /*------------- PAGE ADMIN 800px ET+ -----------------------*/
-        .premiereColonne{
-            width: 58%;
-            height: 500px;
-             border-right: 4px solid #F8F274;
-        }
-        .deuxiemmeColonne{
-            float: left;
-            clear: none;
-            position: relative;
-            top: -500px;
-            right: -59%;
-            width: 20%;
-            height: 500px;
-            overflow-y: scroll;
-        }
-        .troisiemmeColonne{
-            float: left;
-            clear: none;
-            position: relative;
-            top: -500px;
-            right: -60%;
-            width: 20%;
-            height: 500px;
-            overflow-y: scroll;
-        }
-        .listeCommentaires{
-            width: 100%;
-            overflow-y: scroll;
-        }
-        .listeOeuvres{
-            width: 100%;
-            overflow-y: scroll;
-        }
 
+    .premiereColonne{
+        width: 58%;
+        height: 500px;
+         border-right: 4px solid #F8F274;
+    }
+    .deuxiemmeColonne{
+        float: left;
+        clear: none;
+        position: relative;
+        top: -500px;
+        right: -59%;
+        width: 20%;
+        height: 500px;
+        overflow-y: scroll;
+    }
+    .troisiemmeColonne{
+        float: left;
+        clear: none;
+        position: relative;
+        top: -500px;
+        right: -60%;
+        width: 20%;
+        height: 500px;
+        overflow-y: scroll;
+    }
+    .listeCommentaires{
+        width: 100%;
+        overflow-y: scroll;
+    }
+    .listeOeuvres{
+        width: 100%;
+        overflow-y: scroll;
+    }
 
 }
 /*-------------FIN PAGE ADMIN ---------------------*/    
@@ -1451,45 +1534,44 @@ width: 270px;
 
 
 /*========================================  STYLES POUR DESKTOP ====================================================*/
-@media (min-width: 1024px){
-html{
-    
-    width: 980px;
-    margin: 0 auto;
-    
-}
-body{
-    width: 100%;
-   
-}
-header{
-    width: 980px;
-    margin: 0 auto;
-    height: 86px;
-}
+@media (min-width: 1024px) {
+    html {
+        width: 980px;
+        margin: 0 auto;
+    }
+    body {
+        width: 100%;
+    }
+    header {
+        width: 980px;
+        margin: 0 auto;
+        height: 86px;
+    }
+    nav {
+        width: 980px;
+        top: 86px;
+    }
+    .dummy {
+        height: 120px;
+    }
+    #logo {
+        width: 76px;
+        height: 76px;
+    }
+    #titre {
+        top: -70px;
+        font-size: 3em;
+    }
+    #barreRecherche {
+        top: -140px;
+    }
+    .textStandard,
+    .noIndent,
+    h2 {
+        max-width: 800px;
+        margin-left: 30px;
+    }
 
-nav{
-width:980px;
-top: 86px;
-}
-.dummy{
-height: 120px;
-}
-#logo{
-width: 76px;
-height: 76px;
-}
-#titre{
-top: -70px;
-font-size: 3em;
-}
-#barreRecherche{
-top: -140px;
-}
-.textStandard, .noIndent, h2{
-max-width: 800px;
-margin-left: 40px;
-}
 .infosOeuvre{
    top: 166px; 
  }
@@ -1506,5 +1588,6 @@ margin-left: 40px;
     width: 8%;
 
 }*/
+}
 /*========================================FIN DU STYLES POUR DESKTOP ====================================================*/
 
