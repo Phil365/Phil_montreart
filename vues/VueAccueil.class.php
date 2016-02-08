@@ -37,8 +37,8 @@ class VueAccueil extends Vue {
                     section3 Oeuvre en Vedette
             </div>
             <div class="section4">
-                <h4>A propos de MontréArt</h4>
-                <p class="textStandard">
+                <h4 id="aProposMontreart">A propos de MontréArt</h4>
+                <p class="textStandard" id="texteAccueil">
 Bienvenue sur le site de Montréart, où les oeuvres publiques les plus fantastiques en ville sont répertoriées. Idéal pour en apprendre sur les artistes les plus branchés, des techniques de création des plus diverses et des pièces d'art à couper le souffle. Vous pourrez vous balader et partager vos trouvailles avec vos propres photos, et exprimer vos opinions en ligne. En plus de découvrir l'art d'ici, vous avec la possibilité de gagner des rabais incroyables grâce à notre système dès que vous vous trouvez proche d'une oeuvre! Partez à l'aventure, ça en vaut le coup!
                 </p>
             </div>
