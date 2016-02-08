@@ -94,7 +94,7 @@ $(document).ready(function(){
             }
             else {
                 if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-2").delay(500).slideToggle(750);
+                    $("#Onglet-2").delay(400).slideToggle(750);
                 }
                 else {
                     $("#Onglet-2").slideToggle(750);
