@@ -791,6 +791,56 @@ function valideAjoutCommentaireOeuvre() {
     }
     return (!erreurs);
 }
+/**
+* @brief Fonction de validation d'ajout d'un nouveau utilisateur
+* @access public
+* @return boolean
+*/
+function validerFormAjoutUtilisateur(){
+     var erreurs = false;
+     var msg = "";
+    document.getElementById("erreurNomUsager").innerHTML = "";
+    document.getElementById("erreurMotPasse").innerHTML = "";
+    document.getElementById("erreurPrenom").innerHTML = "";
+    document.getElementById("erreurNom").innerHTML = "";
+    document.getElementById("erreurCourriel").innerHTML = "";
+    
+
+
+    if (document.getElementById("nomUsager").value.trim() == "") {
+        document.getElementById("erreurNomUsager").innerHTML = "Veuillez choisir un nom usager";
+        erreurs = true;
+    }
+
+    if (document.getElementById("motPasse").value.trim() == "") {
+        document.getElementById("erreurMotPasse").innerHTML = "Veuillez ecrire un mot de passe.";
+        erreurs = true;
+    }
+
+    if (document.getElementById("prenom").value.trim() == "") {
+        document.getElementById("erreurPrenom").innerHTML = "Veuillez entrer votre prenom";
+        erreurs = true;
+    }
+
+    if (document.getElementById("nom").value == "") {
+        document.getElementById("erreurNom").innerHTML = "Veuillez entrer votre nom de famille";
+        erreurs = true;
+    }
+
+    if (document.getElementById("courriel").value == "") {
+        document.getElementById("erreurCourriel").innerHTML = "Veuillez entrer votre courriel";
+        erreurs = true;
+    }else if(!document.getElementById("courriel").value == ""){
+        var courriel = document.getElementById("courriel").value;
+        var regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        if(!regex.test(courriel)){
+             document.getElementById("erreurCourriel").innerHTML = "Veuillez entrer un adresse courriel valide.";
+        }
+    }
+
+    document.getElementById("msg").innerHTML = msg;
+    return (!erreurs);
+}
 /* --------------------------------------------------------------------
 ========================== FIN VALIDATION JS ==========================
 -------------------------------------------------------------------- */

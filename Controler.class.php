@@ -92,6 +92,11 @@ class Controler {
     */
     private $pGestion;
     
+     /**
+    * @var string $pDevenirMembre Page avec formulaire pour les utilisateurs qui vuelent s'enregistrer
+    * @access private
+    */
+    private $pDevenirMembre;
     
     
     /**
@@ -109,7 +114,7 @@ class Controler {
         $this->pRecherche = "recherche";
         $this->pAdmin = "admin";
         $this->pGestion = "gestion";
-        
+         $this->pDevenirMembre = "devenir_membre";
         $this->oCookie = new Cookie();
         $this->langueAffichage = $this->oCookie->getLangue();
     }
@@ -147,6 +152,9 @@ class Controler {
                 break;
             case $this->pGestion:
                 $this->gestion();
+                break;
+            case $this->pDevenirMembre:
+                $this->devenirMembre();
                 break;
             default:
                 $this->accueil();
@@ -397,6 +405,25 @@ class Controler {
         $this->oVue = new VueRecherche();
         $this->oVue->setDataGlobal('recherche', 'page de recherche', $this->langueAffichage, $this->pRecherche);
         $this->oVue->setOeuvres($oeuvres);
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
+    }
+    private function devenirMembre(){
+       
+        $utilisateur = new Utilisateur();
+        $droits = 0;
+         $msgErreurs = array();
+        if (isset($_POST['boutonAjoutUtilisateur'])){
+            
+            $msgErreurs = $utilisateur->AjouterUtilisateur($_POST['nomUsager'], $_POST['motPasse'], $_POST['prenom'], $_POST['nom'], $_POST['courriel'], $_POST['descriptionProfil'], $droits);
+          
+        }
+
+        $this->oVue = new VueDevenirMembre();
+        $this->oVue->setDataGlobal('devenirMembre', 'page avec formulaire pour devenir membre', $this->langueAffichage, $this->pDevenirMembre);
+        $this->oVue->setData($msgErreurs);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
