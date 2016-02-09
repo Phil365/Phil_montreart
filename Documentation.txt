@@ -113,3 +113,18 @@ Supprimer une catégorie
 
 Dans la page de gestion, cliquez sur l’onglet « Supprimer une catégorie ». Faites une sélection et cliquez sur supprimer. La catégorie à supprimer ne peut être associée à une œuvre existante dans la base de données, sinon un message d’erreur sera généré.
 
+------------------------------------------------------------------------------
+Vue Devenir Membre
+
+But:
+
+Rendu a cette page, l'utilisateur pourrait s'enregistrer pour devenir membre du site et profiter des fonctionalités supplementaires.
+
+Utilisation:
+
+L'utilisateur à d'entrer ses informations tel que prenom, nom, courriel, mot de passe et nom usager par une formulaire pour s'inscrire.
+
+Programmation:
+
+Classes Membre et Utilisateur ont été crées ainsi que ses fonctions d'ajout, set, et get. On stock les informations reçus par le formulaire dans un table utilisateurs dans la base de donnees. 
+

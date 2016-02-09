@@ -34,7 +34,8 @@ class VueAccueil extends Vue {
             </div>
             <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMap"></script>
             <div class="section3">
-                    section3 Oeuvre en Vedette
+                   <img src="images/LionBelfortDesktop.png" id="lionDesktop">
+                   <img src="images/LionBelfortMobile.png" id="lionMobile">
             </div>
             <div class="section4">
                 <h4 id="aProposMontreart">A propos de MontréArt</h4>

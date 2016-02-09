@@ -8,6 +8,8 @@ require_once "../modeles/Arrondissement.class.php";
 require_once "../modeles/Artiste.class.php";
 require_once "../modeles/Commentaire.class.php";
 require_once "../modeles/Photo.class.php";
+require_once "../modeles/Utilisateur.class.php";
+require_once "../modeles/Membre.class.php";
 require_once "../config/parametresBDD.php";
 require_once "../lib/BDD/BaseDeDonnees.class.php";
 

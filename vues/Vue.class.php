@@ -127,6 +127,7 @@ class Vue {
                         <input id="motpasse" name="motpasse" placeholder="Mot de passe" type="password">
 
                         <button onclick="validerform()" class="submit" id="submit">Envoyer</button>
+                        <a href="?r=devenir_membre"><h3>Devenez Membre!</h3></a>
                     </form>
                 </div>
             </div>
@@ -143,9 +144,7 @@ class Vue {
     ?>
         </div>
         <footer>
-            <div class="lienPageMembre">
-                <a href='#'><h3>Devenez membre</h3></a>
-            </div>
+             <button class="lienPageMembre" onclick="location.href = '?r=devenir_membre';"><h3>Devenez membre!</h3></button>
             <div class="reseauxsociaux">
                 <img id="logofb" src="images/fblogo2.png" alt="logofb">
                 <img id="logoInsta" src="images/instalogo2.png" alt="logoInsta">
