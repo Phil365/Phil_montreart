@@ -177,22 +177,27 @@ class VueOeuvre extends Vue {
         }
         echo "<button class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</button></div>";//fin div infosOeuvre
 
+        echo "<div class='borderMobile' id='premiereBordureMobile'></div>";    
         if (isset($this->oeuvre["description" . $this->langue])) {
             echo "<div>
-            <h3>Description :</h3>
+            <h3 class='titresPageOeuvre' id='descriptionTitreOeuvre'>Description :</h3>
             <p>".$this->oeuvre["description" . $this->langue]."</p></div>";
         }//fin div description
     ?>
+
+
                 <form name="formPhotoUnique" id="formPhotoUnique" action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerPhoto" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
                     <h4 id="selectImageUpload">Soumettez une nouvelle image pour cette oeuvre :</h4>
                     <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
                     <br>
-                    <input class='boutonMoyenne' type="submit" value="Soumettre" name="submit">
+                    <input class='boutonMoyenne' type="submit" value="Soumettre" name="soumettrePhotoUnique">
                     <br>
                     <span id="msg" class="erreur"><?php if (isset($this->msgPhoto)) {echo $this->msgPhoto;} ?></span>
                 </form>
+
+                <div class='borderMobile'></div>
         
-                <form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();" >            <p><h3>Commentaire</h3></p>    
+                <form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();" >            <p><h3 class='titresPageOeuvre'>Commentaire :</h3></p>    
                 <input type="hidden" name="idOeuvreencours" value="<?php echo $idOeuvreencours ?>">
                 <textarea name='commentaireAjout' id='commentaireAjout' ></textarea>
                 <div class="cont">
@@ -252,11 +257,8 @@ class VueOeuvre extends Vue {
                 else {
                     echo "<p>Aucun commentaire</p>";
                 }//fin div commentaires 
-            echo "</div> 
-
-            <div id='sponsorsPageOeuvre'>
-                Sponsors
-            </div>";
+            echo "</div>";
+            echo "<div class='borderMobile'></div>";
             echo "</body>";
         }
     }

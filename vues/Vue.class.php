@@ -52,6 +52,7 @@ class Vue {
 		
         <!-- LIBRAIRIES EXTERNES -->
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/vendor/slick-1.5.9/slick/slick.min.js"></script>
         
         <!-- JAVASCRIPT -->
@@ -78,57 +79,59 @@ class Vue {
         
     ?>
     <body>
-        <header id="header">
-            <img id="logo" src="images/logo.png" alt="logo">
-            <div class="barreRecherche">
-                <div class="barreRechercheContenu">
-                    <form action="?r=recherche" method="post">
-                        <select name="typeRecherche" class="typeRecherche">
-                            <option value="">Chercher une oeuvre par...</option>
-                            <option value="artiste">Artiste</option>
-                            <option value="titre">Titre d'oeuvre</option>
-                            <option value="arrondissement">Arrondissement</option>
-                            <option value="categorie">Catégorie</option>
-                        </select>                    
-                        <div class="deuxiemeSelectRecherche"></div>
-                        <div class="submitRecherche"></div>
+        <div class="global">
+            <header id="header">
+                <img id="logo" src="images/logo.png" alt="logo">
+                <div class="barreRecherche">
+                    <div class="barreRechercheContenu">
+                        <form action="?r=recherche" method="post">
+                            <select name="typeRecherche" class="typeRecherche">
+                                <option value="">Chercher une oeuvre par...</option>
+                                <option value="artiste">Artiste</option>
+                                <option value="titre">Titre d'oeuvre</option>
+                                <option value="arrondissement">Arrondissement</option>
+                                <option value="categorie">Catégorie</option>
+                            </select>                    
+                            <div class="deuxiemeSelectRecherche"></div>
+                            <div class="submitRecherche"></div>
+                        </form>
+                    </div>
+                </div>
+                <div class="boutonRecherche">
+                    <div class="flecheRecherche"></div>
+                    <img class="iconeRecherche" src="./images/flecheRecherche.png">
+                </div>
+
+                <nav>
+                    <a href="?r=accueil" id="NavAccueil">Accueil</a>
+                    <a href="?r=trajet">Trajet</a>
+                    <a href="?r=soumission">Soumettre une oeuvre</a>
+                    <?php if ($_GET["r"] == "admin") {
+                        echo '<a href="?r=#" onclick="#">Deconnexion</a><h4>Bienvenue nomUtilisateurAdmin</h4>';
+                    }
+                    else {
+                        echo '<a href="?r=#" onclick="montrer_form()">Se connecter</a>';
+                    }
+                    ?>
+                </nav>
+            </header>
+
+            <div id="div_bgform">
+                <div id="div_form">
+                    <!-- Formulaire login -->
+                    <form action="#" id="formlogin" method="post" name="formlogin">
+                        <button id="fermer" onclick ="fermer()">X</button>
+                    <h2>Connectez vous</h2>
+
+                        <input id="nomutilisateur" name="nomutilisateur" placeholder="Votre identifiant" type="text">
+                        <input id="motpasse" name="motpasse" placeholder="Mot de passe" type="password">
+
+                        <button onclick="validerform()" class="submit" id="submit">Envoyer</button>
+                        <a href="?r=devenir_membre"><h3>Devenez Membre!</h3></a>
                     </form>
                 </div>
             </div>
-            <div class="boutonRecherche">
-                <div class="flecheRecherche"></div>
-                <img class="iconeRecherche" src="./images/flecheRecherche.png">
-            </div>
-            
-            <nav>
-                <a href="?r=accueil" id="NavAccueil">Accueil</a>
-                <a href="?r=trajet">Trajet</a>
-                <a href="?r=soumission">Soumettre une oeuvre</a>
-                <?php if ($_GET["r"] == "admin") {
-                    echo '<a href="?r=#" onclick="#">Deconnexion</a><h4>Bienvenue nomUtilisateurAdmin</h4>';
-                }
-                else {
-                    echo '<a href="?r=#" onclick="montrer_form()">Se connecter</a>';
-                }
-                ?>
-            </nav>
-        </header>
-
-        <div id="div_bgform">
-            <div id="div_form">
-                <!-- Formulaire login -->
-                <form action="#" id="formlogin" method="post" name="formlogin">
-                    <button id="fermer" onclick ="fermer()">X</button>
-                <h2>Connectez vous</h2>
-
-                    <input id="nomutilisateur" name="nomutilisateur" placeholder="Votre identifiant" type="text">
-                    <input id="motpasse" name="motpasse" placeholder="Mot de passe" type="password">
-
-                    <button onclick="validerform()" class="submit" id="submit">Envoyer</button>
-                </form>
-            </div>
-        </div>
-        <div class="dummy"><!--Ne mettez rien ici--></div>
+            <div class="dummy"><!--Ne mettez rien ici--></div>
     <?php
     }
     
@@ -139,10 +142,9 @@ class Vue {
     */
     public function afficherPiedPage() {
     ?>
+        </div>
         <footer>
-            <div class="lienPageMembre">
-                <a href='#'><h3>Devenez membre</h3></a>
-            </div>
+             <button class="lienPageMembre" onclick="location.href = '?r=devenir_membre';"><h3>Devenez membre!</h3></button>
             <div class="reseauxsociaux">
                 <img id="logofb" src="images/fblogo2.png" alt="logofb">
                 <img id="logoInsta" src="images/instalogo2.png" alt="logoInsta">

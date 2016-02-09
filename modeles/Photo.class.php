@@ -158,11 +158,11 @@ class Photo {
     * @access public
     * @return string
     */
-    public function inserePhotoBdd($idOeuvre, $authorise) {
+    public function ajouterPhoto($idOeuvre, $authorise) {
          
-        $msgUtilisateur = "";
+        $msgErreurs = "";
         $erreurs = false;
-        
+
         if ($_FILES["fileToUpload"]["error"] != 4) {
 
             $target_dir = "images/photosOeuvres/";
@@ -171,37 +171,33 @@ class Photo {
             $target_file = $target_dir .$nouveauNomImage;
             $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
             $pic=($_FILES["fileToUpload"]["name"]);
-            // Check if image file is a actual image or fake image
-
-            if (isset($_POST["submit"]) || isset($_POST["boutonAjoutOeuvre"])) {
                 
-                if ($_FILES["fileToUpload"]["size"] > 5000000 || ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-                    && $imageFileType != "gif")) {
-                    $erreurs = true;
-                    $msgUtilisateur = "Votre fichier doit être de type Jpeg ou Png et inférieur à 5Mb.<br>";
-                }
-                if (!$erreurs) {
-                    self::$database->query("INSERT INTO photos (image, authorise, idOeuvre) VALUES ('images/photosOeuvres/$nouveauNomImage', :authorise, :idOeuvre)");
+            if ($_FILES["fileToUpload"]["size"] > 5000000 || ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif")) {
+                $erreurs = true;
+                $msgErreurs = "Votre fichier doit être de type Jpeg ou Png et inférieur à 5Mb.<br>";
+            }
+            if (!$erreurs) {
+                self::$database->query("INSERT INTO photos (image, authorise, idOeuvre) VALUES ('images/photosOeuvres/$nouveauNomImage', :authorise, :idOeuvre)");
 //                    self::$database->bind(':newfilename', $nouveauNomImage);
-                    self::$database->bind(':idOeuvre', $idOeuvre);
-                    self::$database->bind(':authorise', $authorise);
+                self::$database->bind(':idOeuvre', $idOeuvre);
+                self::$database->bind(':authorise', $authorise);
 
-                    try {
-                        $result = self::$database->execute();
-                        move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
-                    }
-                    catch(Exception $e) {
-                        $erreurs = true;
-                        $msgUtilisateur = "erreur lors du traitement".$e->getMessage();
-                    }
+                try {
+                    $result = self::$database->execute();
+                    move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file);
+                }
+                catch(Exception $e) {
+                    $erreurs = true;
+                    $msgErreurs = "erreur lors de l'ajout de la photo".$e->getMessage();
                 }
             }
         }
         else {
             $erreurs = true;
-            $msgUtilisateur = "Vous devez d'abord choisir une image.";
+            $msgErreurs = "Vous devez d'abord choisir une image.";
         }
-        return $msgUtilisateur;
+        return $msgErreurs;
     }
 }
 ?>

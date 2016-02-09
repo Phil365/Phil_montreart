@@ -118,9 +118,6 @@ INSERT INTO Oeuvres VALUES ( 3,"Regarder les pommetiers", 1119,45.561585,-73.562
 INSERT INTO OeuvresArtistes VALUES (1, 2);
 INSERT INTO OeuvresArtistes VALUES (2, 3);
 INSERT INTO OeuvresArtistes VALUES (3, 3);
-INSERT INTO OeuvresArtistes VALUES (4, 1);
-INSERT INTO OeuvresArtistes VALUES (4, 3);
-INSERT INTO OeuvresArtistes VALUES (5, 2);
 
 INSERT INTO Photos VALUES (1,"images/photosOeuvres/source.jpg",true,1);
 INSERT INTO Photos VALUES (2,"images/photosOeuvres/porte.jpg",true,2);

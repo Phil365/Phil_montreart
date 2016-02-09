@@ -60,11 +60,11 @@ class VueAdmin extends Vue{
             
             
         <form name="formadmin" id="formPhotoUnique" action="?r=admin&action=soumetAdminOeuvre" method="post">
-            <input type="text" id="nomDuInputTitre" name="nomDuInputTitre">
-            <input type="text" id="nomDuInputAdresse">
-            <input type="text" id="nomDuInputDescription">
-            <input type="text" id="nomDuSelectCategorie">
-            <input type="text" id="nomDuSelectArrondissement">
+            <input type="text" class="inputPageAdmin" id="nomDuInputTitre" name="nomDuInputTitre">
+            <input type="text" class="inputPageAdmin" id="nomDuInputAdresse">
+            <input type="text" class="inputPageAdmin" id="nomDuInputDescription">
+            <input type="text" class="inputPageAdmin" id="nomDuSelectCategorie">
+            <input type="text" class="inputPageAdmin" id="nomDuSelectArrondissement">
     
             <span id="erreurTitreOeuvre" class="erreur"></span><br>
             <span id="erreurAdresseOeuvre" class="erreur"></span><br>
@@ -73,6 +73,7 @@ class VueAdmin extends Vue{
             <span id="erreurSelectArrondissement" class="erreur"></span><br>
             <input class='boutonMoyenne' type="submit" value="Valider form" name="submit">
         </form>
+
             
         <form action="#" method="post">
         <input type="submit" id="misAJour" name='misAJour' class="boutonMoyenne" value='Mettre à Jour' />

@@ -22,7 +22,7 @@ class VueProfil extends Vue {
     */
     public function afficherBody() {
     ?>
-         
+            <!-- Espace de l'utilisateur -->
         
             
         <div class="section1" id="profileUser">
@@ -82,3 +82,7 @@ class VueProfil extends Vue {
                 </form>
             </div>
         </div>
+<?php
+    }
+}
+?>
