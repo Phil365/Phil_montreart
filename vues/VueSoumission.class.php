@@ -106,7 +106,7 @@ class VueSoumission extends Vue {
             Toute contribution sera sujette à une approbation de la part d'un administrateur.</p>
 
                  
-            <form method="POST" name="formAjoutOeuvre" onsubmit="return valideAjoutOeuvre();" action="?r=soumission" enctype="multipart/form-data" >
+            <form method="POST" name="formAjoutOeuvre" onsubmit="return valideAjoutOeuvre(false);" action="?r=soumission" enctype="multipart/form-data" >
                 <input type='text' class="inputGestion" name='titreAjout' id='titreAjout' placeholder="Titre de l'oeuvre" value="<?php echo  $_POST["titreAjout"]; ?>"/>
                 <br> <span  id="erreurTitreOeuvre" class="erreur"><?php if (isset($this->msgErreurs["errTitre"])) {echo $this->msgErreurs["errTitre"];} ?></span><br>                  
 
@@ -154,12 +154,10 @@ class VueSoumission extends Vue {
                 <br><span class="erreur" id="erreurSelectCategorie"><?php if (isset($this->msgErreurs["errCategorie"])) {echo $this->msgErreurs["errCategorie"];} ?></span><br>
                 <h3 class="televersionTexteGestion">Téléversez l'image de l'oeuvre</h3>
                 <input type="file" name="fileToUpload" id="fileToUpload" class="fileToUploadGestion">
-               <span id="erreurPhotoVide" class="erreur"><?php if (isset($this->msgErreurs["errPhoto"])) {echo $this->msgErreurs["errPhoto"];} ?></span><br>
-                    <span id="erreurPhotoSize" class="erreur"></span><br>
-                    <span id="erreurPhotoType" class="erreur"></span><br>
+               <span id="erreurPhoto" class="erreur"><?php if (isset($this->msgErreurs["errPhoto"])) {echo $this->msgErreurs["errPhoto"];} ?></span><br>
                 <input class="boutonMoyenne" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
             </form>
-            <span class="msgUser">
+            <span class="msgUser" id="msgAjout">
             <?php
             echo $msgAjout;
             ?>  

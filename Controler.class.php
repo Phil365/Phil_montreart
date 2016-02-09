@@ -10,7 +10,6 @@
  * @update 2015-12-14
  * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
  * @license http://creativecommons.org/licenses/by-nc/3.0/deed.fr
- * 
  */
 
 class Controler {
@@ -93,6 +92,11 @@ class Controler {
     */
     private $pGestion;
     
+     /**
+    * @var string $pDevenirMembre Page avec formulaire pour les utilisateurs qui vuelent s'enregistrer
+    * @access private
+    */
+    private $pDevenirMembre;
     
     
     /**
@@ -110,7 +114,7 @@ class Controler {
         $this->pRecherche = "recherche";
         $this->pAdmin = "admin";
         $this->pGestion = "gestion";
-        
+         $this->pDevenirMembre = "devenir_membre";
         $this->oCookie = new Cookie();
         $this->langueAffichage = $this->oCookie->getLangue();
     }
@@ -121,6 +125,8 @@ class Controler {
     * @return void
     */
      public function gerer() {
+         
+        session_start();//Initialisation de la session utilisateur.
         
         switch ($_GET['r']) {//requête
             case $this->pAccueil:
@@ -146,6 +152,9 @@ class Controler {
                 break;
             case $this->pGestion:
                 $this->gestion();
+                break;
+            case $this->pDevenirMembre:
+                $this->devenirMembre();
                 break;
             default:
                 $this->accueil();
@@ -189,7 +198,7 @@ class Controler {
         $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"], false);
         
         if (isset($_GET['action']) && $_GET['action'] == 'envoyerPhoto') {
-            $msgInsertPhoto = $photo->inserePhotoBdd($_GET["o"], false);
+            $msgInsertPhoto = $photo->ajouterPhoto($_GET["o"], false);
         }
         else {
             $msgInsertPhoto = null;
@@ -314,7 +323,7 @@ class Controler {
         
         //Mise à jour des oeuvres de la ville de Montréal
         if (isset($_POST["misAJour"])) {
-            $oeuvre->updaterOeuvresVille();
+            $msgErreurs = $oeuvre->updaterOeuvresVille();
         }
         
         //Affichage de la date de dernière mise à jour des oeuvres de la ville.
@@ -327,7 +336,7 @@ class Controler {
         
         //Ajout d'une oeuvre.
         $authorise = true;
-        
+
         //Essaie l'ajout et récupère les messages d'erreur si présents.
         if (isset($_POST["boutonAjoutOeuvre"])) {
             $msgErreurs = $oeuvre->AjouterOeuvre($_POST['titreAjout'], $_POST['adresseAjout'], $_POST['prenomArtisteAjout'], $_POST['nomArtisteAjout'], $_POST['descriptionAjout'], $_POST["selectCategorie"], $_POST["selectArrondissement"], $authorise, $this->langueAffichage);
@@ -350,7 +359,6 @@ class Controler {
         if (isset($_POST["boutonAjoutCategorie"])) {
             $msgErreurs = $categorie->ajouterCategorie($_POST["categorieFrAjout"], $_POST["categorieEnAjout"]);
         }
-        var_dump($msgErreurs);
         
         //Suppression d'une catégorie
         if (isset($_POST["boutonSuppCategorie"])) {
@@ -397,6 +405,25 @@ class Controler {
         $this->oVue = new VueRecherche();
         $this->oVue->setDataGlobal('recherche', 'page de recherche', $this->langueAffichage, $this->pRecherche);
         $this->oVue->setOeuvres($oeuvres);
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
+    }
+    private function devenirMembre(){
+       
+        $utilisateur = new Utilisateur();
+        $droits = 0;
+         $msgErreurs = array();
+        if (isset($_POST['boutonAjoutUtilisateur'])){
+            
+            $msgErreurs = $utilisateur->AjouterUtilisateur($_POST['nomUsager'], $_POST['motPasse'], $_POST['prenom'], $_POST['nom'], $_POST['courriel'], $_POST['descriptionProfil'], $droits);
+          
+        }
+
+        $this->oVue = new VueDevenirMembre();
+        $this->oVue->setDataGlobal('devenirMembre', 'page avec formulaire pour devenir membre', $this->langueAffichage, $this->pDevenirMembre);
+        $this->oVue->setData($msgErreurs);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();

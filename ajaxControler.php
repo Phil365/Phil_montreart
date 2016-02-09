@@ -11,6 +11,9 @@
  */
 require_once("./config.php");
 	
+$oCookie = new Cookie();
+$langueAffichage = $oCookie->getLangue();
+
 // Mettre ici le code de gestion de la requête AJAX 
 switch ($_GET['rAjax']) {//requête
     case 'googleMap':
@@ -19,14 +22,304 @@ switch ($_GET['rAjax']) {//requête
     case 'autoComplete':
         autoComplete();
         break;
-    case 'selectTypeRecherche':
+    case 'afficherSelectRecherche':
         afficherSelectRecherche();
         break;
-    case 'selectRecherche':
+    case 'afficherBoutonRecherche':
         afficherBoutonRecherche();
+        break;
+    case 'ajouterCategorie':
+        ajouterCategorie();
+        break;
+    case 'supprimerCategorie':
+        supprimerCategorie();
+        break;
+    case 'ajouterOeuvre':
+        ajouterOeuvre();
+        break;
+    case 'recupererIdOeuvre':
+        recupererIdOeuvre();
+        break;
+    case 'ajouterPhoto':
+        ajouterPhoto();
+        break;
+    case 'supprimerOeuvre':
+        supprimerOeuvre();
+        break;
+    case 'afficherFormModif':
+        afficherFormModif();
+        break;
+    case 'modifierOeuvre':
+        modifierOeuvre();
+        break;
+    case 'updateOeuvresVille':
+        updateOeuvresVille();
+        break;
+    case 'updateDate':
+        updateDate();
+        break;
+    case 'recupererCategories':
+        recupererCategories();
+        break;
+    case 'recupererOeuvres':
+        recupererOeuvres();
         break;
 }
 
+/* --------------------------------------------------------------------
+============================ PAGE GESTION =============================
+-------------------------------------------------------------------- */
+
+/**
+* @brief Fonction qui ajoute la catégorie soumise par un administrateur
+* @access public
+* @return void
+*/
+function ajouterCategorie () {
+    
+    $categorie = new Categorie();
+    $msgErreurs = $categorie->ajouterCategorie($_POST["categorieFr"], $_POST["categorieEn"]);
+    
+    echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui supprime la catégorie soumise par un administrateur
+* @access public
+* @return void
+*/
+function supprimerCategorie () {
+    
+    $categorie = new Categorie();
+    $msgErreurs = $categorie->supprimerCategorie($_POST["idCategorie"]);
+    
+    echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui récupère toutes les catégories de la BDD.
+* @access public
+* @return void
+*/
+function recupererCategories () {
+
+    $categorie = new Categorie();
+    $categories = $categorie->getAllCategories($_COOKIE["langue"]);
+    
+    echo json_encode($categories);//Encode le tableau de catégories retourné par la requête en Json.
+} 
+
+/**
+* @brief Fonction qui récupère toutes les oeuvres de la BDD.
+* @access public
+* @return void
+*/
+function recupererOeuvres () {
+
+    $oeuvre = new Oeuvre();
+    $oeuvres = $oeuvre->getAllOeuvres();
+        
+   echo json_encode($oeuvres);//Encode le tableau d'oeuvres retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui ajoute l'oeuvre soumise par un administrateur
+* @access public
+* @return void
+*/
+function ajouterOeuvre () {
+    
+    //Ajout d'une oeuvre.
+    if (isset($_GET["admin"]) && $_GET["admin"] == true) {
+        $authorise = true;
+    }
+    else {
+        $authorise = false;
+    }
+    
+    $oeuvre = new Oeuvre();
+
+    $msgErreurs = $oeuvre->AjouterOeuvre($_POST['titre'], $_POST['adresse'], $_POST['prenomArtiste'], $_POST['nomArtiste'], $_POST['description'], $_POST["idCategorie"], $_POST["idArrondissement"], $authorise, $_COOKIE["langue"]);
+    
+    echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui récupère l'ID de l'oeuvre qui vient d'être créée
+* @access public
+* @return void
+*/
+function recupererIdOeuvre () {
+
+    $oeuvre = new Oeuvre();
+    $idOeuvre = $oeuvre->getIdOeuvreByTitreandAdresse($_POST["titre"], $_POST["adresse"]);//aller chercher id oeuvre insérée
+    
+    echo $idOeuvre;
+}
+
+/**
+* @brief Fonction qui ajoute la photo soumise
+* @access public
+* @return void
+*/
+function ajouterPhoto ( ) {
+    
+    //Ajout d'une oeuvre.
+    if (isset($_GET["admin"]) && $_GET["admin"] == true) {
+        $authorise = true;
+    }
+    else {
+        $authorise = false;
+    }
+    
+    $photo = new Photo();
+    
+    $msgErreurs = $photo->ajouterPhoto($_GET["idOeuvre"], $authorise);
+    
+    echo $msgErreurs;
+}
+
+/**
+* @brief Fonction qui supprime l'oeuvre soumise par un administrateur
+* @access public
+* @return void
+*/
+function supprimerOeuvre () {
+    
+    $oeuvre = new Oeuvre();
+    $msgErreurs = $oeuvre->supprimerOeuvre($_POST["idOeuvre"]);
+    
+    echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui affiche le formulaire de modification d'une oeuvre après sélection de l'oeuvre à modifier par l'utilisateur.
+* @access public
+* @return void
+*/
+function afficherFormModif () {
+    
+    $oeuvre = new Oeuvre();
+    $oArrondissement = new Arrondissement();
+    $oCategorie = new Categorie();
+    $langue = $_COOKIE['langue'];
+    
+    $oeuvreAModifier = $oeuvre->getOeuvreById($_POST['idOeuvre'], $langue);
+    if ($oeuvreAModifier) {
+        $arrondissements = $oArrondissement->getAllArrondissements();
+        $categories = $oCategorie->getAllCategories($langue);
+
+        $titreModif = $oeuvreAModifier['titre'];
+        $adresseModif = $oeuvreAModifier['adresse'];
+        $idCategorieModif = $oeuvreAModifier['idCategorie'];
+        $idArrondissementModif = $oeuvreAModifier['idArrondissement'];
+        if ($_COOKIE["langue"] == "FR") {
+            $descriptionModif = $oeuvreAModifier['descriptionFR'];
+        }
+        else if ($_COOKIE["langue"] == "EN") {
+            $descriptionModif = $oeuvreAModifier['descriptionEN'];
+        }
+        ?>  
+            <form method="POST" name="formModifOeuvre" id='formModifSelectOeuvre' action="?r=gestion" onsubmit="return valideModifierOeuvre();">
+                <input type='text' class="inputGestion" name='titreModif' id='titreModif' placeholder="Titre de l'oeuvre" value='<?php echo $titreModif; ?>'/>
+                <br><span class="erreur" id="erreurTitreOeuvreModif"></span>
+
+                <input type='text' class="inputGestion" name='adresseModif' id='adresseModif'  placeholder="Adresse " value='<?php echo $adresseModif; ?>'/>
+                <br><span class="erreur" id="erreurAdresseOeuvreModif"></span>
+
+                <br>
+                <textarea name='descriptionModif' class="inputGestion textAreaGestion" id='descriptionModif' placeholder="Description "><?php echo $descriptionModif; ?></textarea>
+                <br><span class="erreur" id="erreurDescriptionModif"></span>
+
+                <select name="selectArrondissementModif"  id="selectArrondissementModif" class="selectGestion">
+
+                    <option value="">Choisir un arrondissement</option>
+                    <?php
+                        foreach ($arrondissements as $arrondissement) {
+                            if ($arrondissement["idArrondissement"] == $idArrondissementModif) {
+                                $selection = "selected";
+                            }
+                            else {
+                                $selection = "";
+                            }
+                            echo "<option value='".$arrondissement["idArrondissement"]."'".$selection.">".$arrondissement["nomArrondissement"];
+                        }
+                    ?>
+                </select>
+                <br><span class="erreur" id="erreurSelectArrondissementModif"></span>
+
+                <select name="selectCategorieModif" id="selectCategorieModif" class="selectGestion">
+
+                    <option value="">Choisir une catégorie</option>
+                    <?php
+                        foreach ($categories as $categorie) {
+                            if ($categorie["idCategorie"] == $idCategorieModif) {
+                                $selection = "selected";
+                            }
+                            else {
+                                $selection = "";
+                            }
+                            echo "<option value='".$categorie["idCategorie"]."'".$selection.">".$categorie["nomCategorie$langue"];
+                        }
+                        echo "</select>";
+                    ?>
+                </select> 
+
+                <br><span class="erreur" id="erreurSelectCategorieModif"></span>
+
+                <br><input class="boutonMoyenne  boutonHover" type='submit' name='boutonModifOeuvre' value='Modifer'>
+            </form>
+        <?php
+    }
+    else {
+        echo "<span class='erreur'>cette oeuvre n'existe pas.</span>";
+    }
+}
+
+/**
+* @brief Fonction qui modifie l'oeuvre choisie par un administrateur
+* @access public
+* @return void
+*/
+function modifierOeuvre () {
+    
+    $oeuvre = new Oeuvre();
+    $msgErreurs = $oeuvre->modifierOeuvre($_POST["idOeuvre"], $_POST["titre"], $_POST["adresse"], $_POST["description"], $_POST["idCategorie"], $_POST["idArrondissement"], $_COOKIE["langue"]);
+    
+    echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui mets à jour les oeuvres de la BDD avec les oeuvres de la ville et mets à jour l'affichage dans la page de gestion.
+* @access public
+* @return void
+*/
+function updateOeuvresVille () {
+    
+    //Mise à jour des oeuvres de la ville de Montréal
+    $oeuvre = new Oeuvre();
+    $msgErreurs = $oeuvre->updaterOeuvresVille();
+    
+    echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui récupère la dernière date de mise à jour des oeuvres de la ville.
+* @access public
+* @return void
+*/
+function updateDate () {
+    
+    //Affichage de la date de dernière mise à jour des oeuvres de la ville.
+    $oeuvre = new Oeuvre();
+    $date = $oeuvre->getDateDernierUpdate();
+    
+    echo json_encode($date);//Encode la date retournée par la requête en Json.
+}
+
+/* --------------------------------------------------------------------
+============================ PAGE ACCUEIL =============================
+-------------------------------------------------------------------- */
 /**
 * @brief Fonction qui récupère les infos pour populer la carte de Google Map
 * @access public
@@ -59,6 +352,9 @@ function googleMap () {
     
 }
 
+/* --------------------------------------------------------------------
+========================== BARRE DE RECHERCHE =========================
+-------------------------------------------------------------------- */
 /**
 * @brief Fonction qui récupère des noms de la BDD en fonction des lettres entrées par l'utilisateur
 * @access public
