@@ -1107,7 +1107,15 @@ margin-left: 35px;
  overflow-y: none;
 }
 
+#lionDesktop {
+    display: none;
+}
 
+#lionMobile {
+    width: 100%;
+    height: auto;
+    display: block;
+}
 
 
     
@@ -1214,6 +1222,21 @@ margin-left: 35px;
         width: 70%;
         margin-left: 15%;
     }
+    
+    #lionDesktop {
+    width: 100%;
+    height: auto;
+    display: block;
+    }
+    
+    #lionMobile {
+/*
+    width: 100%;
+    height: auto;
+*/
+    display: none;
+}
+    
     /*--------------------STYLES SLIDER----------------*/
     .single-item {
         width: 99%;
@@ -1612,6 +1635,22 @@ margin-left: 35px;
     width: 8%;
 
 }*/
+    
+#lionDesktop {
+    width: 100%;
+    height: auto;
+    display: block;
+    
+    /*width: 200px;
+    height: 304px;*/
+}
+    
+#lionMobile {
+    display: none;
+    
+    /*width: 200px;
+    height: 304px;*/
+}
 }
 /*========================================FIN DU STYLES POUR DESKTOP ====================================================*/
 
