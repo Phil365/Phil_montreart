@@ -48,6 +48,24 @@ class VueGestion extends Vue {
     private $categoriesBDD;
      
     /**
+    * @var array $oeuvresSoumises Toutes les oeuvres non authorisées.
+    * @access private
+    */
+    private $oeuvresApprobation;
+    
+    /**
+    * @var array $photosSoumises toutes les photos non authorisées.
+    * @access private
+    */
+    private $photosApprobation;
+    
+    /**
+    * @var array $commentairesSoumis tous les commentaires non authorisés.
+    * @access private
+    */
+    private $commentairesApprobation;
+    
+    /**
     * @var array $msgErreurs Tous les messages d'erreurs liés aux requêtes de l'administrateur.
     * @access private
     */
@@ -69,7 +87,7 @@ class VueGestion extends Vue {
     * @access public
     * @return void
     */
-    public function setData($dateDernierUpdate, $oeuvreAModifier,$oeuvreAjouter, $oeuvresBDD, $arrondissementsBDD, $categoriesBDD, $msgErreurs) {
+    public function setData($dateDernierUpdate, $oeuvreAModifier,$oeuvreAjouter, $oeuvresBDD, $arrondissementsBDD, $categoriesBDD, $msgErreurs, $oeuvresApprobation, $photosApprobation, $commentairesApprobation) {
         
         $this->dateDernierUpdate = $dateDernierUpdate;
         $this->oeuvreAModifier = $oeuvreAModifier;
@@ -77,6 +95,9 @@ class VueGestion extends Vue {
         $this->arrondissementsBDD = $arrondissementsBDD;
         $this->categoriesBDD = $categoriesBDD;
         $this->msgErreurs = $msgErreurs;
+        $this->oeuvresApprobation = $oeuvresApprobation;
+        $this->photosApprobation = $photosApprobation;
+        $this->commentairesApprobation = $commentairesApprobation;
     }
        
     /**
@@ -455,28 +476,37 @@ class VueGestion extends Vue {
 
         <div id="Onglet-7">  
             <h2>Approuver les soumissions</h2>
+            
             <div id="accordeon">
-                <h3 class="boutonMoyenne boutonSoumission">Oeuvres <span>En attente : 3</span></h3>
-                <div>
-                    <a href="#">Oeuvre 1 <span>Soumise le 2016/02/06</span></a>
-                    <a href="#">Oeuvre 2 <span>Soumise le 2016/02/07</span></a>
-                    <a href="#">Oeuvre 3 <span>Soumise le 2016/02/07</span></a>
+                <h3 class="boutonMoyenne boutonSoumission">Oeuvres <span id="nbOeuvresEnAttente">En attente : <?php echo count($this->oeuvresApprobation); ?></span></h3>
+                <div id="contenuSoumissionOeuvres">
+                    <?php
+
+                        for ($i = 1; $i <= count($this->oeuvresApprobation); $i++) {
+                            echo '<a href="#" onclick="afficherOeuvrePourApprobation('.$this->oeuvresApprobation[$i-1]['idOeuvre'].')">Oeuvre '.$i.' <span>Soumise le '.$this->oeuvresApprobation[$i-1]['dateSoumissionOeuvre'].'</span></a>';
+                        }
+                    ?>
                 </div>
-                <h3 class="boutonMoyenne boutonSoumission">Photos <span>En attente : 4</span></h3>
-                <div>
-                    <a href="#">Photo 1 <span>Soumise le 2016/02/06</span></a>
-                    <a href="#">Photo 2 <span>Soumise le 2016/02/07</span></a>
-                    <a href="#">Photo 3 <span>Soumise le 2016/02/07</span></a>
-                    <a href="#">Photo 4 <span>Soumise le 2016/02/07</span></a>
+                <h3 class="boutonMoyenne boutonSoumission">Photos <span id="nbPhotosEnAttente">En attente : <?php echo count($this->photosApprobation); ?></span></h3>
+                <div id="contenuSoumissionPhotos">
+                    <?php
+                        for ($i = 1; $i <= count($this->photosApprobation); $i++) {
+                            echo '<a href="#" onclick="afficherPhotoPourApprobation('.$this->photosApprobation[$i-1]['idPhoto'].')">Photo '.$i.' <span>Soumise le '.$this->photosApprobation[$i-1]['dateSoumissionPhoto'].'</span></a>';
+                        }
+                    ?>
                 </div>
-                <h3 class="boutonMoyenne boutonSoumission">Commentaires <span>En attente : 6</span></h3>
-                <div>
-                    <a href="#">Commentaire 1 <span>Soumis le 2016/02/05</span></a>
-                    <a href="#">Commentaire 2 <span>Soumis le 2016/02/06</span></a>
-                    <a href="#">Commentaire 3 <span>Soumis le 2016/02/06</span></a>
-                    <a href="#">Commentaire 4 <span>Soumis le 2016/02/07</span></a>
-                    <a href="#">Commentaire 5 <span>Soumis le 2016/02/07</span></a>
-                    <a href="#">Commentaire 6 <span>Soumis le 2016/02/07</span></a>
+                <h3 class="boutonMoyenne boutonSoumission">Commentaires <span id="nbCommentairesEnAttente">En attente : <?php echo count($this->commentairesApprobation); ?></span></h3>
+                <div id="contenuSoumissionCommentaires">
+                    <?php
+                        for ($i = 1; $i <= count($this->commentairesApprobation); $i++) {
+                            echo '<a href="#" onclick="afficherCommentairePourApprobation('.$this->commentairesApprobation[$i-1]['idCommentaire'].')">Commentaire '.$i.' <span>Soumise le '.$this->commentairesApprobation[$i-1]['dateSoumissionCommentaire'].'</span></a>';
+                        }
+                    ?>
+                </div>
+            </div>
+            <div id="bgPanneauApprobation">
+                <div id="panneauApprobation">
+                    <!-- le contenu du panneau d'approbation des soumission va ici -->
                 </div>
             </div>
         </div>

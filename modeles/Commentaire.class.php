@@ -106,34 +106,125 @@ class Commentaire {
         return $infoCommentaires;
     }
     
-     public function ajoutCommentairesByOeuvre($idOeuvre, $langue, $texte, $vote, $idUtilisateur, $authorise) {
+    /**
+    * @brief Méthode qui récupère un commentaire dans la BDD en fonction du id.
+    * @access public
+    * @return array
+    */
+    public function getCommentaireById($idCommentaire){
+        
+        $infoCommentaire = array();
+
+        self::$database->query('SELECT * FROM Commentaires where Commentaires.idCommentaire = :idCommentaire');
+        self::$database->bind(':idCommentaire', $idCommentaire);
+
+        if($commentaireBDD = self::$database->uneLigne()){
+            $infoCommentaire = $commentaireBDD;
+        }
+        return $infoCommentaire;        
+    }
+    
+    /**
+    * @brief Méthode qui récupère un commentaire dans la BDD en fonction du id.
+    * @access public
+    * @return array
+    */
+    public function ajoutCommentairesByOeuvre($idOeuvre, $langue, $texte, $vote, $idUtilisateur, $authorise) {
         $msgUtilisateur = "";
         $erreurs = false;
-       
-         
+
+
         if (isset($_POST["ajoutCommentaire"])) {      
            if (!empty($_POST["commentaireAjout"])){
-              
-       self::$database->query('INSERT INTO Commentaires ( texteCommentaire, voteCommentaire, langueCommentaire, authorise, idOeuvre, idUtilisateur) VALUES (:texte, :vote, :langue, :authorise, :id, :idUtilisateur)');
-        
-        //Lie les paramètres aux valeurs
-        self::$database->bind(':id', $idOeuvre);
-        self::$database->bind(':langue', $langue);
-        self::$database->bind(':texte', $texte);
-        self::$database->bind(':vote', $vote);
-        self::$database->bind(':idUtilisateur', $idUtilisateur);
-        self::$database->bind(':authorise', $authorise);
-        self::$database->execute();
-        $msgUtilisateur = "Succes";       
-            //$msgUtilisateur = var_dump($texte, $vote, $langue, $authorise, $idOeuvre, $idUtilisateur);
+
+                self::$database->query('INSERT INTO Commentaires ( texteCommentaire, voteCommentaire, langueCommentaire, authorise, idOeuvre, idUtilisateur, dateSoumissionCommentaire) VALUES (:texte, :vote, :langue, :authorise, :id, :idUtilisateur, CURDATE())');
+
+                //Lie les paramètres aux valeurs
+                self::$database->bind(':id', $idOeuvre);
+                self::$database->bind(':langue', $langue);
+                self::$database->bind(':texte', $texte);
+                self::$database->bind(':vote', $vote);
+                self::$database->bind(':idUtilisateur', $idUtilisateur);
+                self::$database->bind(':authorise', $authorise);
+                self::$database->execute();
+                $msgUtilisateur = "<span style='color:green'>Commentaire envoyé !</span>";       
+            }
+            else {
+
+             $msgUtilisateur = "ne laissez rien en blanc";
+            }
         }
-        else {
-        
-         $msgUtilisateur = "ne laissez rien en blanc";
-        } 
-      
+     return $msgUtilisateur;
     }
-         return $msgUtilisateur;
-     }
+    
+    /**
+    * @brief méthode qui récupère tous les commentaires n'aillant pas encore été authorisés par l'administrateur
+    * @access public
+    * @return array
+    */
+    public function getAllCommentairesPourApprobation() {
+        
+        $commentaires = array();
+        
+        self::$database->query('SELECT idCommentaire, dateSoumissionCommentaire FROM Commentaires WHERE Commentaires.authorise = false');
+        
+               
+        if ($commentairesBDD = self::$database->resultset()) {
+            foreach ($commentairesBDD as $commentaire) {
+                $commentaires[] = $commentaire;
+            }
+        }
+        return $commentaires;
+    }
+    
+    /**
+    * @brief Méthode qui accepte une soumission commentaire.
+    * @param string $type
+    * @param integer $id
+    * @access public
+    * @return array
+    */
+    public function accepterSoumission ($id) {
+        $msgErreurs = array();//Initialise les messages d'erreur à un tableau vide
+        
+        try {
+            self::$database->query('UPDATE Commentaires SET authorise= true WHERE idCommentaire = :id');
+            self::$database->bind(':id', $id);
+            $erreur = self::$database->execute();
+            
+            if ($erreur) {
+                $msgErreurs["errRequeteApprob"] = $erreur;
+            }
+        }
+        catch(Exception $e) {
+            $msgErreurs["errRequeteApprob"] = $e->getMessage();
+        }
+        return $msgErreurs;
+    }
+    
+    /**
+    * @brief Méthode qui supprime un commentaire de la BDD.
+    * @param integer $id
+    * @access public
+    * @return array
+    */
+    public function supprimerCommentaire($id) {
+        
+        $msgErreurs = array();
+        
+        try {
+            self::$database->query('DELETE FROM Commentaires WHERE idCommentaire = :id');
+            self::$database->bind(':id', $id);
+            $erreur = self::$database->execute();
+            
+            if ($erreur) {
+                $msgErreurs["errRequeteSupp"] = $erreur;
+            }
+        }
+        catch(Exception $e) {
+            $msgErreurs["errRequeteSupp"] = $e->getMessage();
+        }
+        return $msgErreurs;
+    }
 }    
 ?>

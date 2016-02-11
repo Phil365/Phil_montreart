@@ -56,7 +56,6 @@ class Vue {
         <script type="text/javascript" src="js/vendor/slick-1.5.9/slick/slick.min.js"></script>
         
         <!-- JAVASCRIPT -->
-        <script src="js/gestionDivsForms.js"></script>
         <script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
             
@@ -107,10 +106,10 @@ class Vue {
                     <a href="?r=trajet">Trajet</a>
                     <a href="?r=soumission">Soumettre une oeuvre</a>
                     <?php if ($_GET["r"] == "admin") {
-                        echo '<a href="?r=#" onclick="#">Deconnexion</a><h4>Bienvenue nomUtilisateurAdmin</h4>';
+                        echo '<a href="#" onclick="#">Deconnexion</a><h4>Bienvenue nomUtilisateurAdmin</h4>';
                     }
                     else {
-                        echo '<a href="?r=#" onclick="montrer_form()">Se connecter</a>';
+                        echo '<a href="#" onclick="montrer_form()">Se connecter</a>';
                     }
                     ?>
                 </nav>
@@ -118,9 +117,9 @@ class Vue {
 
             <div id="div_bgform">
                 <div id="div_form">
+                    <button id="fermer" onclick ="fermer()">X</button>
                     <!-- Formulaire login -->
                     <form action="#" id="formlogin" method="post" name="formlogin">
-                        <button id="fermer" onclick ="fermer()">X</button>
                     <h2>Connectez vous</h2>
 
                         <input id="nomutilisateur" name="nomutilisateur" placeholder="Votre identifiant" type="text">
