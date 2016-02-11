@@ -168,15 +168,56 @@ class Oeuvre {
     }
     
     /**
-    * @brief Méthode qui récupère une oeuvre dans la BD
+    * @brief Méthode qui récupère une oeuvre authorisée dans la BD
     * @param integer $id
-    * @param string $langue
     * @access public
     * @return array
     */
-    public function getOeuvreById($id, $langue) {
+    public function getOeuvreById($id) {
         
         self::$database->query('SELECT * FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement WHERE Oeuvres.idOeuvre = :id AND Oeuvres.authorise = true');
+        
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':id', $id);
+        
+        $infoOeuvre = array();
+        
+        if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $infoOeuvre = $oeuvreBDD;
+        }
+        return $infoOeuvre;
+    }
+    
+    /**
+    * @brief Méthode qui récupère une oeuvre (authorisée ou non) dans la BD
+    * @param integer $id
+    * @access public
+    * @return array
+    */
+    public function getAnyOeuvreById($id) {
+        
+        self::$database->query('SELECT * FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement WHERE Oeuvres.idOeuvre = :id');
+        
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':id', $id);
+        
+        $infoOeuvre = array();
+        
+        if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $infoOeuvre = $oeuvreBDD;
+        }
+        return $infoOeuvre;
+    }
+    
+    /**
+    * @brief Méthode qui récupère une oeuvre à approuver dans la BD
+    * @param integer $id
+    * @access public
+    * @return array
+    */
+    public function getOeuvrePourApprobation($id) {
+        
+        self::$database->query('SELECT Oeuvres.titre, Oeuvres.adresse, Oeuvres.descriptionFR, Oeuvres.descriptionEN, Artistes.prenomArtiste, Artistes.nomArtiste, Arrondissements.nomArrondissement, Categories.nomCategorieFR, Categories.nomCategorieEN FROM Oeuvres JOIN Categories ON Oeuvres.idCategorie = Categories.idCategorie JOIN Arrondissements ON Arrondissements.idArrondissement = Oeuvres.idArrondissement JOIN OeuvresArtistes ON Oeuvres.idOeuvre = OeuvresArtistes.idOeuvre JOIN Artistes ON OeuvresArtistes.idArtiste = Artistes.idArtiste WHERE Oeuvres.idOeuvre = :id');
         
         //Lie les paramètres aux valeurs
         self::$database->bind(':id', $id);
@@ -222,7 +263,11 @@ class Oeuvre {
             try {
                 self::$database->query('DELETE FROM Oeuvres WHERE idOeuvre = :id');
                 self::$database->bind(':id', $id);
-                self::$database->execute();
+                $erreur = self::$database->execute();
+                
+                if ($erreur) {
+                    $msgErreurs["errRequeteApprob"] = $erreur;
+                }
             }
             catch(Exception $e) {
                 $msgErreurs["errRequeteSupp"] = $e->getMessage();
@@ -593,6 +638,26 @@ class Oeuvre {
     }
     
     /**
+    * @brief méthode qui récupère toutes les oeuvres n'aillant pas encore été authorisées par l'administrateur
+    * @access public
+    * @return array
+    */
+    public function getAllOeuvresPourApprobation() {
+        
+        $oeuvres = array();
+        
+        self::$database->query('SELECT idOeuvre, dateSoumissionOeuvre FROM Oeuvres WHERE Oeuvres.authorise = false');
+        
+               
+        if ($oeuvresBDD = self::$database->resultset()) {
+            foreach ($oeuvresBDD as $oeuvre) {
+                $oeuvres[] = $oeuvre;
+            }
+        }
+        return $oeuvres;
+    }
+    
+    /**
     * @brief Méthode qui insert une oeuvre de la ville dans la BDD.
     * @param string $titre
     * @param string $adresse
@@ -608,6 +673,12 @@ class Oeuvre {
     */
     public function ajouterOeuvre($titre, $adresse, $prenomArtiste, $nomArtiste, $description, $categorie, $arrondissement, $authorise, $langue) {
   
+        if ($prenomArtiste == "") {
+            $prenomArtiste = null;
+        }
+        if ($nomArtiste == "") {
+            $nomArtiste = null;
+        }
         $msgErreurs = array();//Validation des champs obligatoires.
         $msgErreurs = $this->validerFormOeuvre($titre, $adresse, $description, $categorie, $arrondissement);//Validation des champs obligatoires.
         
@@ -617,10 +688,15 @@ class Oeuvre {
         else {
             try {
                 $artiste = new Artiste();
-                $artiste->ajouterArtiste($prenomArtiste, $nomArtiste, null);
-                $idArtisteAjoute = $artiste->getArtisteIdByName($prenomArtiste, $nomArtiste, null);
 
-                self::$database->query('INSERT INTO Oeuvres ( titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCategorie, idArrondissement) VALUES (:titre, null, null, null, null, null, :adresse, :descriptionFR, :descriptionEN, :authorise, :idCategorie, :idArrondissement)');
+                $idArtisteAjoute = $artiste->getArtisteIdByName($prenomArtiste, $nomArtiste, null);
+                
+                if (!$idArtisteAjoute) {
+                    $artiste->ajouterArtiste($prenomArtiste, $nomArtiste, null);
+                    $idArtisteAjoute = $artiste->getArtisteIdByName($prenomArtiste, $nomArtiste, null);
+                }
+
+                self::$database->query('INSERT INTO Oeuvres ( titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCategorie, idArrondissement, dateSoumissionOeuvre) VALUES (:titre, null, null, null, null, null, :adresse, :descriptionFR, :descriptionEN, :authorise, :idCategorie, :idArrondissement, CURDATE())');
 
                 if ($langue == "FR") {
                     self::$database->bind(':descriptionFR', $description);
@@ -644,7 +720,7 @@ class Oeuvre {
                 if (isset($_FILES["fileToUpload"])) {
                     
                     $photo = new Photo();
-                    $msgInsertPhoto = $photo->ajouterPhoto(1, true);
+                    $msgInsertPhoto = $photo->ajouterPhoto($id, true, "oeuvre");
                     if ($msgInsertPhoto != "" && $_FILES["fileToUpload"]["error"] != 4) {
                         $msgErreurs["errPhoto"] = $msgInsertPhoto;
                     }
@@ -793,6 +869,31 @@ class Oeuvre {
         $idOeuvre = $this->getIdOeuvreByTitreandAdresse($titre, $adresse);//aller chercher id oeuvre insérée
         
         $artiste->lierArtistesOeuvrePoursoummision($idOeuvre, $idArtisteAjoute);//Lier les artistes à l'oeuvre
+    }
+    
+    /**
+    * @brief Méthode qui accepte une soumission d'oeuvre.
+    * @param string $type
+    * @param integer $id
+    * @access public
+    * @return array
+    */
+    public function accepterSoumission ($id) {
+        $msgErreurs = array();//Initialise les messages d'erreur à un tableau vide.
+        
+        try {
+            self::$database->query('UPDATE Oeuvres SET authorise= true WHERE idOeuvre = :id');
+            self::$database->bind(':id', $id);
+            $erreur = self::$database->execute();
+            
+            if ($erreur) {
+                $msgErreurs["errRequeteApprob"] = $erreur;
+            }
+        }
+        catch(Exception $e) {
+            $msgErreurs["errRequeteApprob"] = $e->getMessage();
+        }
+        return $msgErreurs;
     }
 }
 ?>

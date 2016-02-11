@@ -64,6 +64,42 @@ switch ($_GET['rAjax']) {//requête
     case 'recupererOeuvres':
         recupererOeuvres();
         break;
+    case 'recupererUneOeuvre':
+        recupererUneOeuvre();
+        break;
+    case 'recupererUnePhoto':
+        recupererUnePhoto();
+        break;
+    case 'recupererUnCommentaire':
+        recupererUnCommentaire();
+        break;
+    case 'accepterSoumissionOeuvre':
+        accepterSoumissionOeuvre();
+        break;
+    case 'accepterSoumissionPhoto':
+        accepterSoumissionPhoto();
+        break;
+    case 'accepterSoumissionCommentaire':
+        accepterSoumissionCommentaire();
+        break;
+    case 'refuserSoumissionOeuvre':
+        refuserSoumissionOeuvre();
+        break;
+    case 'refuserSoumissionPhoto':
+        refuserSoumissionPhoto();
+        break;
+    case 'refuserSoumissionCommentaire':
+        refuserSoumissionCommentaire();
+        break;
+    case 'updateLiensApprobOeuvres':
+        updateLiensApprobOeuvres();
+        break;
+    case 'updateLiensApprobPhotos':
+        updateLiensApprobPhotos();
+        break;
+    case 'updateLiensApprobCommentaires':
+        updateLiensApprobCommentaires();
+        break;
 }
 
 /* --------------------------------------------------------------------
@@ -130,16 +166,17 @@ function recupererOeuvres () {
 function ajouterOeuvre () {
     
     //Ajout d'une oeuvre.
-    if (isset($_GET["admin"]) && $_GET["admin"] == true) {
-        $authorise = true;
-    }
-    else {
-        $authorise = false;
-    }
-    
+
     $oeuvre = new Oeuvre();
 
-    $msgErreurs = $oeuvre->AjouterOeuvre($_POST['titre'], $_POST['adresse'], $_POST['prenomArtiste'], $_POST['nomArtiste'], $_POST['description'], $_POST["idCategorie"], $_POST["idArrondissement"], $authorise, $_COOKIE["langue"]);
+    if ($_POST['droitsAdmin'] === "false") {
+        $droitsAdmin = false;
+    }
+    if ($_POST['droitsAdmin'] === "true") {
+        $droitsAdmin = true;
+    }
+
+    $msgErreurs = $oeuvre->ajouterOeuvre($_POST['titre'], $_POST['adresse'], $_POST['prenomArtiste'], $_POST['nomArtiste'], $_POST['description'], $_POST["idCategorie"], $_POST["idArrondissement"], $droitsAdmin, $_COOKIE["langue"]);
     
     echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
 }
@@ -162,19 +199,18 @@ function recupererIdOeuvre () {
 * @access public
 * @return void
 */
-function ajouterPhoto ( ) {
+function ajouterPhoto () {
     
-    //Ajout d'une oeuvre.
-    if (isset($_GET["admin"]) && $_GET["admin"] == true) {
+    if (isset($_GET["admin"]) && $_GET["admin"] == "true") {
         $authorise = true;
     }
     else {
         $authorise = false;
     }
-    
+    //Ajout d'une oeuvre.
     $photo = new Photo();
-    
-    $msgErreurs = $photo->ajouterPhoto($_GET["idOeuvre"], $authorise);
+    $typePhoto = "oeuvre";
+    $msgErreurs = $photo->ajouterPhoto($_GET["idOeuvre"], $authorise, $typePhoto);
     
     echo $msgErreurs;
 }
@@ -204,7 +240,7 @@ function afficherFormModif () {
     $oCategorie = new Categorie();
     $langue = $_COOKIE['langue'];
     
-    $oeuvreAModifier = $oeuvre->getOeuvreById($_POST['idOeuvre'], $langue);
+    $oeuvreAModifier = $oeuvre->getAnyOeuvreById($_POST['idOeuvre'], $langue);
     if ($oeuvreAModifier) {
         $arrondissements = $oArrondissement->getAllArrondissements();
         $categories = $oCategorie->getAllCategories($langue);
@@ -285,7 +321,6 @@ function modifierOeuvre () {
     
     $oeuvre = new Oeuvre();
     $msgErreurs = $oeuvre->modifierOeuvre($_POST["idOeuvre"], $_POST["titre"], $_POST["adresse"], $_POST["description"], $_POST["idCategorie"], $_POST["idArrondissement"], $_COOKIE["langue"]);
-    
     echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
 }
 
@@ -299,7 +334,6 @@ function updateOeuvresVille () {
     //Mise à jour des oeuvres de la ville de Montréal
     $oeuvre = new Oeuvre();
     $msgErreurs = $oeuvre->updaterOeuvresVille();
-    
     echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
 }
 
@@ -313,8 +347,151 @@ function updateDate () {
     //Affichage de la date de dernière mise à jour des oeuvres de la ville.
     $oeuvre = new Oeuvre();
     $date = $oeuvre->getDateDernierUpdate();
-    
     echo json_encode($date);//Encode la date retournée par la requête en Json.
+}
+
+/**
+* @brief Fonction qui récupère l'oeuvre choisie
+* @access public
+* @return void
+*/
+function recupererUneOeuvre () {
+
+    $oeuvre = new Oeuvre();
+    $oeuvrePourApprobation = $oeuvre->getOeuvrePourApprobation($_POST["idOeuvre"]);
+    echo json_encode($oeuvrePourApprobation);//Encode le tableau retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui récupère la photo choisie
+* @access public
+* @return void
+*/
+function recupererUnePhoto () {
+
+    $photo = new Photo();
+    $photoUnique = $photo->getPhotoById($_POST["idPhoto"]);
+    echo json_encode($photoUnique);//Encode le tableau retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui récupère le commentaire choisi
+* @access public
+* @return void
+*/
+function recupererUnCommentaire () {
+
+    $commentaire = new Commentaire();
+    $commentaireUnique = $commentaire->getCommentaireById($_POST["idCommentaire"]);
+    echo json_encode($commentaireUnique);//Encode le tableau retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui accepte la soumission de l'oeuvre choisie
+* @access public
+* @return void
+*/
+function accepterSoumissionOeuvre () {
+
+    $oeuvre = new Oeuvre();
+    $msgErreurs = $oeuvre->accepterSoumission($_POST["id"]);
+    echo json_encode($msgErreurs);//Encode le tableau de l'oeuvre retournée par la requête en Json.
+}
+
+/**
+* @brief Fonction qui accepte la soumission de la photo choisie
+* @access public
+* @return void
+*/
+function accepterSoumissionPhoto () {
+
+    $photo = new Photo();
+    $msgErreurs = $photo->accepterSoumission($_POST["id"]);
+    echo json_encode($msgErreurs);//Encode le tableau de l'oeuvre retournée par la requête en Json.
+}
+
+/**
+* @brief Fonction qui accepte la soumission du commentaire choisie
+* @access public
+* @return void
+*/
+function accepterSoumissionCommentaire () {
+
+    $commentaire = new Commentaire();
+    $msgErreurs = $commentaire->accepterSoumission($_POST["id"]);
+    echo json_encode($msgErreurs);//Encode le tableau de l'oeuvre retournée par la requête en Json.
+}
+
+/**
+* @brief Fonction qui refuse/supprime la soumission de l'oeuvre choisie
+* @access public
+* @return void
+*/
+function refuserSoumissionOeuvre () {
+
+    $oeuvre = new Oeuvre();
+    $msgErreurs = $oeuvre->supprimerOeuvre($_POST["id"]);
+    echo json_encode($msgErreurs);//Encode le tableau de l'oeuvre retournée par la requête en Json.
+}
+
+/**
+* @brief Fonction qui refuse/supprime la soumission de la photo choisie
+* @access public
+* @return void
+*/
+function refuserSoumissionPhoto () {
+
+    $photo = new Photo();
+    $msgErreurs = $photo->supprimerPhoto($_POST["id"]);
+    echo json_encode($msgErreurs);//Encode le tableau de l'oeuvre retournée par la requête en Json.
+}
+
+/**
+* @brief Fonction qui refuse/supprime la soumission du commentaire choisie
+* @access public
+* @return void
+*/
+function refuserSoumissionCommentaire () {
+
+    $commentaire = new Commentaire();
+    $msgErreurs = $commentaire->supprimerCommentaire($_POST["id"]);
+    echo json_encode($msgErreurs);//Encode le tableau de l'oeuvre retournée par la requête en Json.
+}
+
+/**
+* @brief Fonction qui rafraîchit les liens oeuvres à approuver
+* @access public
+* @return void
+*/
+function updateLiensApprobOeuvres () {
+
+    $oeuvre = new Oeuvre();
+    $oeuvres = $oeuvre->getAllOeuvresPourApprobation();
+    echo json_encode($oeuvres);//Encode le tableau de la requête en Json.
+}
+
+/**
+* @brief Fonction qui rafraîchit les liens photos à approuver
+* @access public
+* @return void
+*/
+function updateLiensApprobPhotos () {
+
+    $photo = new Photo();
+    $photos = $photo->getAllPhotosPourApprobation();
+    echo json_encode($photos);//Encode le tableau de la requête en Json.
+}
+
+/**
+* @brief Fonction qui rafraîchit les liens commentaires à approuver
+* @access public
+* @return void
+*/
+function updateLiensApprobCommentaires () {
+
+    $commentaire = new Commentaire();
+    $commentaires = $commentaire->getAllCommentairesPourApprobation();
+    echo json_encode($commentaires);//Encode le tableau de la requête en Json.
 }
 
 /* --------------------------------------------------------------------

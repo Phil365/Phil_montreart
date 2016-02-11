@@ -112,76 +112,91 @@ class Photo {
     }
     
     /**
-    * @brief méthode qui récupère toutes les photos n'aillant pas encore été vetés par l'administrateur
+    * @brief méthode qui récupère toutes les photos n'aillant pas encore été authorisées par l'administrateur
     * @access public
     * @return array
     */
-    public function getAllUnauthorizedPhoto() {
+    public function getAllPhotosPourApprobation() {
         
-        $photoAllUnauthorized = array();
+        $photos = array();
         
-        self::$database->query('SELECT * FROM Photos WHERE Photos.authorise = false');
+        self::$database->query('SELECT idPhoto, dateSoumissionPhoto FROM Photos WHERE Photos.authorise = false');
         
                
         if ($photosBDD = self::$database->resultset()) {
             foreach ($photosBDD as $photo) {
-                $unePhoto = array("idPhoto"=>$photo["idPhoto"]);
-                $photoAllUnauthorized[] = $unePhoto;
+                $photos[] = $photo;
             }
         }
-        return $photoAllUnauthorized;
+        return $photos;
     }
-     public function getPhotoById(){
+    
+    /**
+    * @brief Méthode qui récupère une photo dans la BDD en fonction du id.
+    * @access public
+    * @return array
+    */
+    public function getPhotoById($idPhoto){
         
-        if(isset($_POST['liPhotoId'])){
-        
-            $idPhoto = $_POST['liPhotoId'];
-            
-            self::$database->query('SELECT * FROM photos where photos.idPhoto = :idPhoto');
-            self::$database->bind(':id', $idPhoto);
-            
-            $infoPhoto = array();
-            
-            if($photoBDD = self::$database->uneLigne()){
-            
-                $infoPhoto = $photoBDD;
-            }
-            return $infoPhoto;
+        $infoPhoto = array();
+
+        self::$database->query('SELECT * FROM photos where photos.idPhoto = :idPhoto');
+        self::$database->bind(':idPhoto', $idPhoto);
+
+        if($photoBDD = self::$database->uneLigne()){
+            $infoPhoto = $photoBDD;
         }
-        
+        return $infoPhoto;        
     }
 
     /**
     * @brief Méthode qui insère une photo dans la BDD.
-    * @param string $idOeuvre
+    * @param string $id
     * @param boolean $authorise
+    * @param string $typePhoto
     * @access public
     * @return string
     */
-    public function ajouterPhoto($idOeuvre, $authorise) {
+    public function ajouterPhoto($id, $authorise, $typePhoto) {
          
         $msgErreurs = "";
         $erreurs = false;
 
-        if ($_FILES["fileToUpload"]["error"] != 4) {
-
-            $target_dir = "images/photosOeuvres/";
+        if ($_FILES["fileToUpload"]["error"] != 4) {          
+            
+            //Condition définie par le type de photo (profil ou oeuvre)
+            if ($typePhoto == "utilisateur") {
+                $target_dir = "images/photosUsagers/";
+            }
+            else if ($typePhoto == "oeuvre") {
+                $target_dir = "images/photosOeuvres/";
+            }
+            
             $temp = explode(".", $_FILES["fileToUpload"]["name"]);
             $nouveauNomImage = round(microtime(true)) . '.' . end($temp);      
             $target_file = $target_dir .$nouveauNomImage;
             $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+            $imageFileType = strtolower($imageFileType);//Pour empêcher les erreurs quand l'extension est en majuscules
             $pic=($_FILES["fileToUpload"]["name"]);
-                
+
+            
             if ($_FILES["fileToUpload"]["size"] > 5000000 || ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
                 && $imageFileType != "gif")) {
                 $erreurs = true;
-                $msgErreurs = "Votre fichier doit être de type Jpeg ou Png et inférieur à 5Mb.<br>";
+                $msgErreurs = "Seuls les fichiers de type Jpeg ou Png inférieurs à 5Mb sont acceptés.<br>";
             }
             if (!$erreurs) {
-                self::$database->query("INSERT INTO photos (image, authorise, idOeuvre) VALUES ('images/photosOeuvres/$nouveauNomImage', :authorise, :idOeuvre)");
-//                    self::$database->bind(':newfilename', $nouveauNomImage);
-                self::$database->bind(':idOeuvre', $idOeuvre);
-                self::$database->bind(':authorise', $authorise);
+                
+                //Condition définie par le type de photo (profil ou oeuvre)
+                if ($typePhoto == "utilisateur") {
+                    self::$database->query("UPDATE utilisateurs SET photoProfil = 'images/photosUsagers/$nouveauNomImage' WHERE idUtilisateur = :idUsager");
+                    self::$database->bind(':idUsager', $id);
+                }
+                else if ($typePhoto == "oeuvre") {
+                    self::$database->query("INSERT INTO photos (image, authorise, idOeuvre, dateSoumissionPhoto) VALUES ('images/photosOeuvres/$nouveauNomImage', :authorise, :idOeuvre, CURDATE())");
+                    self::$database->bind(':idOeuvre', $id);
+                    self::$database->bind(':authorise', $authorise);
+                }
 
                 try {
                     $result = self::$database->execute();
@@ -196,6 +211,57 @@ class Photo {
         else {
             $erreurs = true;
             $msgErreurs = "Vous devez d'abord choisir une image.";
+        }
+        return $msgErreurs;
+    }
+    
+    /**
+    * @brief Méthode qui accepte une soumission de photo.
+    * @param string $type
+    * @param integer $id
+    * @access public
+    * @return array
+    */
+    public function accepterSoumission ($id) {
+        $msgErreurs = array();//Initialise les messages d'erreur à un tableau vide
+        
+        try {
+            
+            self::$database->query('UPDATE Photos SET authorise= true WHERE idPhoto = :id');
+            self::$database->bind(':id', $id);
+            $erreur = self::$database->execute();
+
+            if ($erreur) {
+                $msgErreurs["errRequeteApprob"] = $erreur;
+            }
+        }
+        catch(Exception $e) {
+            $msgErreurs["errRequeteApprob"] = $e->getMessage();
+        }
+        return $msgErreurs;
+    }
+    
+    /**
+    * @brief Méthode qui supprime une photo de la BDD.
+    * @param integer $id
+    * @access public
+    * @return array
+    */
+    public function supprimerPhoto($id) {
+        
+        $msgErreurs = array();
+        
+        try {
+            self::$database->query('DELETE FROM Photos WHERE idPhoto = :id');
+            self::$database->bind(':id', $id);
+            $erreur = self::$database->execute();
+            
+            if ($erreur) {
+                $msgErreurs["errRequeteSupp"] = $erreur;
+            }
+        }
+        catch(Exception $e) {
+            $msgErreurs["errRequeteSupp"] = $e->getMessage();
         }
         return $msgErreurs;
     }
