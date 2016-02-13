@@ -110,6 +110,18 @@ class VueOeuvre extends Vue {
     * @return void
     */
     public function afficherBody() {
+        
+        if ($this->msgPhoto == "") {
+            if (isset($_POST["soumettrePhotoUnique"])) {
+                $msgPhoto = "<span style='color:green'>Photo envoyée !</span>";
+            }
+            else {
+                $msgPhoto = "";
+            }
+        }
+        else {
+            $msgPhoto = $this->msgPhoto;
+        }
     ?>
 
     <body>
@@ -192,7 +204,7 @@ class VueOeuvre extends Vue {
                     <br>
                     <input class='boutonMoyenne' type="submit" value="Soumettre" name="soumettrePhotoUnique">
                     <br>
-                    <span id="msg" class="erreur"><?php if (isset($this->msgPhoto)) {echo $this->msgPhoto;} ?></span>
+                    <span id="msg" class="erreur"><?php echo $msgPhoto; ?></span>
                 </form>
 
                 <div class='borderMobile'></div>
@@ -214,7 +226,7 @@ class VueOeuvre extends Vue {
                       <label class="star star-1" for="star-1-2"></label>
                   </div>
                 </div>
-                <input  class='boutonMoyenne'  type='submit' name='ajoutCommentaire' value='Ajouter Commentaire'  >
+                <input  class='boutonMoyenne'  type='submit' name='ajoutCommentaire' value='Ajouter un commentaire'  >
             <br>
                     <span id="erreurCommentaire" class="erreur"><?php if (isset($this->MsgCommentaire)) {echo $this->MsgCommentaire;} ?></span>
             </form>
@@ -243,8 +255,12 @@ class VueOeuvre extends Vue {
                                 $imgVote = "etoiles_0.png";
                                 break;
                         }
-                        $imgPhoto = $this->commentaires[$i]['photoProfil'];
-
+                        if (isset($this->commentaires[$i]['photoProfil'])) {
+                            $imgPhoto = $this->commentaires[$i]['photoProfil'];
+                        }
+                        else {
+                            $imgPhoto = 'images/photoProfilDefaut.jpg';
+                        }
 
                         echo "<img class='thumbnail' src = '$imgPhoto'><br>";
                         echo "<h5 id='idUtilisateur'>".$this->commentaires[$i]["nomUsager"]."</h5>";

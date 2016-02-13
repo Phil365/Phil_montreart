@@ -681,7 +681,7 @@ nav a:first-child {
 
 /*====fin=NAV PRINCIPALE=====*/
 /*--------------------------STYLES FORMULAIRES -------------------------*/
-#div_bgform {
+#div_bgform, #bgPanneauApprobation {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -695,8 +695,8 @@ nav a:first-child {
 
 #fermer {
     position: absolute;
-    right: -4px;
-    top: -4px;
+    right: -8px;
+    top: -8px;
     width: 30px;
     height: 30px;
     background-color: #70212F;
@@ -709,19 +709,47 @@ nav a:first-child {
     cursor: pointer;
 }
 
-#div_form {
-    position: absolute;
-    top: 17%;
+#div_form, #panneauApprobation {
+    position: fixed;
     font-family: 'Source Sans Pro', sans-serif;
     z-index: 8;
     display: none;
+    margin: 0 auto;
 }
 
-#div_form h2 {
+#div_form h2, #panneauApprobation h2 {
     color: #70212F;
     padding: 20px 35px;
     margin: -10px -50px;
     text-align: center;
+}
+
+#panneauApprobation p {
+    font-size: 1.2em;
+    line-height: 1.2em;
+}
+
+.boutonAccepter, .boutonRefuser {
+    width:100px;
+    text-align:center;
+    background-color:#659CEF;
+    font-family: 'Source Sans Pro', sans-serif;
+    color:#fff;
+    padding:10px;
+    font-size:1.2em;
+    cursor:pointer;
+    border-radius:5px;
+    margin-top: 30px;
+    border: none;
+}
+
+.boutonRefuser {
+    float: right;
+    background: #B32A42; 
+}
+
+.boutonAccepter {
+    margin-bottom: 20px;
 }
 
 input {
@@ -771,13 +799,21 @@ textarea:focus {
 }
 
 #formlogin,
-#form_profil {
-    max-width: 200px;
+#form_profil,
+#divPanneauApprobation {
     padding: 10px 50px;
     border: 2px solid #F8F274;
     border-radius: 10px;
     font-family: 'Source Sans Pro', sans-serif;
     background-color: #fff;
+}
+
+#msgErreurApprobation {
+    color: red;
+}
+
+#divPanneauApprobation img {
+    width: 500px;
 }
 
 #form_itineraire,
@@ -1027,17 +1063,6 @@ header{
     float: none;
     margin-left: 42px;
 }
-    
-h2 {
-
-    text-align: center;
-}
-
-.boutonMoyenne {
-
-    margin-left: 30px;
-
-}
 
 .titresPageOeuvre {
    margin-left: 30px;
@@ -1196,17 +1221,20 @@ margin-left: 35px;
     .dummy {
         height: 98px;
     }
-    #div_form {
+    #div_form, #panneauApprobation {
         left: 50%;
-        margin-left: -202px;
-    }
-    #formlogin {
-        max-width: 300px;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
     #formlogin,
     #contribuer_article,
     #form_profil {
         max-width: 300px;
+    }
+    
+    #divPanneauApprobation {
+        max-width: 500px;
+        min-width: 300px;
     }
     nav a {
         font-size: 1.2em;
@@ -1215,6 +1243,7 @@ margin-left: 35px;
         padding: 0 20px;
         line-height: 30px;
     }
+    
     .section1 {
         margin-bottom: 20px;
     }

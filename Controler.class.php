@@ -111,8 +111,7 @@ class Controler {
         $this->pTrajet = "trajet";
         $this->pSoumission = "soumission";
         $this->pProfil = "profil";
-        $this->pRecherche = "recherche";
-        $this->pAdmin = "admin";
+        $this->pRecherche = "recherche";    
         $this->pGestion = "gestion";
          $this->pDevenirMembre = "devenir_membre";
         $this->oCookie = new Cookie();
@@ -146,9 +145,6 @@ class Controler {
                 break;
             case $this->pRecherche:
                 $this->recherche();
-                break;
-            case $this->pAdmin:
-                $this->admin();
                 break;
             case $this->pGestion:
                 $this->gestion();
@@ -189,7 +185,7 @@ class Controler {
     private function oeuvre() {
         
         $oeuvre = new Oeuvre();
-        $oeuvreAffichee = $oeuvre->getOeuvreById($_GET["o"], $this->langueAffichage);
+        $oeuvreAffichee = $oeuvre->getOeuvreById($_GET["o"]);
         
         $commentaire = new Commentaire();
         $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
@@ -198,13 +194,21 @@ class Controler {
         $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"], false);
         
         if (isset($_GET['action']) && $_GET['action'] == 'envoyerPhoto') {
-            $msgInsertPhoto = $photo->ajouterPhoto($_GET["o"], false);
+            $msgInsertPhoto = $photo->ajouterPhoto($_GET["o"], false, "oeuvre");
         }
         else {
             $msgInsertPhoto = null;
         }
-        if (isset($_GET['action']) && $_GET['action'] == 'envoyerCommentaire') {             
-        $msgInsertCommentaire = $commentaire->ajoutCommentairesByOeuvre($_POST['idOeuvreencours'], $this->langueAffichage, $_POST['commentaireAjout'],$_POST['vote'], 1, false); 
+        if (isset($_GET['action']) && $_GET['action'] == 'envoyerCommentaire') {
+            
+            if (isset($_SESSION["idUsager"])) {
+                $usager = $_SESSION["idUsager"];
+            }
+            else {
+                $usager = 1;//id usager anonyme
+            }
+
+            $msgInsertCommentaire = $commentaire->ajoutCommentairesByOeuvre($_POST['idOeuvreencours'], $this->langueAffichage, $_POST['commentaireAjout'],$_POST['vote'], $usager, false); 
         }
         else {
             $msgInsertCommentaire = null;
@@ -285,28 +289,6 @@ class Controler {
         $this->oVue->afficherBody();
         $this->oVue->afficherPiedPage();
     }
-    /**
-    * @brief Méthode qui appelle la vue d'affichage de la page admin
-    * @access private
-    * @return void
-    */
-    private function admin() {
-        
-        $photo = new Photo();
-        $photoAllUnauthorized = $photo->getAllUnauthorizedPhoto();
-        $photoAReviser = $photo->getPhotoById();
-        $oeuvre = new Oeuvre;
-        $oeuvre->updaterOeuvresVille();
-        $date = $oeuvre->getDateDernierUpdate();
-        $this->oVue = new VueAdmin();
-        $this->oVue->setDataGlobal("Admin", "page d'administration", $this->langueAffichage, $this->pAdmin);
-        $this->oVue->setData($photoAllUnauthorized);
-        $this->oVue->setData($photoAReviser);
-        $this->oVue->afficherMeta();
-        $this->oVue->afficherEntete();
-        $this->oVue->afficherBody();
-        $this->oVue->afficherPiedPage();
-    }
     
     /**
     * @brief Méthode qui appelle la vue d'affichage de la page gestion
@@ -318,6 +300,8 @@ class Controler {
         $oeuvre = new Oeuvre();
         $arrondissement = new Arrondissement();
         $categorie = new Categorie();
+        $photo = new Photo();
+        $commentaire = new Commentaire();
         $msgErreurs = array();
         $oeuvreAjouter = '';
         
@@ -344,7 +328,7 @@ class Controler {
         
         //Modification d'une oeuvre.
         if (isset($_POST["selectOeuvreModif"]) && $_POST["selectOeuvreModif"] != "") {
-            $oeuvreAModifier = $oeuvre->getOeuvreById($_POST['selectOeuvreModif'], $this->langueAffichage);
+            $oeuvreAModifier = $oeuvre->getOeuvreById($_POST['selectOeuvreModif']);
         }
         else {
             $oeuvreAModifier = "";
@@ -365,13 +349,18 @@ class Controler {
             $msgErreurs = $categorie->supprimerCategorie($_POST["selectCategorieSupp"]);
         }
         
+        //Soumissions des utilisateurs pour approbation par l'administrateur
+        $oeuvresApprobation = $oeuvre->getAllOeuvresPourApprobation();
+        $photosApprobation = $photo->getAllPhotosPourApprobation();
+        $commentairesApprobation = $commentaire->getAllCommentairesPourApprobation();
+        
         $oeuvresBDD = $oeuvre->getAllOeuvres();
         $arrondissementsBDD = $arrondissement->getAllArrondissements();
         $categorieBDD = $categorie->getAllCategories($this->langueAffichage);
         
         $this->oVue = new VueGestion();
         $this->oVue->setDataGlobal("Gestion", "page de gestion par l'administrateur", $this->langueAffichage, $this->pGestion);
-        $this->oVue->setData($date, $oeuvreAModifier,$oeuvreAjouter, $oeuvresBDD, $arrondissementsBDD, $categorieBDD, $msgErreurs);
+        $this->oVue->setData($date, $oeuvreAModifier,$oeuvreAjouter, $oeuvresBDD, $arrondissementsBDD, $categorieBDD, $msgErreurs, $oeuvresApprobation, $photosApprobation, $commentairesApprobation);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
@@ -413,8 +402,8 @@ class Controler {
     private function devenirMembre(){
        
         $utilisateur = new Utilisateur();
-        $droits = 0;
-         $msgErreurs = array();
+        $droits = false;
+        $msgErreurs = array();
         if (isset($_POST['boutonAjoutUtilisateur'])){
             
             $msgErreurs = $utilisateur->AjouterUtilisateur($_POST['nomUsager'], $_POST['motPasse'], $_POST['prenom'], $_POST['nom'], $_POST['courriel'], $_POST['descriptionProfil'], $droits);
