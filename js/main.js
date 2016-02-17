@@ -13,7 +13,7 @@
 
 //INITIALISATION FONCTIONS JQUERY
 $(document).ready(function(){
-
+    
     //Accordéon Jquery pour l'onglet des soumissions dans la page de gestion
     $( "#accordeon" ).accordion({
         active: false,
@@ -972,29 +972,47 @@ function initMap() {
         mapTypeId: 'roadmap'
     });
     var infoWindow = new google.maps.InfoWindow();
+    var image = {
+    url: 'images/User_icon_BLACK-01.png',
+    // This marker is 20 pixels wide by 32 pixels high.
+    scaledSize: new google.maps.Size(25, 25), // scaled size
+    // The origin for this image is (0, 0).
+ //   origin: new google.maps.Point(0, 0),
+    // The anchor for this image is the base of the flagpole at (0, 32).
+   // anchor: new google.maps.Point(0, 32)
+  };
+        var Lemarker = new google.maps.Marker({
+        map: map,
+        //animation: google.maps.Animation.DROP,
+        icon: image,        
+        title:"Un MontréArtlais"
+        }); 
     // Try HTML5 geolocation.
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(function(position) {
+    navigator.geolocation.watchPosition(function(position) {
       var pos = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
-      };
-
-      infoWindow.setPosition(pos);
-      infoWindow.setContent('Location found.');
+      }; 
+        Lemarker.setPosition(pos);
+        trouveMarqueurPlusPres(position.coords.latitude, position.coords.longitude);
+      //infoWindow.setPosition(pos);
+     // infoWindow.setContent('Location found.');
       map.setCenter(pos);
         map.setZoom(14);
     }, function() {
       handleLocationError(true, infoWindow, map.getCenter());
-    });
+    },{enableHighAccuracy: true, maximumAge: 100, timeout: 60000 });
   } else {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
-  }
+  } 
     downloadUrl("ajaxControler.php?rAjax=googleMap", function(data) {
-
+        var markerArray='';
+        var mcOptions = {gridSize: 50, maxZoom: 15};
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName("marker");
+        var ClusterMap = [];
         for (var i = 0; i < markers.length; i++) {
             var name = markers[i].getAttribute("name");
             //    var photo = markers[i].getAttribute("photo");
@@ -1005,14 +1023,63 @@ function initMap() {
             parseFloat(markers[i].getAttribute("lng")));
             var html = "<a href='" + url + "'>" + name + "</a>";
             var marker = new google.maps.Marker({
-                map: map,
-                position: point,
-            });
+                position: point
+            });   marker.setMap(map); 
+            ClusterMap.push(marker);   
             bindInfoWindow(marker, map, infoWindow, html);
-        }
+         
+        }var markerCluster = new MarkerClusterer(map, ClusterMap,mcOptions);
     });
 }
 
+/**
+* @brief fonction pour rayon d'un cercle
+* @access public
+* @return rayon
+*/
+function rad(x) {return x*Math.PI/180;}
+/**
+* @brief Haversine pour calculer la distance entre deux point sur une sphere selon leurs point cardinaux
+* @access public
+* @return void
+* @author https://en.wikipedia.org/wiki/Haversine_formula
+*/
+function trouveMarqueurPlusPres(lat, lng) {
+    var R = 6371; // rayon de la terre en km
+    var distances = [];
+    var closest = -1;
+    
+  
+     downloadUrl("ajaxControler.php?rAjax=googleMap", function(data) {
+
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+         
+    for( i=0;i<markers.length; i++ ) {
+        var mlat = parseFloat(markers[i].getAttribute("lat"));
+        var mlng = parseFloat(markers[i].getAttribute("lng"));
+        var dLat  = rad(mlat - lat);
+        var dLong = rad(mlng - lng);   
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong/2) * Math.sin(dLong/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        distances[i] = d;
+          //console.log('closest'+' '+closest);
+          //console.log('distances'+' '+distances[i]);
+        if ( closest == -1 || d < distances[closest] ) {
+            closest = i;
+//            console.log('closest'+' '+closest);
+//          console.log('distances'+' '+distances[i]);
+            //console.log('d'+' '+d);
+            //console.log('distance'+distances[closest]);
+        }
+    }//console.log(markers[closest].getAttribute("name")+''+distances[closest].toFixed(2));
+         document.getElementById("distanceMarqueur").innerHTML = 'Vous êtes à'+" "+distances[closest].toFixed(2)+" "+"km de distance de l'oeuvre"+' '+markers[closest].getAttribute("name");
+         //alert(markers[closest]);
+});
+    
+}
 /**
 * @brief Fonction de mise en page pour la Google Map
 * @access public

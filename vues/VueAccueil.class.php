@@ -32,7 +32,7 @@ class VueAccueil extends Vue {
     ?>
             <div id="map">
             </div>
-            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMap"></script>
+           
             <div class="section3">
                    <img src="images/LionBelfortDesktop.png" id="lionDesktop">
                    <img src="images/LionBelfortMobile.png" id="lionMobile">
