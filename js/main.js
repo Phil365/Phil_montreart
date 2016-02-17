@@ -339,6 +339,12 @@ function validePhotoSubmit() {
 */
 function valideAjoutOeuvre(droitsAdmin) {
     
+    if (droitsAdmin == "false") {
+        droitsAdmin = false;
+    }
+    else if (droitsAdmin == "true") {
+        droitsAdmin = true;
+    }
     var erreurs = false;
     var photo = document.getElementById("fileToUpload");
     var msgErreurPhoto = "";
@@ -415,10 +421,11 @@ function valideAjoutOeuvre(droitsAdmin) {
     //-----------------------------------------
     //Requête AJAX si aucune erreur.
     if (!erreurs) {
-        $.post('ajaxControler.php?rAjax=ajouterOeuvre&admin='+droitsAdmin, {titre: titre, adresse: adresse, prenomArtiste: prenomArtiste, nomArtiste: nomArtiste, description: description, idCategorie: idCategorie, idArrondissement: idArrondissement, photo: photo.value}, 
+        droitsAdmin = false;
+        $.post('ajaxControler.php?rAjax=ajouterOeuvre', {titre: titre, adresse: adresse, prenomArtiste: prenomArtiste, nomArtiste: nomArtiste, description: description, idCategorie: idCategorie, idArrondissement: idArrondissement, droitsAdmin: droitsAdmin}, 
             function(reponse){
 
-                var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+            var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
 
             if (msgErreurs.length == 0) {//Si aucune erreur...
                 
@@ -834,7 +841,8 @@ function validerFormAjoutUtilisateur(){
         var courriel = document.getElementById("courriel").value;
         var regex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
         if(!regex.test(courriel)){
-             document.getElementById("erreurCourriel").innerHTML = "Veuillez entrer un adresse courriel valide.";
+            document.getElementById("erreurCourriel").innerHTML = "Veuillez entrer un adresse courriel valide.";
+            erreurs = true;
         }
     }
 
@@ -964,7 +972,25 @@ function initMap() {
         mapTypeId: 'roadmap'
     });
     var infoWindow = new google.maps.InfoWindow();
+    // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
 
+      infoWindow.setPosition(pos);
+      infoWindow.setContent('Location found.');
+      map.setCenter(pos);
+        map.setZoom(14);
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
     downloadUrl("ajaxControler.php?rAjax=googleMap", function(data) {
 
         var xml = data.responseXML;
@@ -1022,8 +1048,37 @@ function downloadUrl(url,callback) {
     request.open('GET', url, true);
     request.send(null);
 }
-
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(browserHasGeolocation ?
+                        'Error: The Geolocation service failed.' :
+                        'Error: Your browser doesn\'t support geolocation.');
+}
 function doNothing() {}
+
+//methode pour monter le formulaire login
+function montrer_form() {
+    document.getElementById('div_bgform').style.display = "block";
+    document.getElementById('div_form').style.display = "block";
+}
+//methode pour cacher le formulaire
+function fermer(){
+    document.getElementById('div_bgform').style.display = "none";
+    document.getElementById('div_form').style.display = "none";
+}
+
+//methode pour cacher le formulaire
+function fermerApprob(){
+    document.getElementById('bgPanneauApprobation').style.display = "none";
+    document.getElementById('panneauApprobation').style.display = "none";
+}
+
+//formulaire de la vueAdmin qui permet d'afficher le formulaire pour authoriser les photos non-autorisés
+function formRevisionPhotos(idPhoto){
+    var idPhoto = idPhoto;
+    document.getElementById('formRevisionPhotos').style.display = "block";
+    document.getElementById('formRevisionPhotos').innerHTML="<form action='#' id='formRevisionPhoto' method='post' name='formRevisionPhoto'><button id='fermer' onclick ='fermer()'>X</button><h3>Id Image:</h3><p>Adresse Oeuvre</p><img src='<?php $photoAffiche = $this->$photoAReviser['image']?>'><input id='insererPhoto' name='insererPhoto' type='submit' onclick='fermer()' value='Insérer'><input id='suprimmerPhoto' name='suprimmerPhoto' type='submit' onclick='fermer()' value='Suprimmer'></form>";
+}
 
 /**
 * @brief Fonction qui récupère la valeur d'un cookie selon le nom passé en paramètre
@@ -1040,4 +1095,272 @@ function getCookie(cname) {
         if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
     }
     return "";
+}
+
+/**
+* @brief Fonction qui récupère l'oeuvre choisie et affiche son contenu dans un panneau de style pop-up
+* @access public
+* @param idOeuvre integer
+* @return void
+*/
+function afficherOeuvrePourApprobation(idOeuvre) {
+    
+    $.post('ajaxControler.php?rAjax=recupererUneOeuvre', {idOeuvre:idOeuvre},
+        function(reponse){
+        var oeuvre = jQuery.parseJSON(reponse);
+        var langue = getCookie("langue");
+        var contenu = "";
+        var type = "\"oeuvre\"";
+        var id = idOeuvre;
+        
+        contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
+        contenu += "<div id='divPanneauApprobation'>";
+        contenu += "<h2>Oeuvre soumise</h2>";
+        contenu += "<p>Titre : <span style='color:green'>" + oeuvre.titre + "</span><br>";
+        contenu += "Adresse : <span style='color:green'>" + oeuvre.adresse + "</span><br>";
+        contenu += "Description en anglais : <span style='color:green'>" + oeuvre.descriptionFR + "</span><br>";
+        contenu += "Description en français : <span style='color:green'>" + oeuvre.descriptionEN + "</span><br>";
+        contenu += "Arrondissement : <span style='color:green'>" + oeuvre.nomArrondissement + "</span><br>";
+        if (langue == "FR") {
+            contenu += "Catégorie : <span style='color:green'>" + oeuvre.nomCategorieFR + "</span><br>";
+        }
+        else if (langue == "EN") {
+            contenu += "Catégorie : <span style='color:green'>" + oeuvre.nomCategorieEN + "</span><br>";
+        }
+        if (oeuvre.prenomArtiste == null) {
+            contenu += "Prénom de l'artiste :<br>";
+        }
+        else {
+            contenu += "Prénom de l'artiste : <span style='color:green'>" + oeuvre.prenomArtiste + "</span><br>";
+        }
+        if (oeuvre.nomArtiste == null) {
+            contenu += "Nom de l'artiste :<br>";
+        }
+        else {
+            contenu += "Nom de l'artiste : <span style='color:green'>" + oeuvre.nomArtiste + "</span><br>";
+        }
+        contenu += "</p>";
+        contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + id + ")'>";
+        contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + id + ")'>";
+        contenu += "<div id='msgErreurApprobation'></div>";
+        contenu += "</div>";
+        
+        document.getElementById('bgPanneauApprobation').style.display = "block";
+        document.getElementById('panneauApprobation').style.display = "block";
+        document.getElementById("panneauApprobation").innerHTML = contenu;
+    });
+}
+
+/**
+* @brief Fonction qui récupère la photo choisie et affiche son contenu dans un panneau de style pop-up
+* @access public
+* @param idPhoto integer
+* @return void
+*/
+function afficherPhotoPourApprobation(idPhoto) {
+    
+    $.post('ajaxControler.php?rAjax=recupererUnePhoto', {idPhoto:idPhoto},
+        function(reponse){
+        var photo = jQuery.parseJSON(reponse);
+        var contenu = "";
+        var type = "\"photo\"";
+        var id = idPhoto;
+        
+        contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
+        contenu += "<div id='divPanneauApprobation'>";
+        contenu += "<h2>Photo soumise</h2>";
+        contenu += "<img src='../" + photo.image + "' alt='photoSoumise'></span><br>";
+        contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + id + ")'>";
+        contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + id + ")'>";
+        contenu += "<div id='msgErreurApprobation'></div>";
+        contenu += "</div>";
+        
+        document.getElementById('bgPanneauApprobation').style.display = "block";
+        document.getElementById('panneauApprobation').style.display = "block";
+        document.getElementById("panneauApprobation").innerHTML = contenu;
+    });
+}
+
+/**
+* @brief Fonction qui récupère la photo choisie et affiche son contenu dans un panneau de style pop-up
+* @access public
+* @param idPhoto integer
+* @return void
+*/
+function afficherCommentairePourApprobation(idCommentaire) {
+    
+    $.post('ajaxControler.php?rAjax=recupererUnCommentaire', {idCommentaire:idCommentaire},
+        function(reponse){
+        var commentaire = jQuery.parseJSON(reponse);
+        var contenu = "";
+        var type = "\"commentaire\"";
+        var id = idCommentaire;
+        
+        contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
+        contenu += "<div id='divPanneauApprobation'>";
+        contenu += "<h2>Commentaire soumis</h2>";
+        contenu += "<p>" + commentaire.texteCommentaire + "</p>";
+        contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + id + ")'>";
+        contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + id + ")'>";
+        contenu += "</div id='msgErreurApprobation'></div>";
+        contenu += "</div>";
+        
+        document.getElementById('bgPanneauApprobation').style.display = "block";
+        document.getElementById('panneauApprobation').style.display = "block";
+        document.getElementById("panneauApprobation").innerHTML = contenu;
+    });
+}
+
+/**
+* @brief Fonction qui accepte une soumission et recharge la liste des soumissions à authoriser
+* @param type string
+* @param id integer
+* @access public
+* @return void
+*/
+function accepterSoumissions(type, id) {
+
+    switch (type) {
+        case "oeuvre":
+            var requete = "accepterSoumissionOeuvre";
+            break;
+        case "photo":
+            var requete = "accepterSoumissionPhoto";
+            break;
+        case "commentaire":
+            var requete = "accepterSoumissionCommentaire";
+            break;
+    }
+    
+    $.post('ajaxControler.php?rAjax=' + requete, {id: id},
+        function(reponse){
+        
+        var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+
+        if (msgErreurs.length == 0) {//Si aucune erreur...
+
+            rechargerOeuvresApprob();
+            rechargerPhotosApprob();
+            rechargerCommentairesApprob();
+        }
+        else {//Sinon indique les erreurs à l'utilisateur.
+            $(msgErreurs).each(function(index, valeur) {
+                console.log(valeur.errRequeteApprob);
+                if (valeur.errRequeteApprob) {
+                    $("#msgErreurApprobation").html(valeur.errRequeteApprob);
+                }
+            })
+        }
+    });
+}
+
+/**
+* @brief Fonction qui refuse/supprime une soumission et recharge la liste des soumissions à authoriser
+* @param type string
+* @param id integer
+* @access public
+* @return void
+*/
+function refuserSoumissions(type, id) {
+
+    switch (type) {
+        case "oeuvre":
+            var requete = "refuserSoumissionOeuvre";
+            break;
+        case "photo":
+            var requete = "refuserSoumissionPhoto";
+            break;
+        case "commentaire":
+            var requete = "refuserSoumissionCommentaire";
+            break;
+    }
+    
+    $.post('ajaxControler.php?rAjax=' + requete, {id: id},
+        function(reponse){
+        
+        var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+
+        if (msgErreurs.length == 0) {//Si aucune erreur...
+            
+            rechargerOeuvresApprob();
+            rechargerPhotosApprob();
+            rechargerCommentairesApprob();
+        }
+        else {//Sinon indique les erreurs à l'utilisateur.
+            $(msgErreurs).each(function(index, valeur) {
+                if (valeur.errRequeteSupp) {
+                    $("#msgErreurApprobation").html(valeur.errRequeteSupp);
+                }
+            })
+        }
+    });
+}
+
+/**
+* @brief Fonction qui mets à jour dans la page gestion la liste des oeuvres à approuver
+* @param type string
+* @param id integer
+* @access public
+* @return void
+*/
+function rechargerOeuvresApprob() {
+    $.post('ajaxControler.php?rAjax=updateLiensApprobOeuvres', 
+        function(reponse){
+
+        var soumissions = jQuery.parseJSON(reponse);
+        var oeuvresApprob = "";
+
+        for (var i = 1; i <= soumissions.length; i++) {
+            oeuvresApprob += '<a href="#"; onclick="afficherOeuvrePourApprobation(' + soumissions[i-1]['idOeuvre'] + ')">Oeuvre ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionOeuvre'] + '</span></a>';
+        }
+        $("#contenuSoumissionOeuvres").html(oeuvresApprob);
+        $("#nbOeuvresEnAttente").html("En attente : " + soumissions.length);
+        fermerApprob();
+    });
+}
+
+/**
+* @brief Fonction qui mets à jour dans la page gestion la liste des photos à approuver
+* @param type string
+* @param id integer
+* @access public
+* @return void
+*/
+function rechargerPhotosApprob() {
+    $.post('ajaxControler.php?rAjax=updateLiensApprobPhotos', 
+        function(reponse){
+
+        var soumissions = jQuery.parseJSON(reponse);
+        var photosApprob = "";
+
+        for (var i = 1; i <= soumissions.length; i++) {
+            photosApprob += '<a href="#"; onclick="afficherPhotoPourApprobation(' + soumissions[i-1]['idPhoto'] + ')">Photo ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionPhoto'] + '</span></a>';
+        }
+        $("#contenuSoumissionPhotos").html(photosApprob);
+        $("#nbPhotosEnAttente").html("En attente : " + soumissions.length);
+        fermerApprob();
+    });
+}
+
+/**
+* @brief Fonction qui mets à jour dans la page gestion la liste des commentaires à approuver
+* @param type string
+* @param id integer
+* @access public
+* @return void
+*/
+function rechargerCommentairesApprob() {
+    $.post('ajaxControler.php?rAjax=updateLiensApprobCommentaires', 
+        function(reponse){
+
+        var soumissions = jQuery.parseJSON(reponse);
+        var commentairesApprob = "";
+
+        for (var i = 1; i <= soumissions.length; i++) {
+            commentairesApprob += '<a href="#"; onclick="afficherCommentairePourApprobation(' + soumissions[i-1]['idCommentaire'] + ')">Commentaire ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionCommentaire'] + '</span></a>';
+        }
+        $("#contenuSoumissionCommentaires").html(commentairesApprob);
+        $("#nbCommentairesEnAttente").html("En attente : " + soumissions.length);
+        fermerApprob();
+    });
 }

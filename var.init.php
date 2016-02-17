@@ -67,8 +67,25 @@ if(empty($_POST["selectOeuvreSupp"])) {
 if(empty($_POST["categorieFrAjout"])) {
     $_POST["categorieFrAjout"] = '';  
 }
+if(empty($_POST["motPasse"])) {
+    $_POST["motPasse"] = '';  
+}
+if(empty($_POST["nomUsager"])) {
+    $_POST["nomUsager"] = '';  
+}
+if(empty($_POST["prenom"])) {
+    $_POST["prenom"] = '';  
+}
+if(empty($_POST["nom"])) {
+    $_POST["nom"] = '';  
+}
+if(empty($_POST["courriel"])) {
+    $_POST["courriel"] = '';  
+}
+if(empty($_POST["descriptionProfil"])) {
+    $_POST["descriptionProfil"] = '';  
+}
 if(empty($_POST["categorieEnAjout"])) {
     $_POST["categorieEnAjout"] = '';  
 }
-
 ?>

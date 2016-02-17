@@ -141,68 +141,25 @@ class Utilisateur {
 				self::$database->bind(':descriptionProfil', $descriptionProfil);
 				self::$database->bind(':administrateur', $administrateur);
 				self::$database->execute();
-				$msgInsertPhoto=$this->insererPhotoProfil($nomUsager);
-				if ($msgInsertPhoto != "" && $_FILES["photoProfil"]["error"] != 4) {
-	                   $msgErreurs["errPhoto"] = $msgInsertPhoto;
-	                }
-			}catch(Exception $e){
-				 echo "erreur lors de l'insertion : " . $e;
-				exit;
-			}
-		 }
-        return $msgErreurs;//array vide = succès. 
-    }
-	/**
-    * @brief Méthode qui insere/met a jour la photo profil d'un utilisateur à la BDD par son nom usager.
-    * @param string $nomUsager
-    * @access private
-    * @return string
-    */
-	public function insererPhotoProfil($nomUsager){
-		 $msgUtilisateur = "";
-        $erreurs = false;
-        
-        if ($_FILES["photoProfil"]["error"] != 4) {
 
-            $target_dir = "images/photosUsagers/";
-            $temp = explode(".", $_FILES["photoProfil"]["name"]);
-            $nouveauNomImage = round(microtime(true)) . '.' . end($temp);      
-            $target_file = $target_dir .$nouveauNomImage;
-            $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
-            $pic=($_FILES["photoProfil"]["name"]);
-            
-			
-			// Valider l'extension et taille de l'image
+                //Récupération du nouvel id utilisateur
+                if ($nouvelUtilisateur = $this->getUtilisateurByNomUsager($nomUsager)) {
+                    $idUsager = $nouvelUtilisateur["idUtilisateur"];
                 
-                if ($_FILES["photoProfil"]["size"] > 5000000 || ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-                    && $imageFileType != "gif")) {
-                    $erreurs = true;
-                    $msgUtilisateur = "Votre fichier doit être de type Jpeg ou Png et inférieur à 5Mb.<br>";
-                }
-                if (!$erreurs) {
-                    self::$database->query("UPDATE utilisateurs SET photoProfil = 'images/photosUsagers/$nouveauNomImage' WHERE nomUsager = :nomUsager");
-
-                    self::$database->bind(':nomUsager', $nomUsager);
-                   
-
-                    try {
-                        $result = self::$database->execute();
-                        move_uploaded_file($_FILES["photoProfil"]["tmp_name"], $target_file);
-                    }
-                    catch(Exception $e) {
-                        $erreurs = true;
-                        $msgUtilisateur = "erreur lors du traitement".$e->getMessage();
+                    //Insertion de la photo de profil si choisie
+                    $photo = new Photo();
+                    $msgInsertPhoto = $photo->ajouterPhoto($idUsager, true, "utilisateur");
+                    if ($msgInsertPhoto != "" && $_FILES["fileToUpload"]["error"] != 4) {
+                        $msgErreurs["errPhoto"] = $msgInsertPhoto;
                     }
                 }
-            
+                
+			}catch(Exception $e){
+				 $msgErreurs["errRequeteAjout"] = $e->getMessage();
+			}
         }
-        else {
-            $erreurs = true;
-            $msgUtilisateur = "Vous devez d'abord choisir une image.";
-        }
-        return $msgUtilisateur;
-    }
-		
+        return $msgErreurs;//array vide = succès. 
+    }		
 	
 	/**
     * @brief méthode qui récupère les donnees d'un utilisateur par son nom usager et son mot de passe
@@ -210,11 +167,10 @@ class Utilisateur {
     * @return array
     */
 	
-	public function getUtilisateurByNomUsager($nomUsager, $motPasse){
+	public function getUtilisateurByNomUsager($nomUsager){
 		
-		self::$database->query('SELECT * FROM utilisateurs WHERE utilisateurs.nomUsager = :nomUsager AND utilisateurs.motPasse = :motPasse');
+		self::$database->query('SELECT * FROM utilisateurs WHERE utilisateurs.nomUsager = :nomUsager');
 		self::$database->bind(':nomUsager', $nomUsager);
-		self::$database->bind(':motPasse', $motPasse);
 		
 		if($Utilisateur = self::$database->uneLigne()){
 			return $Utilisateur;
@@ -259,7 +215,7 @@ class Utilisateur {
             $msgErreurs["errCourriel"] = "Veuillez entrer votre courriel";
         }
 		 else if (!preg_match("^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$^",$courriel)) {
-                 $msgErreurs["errMotPasse"] = "Veuillez reviser le format de votre courriel.";
+                 $msgErreurs["errCourriel"] = "Veuillez reviser le format de votre courriel.";
         }
         return $msgErreurs;
 	}

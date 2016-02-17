@@ -1,4 +1,4 @@
-Barre de recherche centralisée
+﻿Barre de recherche centralisée
 
 
 But:
@@ -7,7 +7,7 @@ Cette fonctionnalité permet de rechercher une oeuvre en particulier dans la bas
 
 La barre de recherche est située toutes les pages, elle est donc facile d’accès.
 
-Utilisation:
+Utilisation: 
 
 L’utilisateur devra donc en premier lieu dérouler la barre de recherche en appuyant sur une petite flèche vers le bas, et sélectionner le type de recherche qu’il veut faire à l’aide d’un input select, soit par artiste, arrondissement, ou catégorie. 
 
@@ -128,3 +128,10 @@ Programmation:
 
 Classes Membre et Utilisateur ont été crées ainsi que ses fonctions d'ajout, set, et get. On stock les informations reçus par le formulaire dans un table utilisateurs dans la base de donnees. 
 
+
+____________________________________________________________________
+
+Accepter ou refuser une soummission utilisateur
+
+L’onglet « Approuver les soummissions » dans la page de gestion permet de visualiser toutes les soumissions nécessitant d’être approuvées par un administrateur avant d’être rendues visible sur le site. Il s’agit des soumissions d’œuvres, de photos et de commentaires. Lorsque vous accédez à cet onglet, cliquez sur une des sections pour visualiser les liens vers les soumissions de la catégorie. La mention « En attente : » suivie d’un chiffre à la droite des onglets permet de visualiser le nombre de soumissions en attente d’une approbation sans avoir à dérouler l’onglet. 
+Lorsque vous cliquez sur un lien vers une soumission en attente, un panneau affichant les informations soumises par l’utilisateur s’affiche. Deux boutons vous permettent soit d’accepter ou refuser la soumission. Si vous l’acceptez, elle sera désormais instantanément visible pour tous les visiteurs du site. Si vous cliquez sur refuser, la soumission sera supprimée de la base de donnée. Si la requête est réussie, le panneau se ferme et le nombre de soumissions restantes se met à jour. Dans le cas contraire, le panneau restera ouvert et un message d’erreur indiquant la nature du problème s’y affichera.
