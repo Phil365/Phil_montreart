@@ -523,6 +523,7 @@ function googleMap () {
         $newnode->setAttribute("lng", $infoOeuvre[$i]["longitude"]); 
         //$newnode->setAttribute("photo", $infoOeuvre[$i]["image"]);   
         $newnode->setAttribute("url", $urlOeuvre.$infoOeuvre[$i]["idOeuvre"]);
+        $newnode->setAttribute("idOeuvre", $infoOeuvre[$i]["idOeuvre"]);
     }
     header("Content-type: text/xml");
     echo $dom->saveXML();

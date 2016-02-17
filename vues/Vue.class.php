@@ -54,7 +54,8 @@ class Vue {
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/vendor/slick-1.5.9/slick/slick.min.js"></script>
-        
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMap"></script>
+        <script type="text/javascript" src="js/vendor/js-marker-clusterer-gh-pages/src/markerclusterer.js"></script>      
         <!-- JAVASCRIPT -->
         <script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
@@ -115,7 +116,7 @@ class Vue {
                     else {
                         echo '<a href="#" onclick="montrer_form()">Se connecter</a>';
                     }
-                    ?>
+                    ?><div id="distanceMarqueur"></div>
                 </nav>
                 
                 <div id="navMobile">
