@@ -116,7 +116,7 @@ class Vue {
                     else {
                         echo '<a href="#" onclick="montrer_form()">Se connecter</a>';
                     }
-                    ?><div id="distanceMarqueur"></div>
+                    ?>
                 </nav>
                 
                 <div id="navMobile">

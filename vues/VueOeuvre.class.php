@@ -211,7 +211,6 @@ class VueOeuvre extends Vue {
         
                 <form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();" >            <p><h3 class='titresPageOeuvre'>Commentaire :</h3></p>    
                 <input type="hidden" name="idOeuvreencours" value="<?php echo $idOeuvreencours ?>">
-                <textarea name='commentaireAjout' id='commentaireAjout' ></textarea>
                 <div class="cont">
                   <div class="stars">
                       <input class="star star-5" name='vote' id="star-5-2" type="radio" name="star" value='5'/>
@@ -226,7 +225,9 @@ class VueOeuvre extends Vue {
                       <label class="star star-1" for="star-1-2"></label>
                   </div>
                 </div>
-                <input  class='boutonMoyenne'  type='submit' name='ajoutCommentaire' value='Ajouter un commentaire'  >
+                <textarea name='commentaireAjout' id='commentaireAjout' ></textarea>
+
+                <input  class='boutonMoyenne' id="boutonAjouterCom" type='submit' name='ajoutCommentaire' value='Ajouter un commentaire'  >
             <br>
                     <span id="erreurCommentaire" class="erreur"><?php if (isset($this->MsgCommentaire)) {echo $this->MsgCommentaire;} ?></span>
             </form>
@@ -274,7 +275,7 @@ class VueOeuvre extends Vue {
                     echo "<p>Aucun commentaire</p>";
                 }//fin div commentaires 
             echo "</div>";
-            echo "<div class='borderMobile'></div>";
+
             echo "</body>";
         }
     }
