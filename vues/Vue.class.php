@@ -59,8 +59,12 @@ class Vue {
         <script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
             
-        <script>
-            
+        <script> 
+            $(document).ready(function(){
+                $("#navBoutonMobile").click(function(){
+                    $("#navAMobile").slideToggle("medium");
+                });
+            });
         </script>
 
         
@@ -101,7 +105,7 @@ class Vue {
                     <img class="iconeRecherche" src="./images/flecheRecherche.png">
                 </div>
 
-                <nav>
+                <nav id="navNormale">
                     <a href="?r=accueil" id="NavAccueil">Accueil</a>
                     <a href="?r=trajet">Trajet</a>
                     <a href="?r=soumission">Soumettre une oeuvre</a>
@@ -113,6 +117,22 @@ class Vue {
                     }
                     ?>
                 </nav>
+                
+                <div id="navMobile">
+                    <img src="images/navBouton.png" id="navBoutonMobile">
+                    <div id="navAMobile">
+                    <a href="?r=accueil" id="NavAccueil">Accueil</a>
+                    <a href="?r=trajet">Trajet</a>
+                    <a href="?r=soumission">Soumettre une oeuvre</a>
+                    <?php if ($_GET["r"] == "admin") {
+                        echo '<a href="#" onclick="#">Deconnexion</a><h4>Bienvenue nomUtilisateurAdmin</h4>';
+                    }
+                    else {
+                        echo '<a href="#" onclick="montrer_form()">Se connecter</a>';
+                    }
+                    ?>
+                    </div>
+                </div>
             </header>
 
             <div id="div_bgform">
@@ -145,9 +165,9 @@ class Vue {
         <footer>
              <button class="lienPageMembre" onclick="location.href = '?r=devenir_membre';"><h3>Devenez membre!</h3></button>
             <div class="reseauxsociaux">
-                <img id="logofb" src="images/fblogo2.png" alt="logofb">
-                <img id="logoInsta" src="images/instalogo2.png" alt="logoInsta">
-                <img id="logoPin" src="images/pinlogo2.png" alt="logoPin">
+                <img id="logofb" src="images/fblogo.png" alt="logofb">
+                <img id="logoInsta" src="images/instalogo.png" alt="logoInsta">
+                <img id="logoPin" src="images/pinlogo.png" alt="logoPin">
             </div>
         </footer>
     </body>
