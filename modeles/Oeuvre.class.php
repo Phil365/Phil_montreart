@@ -607,7 +607,7 @@ class Oeuvre {
 				
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres ORDER BY titre');
+        self::$database->query('SELECT * FROM Oeuvres  where "latitude" IS NOT null and "longitude" IS NOT null ORDER BY titre');
         
         if ($oeuvres = self::$database->resultset()) {
             foreach ($oeuvres as $oeuvre) {
@@ -894,6 +894,40 @@ class Oeuvre {
             $msgErreurs["errRequeteApprob"] = $e->getMessage();
         }
         return $msgErreurs;
+    }
+      /**
+    * @brief Méthode pour vérifier si une personne a deja visiter une oeuvre
+    * @param string $type
+    * @param integer $idOeuvre, $idUtilisateur
+    * @access public
+    * @return boolean
+    */
+     public function aVisiteOeuvre($idOeuvre, $idUtilisateur){
+        self::$database->query('SELECT * FROM visitent WHERE idOeuvre = :idOeuvre and idUtilisateur = :idUtilisateur');
+
+        self::$database->bind(':idOeuvre', $idOeuvre);
+        self::$database->bind(':idUtilisateur', $idUtilisateur);
+        
+
+       if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $idOeuvre = false;
+        }else $idOeuvre = true;
+        return $idOeuvre;
+    }
+      /**
+    * @brief Méthode pour insérer une oeuvre dans la bdd
+    * @param string $type
+    * @param integer $idOeuvre, $idUtilisateur, $laDate
+    * @access public    
+    */
+    public function visiteOeuvre($idOeuvre, $idUtilisateur, $laDate){
+        self::$database->query('INSERT INTO visitent (idOeuvre, idUtilisateur, dateVisite) VALUES (:idOeuvre, :idUtilisateur, :laDate)');
+
+        self::$database->bind(':idOeuvre', $idOeuvre);
+        self::$database->bind(':idUtilisateur', $idUtilisateur);
+        self::$database->bind(':laDate', $laDate);
+
+        self::$database->execute();  
     }
 }
 ?>
