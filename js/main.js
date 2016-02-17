@@ -974,16 +974,10 @@ function initMap() {
     var infoWindow = new google.maps.InfoWindow();
     var image = {
     url: 'images/User_icon_BLACK-01.png',
-    // This marker is 20 pixels wide by 32 pixels high.
     scaledSize: new google.maps.Size(25, 25), // scaled size
-    // The origin for this image is (0, 0).
- //   origin: new google.maps.Point(0, 0),
-    // The anchor for this image is the base of the flagpole at (0, 32).
-   // anchor: new google.maps.Point(0, 32)
   };
         var Lemarker = new google.maps.Marker({
         map: map,
-        //animation: google.maps.Animation.DROP,
         icon: image,        
         title:"Un MontréArtlais"
         }); 
@@ -994,10 +988,8 @@ function initMap() {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       }; 
-        Lemarker.setPosition(pos);
-        trouveMarqueurPlusPres(position.coords.latitude, position.coords.longitude);
-      //infoWindow.setPosition(pos);
-     // infoWindow.setContent('Location found.');
+        Lemarker.setPosition(pos); // Marqueur de la geolocalisation
+        trouveMarqueurPlusPres(position.coords.latitude, position.coords.longitude); // fonction 
       map.setCenter(pos);
         map.setZoom(14);
     }, function() {
@@ -1065,18 +1057,30 @@ function trouveMarqueurPlusPres(lat, lng) {
         var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
         var d = R * c;
         distances[i] = d;
-          //console.log('closest'+' '+closest);
-          //console.log('distances'+' '+distances[i]);
+
         if ( closest == -1 || d < distances[closest] ) {
-            closest = i;
-//            console.log('closest'+' '+closest);
-//          console.log('distances'+' '+distances[i]);
-            //console.log('d'+' '+d);
-            //console.log('distance'+distances[closest]);
+            closest = i; 
         }
-    }//console.log(markers[closest].getAttribute("name")+''+distances[closest].toFixed(2));
+    }
          document.getElementById("distanceMarqueur").innerHTML = 'Vous êtes à'+" "+distances[closest].toFixed(2)+" "+"km de distance de l'oeuvre"+' '+markers[closest].getAttribute("name");
-         //alert(markers[closest]);
+       if (distances[closest]<= 0.30){
+                    if(markers[closest].getAttribute("idOeuvre") != null){
+                                Date.prototype.yyyymmdd = function() {        //function pour avoir la date d'aujourd'hui 
+
+                                var yyyy = this.getFullYear().toString();                                    
+                                var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based         
+                                var dd  = this.getDate().toString();             
+
+                                return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]);
+                           };  
+
+                        d = new Date();
+                        var idOeuvre=markers[closest].getAttribute("idOeuvre");
+                        var laDate =d.yyyymmdd();
+                        var idUtilisateur=2;
+                        $.post('ajaxControler.php?rAjax=visiteOeuvres',{idOeuvre, idUtilisateur ,laDate });
+                  }
+            }
 });
     
 }

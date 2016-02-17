@@ -19,6 +19,9 @@ switch ($_GET['rAjax']) {//requête
     case 'googleMap':
         googleMap();
         break;
+    case 'visiteOeuvres':
+        visiteOeuvres();
+        break;        
     case 'autoComplete':
         autoComplete();
         break;
@@ -529,6 +532,22 @@ function googleMap () {
     echo $dom->saveXML();
     
 }
+/**
+* @brief Fonction qui vérifie si l'utilisateur a deja visiter l'oeuvre et l'ajoute sinon
+* @access public
+* @return void
+*/
+function visiteOeuvres () {
+    var_dump($_POST["idOeuvre"], $_POST["idUtilisateur"]);
+    $test= false;
+    $oeuvre = new Oeuvre();
+    $test =  $oeuvre->aVisiteOeuvre($_POST["idOeuvre"], $_POST["idUtilisateur"]); 
+    if ($test){
+        $oeuvre->visiteOeuvre($_POST["idOeuvre"], $_POST["idUtilisateur"], $_POST["laDate"]);   
+    }
+      
+}
+
 
 /* --------------------------------------------------------------------
 ========================== BARRE DE RECHERCHE =========================
