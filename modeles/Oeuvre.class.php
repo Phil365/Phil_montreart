@@ -616,7 +616,30 @@ class Oeuvre {
         }
         return $infoOeuvres;
 	}
-    
+      /**
+    * @brief fonction qui cherche et calcule les 9 oeuvres les plus proches en fonction de la localisation de l'utilisateur ou d'un point de depart initial.
+    * @param float $center_lat la latitude du point de depart
+    * @param float $center_lng la longitude du point de depart
+    * @access public
+    * @return array
+    */
+    public function getOeuvresProximite($center_lat, $center_lng){
+      
+        $infoOeuvres = array();
+        
+        self::$database->query("SELECT titre, latitude, longitude,(3959 * acos( cos( radians(:center_lat) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(:center_lng) ) + sin( radians(:center_lat) ) * sin( radians( latitude ) ) ) ) AS distance FROM oeuvres HAVING distance < 10 ORDER BY distance LIMIT 0 , 9");
+        
+         self::$database->bind(':center_lat', $center_lat);
+         self::$database->bind(':center_lng', $center_lng);
+        
+        if ($oeuvres = self::$database->resultset()) {
+            foreach ($oeuvres as $oeuvre) {
+                $infoOeuvres[] = $oeuvre;
+            }
+        }
+        return $infoOeuvres;
+        
+    }
     /**
     * @brief Méthode qui cherche toutes les oeuvres par catégorie.
     * @param integer $noInterneMtl

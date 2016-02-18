@@ -373,6 +373,25 @@ z-index: 3;
 .pourEnSavoirPlus:hover {
     background-color: #70212F;
     }
+
+#distanceMarqueur{
+    display: block;
+    height: auto;
+    margin-top: 20px;
+/*    margin-left: 20px;*/
+    font-size: 1.1em;
+    color: #70212F;
+}
+#directions-panel{
+    display: block;
+    margin: 30px 10px;
+}
+#directions-panel h4{
+    display: inline;
+    font-size: 1em;
+    line-height: 1.4em;
+    color: #70212F;
+    margin: 10px 0 5px 0;
 }
 /*------------- PAGE GESTION -----------------------*/
 
@@ -1131,7 +1150,7 @@ margin-left: 35px;
     display: block;
     position: absolute;
     top: 11px;
-    width: 70px;
+    width: 80px;
     height: 50px;
     margin-left: 10px;
     background-color: #ffffff;
@@ -1659,7 +1678,7 @@ display: none;
 
     .section1{
 
-        height: 300px;
+        height: auto;
         width: 40%;
         display: block;
         position: relative;
