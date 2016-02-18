@@ -1,5 +1,4 @@
 <?php
-
 /**
 * @brief class Artiste
 * @author David Lachambre

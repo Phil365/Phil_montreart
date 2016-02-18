@@ -538,7 +538,7 @@ function googleMap () {
 * @return void
 */
 function visiteOeuvres () {
-    var_dump($_POST["idOeuvre"], $_POST["idUtilisateur"]);
+//    var_dump($_POST["idOeuvre"], $_POST["idUtilisateur"]);
     $test= false;
     $oeuvre = new Oeuvre();
     $test =  $oeuvre->aVisiteOeuvre($_POST["idOeuvre"], $_POST["idUtilisateur"]); 

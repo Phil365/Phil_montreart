@@ -72,22 +72,22 @@ class VueDevenirMembre extends Vue {
 
         </ul>
         <form method="post" name="formAjoutUtilisateur" onsubmit="return validerFormAjoutUtilisateur();" action="?r=devenir_membre" enctype="multipart/form-data">
-             <input type='text' name='nomUsager' id='nomUsager' value="<?php echo $_POST["nomUsager"]; ?>" placeholder="Choisissez un nom d'usager"/>  
+             <input type='text' class="inputDevMembre" name='nomUsager' id='nomUsager' value="<?php echo $_POST["nomUsager"]; ?>" placeholder="Choisissez un nom d'usager"/>  
             <br> <span  id="erreurNomUsager" class="erreur"><?php if (isset($this->msgErreurs["errNomUsager"])) {echo $this->msgErreurs["errNomUsager"];} ?></span><br>
 
-            <input type='password' name='motPasse' id='motPasse' value="<?php echo $_POST["motPasse"]; ?>" placeholder="Choisissez un mot de passe"/>
+            <input type='password' class="inputDevMembre" name='motPasse' id='motPasse' value="<?php echo $_POST["motPasse"]; ?>" placeholder="Choisissez un mot de passe"/>
 
             <br> <span  id="erreurMotPasse" class="erreur"><?php if (isset($this->msgErreurs["errMotPasse"])) {echo $this->msgErreurs["errMotPasse"];} ?></span><br>
 
-            <input type='text' name='prenom' id='prenom' value="<?php echo $_POST["prenom"]; ?>" placeholder="Votre prénom (obligatoire)"/>
+            <input type='text' class="inputDevMembre" name='prenom' id='prenom' value="<?php echo $_POST["prenom"]; ?>" placeholder="Votre prénom (obligatoire)"/>
 
              <br> <span  id="erreurPrenom" class="erreur"><?php if (isset($this->msgErreurs["errPrenom"])) {echo $this->msgErreurs["errPrenom"];} ?></span><br>
 
-            <input type='text' name='nom' id='nom' value="<?php echo $_POST["nom"]; ?>" placeholder="Nom de Famille (obligatoire)"/>
+            <input type='text' class="inputDevMembre" name='nom' id='nom' value="<?php echo $_POST["nom"]; ?>" placeholder="Nom de Famille (obligatoire)"/>
 
             <br> <span  id="erreurNom" class="erreur"><?php if (isset($this->msgErreurs["errNom"])) {echo $this->msgErreurs["errNom"];} ?></span><br>
 
-            <input type='text' name='courriel' id='courriel' value="<?php echo $_POST["courriel"]; ?>" placeholder="Courriel (obligatoire)"/>
+            <input type='text' class="inputDevMembre" name='courriel' id='courriel' value="<?php echo $_POST["courriel"]; ?>" placeholder="Courriel (obligatoire)"/>
 
              <br> <span  id="erreurCourriel" class="erreur"><?php if (isset($this->msgErreurs["errCourriel"])) {echo $this->msgErreurs["errCourriel"];} ?></span><br>
 

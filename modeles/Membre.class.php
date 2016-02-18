@@ -39,3 +39,4 @@ class Membre extends Utilisateur {
         parent::AjouterUtilisateur($nomUsager, $motPasse, $prenom, $nom, $courriel, $descriptionProfil, $administrateur);
      }
 }
+?>

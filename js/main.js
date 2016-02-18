@@ -22,6 +22,10 @@ $(document).ready(function(){
         heightStyle: "content"
     });
 
+    //SLIDE BARRE DE RECHERCHE MOBILE
+    $(".boutonRechercheMobile").click(function(){
+        $(".barreRechercheContenuMobile").slideToggle("medium");
+    });
     
     //SLIDE BARRE DE RECHERCHE
     $(".barreRecherche").hide();
@@ -52,247 +56,272 @@ $(document).ready(function(){
     });
     //AJAX SELECT ARRONDISSEMENT
     $(".barreRecherche").on("change", ".selectArrondissement", function(){
-        $.get("ajaxControler.php?rAjax=selectRecherche&selectArrondissement="+this.value, function(reponse){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRecherche&selectArrondissement="+this.value, function(reponse){
             //ceci est la fonction de callback
             //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
             $(".submitRecherche").html(reponse);
         });
     });
     
-    $(document).ready(function(){
-        /**
-        * @brief fonctions jQuery qui affiche et masque les sections en fonction du lien cliqué par l'utilisateur.
-        */
-        //------------ DEBUT ONGLETS JQUERY PAGE GESTION -------------
+    //AJAX SELECT TYPE DE RECHERCHE MOBILE
+    $(".barreRechercheMobile").on("change", ".typeRecherche", function(){
+        
+        $.get("ajaxControler.php?rAjax=afficherSelectRecherche&typeRecherche="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".deuxiemeSelectRecherche").html(reponse);
+            $(".submitRechercheMobile").html("");//Pour corriger un bug où le bouton restait affiché si on changeait le type de recherche après son affichage.
+        });
+    });
+    //AJAX SELECT CATEGORIE MOBILE
+    $(".barreRechercheMobile").on("change", ".selectCategorie", function(){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRechercheMobile&selectCategorie="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".submitRechercheMobile").html(reponse);
+        });
+    });
+    //AJAX SELECT ARRONDISSEMENT MOBILE
+    $(".barreRechercheMobile").on("change", ".selectArrondissement", function(){
+        $.get("ajaxControler.php?rAjax=selectRecherche&selectArrondissement="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".submitRechercheMobile").html(reponse);
+        });
+    });
+    
+    /**
+    * @brief fonctions jQuery qui affiche et masque les sections en fonction du lien cliqué par l'utilisateur.
+    */
+    //------------ DEBUT ONGLETS JQUERY PAGE GESTION -------------
 
-        //ONGLET 1
-        $("#lienGestion1").click(function(){
-            
-            if ($( "#Onglet-1" ).is( ":visible" )){//Si l'onglet est visible...
+    //ONGLET 1
+    $("#lienGestion1").click(function(){
+
+        if ($( "#Onglet-1" ).is( ":visible" )){//Si l'onglet est visible...
+            $("#Onglet-1").slideToggle(500);
+        }
+        else {
+            if ($("#Onglet-2").is(":visible") || $("#Onglet-3" ).is(":visible") || $( "#Onglet-4").is( ":visible") || $("#Onglet-5").is(":visible") || $("#Onglet-6").is(":visible") || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-1").delay(400).slideToggle(500);
+            }
+            else {
                 $("#Onglet-1").slideToggle(500);
             }
-            else {
-                if ($("#Onglet-2").is(":visible") || $("#Onglet-3" ).is(":visible") || $( "#Onglet-4").is( ":visible") || $("#Onglet-5").is(":visible") || $("#Onglet-6").is(":visible") || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-1").delay(400).slideToggle(500);
-                }
-                else {
-                    $("#Onglet-1").slideToggle(500);
-                }
-                
-            }
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 2
-        $("#lienGestion2").click(function(){//Si l'onglet est visible...
-            if ($( "#Onglet-2" ).is( ":visible" )) {
-                $("#Onglet-2").slideToggle(500);
+
+        }
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-6").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 2
+    $("#lienGestion2").click(function(){//Si l'onglet est visible...
+        if ($( "#Onglet-2" ).is( ":visible" )) {
+            $("#Onglet-2").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-2").delay(400).slideToggle(750);
             }
             else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-2").delay(400).slideToggle(750);
-                }
-                else {
-                    $("#Onglet-2").slideToggle(750);
-                }
-                //---------------------------------------------------------------------------------------------------
-                //Requête Ajax pour récupérer les catégories de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
-                $.post('ajaxControler.php?rAjax=recupererCategories', 
-                    function(reponse){
-
-                    var categories = jQuery.parseJSON(reponse);
-                    var options = "<option value=''>choisir une catégorie</option>";
-                    var langue = getCookie("langue");
-
-                    //Choix du contenu du select en fonction de la langue
-                    if (langue == "FR") {
-                        $(categories).each(function(index, categorie) {
-                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieFR + '</option>';
-                        })
-                    }
-                    else if (langue = "EN") {
-                        $(categories).each(function(index, categorie) {
-                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieEN + '</option>';
-                        })
-                    }
-
-                    $("#selectCategorie").html(options);
-                });
-                //---------------------------------------------------------------------------------------------------
+                $("#Onglet-2").slideToggle(750);
             }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 3
-        $("#lienGestion3").click(function(){
-            if ($( "#Onglet-3" ).is( ":visible" )) {//Si l'onglet est visible...
+            //---------------------------------------------------------------------------------------------------
+            //Requête Ajax pour récupérer les catégories de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+            $.post('ajaxControler.php?rAjax=recupererCategories', 
+                function(reponse){
+
+                var categories = jQuery.parseJSON(reponse);
+                var options = "<option value=''>choisir une catégorie</option>";
+                var langue = getCookie("langue");
+
+                //Choix du contenu du select en fonction de la langue
+                if (langue == "FR") {
+                    $(categories).each(function(index, categorie) {
+                        options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieFR + '</option>';
+                    })
+                }
+                else if (langue = "EN") {
+                    $(categories).each(function(index, categorie) {
+                        options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieEN + '</option>';
+                    })
+                }
+
+                $("#selectCategorie").html(options);
+            });
+            //---------------------------------------------------------------------------------------------------
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-6").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 3
+    $("#lienGestion3").click(function(){
+        if ($( "#Onglet-3" ).is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-3").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-3").delay(400).slideToggle(500);
+            }
+            else {
                 $("#Onglet-3").slideToggle(500);
             }
-            else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-3").delay(400).slideToggle(500);
-                }
-                else {
-                    $("#Onglet-3").slideToggle(500);
-                }
-                //---------------------------------------------------------------------------------------------------
-                //Requête Ajax pour récupérer les oeuvres de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
-                $.post('ajaxControler.php?rAjax=recupererOeuvres', 
-                    function(reponse){
+            //---------------------------------------------------------------------------------------------------
+            //Requête Ajax pour récupérer les oeuvres de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+            $.post('ajaxControler.php?rAjax=recupererOeuvres', 
+                function(reponse){
 
-                    var oeuvres = jQuery.parseJSON(reponse);
-                    var options = "<option value=''>choisir une oeuvre</option>";
-                    
-                    $(oeuvres).each(function(index, oeuvre) {
-                        options += '<option value="' + oeuvre.idOeuvre + '">' + oeuvre.titre + '</option>';
-                    })
-                    $("#selectOeuvreSupp").html(options);
-                });
-                //---------------------------------------------------------------------------------------------------
+                var oeuvres = jQuery.parseJSON(reponse);
+                var options = "<option value=''>choisir une oeuvre</option>";
+
+                $(oeuvres).each(function(index, oeuvre) {
+                    options += '<option value="' + oeuvre.idOeuvre + '">' + oeuvre.titre + '</option>';
+                })
+                $("#selectOeuvreSupp").html(options);
+            });
+            //---------------------------------------------------------------------------------------------------
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-6").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 4
+    $("#lienGestion4").click(function(){
+        if ($( "#Onglet-4" ).is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-4").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-4").delay(400).slideToggle(500);
             }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 4
-        $("#lienGestion4").click(function(){
-            if ($( "#Onglet-4" ).is( ":visible" )) {//Si l'onglet est visible...
+            else {
                 $("#Onglet-4").slideToggle(500);
             }
-            else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-4").delay(400).slideToggle(500);
-                }
-                else {
-                    $("#Onglet-4").slideToggle(500);
-                }
-                //---------------------------------------------------------------------------------------------------
-                //Requête Ajax pour récupérer les oeuvres de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
-                $.post('ajaxControler.php?rAjax=recupererOeuvres', 
-                    function(reponse){
+            //---------------------------------------------------------------------------------------------------
+            //Requête Ajax pour récupérer les oeuvres de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+            $.post('ajaxControler.php?rAjax=recupererOeuvres', 
+                function(reponse){
 
-                    var oeuvres = jQuery.parseJSON(reponse);
-                    var options = "<option value=''>choisir une oeuvre</option>";
-                    
-                    $(oeuvres).each(function(index, oeuvre) {
-                        options += '<option value="' + oeuvre.idOeuvre + '">' + oeuvre.titre + '</option>';
-                    })
-                    $("#selectOeuvreModif").html(options);
-                });
-                //---------------------------------------------------------------------------------------------------
+                var oeuvres = jQuery.parseJSON(reponse);
+                var options = "<option value=''>choisir une oeuvre</option>";
+
+                $(oeuvres).each(function(index, oeuvre) {
+                    options += '<option value="' + oeuvre.idOeuvre + '">' + oeuvre.titre + '</option>';
+                })
+                $("#selectOeuvreModif").html(options);
+            });
+            //---------------------------------------------------------------------------------------------------
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-6").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 5
+    $("#lienGestion5").click(function(){
+        if ($( "#Onglet-5" ).is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-5").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-5").delay(400).slideToggle(500);
             }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 5
-        $("#lienGestion5").click(function(){
-            if ($( "#Onglet-5" ).is( ":visible" )) {//Si l'onglet est visible...
+            else {
                 $("#Onglet-5").slideToggle(500);
             }
-            else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-5").delay(400).slideToggle(500);
-                }
-                else {
-                    $("#Onglet-5").slideToggle(500);
-                }
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-6").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 6
+    $("#lienGestion6").click(function(){
+        if ($( "#Onglet-6" ).is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-6").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-6").delay(400).slideToggle(500);
             }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 6
-        $("#lienGestion6").click(function(){
-            if ($( "#Onglet-6" ).is( ":visible" )) {//Si l'onglet est visible...
+            else {
                 $("#Onglet-6").slideToggle(500);
             }
-            else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-6").delay(400).slideToggle(500);
+            //---------------------------------------------------------------------------------------------------
+            //Requête Ajax pour récupérer les catégories de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+            $.post('ajaxControler.php?rAjax=recupererCategories', 
+                function(reponse){
+
+                var categories = jQuery.parseJSON(reponse);
+                var options = "<option value=''>choisir une catégorie</option>";
+                var langue = getCookie("langue");
+
+                //Choix du contenu du select en fonction de la langue
+                if (langue == "FR") {
+                    $(categories).each(function(index, categorie) {
+                        options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieFR + '</option>';
+                    })
                 }
-                else {
-                    $("#Onglet-6").slideToggle(500);
+                else if (langue = "EN") {
+                    $(categories).each(function(index, categorie) {
+                        options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieEN + '</option>';
+                    })
                 }
-                //---------------------------------------------------------------------------------------------------
-                //Requête Ajax pour récupérer les catégories de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
-                $.post('ajaxControler.php?rAjax=recupererCategories', 
-                    function(reponse){
 
-                    var categories = jQuery.parseJSON(reponse);
-                    var options = "<option value=''>choisir une catégorie</option>";
-                    var langue = getCookie("langue");
-
-                    //Choix du contenu du select en fonction de la langue
-                    if (langue == "FR") {
-                        $(categories).each(function(index, categorie) {
-                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieFR + '</option>';
-                        })
-                    }
-                    else if (langue = "EN") {
-                        $(categories).each(function(index, categorie) {
-                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieEN + '</option>';
-                        })
-                    }
-
-                    $("#selectCategorieSupp").html(options);
-                });
-                //---------------------------------------------------------------------------------------------------
+                $("#selectCategorieSupp").html(options);
+            });
+            //---------------------------------------------------------------------------------------------------
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 7
+    $("#lienGestion7").click(function(){
+        if ($( "#Onglet-7" ).is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-7").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" )) {
+                $("#Onglet-7").delay(400).slideToggle(500);
             }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 7
-        $("#lienGestion7").click(function(){
-            if ($( "#Onglet-7" ).is( ":visible" )) {//Si l'onglet est visible...
+            else {
                 $("#Onglet-7").slideToggle(500);
             }
-            else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" )) {
-                    $("#Onglet-7").delay(400).slideToggle(500);
-                }
-                else {
-                    $("#Onglet-7").slideToggle(500);
-                }
-            }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-        });
-            //Toutes les sections sont cachées au chargement de la page.
-            $("#Onglet-1").hide();
-            $("#Onglet-2").hide();
-            $("#Onglet-3").hide();
-            $("#Onglet-4").hide();
-            $("#Onglet-5").hide();
-            $("#Onglet-6").hide();
-            $("#Onglet-7").hide();
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-6").slideUp(350);
     });
-    //------------ FIN ONGLETS JQUERY PAGE GESTION -------------
+        //Toutes les sections sont cachées au chargement de la page.
+        $("#Onglet-1").hide();
+        $("#Onglet-2").hide();
+        $("#Onglet-3").hide();
+        $("#Onglet-4").hide();
+        $("#Onglet-5").hide();
+        $("#Onglet-6").hide();
+        $("#Onglet-7").hide();
+//------------ FIN ONGLETS JQUERY PAGE GESTION -------------
 });
 
 /* --------------------------------------------------------------------
@@ -1063,7 +1092,7 @@ function trouveMarqueurPlusPres(lat, lng) {
         }
     }
          document.getElementById("distanceMarqueur").innerHTML = 'Vous êtes à'+" "+distances[closest].toFixed(2)+" "+"km de distance de l'oeuvre"+' '+markers[closest].getAttribute("name");
-       if (distances[closest]<= 0.30){
+       if (distances[closest]<= 0.50){
                     if(markers[closest].getAttribute("idOeuvre") != null){
                                 Date.prototype.yyyymmdd = function() {        //function pour avoir la date d'aujourd'hui 
 

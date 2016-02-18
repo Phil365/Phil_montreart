@@ -73,7 +73,7 @@ class VueRecherche extends Vue {
                 
                 echo "<br><br>";
                 
-                echo "<a class='pourEnSavoirPlus' href='http://localhost/?r=oeuvre&o=".$oeuvre["idOeuvre"]."'>Pour en savoir plus...</a>";
+echo "<a class='pourEnSavoirPlus' href=http://".$_SERVER['HTTP_HOST']."?r=oeuvre&o=".$oeuvre["idOeuvre"]."'>Pour en savoir plus...</a>";
                 
                 echo "<br><br><br><br>";
             }

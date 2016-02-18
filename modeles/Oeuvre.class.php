@@ -607,7 +607,7 @@ class Oeuvre {
 				
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres  where "latitude" IS NOT null and "longitude" IS NOT null ORDER BY titre');
+        self::$database->query('SELECT * FROM Oeuvres  where latitude IS NOT null and longitude IS NOT null ORDER BY titre');
         
         if ($oeuvres = self::$database->resultset()) {
             foreach ($oeuvres as $oeuvre) {
