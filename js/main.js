@@ -987,7 +987,123 @@ function autoComplete(rechercheVoulue, nomServeur)
         $("#results").fadeOut(500);
     })
 }
-
+/**
+* @brief Fonction d'initialisation Google Map Page Trajet, service des directions
+* @access public
+* @return void
+*/
+function initMapTrajet() {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 11,
+        center: new google.maps.LatLng(45.512090, -73.550979),
+        mapTypeId: 'roadmap'
+    });
+    directionsDisplay.setMap(map);
+        document.getElementById('envoyerTrajetBouton').addEventListener('click', function() {
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
+  });
+    var infoWindow = new google.maps.InfoWindow();
+     var image = {
+    url: 'images/User_icon_BLACK-01.png',
+    // This marker is 20 pixels wide by 32 pixels high.
+    scaledSize: new google.maps.Size(25, 25), // scaled size
+  };
+    var Lemarker = new google.maps.Marker({
+        map: map,
+        icon: image,        
+        title:"Un MontréArtlais"
+        }); 
+    // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      Lemarker.setPosition(pos);
+      marqueurPlusPresTrajet(position.coords.latitude, position.coords.longitude);
+      infoWindow.setPosition(pos);
+      infoWindow.setContent('Location found.');
+      map.setCenter(pos);
+        map.setZoom(14);
+         document.getElementById("depart").value = position.coords.latitude+", "+position.coords.longitude;
+         
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+   
+    
+    var urlAjax = 'ajaxControler.php?rAjax=googleMap';
+    downloadUrl(urlAjax, function(data) {
+        
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+        for (var i = 0; i < markers.length; i++) {
+            var name = markers[i].getAttribute("name");
+            var point = new google.maps.LatLng(
+            parseFloat(markers[i].getAttribute("lat")),
+            parseFloat(markers[i].getAttribute("lng")));
+            var html = "<span>" + name + "</span>";
+            var marker = new google.maps.Marker({
+                map: map,
+                position: point,
+            });
+            bindInfoWindow(marker, map, infoWindow, html);
+        }
+    });
+ 
+}
+/**
+* @brief Fonction de l'API Google Maps Directions pour calculer une itineraire
+* @access public
+* @return void
+*/
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  var waypts = [];
+  var checkboxArray = document.getElementById('waypoints');
+  for (var i = 0; i < checkboxArray.length; i++) {
+    if (checkboxArray.options[i].selected) {
+      waypts.push({
+        location: checkboxArray[i].value,
+        stopover: true
+      });
+     
+    }
+  }
+var selectFin = document.getElementById('fin');
+var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
+  directionsService.route({
+    origin: document.getElementById('depart').value,
+    destination: selectedOptFin,
+    waypoints: waypts,
+    optimizeWaypoints: true,
+    travelMode: google.maps.TravelMode.WALKING
+  }, function(response, status) {
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+      var route = response.routes[0];
+      var summaryPanel = document.getElementById('directions-panel');
+      summaryPanel.innerHTML = '';
+      // For each route, display summary information.
+      for (var i = 0; i < route.legs.length; i++) {
+        var routeSegment = i + 1;
+        summaryPanel.innerHTML += '<h4>Route Segment: ' + routeSegment +
+            '</h4><br>';
+        summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+        summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+        summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+      }
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+}
 /**
 * @brief Fonction d'initialisation Google Map
 * @access public
@@ -1110,6 +1226,53 @@ function trouveMarqueurPlusPres(lat, lng) {
                         $.post('ajaxControler.php?rAjax=visiteOeuvres',{idOeuvre, idUtilisateur ,laDate });
                   }
             }
+});
+    
+}
+/**
+* @brief Haversine pour calculer la distance entre deux point sur une sphere selon leurs point cardinaux  et instructions pour generer les inputs pour le calcule d'un itinairaire
+* @access public
+* @return void
+* @author https://en.wikipedia.org/wiki/Haversine_formula
+*/
+function marqueurPlusPresTrajet(lat, lng) {
+    var R = 6371; // rayon de la terre en km
+    var distances = [];
+    var closest = -1;
+    
+  
+     downloadUrl("ajaxControler.php?rAjax=googleMap", function(data) {
+
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+        var select = document.getElementById("fin");
+        var selectMultiple = document.getElementById("waypoints");
+    for( i=0;i<markers.length; i++ ) {
+        var mlat = parseFloat(markers[i].getAttribute("lat"));
+        var mlng = parseFloat(markers[i].getAttribute("lng"));
+        var dLat  = rad(mlat - lat);
+        var dLong = rad(mlng - lng);   
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong/2) * Math.sin(dLong/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        distances[i] = d;
+         
+        if ( closest == -1 || d < distances[closest] ) {
+            closest = i;
+         var opt = document.createElement('option');
+            opt.value = markers[i].getAttribute("lat")+','+markers[i].getAttribute("lng");
+            opt.innerHTML = markers[i].getAttribute("name");
+            select.appendChild(opt);
+        var optMult = document.createElement('option');
+            optMult.value = markers[i].getAttribute("lat")+','+markers[i].getAttribute("lng");
+            optMult.innerHTML = markers[i].getAttribute("name");
+            selectMultiple.appendChild(optMult);
+        }
+    }
+         document.getElementById("distanceMarqueur").innerHTML = 'Vous êtes à'+" "+distances[closest].toFixed(2)+" "+"km de distance de l'oeuvre"+' '+'"'+markers[closest].getAttribute("name")+'"';
+         
+        
 });
     
 }

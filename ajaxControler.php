@@ -19,6 +19,9 @@ switch ($_GET['rAjax']) {//requête
     case 'googleMap':
         googleMap();
         break;
+    case 'googleMapTrajet':
+        googleMapTrajet($lat,$lng);
+        break;
     case 'visiteOeuvres':
         visiteOeuvres();
         break;        
@@ -636,5 +639,34 @@ function afficherBoutonRecherche () {
     if ((isset($_GET["selectArrondissement"]) && $_GET["selectArrondissement"] != "") || (isset($_GET["selectCategorie"]) && $_GET["selectCategorie"] != "")) {
         echo '<input type="submit" name="boutonRecherche" value="Rechercher">';
     }
+}
+/* --------------------------------------------------------------------
+==========================GOOGLE MAP PAGE TRAJET=========================
+-------------------------------------------------------------------- */
+
+function googleMapTrajet ($lat, $lng) {
+	
+    $dom = new DOMDocument("1.0");
+    $node = $dom->createElement("markers");
+    $parnode = $dom->appendChild($node);
+	$center_lat = $lat;
+	$center_lng = $lng;
+    $oeuvre = new Oeuvre();
+    $infoOeuvre = $oeuvre->getOeuvresProximite($center_lat, $center_lng);
+    
+
+
+    // ADD TO XML DOCUMENT NODE
+    for ($i = 0; $i < count($infoOeuvre); $i++) {
+        $node = $dom->createElement("marker");
+        $newnode = $parnode->appendChild($node);
+        $newnode->setAttribute("name",$infoOeuvre[$i]["titre"]);
+        $newnode->setAttribute("lat", $infoOeuvre[$i]["latitude"]);
+        $newnode->setAttribute("lng", $infoOeuvre[$i]["longitude"]); 
+        $newnode->setAttribute("distance",$infoOeuvre[$i]['distance']);
+    }
+    header("Content-type: text/xml");
+    //echo $dom->saveXML();
+    
 }
 ?>
