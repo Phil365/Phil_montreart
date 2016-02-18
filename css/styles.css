@@ -690,7 +690,7 @@ nav a:first-child {
 
 /*====fin=NAV PRINCIPALE=====*/
 /*--------------------------STYLES FORMULAIRES -------------------------*/
-#div_bgform {
+#div_bgform, #bgPanneauApprobation {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -704,8 +704,8 @@ nav a:first-child {
 
 #fermer {
     position: absolute;
-    right: -4px;
-    top: -4px;
+    right: -8px;
+    top: -8px;
     width: 30px;
     height: 30px;
     background-color: #70212F;
@@ -718,19 +718,47 @@ nav a:first-child {
     cursor: pointer;
 }
 
-#div_form {
-    position: absolute;
-    top: 17%;
+#div_form, #panneauApprobation {
+    position: fixed;
     font-family: 'Source Sans Pro', sans-serif;
     z-index: 8;
     display: none;
+    margin: 0 auto;
 }
 
-#div_form h2 {
+#div_form h2, #panneauApprobation h2 {
     color: #70212F;
     padding: 20px 35px;
     margin: -10px -50px;
     text-align: center;
+}
+
+#panneauApprobation p {
+    font-size: 1.2em;
+    line-height: 1.2em;
+}
+
+.boutonAccepter, .boutonRefuser {
+    width:100px;
+    text-align:center;
+    background-color:#659CEF;
+    font-family: 'Source Sans Pro', sans-serif;
+    color:#fff;
+    padding:10px;
+    font-size:1.2em;
+    cursor:pointer;
+    border-radius:5px;
+    margin-top: 30px;
+    border: none;
+}
+
+.boutonRefuser {
+    float: right;
+    background: #B32A42; 
+}
+
+.boutonAccepter {
+    margin-bottom: 20px;
 }
 
 input {
@@ -780,13 +808,21 @@ textarea:focus {
 }
 
 #formlogin,
-#form_profil {
-    max-width: 200px;
+#form_profil,
+#divPanneauApprobation {
     padding: 10px 50px;
     border: 2px solid #F8F274;
     border-radius: 10px;
     font-family: 'Source Sans Pro', sans-serif;
     background-color: #fff;
+}
+
+#msgErreurApprobation {
+    color: red;
+}
+
+#divPanneauApprobation img {
+    width: 500px;
 }
 
 #form_itineraire,
@@ -892,9 +928,7 @@ header{
 }
 
 #logo{
-    height: 44px;
-    width: 44px;
-    margin: 5px;
+    display: none;
 }
 #titre{
     position: relative;
@@ -912,84 +946,7 @@ header{
     max-height: 36px;
 }
 
-.barreRecherche{
-    text-align: center;
-    font-family: 'Source Sans Pro', sans-serif;
-    display: block;
-    float: right;
-    background: #B32A42;
-    width: 200px;
-    height: 100%;
-    position: relative;
-    z-index: 5;
-    border-left: solid 2px #70212F;
-}
 
-.barreRechercheContenu {
-    margin: 6px 0 0 0;
-}
-
-.barreRechercheContenu input[type="submit"] {
-    background-color: #F5F077;
-}
-
-.barreRechercheContenu input[type="text"] {
-    width: 90.5%;
-    height: 18px;
-}
-
-.barreRechercheContenu select {
-    text-align: center;
-}
-
-.barreRechercheContenu input {
-    height: 22px;
-    width: 92%;
-    font-size: 14px;
-    padding: 0;
-    margin: 0 auto 5px auto;
-}
-.barreRechercheContenu select {
-    height: 22px;
-    width: 92%;
-    font-size: 14px;
-    padding: 0;
-    margin: 0 auto 5px auto;
-}
-
-.boutonRecherche{
-    float: right;
-    background: #B32A42;
-    width: 60px;
-    height: 100%;
-    position: relative;
-    z-index: 5;
-    border-left: solid 2px #70212F;
-}
-
-.iconeRecherche {
-    margin: 0 auto;
-    position: absolute;
-    left: 8px;
-    top: 10%;
-    height: 40px;
-    display: block;
-}
-
-.flecheRecherche {
-
-    float: right;
-    background: #B32A42;
-    width: 15px;
-    height: 15px;
-    position: absolute;
-    left: -10px;
-    top: 17px;
-    transform: rotate(45deg);
-    border-bottom-left-radius: 5px;
-    border-left: solid 2px #70212F;
-    border-bottom: solid 2px #70212F;
-}
 
 #submitRecherche{
     
@@ -1020,6 +977,7 @@ nav a {
 
 nav {
     background-color: #659CEF;
+    display: none;
 }
 
 #navMobile {
@@ -1196,6 +1154,17 @@ margin-left: 35px;
     padding-bottom: 10px;
 }
 
+.boutonRecherche{
+    display: none;
+}
+.inputDevMembre {
+    margin-left: 30px;
+}
+
+.submitRechercheMobile {
+
+
+}
 
     
 }
@@ -1238,6 +1207,86 @@ margin-left: 35px;
 .boutonsLiens {
     width: auto;
 }
+
+.boutonRechercheMobile {
+    background: #B32A42;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    border-left: solid 2px #70212F;
+    display: block;
+    
+}
+
+.iconeRechercheMobile {
+    margin: 0 auto;
+    position: absolute;
+    left: 170px;
+    top: 10%;
+    height: 40px;
+    display: block;
+    z-index: 6;
+}
+
+.flecheRechercheMobile {
+
+    background: #B32A42;
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    left: 180px;
+    top: 38px;
+    transform: rotate(315deg);
+    border-bottom-left-radius: 5px;
+    border-left: solid 2px #70212F;
+    border-bottom: solid 2px #70212F;
+    z-index: 5;
+}
+
+.barreRechercheContenuMobile {
+    display: none;
+    padding-top: 5px;
+    background: #70212F;
+    z-index: 5;
+    
+}
+
+
+.barreRechercheContenuMobile input[type="submit"] {
+    background-color: #F5F077;
+}
+
+.barreRechercheContenuMobile input[type="text"] {
+    width: 90.5%;
+    height: 18px;
+    margin-left: 10px;
+
+}
+
+.barreRechercheContenuMobile select {
+    text-align: center;
+    margin-left: 10px;
+}
+
+.barreRechercheContenuMobile input {
+    height: 22px;
+    width: 92%;
+    font-size: 14px;
+    padding: 0;
+    margin: 10px auto 15px 15px;
+}
+.barreRechercheContenuMobile select {
+    height: 22px;
+    width: 92%;
+    font-size: 14px;
+    padding: 0;
+    margin: 10px auto 15px 15px;
+}
+
+.barreRechercheContenu {
+    display: none;
+}
+
 /*======================================== Style reponse recherche ====================================================*/
 
 /*======================================== FIN DU STYLES POUR MOBILE ====================================================*/
@@ -1259,6 +1308,16 @@ margin-left: 35px;
         display: block;
     }
 */
+    
+#logo{
+    width: 20%;
+/*
+    height: 44px;
+    width: 44px;
+*/
+    margin: 5px;
+    display: block;
+}
     
 nav {
     display: block;
@@ -1294,6 +1353,118 @@ border-radius: 5px;
     
     }
     
+.barreRechercheContenuMobile {
+    display: none;   
+}
+    
+.boutonRechercheMobile {
+    display: none;
+}
+    
+.barreRechercheContenuMobile input[type="submit"] {
+    display: none;
+}
+
+.barreRechercheContenuMobile input[type="text"] {
+display: none;
+}
+
+.barreRechercheContenuMobile select {
+display: none;
+}
+
+.barreRechercheContenuMobile input {
+display: none;
+}
+.barreRechercheContenuMobile select {
+display: none;
+}
+.flecheRechercheMobile {
+display: none;
+}
+
+    
+.barreRecherche{
+    text-align: center;
+    font-family: 'Source Sans Pro', sans-serif;
+    display: block;
+    float: right;
+    background: #B32A42;
+    width: 200px;
+    height: 100%;
+    position: relative;
+    z-index: 5;
+    border-left: solid 2px #70212F;
+}
+
+.barreRechercheContenu {
+    margin: 6px 0 0 0;
+    display: block;
+}
+
+.barreRechercheContenu input[type="submit"] {
+    background-color: #F5F077;
+}
+
+.barreRechercheContenu input[type="text"] {
+    width: 90.5%;
+    height: 18px;
+}
+
+.barreRechercheContenu select {
+    text-align: center;
+}
+
+.barreRechercheContenu input {
+    height: 22px;
+    width: 92%;
+    font-size: 14px;
+    padding: 0;
+    margin: 0 auto 5px auto;
+}
+.barreRechercheContenu select {
+    height: 22px;
+    width: 92%;
+    font-size: 14px;
+    padding: 0;
+    margin: 0 auto 5px auto;
+}
+
+.boutonRecherche{
+    float: right;
+    background: #B32A42;
+    width: 60px;
+    height: 100%;
+    position: relative;
+    z-index: 5;
+    border-left: solid 2px #70212F;
+    display: block;
+}
+
+.iconeRecherche {
+    margin: 0 auto;
+    position: absolute;
+    left: 8px;
+    top: 10%;
+    height: 40px;
+    display: block;
+}
+
+.flecheRecherche {
+
+    float: right;
+    background: #B32A42;
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    left: -10px;
+    top: 17px;
+    transform: rotate(45deg);
+    border-bottom-left-radius: 5px;
+    border-left: solid 2px #70212F;
+    border-bottom: solid 2px #70212F;
+}
+    
     #icon_menu {
         margin-left: 2%;
         margin-right: 20%;
@@ -1316,10 +1487,16 @@ border-radius: 5px;
     .dummy {
         height: 98px;
     }
-    #div_form {
+    #div_form, #panneauApprobation {
         left: 50%;
-        margin-left: -202px;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
+    #divPanneauApprobation {
+        max-width: 500px;
+        min-width: 300px;
+    }
+    
     #formlogin {
         max-width: 300px;
     }

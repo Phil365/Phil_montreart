@@ -30,6 +30,8 @@ class VueAccueil extends Vue {
     */
     public function afficherBody() {
     ?>          
+
+
                 <br><br><br>
                 <h4 id="aProposMontreart">A propos de MontréArt</h4>
                 <p class="textStandard" id="texteAccueil">
@@ -37,6 +39,9 @@ Bienvenue sur le site de Montréart, où les oeuvres publiques les plus fantasti
                 </p>
             <div id="map"></div>
             <div id="distanceMarqueur"></div>
+
+             <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCsxHwItVduFaUAdzjf40odU5tsG0Z2YRA&signed_in=true&callback=initMap"></script>
+       <script type="text/javascript" src="js/vendor/js-marker-clusterer-gh-pages/src/markerclusterer.js"></script>
             
             <div class="section3">
                    <img src="images/LionBelfortDesktop.png" id="lionDesktop">

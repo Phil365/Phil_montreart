@@ -54,8 +54,7 @@ class Vue {
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/vendor/slick-1.5.9/slick/slick.min.js"></script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMap"></script>
-        <script type="text/javascript" src="js/vendor/js-marker-clusterer-gh-pages/src/markerclusterer.js"></script>      
+      
         <!-- JAVASCRIPT -->
         <script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
@@ -85,7 +84,6 @@ class Vue {
     <body>
         <div class="global">
             <header id="header">
-                <img id="logo" src="images/logo.png" alt="logo">
                 <div class="barreRecherche">
                     <div class="barreRechercheContenu">
                         <form action="?r=recherche" method="post">
@@ -105,6 +103,37 @@ class Vue {
                     <div class="flecheRecherche"></div>
                     <img class="iconeRecherche" src="./images/flecheRecherche.png">
                 </div>
+                
+                
+                
+                <div class="boutonRechercheMobile">
+                    <img class="iconeRechercheMobile" src="./images/flecheRecherche.png">
+                </div>
+                   
+                <div class="barreRechercheMobile">
+                    <div class="barreRechercheContenuMobile">
+                        <form action="?r=recherche" method="post">
+                            <select name="typeRecherche" class="typeRecherche">
+                                <option value="">Chercher une oeuvre par...</option>
+                                <option value="artiste">Artiste</option>
+                                <option value="titre">Titre d'oeuvre</option>
+                                <option value="arrondissement">Arrondissement</option>
+                                <option value="categorie">Catégorie</option>
+                            </select>                    
+                            <div class="deuxiemeSelectRecherche"></div>
+                            <div class="submitRechercheMobile"></div>
+                        </form>
+                    </div>
+                    <div class="flecheRechercheMobile"></div>
+                </div>
+                    
+                    
+                
+
+
+                <img id="logo" src="images/logo.png" alt="logo">
+
+
 
                 <nav id="navNormale">
                     <a href="?r=accueil" id="NavAccueil">Accueil</a>
