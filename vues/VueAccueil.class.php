@@ -44,7 +44,7 @@ Bienvenue sur le site de Montréart, où les oeuvres publiques les plus fantasti
             </div>
 
             <div class="section5 clear">
-<!--                <img src="images/Sponsors.png">-->
+                <img src="images/Promo.png">
             </div>
     <?php
     }
