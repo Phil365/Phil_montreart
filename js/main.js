@@ -13,7 +13,7 @@
 
 //INITIALISATION FONCTIONS JQUERY
 $(document).ready(function(){
-
+    
     //Accordéon Jquery pour l'onglet des soumissions dans la page de gestion
     $( "#accordeon" ).accordion({
         active: false,
@@ -22,6 +22,16 @@ $(document).ready(function(){
         heightStyle: "content"
     });
 
+    //SLIDE MENU MOBILE
+    $("#navAMobile").hide();//Cache le menu mobile au chargement
+    $("#navMobile").click(function(){
+        $("#navAMobile").slideToggle("medium");
+    });
+    
+    //SLIDE BARRE DE RECHERCHE MOBILE
+    $(".boutonRechercheMobile").click(function(){
+        $(".barreRechercheContenuMobile").slideToggle("medium");
+    });
     
     //SLIDE BARRE DE RECHERCHE
     $(".barreRecherche").hide();
@@ -52,247 +62,272 @@ $(document).ready(function(){
     });
     //AJAX SELECT ARRONDISSEMENT
     $(".barreRecherche").on("change", ".selectArrondissement", function(){
-        $.get("ajaxControler.php?rAjax=selectRecherche&selectArrondissement="+this.value, function(reponse){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRecherche&selectArrondissement="+this.value, function(reponse){
             //ceci est la fonction de callback
             //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
             $(".submitRecherche").html(reponse);
         });
     });
     
-    $(document).ready(function(){
-        /**
-        * @brief fonctions jQuery qui affiche et masque les sections en fonction du lien cliqué par l'utilisateur.
-        */
-        //------------ DEBUT ONGLETS JQUERY PAGE GESTION -------------
+    //AJAX SELECT TYPE DE RECHERCHE MOBILE
+    $(".barreRechercheMobile").on("change", ".typeRechercheMobile", function(){
+        
+        $.get("ajaxControler.php?rAjax=afficherSelectRechercheMobile&typeRechercheMobile="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".deuxiemeSelectRechercheMobile").html(reponse);
+            $(".submitRechercheMobile").html("");//Pour corriger un bug où le bouton restait affiché si on changeait le type de recherche après son affichage.
+        });
+    });
+    //AJAX SELECT CATEGORIE MOBILE
+    $(".barreRechercheMobile").on("change", ".selectCategorieMobile", function(){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRechercheMobile&selectCategorieMobile="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".submitRechercheMobile").html(reponse);
+        });
+    });
+    //AJAX SELECT ARRONDISSEMENT MOBILE
+    $(".barreRechercheMobile").on("change", ".selectArrondissementMobile", function(){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRechercheMobile&selectArrondissementMobile="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".submitRechercheMobile").html(reponse);
+        });
+    });
+    
+    /**
+    * @brief fonctions jQuery qui affiche et masque les sections en fonction du lien cliqué par l'utilisateur.
+    */
+    //------------ DEBUT ONGLETS JQUERY PAGE GESTION -------------
 
-        //ONGLET 1
-        $("#lienGestion1").click(function(){
-            
-            if ($( "#Onglet-1" ).is( ":visible" )){//Si l'onglet est visible...
+    //ONGLET 1
+    $("#lienGestion1").click(function(){
+
+        if ($( "#Onglet-1" ).is( ":visible" )){//Si l'onglet est visible...
+            $("#Onglet-1").slideToggle(500);
+        }
+        else {
+            if ($("#Onglet-2").is(":visible") || $("#Onglet-3" ).is(":visible") || $( "#Onglet-4").is( ":visible") || $("#Onglet-5").is(":visible") || $("#Onglet-6").is(":visible") || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-1").delay(400).slideToggle(500);
+            }
+            else {
                 $("#Onglet-1").slideToggle(500);
             }
-            else {
-                if ($("#Onglet-2").is(":visible") || $("#Onglet-3" ).is(":visible") || $( "#Onglet-4").is( ":visible") || $("#Onglet-5").is(":visible") || $("#Onglet-6").is(":visible") || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-1").delay(400).slideToggle(500);
-                }
-                else {
-                    $("#Onglet-1").slideToggle(500);
-                }
-                
-            }
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 2
-        $("#lienGestion2").click(function(){//Si l'onglet est visible...
-            if ($( "#Onglet-2" ).is( ":visible" )) {
-                $("#Onglet-2").slideToggle(500);
+
+        }
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-6").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 2
+    $("#lienGestion2").click(function(){//Si l'onglet est visible...
+        if ($( "#Onglet-2" ).is( ":visible" )) {
+            $("#Onglet-2").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-2").delay(400).slideToggle(750);
             }
             else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-2").delay(400).slideToggle(750);
-                }
-                else {
-                    $("#Onglet-2").slideToggle(750);
-                }
-                //---------------------------------------------------------------------------------------------------
-                //Requête Ajax pour récupérer les catégories de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
-                $.post('ajaxControler.php?rAjax=recupererCategories', 
-                    function(reponse){
-
-                    var categories = jQuery.parseJSON(reponse);
-                    var options = "<option value=''>choisir une catégorie</option>";
-                    var langue = getCookie("langue");
-
-                    //Choix du contenu du select en fonction de la langue
-                    if (langue == "FR") {
-                        $(categories).each(function(index, categorie) {
-                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieFR + '</option>';
-                        })
-                    }
-                    else if (langue = "EN") {
-                        $(categories).each(function(index, categorie) {
-                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieEN + '</option>';
-                        })
-                    }
-
-                    $("#selectCategorie").html(options);
-                });
-                //---------------------------------------------------------------------------------------------------
+                $("#Onglet-2").slideToggle(750);
             }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 3
-        $("#lienGestion3").click(function(){
-            if ($( "#Onglet-3" ).is( ":visible" )) {//Si l'onglet est visible...
+            //---------------------------------------------------------------------------------------------------
+            //Requête Ajax pour récupérer les catégories de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+            $.post('ajaxControler.php?rAjax=recupererCategories', 
+                function(reponse){
+
+                var categories = jQuery.parseJSON(reponse);
+                var options = "<option value=''>choisir une catégorie</option>";
+                var langue = getCookie("langue");
+
+                //Choix du contenu du select en fonction de la langue
+                if (langue == "FR") {
+                    $(categories).each(function(index, categorie) {
+                        options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieFR + '</option>';
+                    })
+                }
+                else if (langue = "EN") {
+                    $(categories).each(function(index, categorie) {
+                        options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieEN + '</option>';
+                    })
+                }
+
+                $("#selectCategorie").html(options);
+            });
+            //---------------------------------------------------------------------------------------------------
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-6").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 3
+    $("#lienGestion3").click(function(){
+        if ($( "#Onglet-3" ).is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-3").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-3").delay(400).slideToggle(500);
+            }
+            else {
                 $("#Onglet-3").slideToggle(500);
             }
-            else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-3").delay(400).slideToggle(500);
-                }
-                else {
-                    $("#Onglet-3").slideToggle(500);
-                }
-                //---------------------------------------------------------------------------------------------------
-                //Requête Ajax pour récupérer les oeuvres de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
-                $.post('ajaxControler.php?rAjax=recupererOeuvres', 
-                    function(reponse){
+            //---------------------------------------------------------------------------------------------------
+            //Requête Ajax pour récupérer les oeuvres de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+            $.post('ajaxControler.php?rAjax=recupererOeuvres', 
+                function(reponse){
 
-                    var oeuvres = jQuery.parseJSON(reponse);
-                    var options = "<option value=''>choisir une oeuvre</option>";
-                    
-                    $(oeuvres).each(function(index, oeuvre) {
-                        options += '<option value="' + oeuvre.idOeuvre + '">' + oeuvre.titre + '</option>';
-                    })
-                    $("#selectOeuvreSupp").html(options);
-                });
-                //---------------------------------------------------------------------------------------------------
+                var oeuvres = jQuery.parseJSON(reponse);
+                var options = "<option value=''>choisir une oeuvre</option>";
+
+                $(oeuvres).each(function(index, oeuvre) {
+                    options += '<option value="' + oeuvre.idOeuvre + '">' + oeuvre.titre + '</option>';
+                })
+                $("#selectOeuvreSupp").html(options);
+            });
+            //---------------------------------------------------------------------------------------------------
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-6").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 4
+    $("#lienGestion4").click(function(){
+        if ($( "#Onglet-4" ).is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-4").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-4").delay(400).slideToggle(500);
             }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 4
-        $("#lienGestion4").click(function(){
-            if ($( "#Onglet-4" ).is( ":visible" )) {//Si l'onglet est visible...
+            else {
                 $("#Onglet-4").slideToggle(500);
             }
-            else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-4").delay(400).slideToggle(500);
-                }
-                else {
-                    $("#Onglet-4").slideToggle(500);
-                }
-                //---------------------------------------------------------------------------------------------------
-                //Requête Ajax pour récupérer les oeuvres de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
-                $.post('ajaxControler.php?rAjax=recupererOeuvres', 
-                    function(reponse){
+            //---------------------------------------------------------------------------------------------------
+            //Requête Ajax pour récupérer les oeuvres de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+            $.post('ajaxControler.php?rAjax=recupererOeuvres', 
+                function(reponse){
 
-                    var oeuvres = jQuery.parseJSON(reponse);
-                    var options = "<option value=''>choisir une oeuvre</option>";
-                    
-                    $(oeuvres).each(function(index, oeuvre) {
-                        options += '<option value="' + oeuvre.idOeuvre + '">' + oeuvre.titre + '</option>';
-                    })
-                    $("#selectOeuvreModif").html(options);
-                });
-                //---------------------------------------------------------------------------------------------------
+                var oeuvres = jQuery.parseJSON(reponse);
+                var options = "<option value=''>choisir une oeuvre</option>";
+
+                $(oeuvres).each(function(index, oeuvre) {
+                    options += '<option value="' + oeuvre.idOeuvre + '">' + oeuvre.titre + '</option>';
+                })
+                $("#selectOeuvreModif").html(options);
+            });
+            //---------------------------------------------------------------------------------------------------
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-6").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 5
+    $("#lienGestion5").click(function(){
+        if ($( "#Onglet-5" ).is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-5").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-5").delay(400).slideToggle(500);
             }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 5
-        $("#lienGestion5").click(function(){
-            if ($( "#Onglet-5" ).is( ":visible" )) {//Si l'onglet est visible...
+            else {
                 $("#Onglet-5").slideToggle(500);
             }
-            else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-5").delay(400).slideToggle(500);
-                }
-                else {
-                    $("#Onglet-5").slideToggle(500);
-                }
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-6").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 6
+    $("#lienGestion6").click(function(){
+        if ($( "#Onglet-6" ).is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-6").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
+                $("#Onglet-6").delay(400).slideToggle(500);
             }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 6
-        $("#lienGestion6").click(function(){
-            if ($( "#Onglet-6" ).is( ":visible" )) {//Si l'onglet est visible...
+            else {
                 $("#Onglet-6").slideToggle(500);
             }
-            else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-7" ).is( ":visible" )) {
-                    $("#Onglet-6").delay(400).slideToggle(500);
+            //---------------------------------------------------------------------------------------------------
+            //Requête Ajax pour récupérer les catégories de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
+            $.post('ajaxControler.php?rAjax=recupererCategories', 
+                function(reponse){
+
+                var categories = jQuery.parseJSON(reponse);
+                var options = "<option value=''>choisir une catégorie</option>";
+                var langue = getCookie("langue");
+
+                //Choix du contenu du select en fonction de la langue
+                if (langue == "FR") {
+                    $(categories).each(function(index, categorie) {
+                        options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieFR + '</option>';
+                    })
                 }
-                else {
-                    $("#Onglet-6").slideToggle(500);
+                else if (langue = "EN") {
+                    $(categories).each(function(index, categorie) {
+                        options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieEN + '</option>';
+                    })
                 }
-                //---------------------------------------------------------------------------------------------------
-                //Requête Ajax pour récupérer les catégories de la BDD afin de mettre le select à jour lorsque l'onglet est ouvert.
-                $.post('ajaxControler.php?rAjax=recupererCategories', 
-                    function(reponse){
 
-                    var categories = jQuery.parseJSON(reponse);
-                    var options = "<option value=''>choisir une catégorie</option>";
-                    var langue = getCookie("langue");
-
-                    //Choix du contenu du select en fonction de la langue
-                    if (langue == "FR") {
-                        $(categories).each(function(index, categorie) {
-                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieFR + '</option>';
-                        })
-                    }
-                    else if (langue = "EN") {
-                        $(categories).each(function(index, categorie) {
-                            options += '<option value="' + categorie.idCategorie + '">' + categorie.nomCategorieEN + '</option>';
-                        })
-                    }
-
-                    $("#selectCategorieSupp").html(options);
-                });
-                //---------------------------------------------------------------------------------------------------
+                $("#selectCategorieSupp").html(options);
+            });
+            //---------------------------------------------------------------------------------------------------
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-7").slideUp(350);
+    });
+    //ONGLET 7
+    $("#lienGestion7").click(function(){
+        if ($( "#Onglet-7" ).is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-7").slideToggle(500);
+        }
+        else {
+            if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" )) {
+                $("#Onglet-7").delay(400).slideToggle(500);
             }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-7").slideUp(350);
-        });
-        //ONGLET 7
-        $("#lienGestion7").click(function(){
-            if ($( "#Onglet-7" ).is( ":visible" )) {//Si l'onglet est visible...
+            else {
                 $("#Onglet-7").slideToggle(500);
             }
-            else {
-                if ($( "#Onglet-1" ).is( ":visible" ) || $( "#Onglet-2" ).is( ":visible" ) || $( "#Onglet-3" ).is( ":visible" ) || $( "#Onglet-4" ).is( ":visible" ) || $( "#Onglet-5" ).is( ":visible" ) || $( "#Onglet-6" ).is( ":visible" )) {
-                    $("#Onglet-7").delay(400).slideToggle(500);
-                }
-                else {
-                    $("#Onglet-7").slideToggle(500);
-                }
-            }
-            $("#Onglet-1").slideUp(350);
-            $("#Onglet-2").slideUp(450);
-            $("#Onglet-3").slideUp(350);
-            $("#Onglet-4").slideUp(350);
-            $("#Onglet-5").slideUp(350);
-            $("#Onglet-6").slideUp(350);
-        });
-            //Toutes les sections sont cachées au chargement de la page.
-            $("#Onglet-1").hide();
-            $("#Onglet-2").hide();
-            $("#Onglet-3").hide();
-            $("#Onglet-4").hide();
-            $("#Onglet-5").hide();
-            $("#Onglet-6").hide();
-            $("#Onglet-7").hide();
+        }
+        $("#Onglet-1").slideUp(350);
+        $("#Onglet-2").slideUp(450);
+        $("#Onglet-3").slideUp(350);
+        $("#Onglet-4").slideUp(350);
+        $("#Onglet-5").slideUp(350);
+        $("#Onglet-6").slideUp(350);
     });
-    //------------ FIN ONGLETS JQUERY PAGE GESTION -------------
+        //Toutes les sections sont cachées au chargement de la page.
+        $("#Onglet-1").hide();
+        $("#Onglet-2").hide();
+        $("#Onglet-3").hide();
+        $("#Onglet-4").hide();
+        $("#Onglet-5").hide();
+        $("#Onglet-6").hide();
+        $("#Onglet-7").hide();
+//------------ FIN ONGLETS JQUERY PAGE GESTION -------------
 });
 
 /* --------------------------------------------------------------------
@@ -919,7 +954,7 @@ function autoComplete(rechercheVoulue, nomServeur)
 {
     var MIN_LENGTH = 1;
     var url =  "ajaxControler.php?rAjax=autoComplete&rechercheVoulue=";
-
+    
     $("#keyword").keyup(function() {
         
         var keyword = $("#keyword").val();
@@ -927,6 +962,8 @@ function autoComplete(rechercheVoulue, nomServeur)
             $.get(url + rechercheVoulue, { keyword: keyword } )
             
             .done(function( data ) {
+                
+                
                 
                 $('#results').html('');
                 var results = jQuery.parseJSON(data);
@@ -960,6 +997,174 @@ function autoComplete(rechercheVoulue, nomServeur)
 }
 
 /**
+* @brief Fonction d'autocomplete pour la recherche mobile
+* @access public
+* @return void
+*/
+function autoCompleteMobile(rechercheVoulue, nomServeur)
+{
+    var MIN_LENGTH = 1;
+    var url =  "ajaxControler.php?rAjax=autoComplete&rechercheVoulue=";
+    
+    $("#keywordMobile").keyup(function() {
+        
+        var keyword = $("#keywordMobile").val();
+        if (keyword.length >= MIN_LENGTH) {
+            $.get(url + rechercheVoulue, { keyword: keyword } )
+            
+            .done(function( data ) {
+                
+                
+                
+                $('#resultsMobile').html('');
+                var results = jQuery.parseJSON(data);
+                
+                $(results).each(function(key, value) {
+
+                    if (rechercheVoulue=="titre") {
+                        $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=oeuvre&o="+value['idOeuvre']+">"+value['titre']+"</a></div>");
+                    }
+                    if (rechercheVoulue=="artiste") {
+                        if (value['nomCollectif'] != null) {
+                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCollectif']+"</a></div>");
+                        }
+                        else {
+                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCompletArtiste']+"</a></div>");
+                        }
+                    }
+                })
+                $("#resultsMobile").show();
+            });
+        }
+        else {
+            $('#resultsMobile').html('');
+        }
+    });
+    
+    $("#keywordMobile").blur(function(){
+        
+        $("#resultsMobile").fadeOut(500);
+    })
+}
+
+/**
+* @brief Fonction d'initialisation Google Map Page Trajet, service des directions
+* @access public
+* @return void
+*/
+function initMapTrajet() {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 11,
+        center: new google.maps.LatLng(45.512090, -73.550979),
+        mapTypeId: 'roadmap'
+    });
+    directionsDisplay.setMap(map);
+        document.getElementById('envoyerTrajetBouton').addEventListener('click', function() {
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
+  });
+    var infoWindow = new google.maps.InfoWindow();
+     var image = {
+    url: 'images/User_icon_BLACK-01.png',
+    // This marker is 20 pixels wide by 32 pixels high.
+    scaledSize: new google.maps.Size(25, 25), // scaled size
+  };
+    var Lemarker = new google.maps.Marker({
+        map: map,
+        icon: image,        
+        title:"Un MontréArtlais"
+        }); 
+    // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      Lemarker.setPosition(pos);
+      marqueurPlusPresTrajet(position.coords.latitude, position.coords.longitude);
+      infoWindow.setPosition(pos);
+      infoWindow.setContent('Location found.');
+      map.setCenter(pos);
+        map.setZoom(14);
+         document.getElementById("depart").value = position.coords.latitude+", "+position.coords.longitude;
+         
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+   
+    
+    var urlAjax = 'ajaxControler.php?rAjax=googleMap';
+    downloadUrl(urlAjax, function(data) {
+        
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+        for (var i = 0; i < markers.length; i++) {
+            var name = markers[i].getAttribute("name");
+            var point = new google.maps.LatLng(
+            parseFloat(markers[i].getAttribute("lat")),
+            parseFloat(markers[i].getAttribute("lng")));
+            var html = "<span>" + name + "</span>";
+            var marker = new google.maps.Marker({
+                map: map,
+                position: point,
+            });
+            bindInfoWindow(marker, map, infoWindow, html);
+        }
+    });
+ 
+}
+/**
+* @brief Fonction de l'API Google Maps Directions pour calculer une itineraire
+* @access public
+* @return void
+*/
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  var waypts = [];
+  var checkboxArray = document.getElementById('waypoints');
+  for (var i = 0; i < checkboxArray.length; i++) {
+    if (checkboxArray.options[i].selected) {
+      waypts.push({
+        location: checkboxArray[i].value,
+        stopover: true
+      });
+     
+    }
+  }
+var selectFin = document.getElementById('fin');
+var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
+  directionsService.route({
+    origin: document.getElementById('depart').value,
+    destination: selectedOptFin,
+    waypoints: waypts,
+    optimizeWaypoints: true,
+    travelMode: google.maps.TravelMode.WALKING
+  }, function(response, status) {
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+      var route = response.routes[0];
+      var summaryPanel = document.getElementById('directions-panel');
+      summaryPanel.innerHTML = '';
+      // For each route, display summary information.
+      for (var i = 0; i < route.legs.length; i++) {
+        var routeSegment = i + 1;
+        summaryPanel.innerHTML += '<h4>Route Segment: ' + routeSegment +
+            '</h4><br>';
+        summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+        summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+        summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+      }
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+}
+/**
 * @brief Fonction d'initialisation Google Map
 * @access public
 * @return void
@@ -972,11 +1177,39 @@ function initMap() {
         mapTypeId: 'roadmap'
     });
     var infoWindow = new google.maps.InfoWindow();
-
+    var image = {
+    url: 'images/User_icon_BLACK-01.png',
+    scaledSize: new google.maps.Size(25, 25), // scaled size
+  };
+        var Lemarker = new google.maps.Marker({
+        map: map,
+        icon: image,        
+        title:"Un MontréArtlais"
+        }); 
+    // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.watchPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      }; 
+        Lemarker.setPosition(pos); // Marqueur de la geolocalisation
+        trouveMarqueurPlusPres(position.coords.latitude, position.coords.longitude); // fonction 
+      map.setCenter(pos);
+        map.setZoom(14);
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    },{enableHighAccuracy: true, maximumAge: 100, timeout: 60000 });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  } 
     downloadUrl("ajaxControler.php?rAjax=googleMap", function(data) {
-
+        var markerArray='';
+        var mcOptions = {gridSize: 50, maxZoom: 15};
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName("marker");
+        var ClusterMap = [];
         for (var i = 0; i < markers.length; i++) {
             var name = markers[i].getAttribute("name");
             //    var photo = markers[i].getAttribute("photo");
@@ -987,14 +1220,122 @@ function initMap() {
             parseFloat(markers[i].getAttribute("lng")));
             var html = "<a href='" + url + "'>" + name + "</a>";
             var marker = new google.maps.Marker({
-                map: map,
-                position: point,
-            });
+                position: point
+            });   marker.setMap(map); 
+            ClusterMap.push(marker);   
             bindInfoWindow(marker, map, infoWindow, html);
-        }
+         
+        }var markerCluster = new MarkerClusterer(map, ClusterMap,mcOptions);
     });
 }
 
+/**
+* @brief fonction pour rayon d'un cercle
+* @access public
+* @return rayon
+*/
+function rad(x) {return x*Math.PI/180;}
+/**
+* @brief Haversine pour calculer la distance entre deux point sur une sphere selon leurs point cardinaux
+* @access public
+* @return void
+* @author https://en.wikipedia.org/wiki/Haversine_formula
+*/
+function trouveMarqueurPlusPres(lat, lng) {
+    var R = 6371; // rayon de la terre en km
+    var distances = [];
+    var closest = -1;
+    
+  
+     downloadUrl("ajaxControler.php?rAjax=googleMap", function(data) {
+
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+         
+    for( i=0;i<markers.length; i++ ) {
+        var mlat = parseFloat(markers[i].getAttribute("lat"));
+        var mlng = parseFloat(markers[i].getAttribute("lng"));
+        var dLat  = rad(mlat - lat);
+        var dLong = rad(mlng - lng);   
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong/2) * Math.sin(dLong/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        distances[i] = d;
+
+        if ( closest == -1 || d < distances[closest] ) {
+            closest = i; 
+        }
+    }
+         document.getElementById("distanceMarqueur").innerHTML = 'Vous êtes à'+" "+distances[closest].toFixed(2)+" "+"km de distance de l'oeuvre"+' '+markers[closest].getAttribute("name");
+       if (distances[closest]<= 0.50){
+                    if(markers[closest].getAttribute("idOeuvre") != null){
+                                Date.prototype.yyyymmdd = function() {        //function pour avoir la date d'aujourd'hui 
+
+                                var yyyy = this.getFullYear().toString();                                    
+                                var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based         
+                                var dd  = this.getDate().toString();             
+
+                                return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0]);
+                           };  
+
+                        d = new Date();
+                        var idOeuvre=markers[closest].getAttribute("idOeuvre");
+                        var laDate =d.yyyymmdd();
+                        var idUtilisateur=2;
+                        $.post('ajaxControler.php?rAjax=visiteOeuvres',{idOeuvre, idUtilisateur ,laDate });
+                  }
+            }
+});
+    
+}
+/**
+* @brief Haversine pour calculer la distance entre deux point sur une sphere selon leurs point cardinaux  et instructions pour generer les inputs pour le calcule d'un itinairaire
+* @access public
+* @return void
+* @author https://en.wikipedia.org/wiki/Haversine_formula
+*/
+function marqueurPlusPresTrajet(lat, lng) {
+    var R = 6371; // rayon de la terre en km
+    var distances = [];
+    var closest = -1;
+    
+  
+     downloadUrl("ajaxControler.php?rAjax=googleMap", function(data) {
+
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+        var select = document.getElementById("fin");
+        var selectMultiple = document.getElementById("waypoints");
+    for( i=0;i<markers.length; i++ ) {
+        var mlat = parseFloat(markers[i].getAttribute("lat"));
+        var mlng = parseFloat(markers[i].getAttribute("lng"));
+        var dLat  = rad(mlat - lat);
+        var dLong = rad(mlng - lng);   
+        var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(rad(lat)) * Math.cos(rad(lat)) * Math.sin(dLong/2) * Math.sin(dLong/2);
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        var d = R * c;
+        distances[i] = d;
+         
+        if ( closest == -1 || d < distances[closest] ) {
+            closest = i;
+         var opt = document.createElement('option');
+            opt.value = markers[i].getAttribute("lat")+','+markers[i].getAttribute("lng");
+            opt.innerHTML = markers[i].getAttribute("name");
+            select.appendChild(opt);
+        var optMult = document.createElement('option');
+            optMult.value = markers[i].getAttribute("lat")+','+markers[i].getAttribute("lng");
+            optMult.innerHTML = markers[i].getAttribute("name");
+            selectMultiple.appendChild(optMult);
+        }
+    }
+         document.getElementById("distanceMarqueur").innerHTML = 'Vous êtes à'+" "+distances[closest].toFixed(2)+" "+"km de distance de l'oeuvre"+' '+'"'+markers[closest].getAttribute("name")+'"';
+         
+        
+});
+    
+}
 /**
 * @brief Fonction de mise en page pour la Google Map
 * @access public
@@ -1030,7 +1371,12 @@ function downloadUrl(url,callback) {
     request.open('GET', url, true);
     request.send(null);
 }
-
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+  infoWindow.setPosition(pos);
+  infoWindow.setContent(browserHasGeolocation ?
+                        'Error: The Geolocation service failed.' :
+                        'Error: Your browser doesn\'t support geolocation.');
+}
 function doNothing() {}
 
 //methode pour monter le formulaire login
@@ -1086,36 +1432,66 @@ function afficherOeuvrePourApprobation(idOeuvre) {
         function(reponse){
         var oeuvre = jQuery.parseJSON(reponse);
         var langue = getCookie("langue");
+
         var contenu = "";
         var type = "\"oeuvre\"";
         var id = idOeuvre;
+        
+        //Vérification des champs null
+        if (oeuvre.descriptionFR != null) {
+            var descriptionFR = oeuvre.descriptionFR;
+        }
+        else {
+            var descriptionFR = "";
+        }
+        
+        if (oeuvre.descriptionEN != null) {
+            var descriptionEN = oeuvre.descriptionEN;
+        }
+        else {
+            var descriptionEN = "";
+        }
+        
+        if (oeuvre.prenomArtiste != null) {
+            var prenomArtiste = oeuvre.prenomArtiste;
+        }
+        else {
+            var prenomArtiste = "";
+        }
+        
+        if (oeuvre.nomArtiste != null) {
+            var nomArtiste = oeuvre.nomArtiste;
+        }
+        else {
+            var nomArtiste = "";
+        }
+        
+        if (oeuvre.nomCategorieFR != null) {
+            var nomCategorieFR = oeuvre.nomCategorieFR;
+        }
+        else {
+            var nomCategorieFR = "";
+        }
+        
+        if (oeuvre.nomCategorieEN != null) {
+            var nomCategorieEN = oeuvre.nomCategorieEN;
+        }
+        else {
+            var nomCategorieEN = "";
+        }
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
         contenu += "<h2>Oeuvre soumise</h2>";
         contenu += "<p>Titre : <span style='color:green'>" + oeuvre.titre + "</span><br>";
         contenu += "Adresse : <span style='color:green'>" + oeuvre.adresse + "</span><br>";
-        contenu += "Description en anglais : <span style='color:green'>" + oeuvre.descriptionFR + "</span><br>";
-        contenu += "Description en français : <span style='color:green'>" + oeuvre.descriptionEN + "</span><br>";
+        contenu += "Description en français : <span style='color:green'>" + descriptionFR + "</span><br>";
+        contenu += "Description en anglais : <span style='color:green'>" + descriptionEN + "</span><br>";
         contenu += "Arrondissement : <span style='color:green'>" + oeuvre.nomArrondissement + "</span><br>";
-        if (langue == "FR") {
-            contenu += "Catégorie : <span style='color:green'>" + oeuvre.nomCategorieFR + "</span><br>";
-        }
-        else if (langue == "EN") {
-            contenu += "Catégorie : <span style='color:green'>" + oeuvre.nomCategorieEN + "</span><br>";
-        }
-        if (oeuvre.prenomArtiste == null) {
-            contenu += "Prénom de l'artiste :<br>";
-        }
-        else {
-            contenu += "Prénom de l'artiste : <span style='color:green'>" + oeuvre.prenomArtiste + "</span><br>";
-        }
-        if (oeuvre.nomArtiste == null) {
-            contenu += "Nom de l'artiste :<br>";
-        }
-        else {
-            contenu += "Nom de l'artiste : <span style='color:green'>" + oeuvre.nomArtiste + "</span><br>";
-        }
+        contenu += "Catégorie : <span style='color:green'>" + nomCategorieFR + "</span><br>";
+        contenu += "Catégorie : <span style='color:green'>" + nomCategorieEN + "</span><br>";
+        contenu += "Prénom de l'artiste : <span style='color:green'>" + prenomArtiste + "</span><br>";
+        contenu += "Nom de l'artiste : <span style='color:green'>" + nomArtiste + "</span><br>";
         contenu += "</p>";
         contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + id + ")'>";
         contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + id + ")'>";
@@ -1222,7 +1598,7 @@ function accepterSoumissions(type, id) {
         }
         else {//Sinon indique les erreurs à l'utilisateur.
             $(msgErreurs).each(function(index, valeur) {
-                console.log(valeur.errRequeteApprob);
+
                 if (valeur.errRequeteApprob) {
                     $("#msgErreurApprobation").html(valeur.errRequeteApprob);
                 }

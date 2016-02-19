@@ -598,6 +598,26 @@ class Oeuvre {
     }
     
     /**
+    * @brief Méthode qui cherche toutes les oeuvres avec une longitude et une latitude pour la Google Map.
+    * @access public
+    * @return array
+    */
+	public function getAllOeuvresMap() 
+	{
+				
+        $infoOeuvres = array();
+        
+        self::$database->query('SELECT * FROM Oeuvres WHERE latitude IS NOT null and longitude IS NOT null');
+        
+        if ($oeuvres = self::$database->resultset()) {
+            foreach ($oeuvres as $oeuvre) {
+                $infoOeuvres[] = $oeuvre;
+            }
+        }
+        return $infoOeuvres;
+	}
+    
+    /**
     * @brief Méthode qui cherche toutes les oeuvres.
     * @access public
     * @return array
@@ -617,6 +637,30 @@ class Oeuvre {
         return $infoOeuvres;
 	}
     
+      /**
+    * @brief fonction qui cherche et calcule les 9 oeuvres les plus proches en fonction de la localisation de l'utilisateur ou d'un point de depart initial.
+    * @param float $center_lat la latitude du point de depart
+    * @param float $center_lng la longitude du point de depart
+    * @access public
+    * @return array
+    */
+    public function getOeuvresProximite($center_lat, $center_lng){
+      
+        $infoOeuvres = array();
+        
+        self::$database->query("SELECT titre, latitude, longitude,(3959 * acos( cos( radians(:center_lat) ) * cos( radians( latitude ) ) * cos( radians( longitude ) - radians(:center_lng) ) + sin( radians(:center_lat) ) * sin( radians( latitude ) ) ) ) AS distance FROM oeuvres HAVING distance < 10 ORDER BY distance LIMIT 0 , 9");
+        
+         self::$database->bind(':center_lat', $center_lat);
+         self::$database->bind(':center_lng', $center_lng);
+        
+        if ($oeuvres = self::$database->resultset()) {
+            foreach ($oeuvres as $oeuvre) {
+                $infoOeuvres[] = $oeuvre;
+            }
+        }
+        return $infoOeuvres;
+        
+    }
     /**
     * @brief Méthode qui cherche toutes les oeuvres par catégorie.
     * @param integer $noInterneMtl
@@ -894,6 +938,40 @@ class Oeuvre {
             $msgErreurs["errRequeteApprob"] = $e->getMessage();
         }
         return $msgErreurs;
+    }
+      /**
+    * @brief Méthode pour vérifier si une personne a deja visiter une oeuvre
+    * @param string $type
+    * @param integer $idOeuvre, $idUtilisateur
+    * @access public
+    * @return boolean
+    */
+     public function aVisiteOeuvre($idOeuvre, $idUtilisateur){
+        self::$database->query('SELECT * FROM visitent WHERE idOeuvre = :idOeuvre and idUtilisateur = :idUtilisateur');
+
+        self::$database->bind(':idOeuvre', $idOeuvre);
+        self::$database->bind(':idUtilisateur', $idUtilisateur);
+        
+
+       if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $idOeuvre = false;
+        }else $idOeuvre = true;
+        return $idOeuvre;
+    }
+      /**
+    * @brief Méthode pour insérer une oeuvre dans la bdd
+    * @param string $type
+    * @param integer $idOeuvre, $idUtilisateur, $laDate
+    * @access public    
+    */
+    public function visiteOeuvre($idOeuvre, $idUtilisateur, $laDate){
+        self::$database->query('INSERT INTO visitent (idOeuvre, idUtilisateur, dateVisite) VALUES (:idOeuvre, :idUtilisateur, :laDate)');
+
+        self::$database->bind(':idOeuvre', $idOeuvre);
+        self::$database->bind(':idUtilisateur', $idUtilisateur);
+        self::$database->bind(':laDate', $laDate);
+
+        self::$database->execute();  
     }
 }
 ?>

@@ -90,15 +90,6 @@ class VueSoumission extends Vue {
     ?>
        
         
-        <div class="aside1"  id="DevenirMembre">
-            Devenir membre a ses avantages!
-        </div>
-        
- 
-        <div class="aside2" id="Sponsors">
-            Sponsors
-        </div>
-        
         <main>
             <h2>Contribuez à Montréart!</h2>
             <p class="noIndent">Vous avez trouvé une oeuvre, qui, selon vous, devrait être sur notre site?</p>
@@ -163,6 +154,9 @@ class VueSoumission extends Vue {
             ?>  
             </span>
         </main>
+        <div class="aside1"  id="DevenirMembre">
+            Devenir membre a ses avantages!
+        </div>
 
     <?php
     }

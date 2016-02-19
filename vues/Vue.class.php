@@ -54,16 +54,10 @@ class Vue {
 		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/vendor/slick-1.5.9/slick/slick.min.js"></script>
-        
+      
         <!-- JAVASCRIPT -->
         <script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
-            
-        <script>
-            
-        </script>
-
-        
 	</head>
     <?php
                         
@@ -80,16 +74,17 @@ class Vue {
     <body>
         <div class="global">
             <header id="header">
-                <img id="logo" src="images/logo.png" alt="logo">
                 <div class="barreRecherche">
                     <div class="barreRechercheContenu">
                         <form action="?r=recherche" method="post">
                             <select name="typeRecherche" class="typeRecherche">
-                                <option value="">Chercher une oeuvre par...</option>
-                                <option value="artiste">Artiste</option>
-                                <option value="titre">Titre d'oeuvre</option>
-                                <option value="arrondissement">Arrondissement</option>
-                                <option value="categorie">Catégorie</option>
+                                <optgroup>
+                                    <option value="">Chercher une oeuvre par...</option>
+                                    <option value="artiste">Artiste</option>
+                                    <option value="titre">Titre d'oeuvre</option>
+                                    <option value="arrondissement">Arrondissement</option>
+                                    <option value="categorie">Catégorie</option>
+                                </optgroup>
                             </select>                    
                             <div class="deuxiemeSelectRecherche"></div>
                             <div class="submitRecherche"></div>
@@ -100,8 +95,33 @@ class Vue {
                     <div class="flecheRecherche"></div>
                     <img class="iconeRecherche" src="./images/flecheRecherche.png">
                 </div>
+                
+                <div class="boutonRechercheMobile">
+                    <img class="iconeRechercheMobile" src="./images/flecheRecherche.png">
+                </div>
+                   
+                <div class="barreRechercheMobile">
+                    <div class="barreRechercheContenuMobile">
+                        <form action="?r=recherche" method="post">
+                            <select name="typeRechercheMobile" class="typeRechercheMobile">
+                                <optgroup>
+                                    <option value="">Chercher une oeuvre par...</option>
+                                    <option value="artiste">Artiste</option>
+                                    <option value="titre">Titre d'oeuvre</option>
+                                    <option value="arrondissement">Arrondissement</option>
+                                    <option value="categorie">Catégorie</option>
+                                </optgroup>
+                            </select>                    
+                            <div class="deuxiemeSelectRechercheMobile"></div>
+                            <div class="submitRechercheMobile"></div>
+                        </form>
+                    </div>
+                    <div class="flecheRechercheMobile"></div>
+                </div>
 
-                <nav>
+                <img id="logo" src="images/logo.png" alt="logo">
+
+                <nav id="navNormale">
                     <a href="?r=accueil" id="NavAccueil">Accueil</a>
                     <a href="?r=trajet">Trajet</a>
                     <a href="?r=soumission">Soumettre une oeuvre</a>
@@ -113,6 +133,22 @@ class Vue {
                     }
                     ?>
                 </nav>
+                
+                <div id="navMobile">
+                    <img src="images/navBouton.png" id="navBoutonMobile">
+                    <div id="navAMobile">
+                    <a href="?r=accueil" id="NavAccueil">Accueil</a>
+                    <a href="?r=trajet">Trajet</a>
+                    <a href="?r=soumission">Soumettre une oeuvre</a>
+                    <?php if ($_GET["r"] == "admin") {
+                        echo '<a href="#" onclick="#">Deconnexion</a><h4>Bienvenue nomUtilisateurAdmin</h4>';
+                    }
+                    else {
+                        echo '<a href="#" onclick="montrer_form()">Se connecter</a>';
+                    }
+                    ?>
+                    </div>
+                </div>
             </header>
 
             <div id="div_bgform">
@@ -145,9 +181,9 @@ class Vue {
         <footer>
              <button class="lienPageMembre" onclick="location.href = '?r=devenir_membre';"><h3>Devenez membre!</h3></button>
             <div class="reseauxsociaux">
-                <img id="logofb" src="images/fblogo2.png" alt="logofb">
-                <img id="logoInsta" src="images/instalogo2.png" alt="logoInsta">
-                <img id="logoPin" src="images/pinlogo2.png" alt="logoPin">
+                <img id="logofb" src="images/fblogo.png" alt="logofb">
+                <img id="logoInsta" src="images/instalogo.png" alt="logoInsta">
+                <img id="logoPin" src="images/pinlogo.png" alt="logoPin">
             </div>
         </footer>
     </body>

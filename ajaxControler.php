@@ -19,6 +19,12 @@ switch ($_GET['rAjax']) {//requête
     case 'googleMap':
         googleMap();
         break;
+    case 'googleMapTrajet':
+        googleMapTrajet($lat,$lng);
+        break;
+    case 'visiteOeuvres':
+        visiteOeuvres();
+        break;        
     case 'autoComplete':
         autoComplete();
         break;
@@ -27,6 +33,12 @@ switch ($_GET['rAjax']) {//requête
         break;
     case 'afficherBoutonRecherche':
         afficherBoutonRecherche();
+        break;
+    case 'afficherSelectRechercheMobile':
+        afficherSelectRechercheMobile();
+        break;
+    case 'afficherBoutonRechercheMobile':
+        afficherBoutonRechercheMobile();
         break;
     case 'ajouterCategorie':
         ajouterCategorie();
@@ -509,7 +521,7 @@ function googleMap () {
     $parnode = $dom->appendChild($node);
 
     $oeuvre = new Oeuvre();
-    $infoOeuvre = $oeuvre->getAllOeuvres();
+    $infoOeuvre = $oeuvre->getAllOeuvresMap();
     
     $urlOeuvre = "http://".$_SERVER['HTTP_HOST']."?r=oeuvre&o=";
 
@@ -523,14 +535,31 @@ function googleMap () {
         $newnode->setAttribute("lng", $infoOeuvre[$i]["longitude"]); 
         //$newnode->setAttribute("photo", $infoOeuvre[$i]["image"]);   
         $newnode->setAttribute("url", $urlOeuvre.$infoOeuvre[$i]["idOeuvre"]);
+        $newnode->setAttribute("idOeuvre", $infoOeuvre[$i]["idOeuvre"]);
     }
     header("Content-type: text/xml");
     echo $dom->saveXML();
     
 }
+/**
+* @brief Fonction qui vérifie si l'utilisateur a deja visiter l'oeuvre et l'ajoute sinon
+* @access public
+* @return void
+*/
+function visiteOeuvres () {
+//    var_dump($_POST["idOeuvre"], $_POST["idUtilisateur"]);
+    $test= false;
+    $oeuvre = new Oeuvre();
+    $test =  $oeuvre->aVisiteOeuvre($_POST["idOeuvre"], $_POST["idUtilisateur"]); 
+    if ($test){
+        $oeuvre->visiteOeuvre($_POST["idOeuvre"], $_POST["idUtilisateur"], $_POST["laDate"]);   
+    }
+      
+}
+
 
 /* --------------------------------------------------------------------
-========================== BARRE DE RECHERCHE =========================
+========================== BARRES DE RECHERCHE =========================
 -------------------------------------------------------------------- */
 /**
 * @brief Fonction qui récupère des noms de la BDD en fonction des lettres entrées par l'utilisateur
@@ -616,5 +645,94 @@ function afficherBoutonRecherche () {
     if ((isset($_GET["selectArrondissement"]) && $_GET["selectArrondissement"] != "") || (isset($_GET["selectCategorie"]) && $_GET["selectCategorie"] != "")) {
         echo '<input type="submit" name="boutonRecherche" value="Rechercher">';
     }
+}
+
+/**
+* @brief Fonction qui affiche le 2e select de la barre de recherche mobile en fonction du choix de l'utilisateur
+* @access public
+* @return void
+*/
+function afficherSelectRechercheMobile () {
+    
+    if (isset($_GET["typeRechercheMobile"]) && $_GET["typeRechercheMobile"] != "") {
+        
+        $nomServeur = $_SERVER["HTTP_HOST"];
+        
+        if ($_GET["typeRechercheMobile"] == "artiste") {
+            echo '<input class="text" type="text" placeholder="Entrez le nom de l\'artiste" id="keywordMobile" name="inputArtisteMobile" onkeyup="autoCompleteMobile(\'artiste\', \''.$nomServeur.'\')">';
+            echo '<div id="resultsMobile"></div>';
+        }
+        else if ($_GET["typeRechercheMobile"] == "titre") {
+            echo '<input class="text" type="text" placeholder="Entrez le titre de l\'oeuvre" id="keywordMobile" name="inputOeuvreMobile" onkeyup="autoCompleteMobile(\'titre\', \''.$nomServeur.'\')">';
+            echo '<div id="resultsMobile"></div>';
+        }
+        else if ($_GET["typeRechercheMobile"] == "arrondissement") {
+            echo '<select name="selectArrondissementMobile" class="selectArrondissementMobile">';
+            echo '<option value = "">Faites un choix</option>';
+            $nouvelArrondissement = new Arrondissement();
+            $arrondissements = $nouvelArrondissement->getAllArrondissements();
+            foreach ($arrondissements as $arrondissement) {
+                echo '<option value="'.$arrondissement["idArrondissement"].'">'.$arrondissement["nomArrondissement"].'</option>';
+            }
+            echo '</select>';
+        }
+        else if ($_GET["typeRechercheMobile"] == "categorie") {
+            $nouvelleCategorie = new Categorie();
+            if (isset($_COOKIE["langue"])) {
+                $langue = $_COOKIE["langue"];
+            }
+            else {
+                $langue = "FR";
+            }
+            $categories = $nouvelleCategorie->getAllCategories($langue);
+            echo '<select name="selectCategorieMobile" class="selectCategorieMobile">';
+            echo '<option value = "">Faites un choix</option>';
+            foreach ($categories as $categorie) {
+                echo '<option value="'.$categorie["idCategorie"].'">'.$categorie["nomCategorie$langue"].'</option>';
+            }
+            echo '</select>';
+        }
+    }
+}
+
+/**
+* @brief Fonction qui affiche le bouton submit de la recherche mobile si l'utilisateur a choisi arrondissement ou catégorie
+* @access public
+* @return void
+*/
+function afficherBoutonRechercheMobile () {
+    if ((isset($_GET["selectArrondissementMobile"]) && $_GET["selectArrondissementMobile"] != "") || (isset($_GET["selectCategorieMobile"]) && $_GET["selectCategorieMobile"] != "")) {
+        echo '<input type="submit" name="boutonRechercheMobile" value="Rechercher">';
+    }
+}
+
+/* --------------------------------------------------------------------
+==========================GOOGLE MAP PAGE TRAJET=========================
+-------------------------------------------------------------------- */
+
+function googleMapTrajet ($lat, $lng) {
+	
+    $dom = new DOMDocument("1.0");
+    $node = $dom->createElement("markers");
+    $parnode = $dom->appendChild($node);
+	$center_lat = $lat;
+	$center_lng = $lng;
+    $oeuvre = new Oeuvre();
+    $infoOeuvre = $oeuvre->getOeuvresProximite($center_lat, $center_lng);
+    
+
+
+    // ADD TO XML DOCUMENT NODE
+    for ($i = 0; $i < count($infoOeuvre); $i++) {
+        $node = $dom->createElement("marker");
+        $newnode = $parnode->appendChild($node);
+        $newnode->setAttribute("name",$infoOeuvre[$i]["titre"]);
+        $newnode->setAttribute("lat", $infoOeuvre[$i]["latitude"]);
+        $newnode->setAttribute("lng", $infoOeuvre[$i]["longitude"]); 
+        $newnode->setAttribute("distance",$infoOeuvre[$i]['distance']);
+    }
+    header("Content-type: text/xml");
+    //echo $dom->saveXML();
+    
 }
 ?>
