@@ -627,7 +627,7 @@ class Oeuvre {
 				
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres ORDER BY titre');
+        self::$database->query('SELECT * FROM Oeuvres  where latitude IS NOT null and longitude IS NOT null ORDER BY titre');
         
         if ($oeuvres = self::$database->resultset()) {
             foreach ($oeuvres as $oeuvre) {
@@ -636,7 +636,6 @@ class Oeuvre {
         }
         return $infoOeuvres;
 	}
-    
       /**
     * @brief fonction qui cherche et calcule les 9 oeuvres les plus proches en fonction de la localisation de l'utilisateur ou d'un point de depart initial.
     * @param float $center_lat la latitude du point de depart

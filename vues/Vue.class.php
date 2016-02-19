@@ -118,7 +118,6 @@ class Vue {
                     </div>
                     <div class="flecheRechercheMobile"></div>
                 </div>
-
                 <img id="logo" src="images/logo.png" alt="logo">
 
                 <nav id="navNormale">

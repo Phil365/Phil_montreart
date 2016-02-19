@@ -705,7 +705,6 @@ function afficherBoutonRechercheMobile () {
         echo '<input type="submit" name="boutonRechercheMobile" value="Rechercher">';
     }
 }
-
 /* --------------------------------------------------------------------
 ==========================GOOGLE MAP PAGE TRAJET=========================
 -------------------------------------------------------------------- */
