@@ -598,6 +598,26 @@ class Oeuvre {
     }
     
     /**
+    * @brief Méthode qui cherche toutes les oeuvres avec une longitude et une latitude pour la Google Map.
+    * @access public
+    * @return array
+    */
+	public function getAllOeuvresMap() 
+	{
+				
+        $infoOeuvres = array();
+        
+        self::$database->query('SELECT * FROM Oeuvres WHERE latitude IS NOT null and longitude IS NOT null');
+        
+        if ($oeuvres = self::$database->resultset()) {
+            foreach ($oeuvres as $oeuvre) {
+                $infoOeuvres[] = $oeuvre;
+            }
+        }
+        return $infoOeuvres;
+	}
+    
+    /**
     * @brief Méthode qui cherche toutes les oeuvres.
     * @access public
     * @return array

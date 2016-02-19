@@ -390,6 +390,22 @@ class Controler {
             $oeuvre = new Oeuvre();
             $oeuvres = $oeuvre->getAllOeuvresByArtiste($_GET["rechercheParArtiste"]);
         }
+        else if (isset($_POST["boutonRechercheMobile"])) {
+            
+            if (isset($_POST["selectArrondissementMobile"]) && $_POST["selectArrondissementMobile"] != "") {
+                $oeuvre = new Oeuvre();
+                $oeuvres = $oeuvre->getAllOeuvresByArrondissement($_POST["selectArrondissementMobile"]);    
+            }
+            else if (isset($_POST["selectCategorieMobile"]) && $_POST["selectCategorieMobile"] != "") {
+                $oeuvre = new Oeuvre();
+                $oeuvres = $oeuvre->getAllOeuvresByCategorie($_POST["selectCategorieMobile"]);
+            }
+        }
+        else if (isset($_GET["rechercheParArtisteMobile"])) {
+            $oeuvre = new Oeuvre();
+            $oeuvres = $oeuvre->getAllOeuvresByArtiste($_GET["rechercheParArtisteMobile"]);
+        }
+        
         $this->oVue = new VueRecherche();
         $this->oVue->setDataGlobal('recherche', 'page de recherche', $this->langueAffichage, $this->pRecherche);
         $this->oVue->setOeuvres($oeuvres);

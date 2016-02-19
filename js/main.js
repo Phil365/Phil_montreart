@@ -22,6 +22,12 @@ $(document).ready(function(){
         heightStyle: "content"
     });
 
+    //SLIDE MENU MOBILE
+    $("#navAMobile").hide();//Cache le menu mobile au chargement
+    $("#navMobile").click(function(){
+        $("#navAMobile").slideToggle("medium");
+    });
+
     //SLIDE BARRE DE RECHERCHE MOBILE
     $(".boutonRechercheMobile").click(function(){
         $(".barreRechercheContenuMobile").slideToggle("medium");
@@ -64,26 +70,29 @@ $(document).ready(function(){
     });
     
     //AJAX SELECT TYPE DE RECHERCHE MOBILE
-    $(".barreRechercheMobile").on("change", ".typeRecherche", function(){
+
+    $(".barreRechercheMobile").on("change", ".typeRechercheMobile", function(){
         
-        $.get("ajaxControler.php?rAjax=afficherSelectRecherche&typeRecherche="+this.value, function(reponse){
+        $.get("ajaxControler.php?rAjax=afficherSelectRechercheMobile&typeRechercheMobile="+this.value, function(reponse){
             //ceci est la fonction de callback
             //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
-            $(".deuxiemeSelectRecherche").html(reponse);
+            $(".deuxiemeSelectRechercheMobile").html(reponse);
             $(".submitRechercheMobile").html("");//Pour corriger un bug où le bouton restait affiché si on changeait le type de recherche après son affichage.
         });
     });
     //AJAX SELECT CATEGORIE MOBILE
-    $(".barreRechercheMobile").on("change", ".selectCategorie", function(){
-        $.get("ajaxControler.php?rAjax=afficherBoutonRechercheMobile&selectCategorie="+this.value, function(reponse){
+
+    $(".barreRechercheMobile").on("change", ".selectCategorieMobile", function(){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRechercheMobile&selectCategorieMobile="+this.value, function(reponse){
             //ceci est la fonction de callback
             //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
             $(".submitRechercheMobile").html(reponse);
         });
     });
     //AJAX SELECT ARRONDISSEMENT MOBILE
-    $(".barreRechercheMobile").on("change", ".selectArrondissement", function(){
-        $.get("ajaxControler.php?rAjax=selectRecherche&selectArrondissement="+this.value, function(reponse){
+
+    $(".barreRechercheMobile").on("change", ".selectArrondissementMobile", function(){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRechercheMobile&selectArrondissementMobile="+this.value, function(reponse){
             //ceci est la fonction de callback
             //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
             $(".submitRechercheMobile").html(reponse);
@@ -948,7 +957,7 @@ function autoComplete(rechercheVoulue, nomServeur)
 {
     var MIN_LENGTH = 1;
     var url =  "ajaxControler.php?rAjax=autoComplete&rechercheVoulue=";
-
+    
     $("#keyword").keyup(function() {
         
         var keyword = $("#keyword").val();
@@ -956,6 +965,8 @@ function autoComplete(rechercheVoulue, nomServeur)
             $.get(url + rechercheVoulue, { keyword: keyword } )
             
             .done(function( data ) {
+                
+                
                 
                 $('#results').html('');
                 var results = jQuery.parseJSON(data);
@@ -987,6 +998,174 @@ function autoComplete(rechercheVoulue, nomServeur)
         $("#results").fadeOut(500);
     })
 }
+/**
+* @brief Fonction d'initialisation Google Map Page Trajet, service des directions
+* @access public
+* @return void
+*/
+function initMapTrajet() {
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 11,
+        center: new google.maps.LatLng(45.512090, -73.550979),
+        mapTypeId: 'roadmap'
+    });
+    directionsDisplay.setMap(map);
+        document.getElementById('envoyerTrajetBouton').addEventListener('click', function() {
+        calculateAndDisplayRoute(directionsService, directionsDisplay);
+  });
+    var infoWindow = new google.maps.InfoWindow();
+     var image = {
+    url: 'images/User_icon_BLACK-01.png',
+    // This marker is 20 pixels wide by 32 pixels high.
+    scaledSize: new google.maps.Size(25, 25), // scaled size
+  };
+    var Lemarker = new google.maps.Marker({
+        map: map,
+        icon: image,        
+        title:"Un MontréArtlais"
+        }); 
+    // Try HTML5 geolocation.
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+      var pos = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      Lemarker.setPosition(pos);
+      marqueurPlusPresTrajet(position.coords.latitude, position.coords.longitude);
+      infoWindow.setPosition(pos);
+      infoWindow.setContent('Location found.');
+      map.setCenter(pos);
+        map.setZoom(14);
+         document.getElementById("depart").value = position.coords.latitude+", "+position.coords.longitude;
+         
+    }, function() {
+      handleLocationError(true, infoWindow, map.getCenter());
+    });
+  } else {
+    // Browser doesn't support Geolocation
+    handleLocationError(false, infoWindow, map.getCenter());
+  }
+   
+    
+    var urlAjax = 'ajaxControler.php?rAjax=googleMap';
+    downloadUrl(urlAjax, function(data) {
+        
+        var xml = data.responseXML;
+        var markers = xml.documentElement.getElementsByTagName("marker");
+        for (var i = 0; i < markers.length; i++) {
+            var name = markers[i].getAttribute("name");
+            var point = new google.maps.LatLng(
+            parseFloat(markers[i].getAttribute("lat")),
+            parseFloat(markers[i].getAttribute("lng")));
+            var html = "<span>" + name + "</span>";
+            var marker = new google.maps.Marker({
+                map: map,
+                position: point,
+            });
+            bindInfoWindow(marker, map, infoWindow, html);
+        }
+    });
+ 
+}
+/**
+* @brief Fonction de l'API Google Maps Directions pour calculer une itineraire
+* @access public
+* @return void
+*/
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+  var waypts = [];
+  var checkboxArray = document.getElementById('waypoints');
+  for (var i = 0; i < checkboxArray.length; i++) {
+    if (checkboxArray.options[i].selected) {
+      waypts.push({
+        location: checkboxArray[i].value,
+        stopover: true
+      });
+     
+    }
+  }
+var selectFin = document.getElementById('fin');
+var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
+  directionsService.route({
+    origin: document.getElementById('depart').value,
+    destination: selectedOptFin,
+    waypoints: waypts,
+    optimizeWaypoints: true,
+    travelMode: google.maps.TravelMode.WALKING
+  }, function(response, status) {
+    if (status === google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+      var route = response.routes[0];
+      var summaryPanel = document.getElementById('directions-panel');
+      summaryPanel.innerHTML = '';
+      // For each route, display summary information.
+      for (var i = 0; i < route.legs.length; i++) {
+        var routeSegment = i + 1;
+        summaryPanel.innerHTML += '<h4>Route Segment: ' + routeSegment +
+            '</h4><br>';
+        summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+        summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+        summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+      }
+    } else {
+      window.alert('Directions request failed due to ' + status);
+    }
+  });
+}
+/**
+* @brief Fonction d'autocomplete pour la recherche mobile
+* @access public
+* @return void
+*/
+function autoCompleteMobile(rechercheVoulue, nomServeur)
+{
+    var MIN_LENGTH = 1;
+    var url =  "ajaxControler.php?rAjax=autoComplete&rechercheVoulue=";
+    
+    $("#keywordMobile").keyup(function() {
+        
+        var keyword = $("#keywordMobile").val();
+        if (keyword.length >= MIN_LENGTH) {
+            $.get(url + rechercheVoulue, { keyword: keyword } )
+            
+            .done(function( data ) {
+                
+                
+                
+                $('#resultsMobile').html('');
+                var results = jQuery.parseJSON(data);
+                
+                $(results).each(function(key, value) {
+
+                    if (rechercheVoulue=="titre") {
+                        $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=oeuvre&o="+value['idOeuvre']+">"+value['titre']+"</a></div>");
+                    }
+                    if (rechercheVoulue=="artiste") {
+                        if (value['nomCollectif'] != null) {
+                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCollectif']+"</a></div>");
+                        }
+                        else {
+                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCompletArtiste']+"</a></div>");
+                        }
+                    }
+                })
+                $("#resultsMobile").show();
+            });
+        }
+        else {
+            $('#resultsMobile').html('');
+        }
+    });
+    
+    $("#keywordMobile").blur(function(){
+        
+        $("#resultsMobile").fadeOut(500);
+    })
+}
+
 /**
 * @brief Fonction d'initialisation Google Map Page Trajet, service des directions
 * @access public
@@ -1372,36 +1551,66 @@ function afficherOeuvrePourApprobation(idOeuvre) {
         function(reponse){
         var oeuvre = jQuery.parseJSON(reponse);
         var langue = getCookie("langue");
+
         var contenu = "";
         var type = "\"oeuvre\"";
         var id = idOeuvre;
+        
+        //Vérification des champs null
+        if (oeuvre.descriptionFR != null) {
+            var descriptionFR = oeuvre.descriptionFR;
+        }
+        else {
+            var descriptionFR = "";
+        }
+        
+        if (oeuvre.descriptionEN != null) {
+            var descriptionEN = oeuvre.descriptionEN;
+        }
+        else {
+            var descriptionEN = "";
+        }
+        
+        if (oeuvre.prenomArtiste != null) {
+            var prenomArtiste = oeuvre.prenomArtiste;
+        }
+        else {
+            var prenomArtiste = "";
+        }
+        
+        if (oeuvre.nomArtiste != null) {
+            var nomArtiste = oeuvre.nomArtiste;
+        }
+        else {
+            var nomArtiste = "";
+        }
+        
+        if (oeuvre.nomCategorieFR != null) {
+            var nomCategorieFR = oeuvre.nomCategorieFR;
+        }
+        else {
+            var nomCategorieFR = "";
+        }
+        
+        if (oeuvre.nomCategorieEN != null) {
+            var nomCategorieEN = oeuvre.nomCategorieEN;
+        }
+        else {
+            var nomCategorieEN = "";
+        }
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
         contenu += "<h2>Oeuvre soumise</h2>";
         contenu += "<p>Titre : <span style='color:green'>" + oeuvre.titre + "</span><br>";
         contenu += "Adresse : <span style='color:green'>" + oeuvre.adresse + "</span><br>";
-        contenu += "Description en anglais : <span style='color:green'>" + oeuvre.descriptionFR + "</span><br>";
-        contenu += "Description en français : <span style='color:green'>" + oeuvre.descriptionEN + "</span><br>";
+        contenu += "Description en français : <span style='color:green'>" + descriptionFR + "</span><br>";
+        contenu += "Description en anglais : <span style='color:green'>" + descriptionEN + "</span><br>";
         contenu += "Arrondissement : <span style='color:green'>" + oeuvre.nomArrondissement + "</span><br>";
-        if (langue == "FR") {
-            contenu += "Catégorie : <span style='color:green'>" + oeuvre.nomCategorieFR + "</span><br>";
-        }
-        else if (langue == "EN") {
-            contenu += "Catégorie : <span style='color:green'>" + oeuvre.nomCategorieEN + "</span><br>";
-        }
-        if (oeuvre.prenomArtiste == null) {
-            contenu += "Prénom de l'artiste :<br>";
-        }
-        else {
-            contenu += "Prénom de l'artiste : <span style='color:green'>" + oeuvre.prenomArtiste + "</span><br>";
-        }
-        if (oeuvre.nomArtiste == null) {
-            contenu += "Nom de l'artiste :<br>";
-        }
-        else {
-            contenu += "Nom de l'artiste : <span style='color:green'>" + oeuvre.nomArtiste + "</span><br>";
-        }
+        contenu += "Catégorie : <span style='color:green'>" + nomCategorieFR + "</span><br>";
+        contenu += "Catégorie : <span style='color:green'>" + nomCategorieEN + "</span><br>";
+        contenu += "Prénom de l'artiste : <span style='color:green'>" + prenomArtiste + "</span><br>";
+        contenu += "Nom de l'artiste : <span style='color:green'>" + nomArtiste + "</span><br>";
         contenu += "</p>";
         contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + id + ")'>";
         contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + id + ")'>";
@@ -1508,7 +1717,7 @@ function accepterSoumissions(type, id) {
         }
         else {//Sinon indique les erreurs à l'utilisateur.
             $(msgErreurs).each(function(index, valeur) {
-                console.log(valeur.errRequeteApprob);
+
                 if (valeur.errRequeteApprob) {
                     $("#msgErreurApprobation").html(valeur.errRequeteApprob);
                 }

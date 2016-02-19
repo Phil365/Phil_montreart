@@ -58,16 +58,6 @@ class Vue {
         <!-- JAVASCRIPT -->
         <script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
-            
-        <script> 
-            $(document).ready(function(){
-                $("#navBoutonMobile").click(function(){
-                    $("#navAMobile").slideToggle("medium");
-                });
-            });
-        </script>
-
-        
 	</head>
     <?php
                         
@@ -88,11 +78,13 @@ class Vue {
                     <div class="barreRechercheContenu">
                         <form action="?r=recherche" method="post">
                             <select name="typeRecherche" class="typeRecherche">
-                                <option value="">Chercher une oeuvre par...</option>
-                                <option value="artiste">Artiste</option>
-                                <option value="titre">Titre d'oeuvre</option>
-                                <option value="arrondissement">Arrondissement</option>
-                                <option value="categorie">Catégorie</option>
+                                <optgroup>
+                                    <option value="">Chercher une oeuvre par...</option>
+                                    <option value="artiste">Artiste</option>
+                                    <option value="titre">Titre d'oeuvre</option>
+                                    <option value="arrondissement">Arrondissement</option>
+                                    <option value="categorie">Catégorie</option>
+                                </optgroup>
                             </select>                    
                             <div class="deuxiemeSelectRecherche"></div>
                             <div class="submitRecherche"></div>
@@ -104,8 +96,6 @@ class Vue {
                     <img class="iconeRecherche" src="./images/flecheRecherche.png">
                 </div>
                 
-                
-                
                 <div class="boutonRechercheMobile">
                     <img class="iconeRechercheMobile" src="./images/flecheRecherche.png">
                 </div>
@@ -113,27 +103,22 @@ class Vue {
                 <div class="barreRechercheMobile">
                     <div class="barreRechercheContenuMobile">
                         <form action="?r=recherche" method="post">
-                            <select name="typeRecherche" class="typeRecherche">
-                                <option value="">Chercher une oeuvre par...</option>
-                                <option value="artiste">Artiste</option>
-                                <option value="titre">Titre d'oeuvre</option>
-                                <option value="arrondissement">Arrondissement</option>
-                                <option value="categorie">Catégorie</option>
+                            <select name="typeRechercheMobile" class="typeRechercheMobile">
+                                <optgroup>
+                                    <option value="">Chercher une oeuvre par...</option>
+                                    <option value="artiste">Artiste</option>
+                                    <option value="titre">Titre d'oeuvre</option>
+                                    <option value="arrondissement">Arrondissement</option>
+                                    <option value="categorie">Catégorie</option>
+                                </optgroup>
                             </select>                    
-                            <div class="deuxiemeSelectRecherche"></div>
+                            <div class="deuxiemeSelectRechercheMobile"></div>
                             <div class="submitRechercheMobile"></div>
                         </form>
                     </div>
                     <div class="flecheRechercheMobile"></div>
                 </div>
-                    
-                    
-                
-
-
                 <img id="logo" src="images/logo.png" alt="logo">
-
-
 
                 <nav id="navNormale">
                     <a href="?r=accueil" id="NavAccueil">Accueil</a>

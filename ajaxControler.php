@@ -34,6 +34,12 @@ switch ($_GET['rAjax']) {//requête
     case 'afficherBoutonRecherche':
         afficherBoutonRecherche();
         break;
+    case 'afficherSelectRechercheMobile':
+        afficherSelectRechercheMobile();
+        break;
+    case 'afficherBoutonRechercheMobile':
+        afficherBoutonRechercheMobile();
+        break;
     case 'ajouterCategorie':
         ajouterCategorie();
         break;
@@ -515,7 +521,7 @@ function googleMap () {
     $parnode = $dom->appendChild($node);
 
     $oeuvre = new Oeuvre();
-    $infoOeuvre = $oeuvre->getAllOeuvres();
+    $infoOeuvre = $oeuvre->getAllOeuvresMap();
     
     $urlOeuvre = "http://".$_SERVER['HTTP_HOST']."?r=oeuvre&o=";
 
@@ -553,7 +559,7 @@ function visiteOeuvres () {
 
 
 /* --------------------------------------------------------------------
-========================== BARRE DE RECHERCHE =========================
+========================== BARRES DE RECHERCHE =========================
 -------------------------------------------------------------------- */
 /**
 * @brief Fonction qui récupère des noms de la BDD en fonction des lettres entrées par l'utilisateur
@@ -638,6 +644,65 @@ function afficherSelectRecherche () {
 function afficherBoutonRecherche () {
     if ((isset($_GET["selectArrondissement"]) && $_GET["selectArrondissement"] != "") || (isset($_GET["selectCategorie"]) && $_GET["selectCategorie"] != "")) {
         echo '<input type="submit" name="boutonRecherche" value="Rechercher">';
+    }
+}
+
+/**
+* @brief Fonction qui affiche le 2e select de la barre de recherche mobile en fonction du choix de l'utilisateur
+* @access public
+* @return void
+*/
+function afficherSelectRechercheMobile () {
+    
+    if (isset($_GET["typeRechercheMobile"]) && $_GET["typeRechercheMobile"] != "") {
+        
+        $nomServeur = $_SERVER["HTTP_HOST"];
+        
+        if ($_GET["typeRechercheMobile"] == "artiste") {
+            echo '<input class="text" type="text" placeholder="Entrez le nom de l\'artiste" id="keywordMobile" name="inputArtisteMobile" onkeyup="autoCompleteMobile(\'artiste\', \''.$nomServeur.'\')">';
+            echo '<div id="resultsMobile"></div>';
+        }
+        else if ($_GET["typeRechercheMobile"] == "titre") {
+            echo '<input class="text" type="text" placeholder="Entrez le titre de l\'oeuvre" id="keywordMobile" name="inputOeuvreMobile" onkeyup="autoCompleteMobile(\'titre\', \''.$nomServeur.'\')">';
+            echo '<div id="resultsMobile"></div>';
+        }
+        else if ($_GET["typeRechercheMobile"] == "arrondissement") {
+            echo '<select name="selectArrondissementMobile" class="selectArrondissementMobile">';
+            echo '<option value = "">Faites un choix</option>';
+            $nouvelArrondissement = new Arrondissement();
+            $arrondissements = $nouvelArrondissement->getAllArrondissements();
+            foreach ($arrondissements as $arrondissement) {
+                echo '<option value="'.$arrondissement["idArrondissement"].'">'.$arrondissement["nomArrondissement"].'</option>';
+            }
+            echo '</select>';
+        }
+        else if ($_GET["typeRechercheMobile"] == "categorie") {
+            $nouvelleCategorie = new Categorie();
+            if (isset($_COOKIE["langue"])) {
+                $langue = $_COOKIE["langue"];
+            }
+            else {
+                $langue = "FR";
+            }
+            $categories = $nouvelleCategorie->getAllCategories($langue);
+            echo '<select name="selectCategorieMobile" class="selectCategorieMobile">';
+            echo '<option value = "">Faites un choix</option>';
+            foreach ($categories as $categorie) {
+                echo '<option value="'.$categorie["idCategorie"].'">'.$categorie["nomCategorie$langue"].'</option>';
+            }
+            echo '</select>';
+        }
+    }
+}
+
+/**
+* @brief Fonction qui affiche le bouton submit de la recherche mobile si l'utilisateur a choisi arrondissement ou catégorie
+* @access public
+* @return void
+*/
+function afficherBoutonRechercheMobile () {
+    if ((isset($_GET["selectArrondissementMobile"]) && $_GET["selectArrondissementMobile"] != "") || (isset($_GET["selectCategorieMobile"]) && $_GET["selectCategorieMobile"] != "")) {
+        echo '<input type="submit" name="boutonRechercheMobile" value="Rechercher">';
     }
 }
 /* --------------------------------------------------------------------
