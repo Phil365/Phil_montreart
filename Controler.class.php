@@ -414,6 +414,12 @@ class Controler {
         $this->oVue->afficherBody();
         $this->oVue->afficherPiedPage();
     }
+    
+    /**
+    * @brief Méthode qui affiche la page pour la demande d'adhésion d'un nouveau membre
+    * @access private
+    * @return void
+    */
     private function devenirMembre(){
        
         $utilisateur = new Utilisateur();

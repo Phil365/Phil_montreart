@@ -12,7 +12,29 @@
 // Placer votre JavaScript ici
 
 //INITIALISATION FONCTIONS JQUERY
+//@author David Lachambre
 $(document).ready(function(){
+    
+    //EDITION OEUVRE SOUMISE PAR UTILISATEUR
+    $("#panneauApprobation").on("click", "#titreAffichageSoumission", function(){
+
+        if (!document.getElementById("titreModif")) {
+            var contenu = document.getElementById("titreAffichageSoumission").innerHTML;
+            document.getElementById("titreAffichageSoumission").innerHTML = "<input type='text' id='titreModif' value =" + contenu + "><input type='button' id='boutonTitreModif' value =OK>";
+        }
+        
+//        $.post("ajaxControler.php?rAjax=afficherSelectRecherche&typeRecherche="+this.value, function(reponse){
+//            //ceci est la fonction de callback
+//            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+//            $(".deuxiemeSelectRecherche").html(reponse);
+//            $(".submitRecherche").html("");//Pour corriger un bug où le bouton restait affiché si on changeait le type de recherche après son affichage.
+//        });
+    });
+    
+    
+    
+    
+//    afficherOeuvrePourApprobation
     
     //Accordéon Jquery pour l'onglet des soumissions dans la page de gestion
     $( "#accordeon" ).accordion({
@@ -340,6 +362,7 @@ $(document).ready(function(){
 /**
 * @brief Fonction de validation de soumission d'une photo
 * @access public
+* @author David Lachambre
 * @return boolean
 */
 function validePhotoSubmit() {
@@ -373,6 +396,7 @@ function validePhotoSubmit() {
 /**
 * @brief Fonction de validation de soumission d'une oeuvre. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
 * @access public
+* @author David Lachambre
 * @return boolean
 */
 function valideAjoutOeuvre(droitsAdmin) {
@@ -459,7 +483,6 @@ function valideAjoutOeuvre(droitsAdmin) {
     //-----------------------------------------
     //Requête AJAX si aucune erreur.
     if (!erreurs) {
-        droitsAdmin = false;
         $.post('ajaxControler.php?rAjax=ajouterOeuvre', {titre: titre, adresse: adresse, prenomArtiste: prenomArtiste, nomArtiste: nomArtiste, description: description, idCategorie: idCategorie, idArrondissement: idArrondissement, droitsAdmin: droitsAdmin}, 
             function(reponse){
 
@@ -534,6 +557,7 @@ function valideAjoutOeuvre(droitsAdmin) {
 /**
 * @brief Fonction de validation de suppresion d'une oeuvre. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
 * @access public
+* @author David Lachambre
 * @return boolean
 */
 function valideSupprimerOeuvre() {
@@ -597,6 +621,7 @@ function valideSupprimerOeuvre() {
 /**
 * @brief Fonction de validation de modification d'une oeuvre. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
 * @access public
+* @author David Lachambre
 * @return boolean
 */
 function valideModifierOeuvre() {
@@ -690,6 +715,7 @@ function valideModifierOeuvre() {
 /**
 * @brief Fonction de validation de l'ajout d'une catégorie. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
 * @access public
+* @author David Lachambre
 * @return boolean
 */
 function valideAjoutCategorie() {
@@ -751,6 +777,7 @@ function valideAjoutCategorie() {
 /**
 * @brief Fonction de validation de suppresion d'une catégorie. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
 * @access public
+* @author David Lachambre
 * @return boolean
 */
 function valideSuppCategorie() {
@@ -839,6 +866,7 @@ function valideAjoutCommentaireOeuvre() {
 /**
 * @brief Fonction de validation d'ajout d'un nouveau utilisateur
 * @access public
+* @author David Lachambre
 * @return boolean
 */
 function validerFormAjoutUtilisateur(){
@@ -893,6 +921,7 @@ function validerFormAjoutUtilisateur(){
 /**
 * @brief Fonction qui mets à jour les oeuvres de la BDD avec les oeuvres de la ville et mets à jour l'affichage dans la page de gestion.
 * @access public
+* @author David Lachambre
 * @return void
 */
 function updateOeuvresVille() {
@@ -931,6 +960,7 @@ function updateOeuvresVille() {
 /**
 * @brief Fonction qui affiche le formulaire de modification d'une oeuvre après sélection de l'oeuvre à modifier par l'utilisateur.
 * @access public
+* @author David Lachambre
 * @return void
 */
 function afficherFormModif() {
@@ -1025,7 +1055,7 @@ function initMapTrajet() {
         map: map,
         icon: image,        
         title:"Un MontréArtlais"
-        }); 
+        });
     // Try HTML5 geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -1525,8 +1555,8 @@ function formRevisionPhotos(idPhoto){
 /**
 * @brief Fonction qui récupère la valeur d'un cookie selon le nom passé en paramètre
 * @access public
-* @return void
 * @author W3Schools
+* @return void
 */
 function getCookie(cname) {
     var name = cname + "=";
@@ -1542,6 +1572,7 @@ function getCookie(cname) {
 /**
 * @brief Fonction qui récupère l'oeuvre choisie et affiche son contenu dans un panneau de style pop-up
 * @access public
+* @author David Lachambre
 * @param idOeuvre integer
 * @return void
 */
@@ -1602,15 +1633,15 @@ function afficherOeuvrePourApprobation(idOeuvre) {
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
         contenu += "<h2>Oeuvre soumise</h2>";
-        contenu += "<p>Titre : <span style='color:green'>" + oeuvre.titre + "</span><br>";
-        contenu += "Adresse : <span style='color:green'>" + oeuvre.adresse + "</span><br>";
-        contenu += "Description en français : <span style='color:green'>" + descriptionFR + "</span><br>";
-        contenu += "Description en anglais : <span style='color:green'>" + descriptionEN + "</span><br>";
-        contenu += "Arrondissement : <span style='color:green'>" + oeuvre.nomArrondissement + "</span><br>";
-        contenu += "Catégorie : <span style='color:green'>" + nomCategorieFR + "</span><br>";
-        contenu += "Catégorie : <span style='color:green'>" + nomCategorieEN + "</span><br>";
-        contenu += "Prénom de l'artiste : <span style='color:green'>" + prenomArtiste + "</span><br>";
-        contenu += "Nom de l'artiste : <span style='color:green'>" + nomArtiste + "</span><br>";
+        contenu += "<p>Titre : <span style='color:green' id='titreAffichageSoumission'>" + oeuvre.titre + "</span><br>";
+        contenu += "Adresse : <span style='color:green' id='adresseAffichageSoumission'>" + oeuvre.adresse + "</span><br>";
+        contenu += "Description en français : <span style='color:green' id='descriptionFrAffichageSoumission'>" + descriptionFR + "</span><br>";
+        contenu += "Description en anglais : <span style='color:green' id='descriptionEnAffichageSoumission'>" + descriptionEN + "</span><br>";
+        contenu += "Arrondissement : <span style='color:green' id='arrondissementAffichageSoumission'>" + oeuvre.nomArrondissement + "</span><br>";
+        contenu += "Catégorie : <span style='color:green' id='categorieFrAffichageSoumission'>" + nomCategorieFR + "</span><br>";
+        contenu += "Catégorie : <span style='color:green' id='categorieEnAffichageSoumission'>" + nomCategorieEN + "</span><br>";
+        contenu += "Prénom de l'artiste : <span style='color:green' id='prenomArtisteAffichageSoumission'>" + prenomArtiste + "</span><br>";
+        contenu += "Nom de l'artiste : <span style='color:green' id='nomArtisteAffichageSoumission'>" + nomArtiste + "</span><br>";
         contenu += "</p>";
         contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + id + ")'>";
         contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + id + ")'>";
@@ -1626,6 +1657,7 @@ function afficherOeuvrePourApprobation(idOeuvre) {
 /**
 * @brief Fonction qui récupère la photo choisie et affiche son contenu dans un panneau de style pop-up
 * @access public
+* @author David Lachambre
 * @param idPhoto integer
 * @return void
 */
@@ -1637,11 +1669,13 @@ function afficherPhotoPourApprobation(idPhoto) {
         var contenu = "";
         var type = "\"photo\"";
         var id = idPhoto;
+        var regEx = new RegExp("^[\\w\\W\\s\\S.]*\/([\\w\\W\\s\\S.]+.[a-z]{3,4})$", "i");//pour trouver le nom du fichier.
+        var alt = regEx.exec(photo.image) ? regEx.exec(photo.image)[1] : "photo soumise par un utilisateur";//Forme ternaire : Si l'expression est trouvée, alt devient le résultat de l'expression. Sinon, alt devient le texte par défaut.
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
         contenu += "<h2>Photo soumise</h2>";
-        contenu += "<img src='../" + photo.image + "' alt='photoSoumise'></span><br>";
+        contenu += "<img src='../" + photo.image + "' alt='photo soumise par un utilisateur : " + alt + "'></span><br>";
         contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + id + ")'>";
         contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + id + ")'>";
         contenu += "<div id='msgErreurApprobation'></div>";
@@ -1653,9 +1687,12 @@ function afficherPhotoPourApprobation(idPhoto) {
     });
 }
 
+//   "^[\/]([\w\W\s\S.]+.[a-z]{3,4})$"
+
 /**
 * @brief Fonction qui récupère la photo choisie et affiche son contenu dans un panneau de style pop-up
 * @access public
+* @author David Lachambre
 * @param idPhoto integer
 * @return void
 */
@@ -1688,6 +1725,7 @@ function afficherCommentairePourApprobation(idCommentaire) {
 * @param type string
 * @param id integer
 * @access public
+* @author David Lachambre
 * @return void
 */
 function accepterSoumissions(type, id) {
@@ -1731,6 +1769,7 @@ function accepterSoumissions(type, id) {
 * @param type string
 * @param id integer
 * @access public
+* @author David Lachambre
 * @return void
 */
 function refuserSoumissions(type, id) {
@@ -1773,6 +1812,7 @@ function refuserSoumissions(type, id) {
 * @param type string
 * @param id integer
 * @access public
+* @author David Lachambre
 * @return void
 */
 function rechargerOeuvresApprob() {
@@ -1796,6 +1836,7 @@ function rechargerOeuvresApprob() {
 * @param type string
 * @param id integer
 * @access public
+* @author David Lachambre
 * @return void
 */
 function rechargerPhotosApprob() {
@@ -1819,6 +1860,7 @@ function rechargerPhotosApprob() {
 * @param type string
 * @param id integer
 * @access public
+* @author David Lachambre
 * @return void
 */
 function rechargerCommentairesApprob() {

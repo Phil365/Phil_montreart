@@ -519,8 +519,6 @@ class Oeuvre {
         $keyword = '%'.$keyword.'%';
 
         self::$database->bind(':keyword', $keyword);
-        //var_dump(self::$database->bind(1, $keyword));
-        //var_dump(self::$database->query("SELECT titre FROM oeuvres WHERE titre LIKE 'le%'"));
         $results = array();
 
        if ($oeuvreBDD = self::$database->resultset()) {//Si trouvé dans la BDD
@@ -602,12 +600,12 @@ class Oeuvre {
     * @access public
     * @return array
     */
-	public function getAllOeuvresMap() 
+	public function getAllOeuvres() 
 	{
 				
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres WHERE latitude IS NOT null and longitude IS NOT null');
+        self::$database->query('SELECT * FROM Oeuvres ORDER BY titre');
         
         if ($oeuvres = self::$database->resultset()) {
             foreach ($oeuvres as $oeuvre) {
@@ -622,12 +620,12 @@ class Oeuvre {
     * @access public
     * @return array
     */
-	public function getAllOeuvres() 
+	public function getAllOeuvresMap() 
 	{
 				
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres  where latitude IS NOT null and longitude IS NOT null ORDER BY titre');
+        self::$database->query('SELECT * FROM Oeuvres where latitude IS NOT null and longitude IS NOT null');
         
         if ($oeuvres = self::$database->resultset()) {
             foreach ($oeuvres as $oeuvre) {

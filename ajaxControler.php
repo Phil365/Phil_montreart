@@ -121,6 +121,7 @@ switch ($_GET['rAjax']) {//requête
 /**
 * @brief Fonction qui ajoute la catégorie soumise par un administrateur
 * @access public
+* @author David Lachambre
 * @return void
 */
 function ajouterCategorie () {
@@ -134,6 +135,7 @@ function ajouterCategorie () {
 /**
 * @brief Fonction qui supprime la catégorie soumise par un administrateur
 * @access public
+* @author David Lachambre
 * @return void
 */
 function supprimerCategorie () {
@@ -147,6 +149,7 @@ function supprimerCategorie () {
 /**
 * @brief Fonction qui récupère toutes les catégories de la BDD.
 * @access public
+* @author David Lachambre
 * @return void
 */
 function recupererCategories () {
@@ -160,6 +163,7 @@ function recupererCategories () {
 /**
 * @brief Fonction qui récupère toutes les oeuvres de la BDD.
 * @access public
+* @author David Lachambre
 * @return void
 */
 function recupererOeuvres () {
@@ -173,6 +177,7 @@ function recupererOeuvres () {
 /**
 * @brief Fonction qui ajoute l'oeuvre soumise par un administrateur
 * @access public
+* @author David Lachambre
 * @return void
 */
 function ajouterOeuvre () {
@@ -196,6 +201,7 @@ function ajouterOeuvre () {
 /**
 * @brief Fonction qui récupère l'ID de l'oeuvre qui vient d'être créée
 * @access public
+* @author David Lachambre
 * @return void
 */
 function recupererIdOeuvre () {
@@ -209,6 +215,8 @@ function recupererIdOeuvre () {
 /**
 * @brief Fonction qui ajoute la photo soumise
 * @access public
+* @author David Lachambre
+* @author Philippe Germain
 * @return void
 */
 function ajouterPhoto () {
@@ -230,6 +238,7 @@ function ajouterPhoto () {
 /**
 * @brief Fonction qui supprime l'oeuvre soumise par un administrateur
 * @access public
+* @author David Lachambre
 * @return void
 */
 function supprimerOeuvre () {
@@ -243,6 +252,8 @@ function supprimerOeuvre () {
 /**
 * @brief Fonction qui affiche le formulaire de modification d'une oeuvre après sélection de l'oeuvre à modifier par l'utilisateur.
 * @access public
+* @author David Lachambre
+* @author Philippe Germain
 * @return void
 */
 function afficherFormModif () {
@@ -327,6 +338,7 @@ function afficherFormModif () {
 /**
 * @brief Fonction qui modifie l'oeuvre choisie par un administrateur
 * @access public
+* @author David Lachambre
 * @return void
 */
 function modifierOeuvre () {
@@ -339,6 +351,7 @@ function modifierOeuvre () {
 /**
 * @brief Fonction qui mets à jour les oeuvres de la BDD avec les oeuvres de la ville et mets à jour l'affichage dans la page de gestion.
 * @access public
+* @author David Lachambre
 * @return void
 */
 function updateOeuvresVille () {
@@ -352,6 +365,7 @@ function updateOeuvresVille () {
 /**
 * @brief Fonction qui récupère la dernière date de mise à jour des oeuvres de la ville.
 * @access public
+* @author David Lachambre
 * @return void
 */
 function updateDate () {
@@ -365,6 +379,7 @@ function updateDate () {
 /**
 * @brief Fonction qui récupère l'oeuvre choisie
 * @access public
+* @author David Lachambre
 * @return void
 */
 function recupererUneOeuvre () {
@@ -377,6 +392,7 @@ function recupererUneOeuvre () {
 /**
 * @brief Fonction qui récupère la photo choisie
 * @access public
+* @author David Lachambre
 * @return void
 */
 function recupererUnePhoto () {
@@ -389,6 +405,7 @@ function recupererUnePhoto () {
 /**
 * @brief Fonction qui récupère le commentaire choisi
 * @access public
+* @author David Lachambre
 * @return void
 */
 function recupererUnCommentaire () {
@@ -401,6 +418,7 @@ function recupererUnCommentaire () {
 /**
 * @brief Fonction qui accepte la soumission de l'oeuvre choisie
 * @access public
+* @author David Lachambre
 * @return void
 */
 function accepterSoumissionOeuvre () {
@@ -413,6 +431,7 @@ function accepterSoumissionOeuvre () {
 /**
 * @brief Fonction qui accepte la soumission de la photo choisie
 * @access public
+* @author David Lachambre
 * @return void
 */
 function accepterSoumissionPhoto () {
@@ -425,6 +444,7 @@ function accepterSoumissionPhoto () {
 /**
 * @brief Fonction qui accepte la soumission du commentaire choisie
 * @access public
+* @author David Lachambre
 * @return void
 */
 function accepterSoumissionCommentaire () {
@@ -437,6 +457,7 @@ function accepterSoumissionCommentaire () {
 /**
 * @brief Fonction qui refuse/supprime la soumission de l'oeuvre choisie
 * @access public
+* @author David Lachambre
 * @return void
 */
 function refuserSoumissionOeuvre () {
@@ -449,6 +470,7 @@ function refuserSoumissionOeuvre () {
 /**
 * @brief Fonction qui refuse/supprime la soumission de la photo choisie
 * @access public
+* @author David Lachambre
 * @return void
 */
 function refuserSoumissionPhoto () {
@@ -461,6 +483,7 @@ function refuserSoumissionPhoto () {
 /**
 * @brief Fonction qui refuse/supprime la soumission du commentaire choisie
 * @access public
+* @author David Lachambre
 * @return void
 */
 function refuserSoumissionCommentaire () {
@@ -473,6 +496,7 @@ function refuserSoumissionCommentaire () {
 /**
 * @brief Fonction qui rafraîchit les liens oeuvres à approuver
 * @access public
+* @author David Lachambre
 * @return void
 */
 function updateLiensApprobOeuvres () {
@@ -485,6 +509,7 @@ function updateLiensApprobOeuvres () {
 /**
 * @brief Fonction qui rafraîchit les liens photos à approuver
 * @access public
+* @author David Lachambre
 * @return void
 */
 function updateLiensApprobPhotos () {
@@ -497,6 +522,7 @@ function updateLiensApprobPhotos () {
 /**
 * @brief Fonction qui rafraîchit les liens commentaires à approuver
 * @access public
+* @author David Lachambre
 * @return void
 */
 function updateLiensApprobCommentaires () {
@@ -559,11 +585,12 @@ function visiteOeuvres () {
 
 
 /* --------------------------------------------------------------------
-========================== BARRES DE RECHERCHE =========================
+========================= BARRES DE RECHERCHE =========================
 -------------------------------------------------------------------- */
 /**
 * @brief Fonction qui récupère des noms de la BDD en fonction des lettres entrées par l'utilisateur
 * @access public
+* @author Philippe Germain
 * @return string
 */
 function autoComplete () {
@@ -591,6 +618,7 @@ function autoComplete () {
 /**
 * @brief Fonction qui affiche le 2e select de la barre de recherche en fonction du choix de l'utilisateur
 * @access public
+* @author David Lachambre
 * @return void
 */
 function afficherSelectRecherche () {
@@ -639,6 +667,7 @@ function afficherSelectRecherche () {
 /**
 * @brief Fonction qui affiche le bouton submit de la recherche si l'utilisateur a choisi arrondissement ou catégorie
 * @access public
+* @author David Lachambre
 * @return void
 */
 function afficherBoutonRecherche () {
@@ -650,6 +679,7 @@ function afficherBoutonRecherche () {
 /**
 * @brief Fonction qui affiche le 2e select de la barre de recherche mobile en fonction du choix de l'utilisateur
 * @access public
+* @author David Lachambre
 * @return void
 */
 function afficherSelectRechercheMobile () {
@@ -698,6 +728,7 @@ function afficherSelectRechercheMobile () {
 /**
 * @brief Fonction qui affiche le bouton submit de la recherche mobile si l'utilisateur a choisi arrondissement ou catégorie
 * @access public
+* @author David Lachambre
 * @return void
 */
 function afficherBoutonRechercheMobile () {
@@ -706,7 +737,7 @@ function afficherBoutonRechercheMobile () {
     }
 }
 /* --------------------------------------------------------------------
-==========================GOOGLE MAP PAGE TRAJET=========================
+========================GOOGLE MAP PAGE TRAJET=========================
 -------------------------------------------------------------------- */
 
 function googleMapTrajet ($lat, $lng) {
