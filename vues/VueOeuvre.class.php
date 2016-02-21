@@ -193,7 +193,7 @@ class VueOeuvre extends Vue {
         if (isset($this->oeuvre["description" . $this->langue])) {
             echo "<div>
             <h3 class='titresPageOeuvre' id='descriptionTitreOeuvre'>Description :</h3>
-            <p>".$this->oeuvre["description" . $this->langue]."</p></div>";
+            <p class='textStandard'>".$this->oeuvre["description" . $this->langue]."</p></div>";
         }//fin div description
     ?>
 
@@ -209,7 +209,7 @@ class VueOeuvre extends Vue {
 
                 <div class='borderMobile'></div>
         
-                <form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();" >            <p><h3 class='titresPageOeuvre'>Commentaire :</h3></p>    
+                <form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();">            <p><h3 class='titresPageOeuvre'>Commentaire :</h3></p>    
                 <input type="hidden" name="idOeuvreencours" value="<?php echo $idOeuvreencours ?>">
                 <div class="cont">
                   <div class="stars">
@@ -267,12 +267,12 @@ class VueOeuvre extends Vue {
                         echo "<h5 id='idUtilisateur'>".$this->commentaires[$i]["nomUsager"]."</h5>";
 
                         echo "<div class='ratingUtilisateur'><p><img src = 'images/$imgVote'></div></p>";
-                        echo "<p>".$this->commentaires[$i]["texteCommentaire"]."</p>"."</div>";
+                        echo "<p class='textStandard'>".$this->commentaires[$i]["texteCommentaire"]."</p>"."</div>";
                         //fin div unCommentaire
                     }
                 }
                 else {
-                    echo "<p>Aucun commentaire</p>";
+                    echo "<p class='textStandard'>Aucun commentaire</p>";
                 }//fin div commentaires 
             echo "</div>";
 
