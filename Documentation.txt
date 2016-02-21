@@ -1,4 +1,4 @@
-﻿Barre de recherche centralisée
+Barre de recherche centralisée
 
 
 But:
@@ -135,3 +135,19 @@ Accepter ou refuser une soummission utilisateur
 
 L’onglet « Approuver les soummissions » dans la page de gestion permet de visualiser toutes les soumissions nécessitant d’être approuvées par un administrateur avant d’être rendues visible sur le site. Il s’agit des soumissions d’œuvres, de photos et de commentaires. Lorsque vous accédez à cet onglet, cliquez sur une des sections pour visualiser les liens vers les soumissions de la catégorie. La mention « En attente : » suivie d’un chiffre à la droite des onglets permet de visualiser le nombre de soumissions en attente d’une approbation sans avoir à dérouler l’onglet. 
 Lorsque vous cliquez sur un lien vers une soumission en attente, un panneau affichant les informations soumises par l’utilisateur s’affiche. Deux boutons vous permettent soit d’accepter ou refuser la soumission. Si vous l’acceptez, elle sera désormais instantanément visible pour tous les visiteurs du site. Si vous cliquez sur refuser, la soumission sera supprimée de la base de donnée. Si la requête est réussie, le panneau se ferme et le nombre de soumissions restantes se met à jour. Dans le cas contraire, le panneau restera ouvert et un message d’erreur indiquant la nature du problème s’y affichera.
+
+-----------------------------------------------------------------------------
+
+Vue Trajet
+
+But:
+
+L'utilisateur sera capable de visualiser sa localisation sur la rate et les oeuvres d'arte public les plus proches. A partir de sa position ou de une point de départ tapé dans le premier champ du formulaire, il sera capable de se faire une itineraire pour une promenade dans son proximité.
+
+Utilisation: 
+
+L'utilisateur laissera les coordonées déjà remplis par default, ou il tapera une adresse comme point de départ. Ensuite il choisira une des oeuvres d'une select comme destin. Finalement il choisira d'une select multiple les oeuvres qu'il desir comme arrets intermediaires. En evoyant la forme, une route se tracera sur la carte, et une texte contenant la description de sa route apparaitra en dessous de la carte.
+
+Programmation:
+
+Utilisation de l'API Google Maps Directions. Il est de noter que ceci ne prend pas la geolocalisation en temps réel, cet-a-dire, il n'est pas capable de changer le point de départ, une fois envoyé la requet. On a employé la formule Haversine pour calculer les oeuvres les plus proches a l'utilisateur dans un rayon determiné. Cette rayon est presentement en fonction du zoom de la carte Google.

@@ -602,12 +602,12 @@ class Oeuvre {
     * @access public
     * @return array
     */
-	public function getAllOeuvresMap() 
+	public function getAllOeuvres() 
 	{
 				
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres WHERE latitude IS NOT null and longitude IS NOT null');
+        self::$database->query('SELECT * FROM Oeuvres ORDER BY titre');
         
         if ($oeuvres = self::$database->resultset()) {
             foreach ($oeuvres as $oeuvre) {
@@ -622,12 +622,12 @@ class Oeuvre {
     * @access public
     * @return array
     */
-	public function getAllOeuvres() 
+	public function getAllOeuvresMap() 
 	{
 				
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres  where latitude IS NOT null and longitude IS NOT null ORDER BY titre');
+        self::$database->query('SELECT * FROM Oeuvres  where latitude IS NOT null and longitude IS NOT null');
         
         if ($oeuvres = self::$database->resultset()) {
             foreach ($oeuvres as $oeuvre) {
