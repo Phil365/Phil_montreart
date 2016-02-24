@@ -593,44 +593,32 @@ footer{
     background-color:#fff;
 }
 
-#click1 {
-    margin-left: 40px;
-    background-color: #70212F;
-    border-radius: 5px;
-    color: white;
-    padding: 5px;
-}
-
-#click2 {
-    margin-left: 30px;
-    background-color: #70212F;
-    border-radius: 5px;
-    color: white;
-    padding: 5px;
-}
-
-#click3 {
-    margin-left: 30px;
-    background-color: #70212F;
-    border-radius: 5px;
-    color: white;
-    padding: 5px;
-}
-
-#click1:hover {
-    background-color: #B32A42;
-}
-
-#click2:hover {
-    background-color: #B32A42;
-}
-
-#click3:hover {
-    background-color: #B32A42;
-}
-
 #misAJour {
     margin-top: 30px;
+}
+
+#boutonTitreModif, #boutonAdresseModif, #boutonDescriptionFrModif, #boutonDescriptionEnModif, #boutonArrondissementModif, #boutonCategorieModif, #boutonCommentaireModif, #boutonArtisteModif, #boutonCancelModifAdresse, #boutonCancelModifTitre, #boutonCancelModifDescriptionFR, #boutonCancelModifDescriptionEN, #boutonCancelModifArrondissement, #boutonCancelModifCategorie, #boutonCancelModifCommentaire, #boutonCancelModifArtiste {
+    padding: 0;
+    margin: 0 0 0 5px;
+    width: 29px;
+    height: 26px;
+    font-size: 16px;
+}
+
+#boutonCancelModifAdresse, #boutonCancelModifTitre, #boutonCancelModifDescriptionFR, #boutonCancelModifDescriptionEN, #boutonCancelModifArrondissement, #boutonCancelModifCategorie, #boutonCancelModifCommentaire, #boutonCancelModifArtiste {
+    background-color: #B32A42;
+}
+
+#titreModifSoumission, #adresseModifSoumission, #descriptionFrModifSoumission, #descriptionEnModifSoumission, #arrondissementModifSoumission, #categorieModifSoumission, #commentaireModifSoumission, #pArtisteModifSoumission, #nArtisteModifSoumission {
+    padding: 0 0 0 5px;
+    margin: 0;
+    height: 24px;
+    width: 40%;
+}
+
+#commentaireModifSoumission {
+    height: 100px;
+    width: 100%;
 }
 
 /*========NAV PRINCIPALE=====*/
@@ -728,11 +716,13 @@ select:focus, textarea, textarea:focus {
 
 .boutonRefuser {
     float: right;
-    background: #B32A42; 
+    background: #B32A42;
+    margin-right: 20%;
 }
 
 .boutonAccepter {
     margin-bottom: 20px;
+    margin-left: 20%;
 }
 
 .submit {
@@ -810,10 +800,13 @@ select:focus, textarea, textarea:focus {
     padding: 20px 35px;
     margin: -10px -50px;
 }
+#panneauApprobation h2 {
+    text-align: center;
+}
 
 #panneauApprobation p {
     font-size: 1.2em;
-    line-height: 1.2em;
+    line-height: 1.4em;
 }
 
 #formlogin, #form_profil, #divPanneauApprobation {
@@ -1522,8 +1515,11 @@ nav {
     }
     
     #divPanneauApprobation {
-        max-width: 500px;
-        min-width: 300px;
+        min-width: 400px;
+    }
+    
+    #panneauApprobation h2 a:hover {
+        color: #B32A42;
     }
     
     #formlogin, #contribuer_article, #form_profil {
@@ -1556,6 +1552,10 @@ nav {
 @media (min-width: 620px) {
     #navMobile {
         display: none;
+    }
+    
+    #divPanneauApprobation {
+        min-width: 450px;
     }
     
     nav {

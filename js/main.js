@@ -1,7 +1,9 @@
 /**
-* @file Script contenant les fonctions de base
+* @file Script contenant les fonctions Javascript
 * @author Jonathan Martel (jmartel@gmail.com)
 * @author David Lachambre
+* @author Philippe Germain
+* @author Cristina Mahneke
 * @version 0.1
 * @update 2016-01-30
 * @license Creative Commons BY-NC 3.0 (Licence Creative Commons Attribution - Pas d’utilisation commerciale 3.0 non transposé)
@@ -9,122 +11,313 @@
 *
 */
 
-// Placer votre JavaScript ici
-
 //INITIALISATION FONCTIONS JQUERY
-//@author David Lachambre
 $(document).ready(function(){
     
-    //EDITION OEUVRE SOUMISE PAR UTILISATEUR
+    /* --------------------------------------------------------------------
+    ===================== EDITION OEUVRE APPROBATION ======================
+    -------------------------------------------------------------------- */
+    
+    //MODIF TITRE------------------------------------------------------------
     $("#panneauApprobation").on("click", "#titreAffichageSoumission", function(){
 
-        if (!document.getElementById("titreModif")) {
+        //Click sur champ éditable
+        if (!document.getElementById("titreModifSoumission")) {//Si l'élément n'est pas déjà présent dans le document...
             var contenu = document.getElementById("titreAffichageSoumission").innerHTML;
-            document.getElementById("titreAffichageSoumission").innerHTML = "<input type='text' id='titreModif' value =" + contenu + "><input type='button' id='boutonTitreModif' value =OK>";
+            var regEx = new RegExp("^(<span)", "i");//pour trouver du code html.
+            var contenuFiltre = regEx.exec(contenu) ? "" : contenu;//Forme ternaire : Si l'expression est trouvée, chaîne vide. Sinon, contenu non altéré.
+            document.getElementById("titreAffichageSoumission").innerHTML = "<input type='text' id='titreModifSoumission' value='" + contenuFiltre + "'><input type='button' id='boutonTitreModif' class='boutonMoyenne' value=OK><input type='button' id='boutonCancelModifTitre' class='boutonMoyenne' value=X>";
+            
+            //Bouton de fermeture/cancel
+            $("#titreAffichageSoumission").on("click", "#boutonCancelModifTitre", function(){
+                document.getElementById("titreAffichageSoumission").innerHTML = contenu;
+            });
+        } 
+    });
+    //Envoi de la requête pour une modification
+    $("#panneauApprobation").on("click", "#boutonTitreModif", function(){
+        
+        document.getElementById("titreModifSoumission").style.border = "";
+        if (document.getElementById("titreModifSoumission").value.trim() !== "") {
+            var idOeuvre = document.getElementById("idOeuvreSoumise").value;
+            var langue = getCookie("langue");
+            var titreModifSoumission = document.getElementById("titreModifSoumission").value.trim();
+            $.post("ajaxControler.php?rAjax=modifierOeuvreSoumise", {idOeuvre:idOeuvre, titreModif:titreModifSoumission}, function(reponse){
+                afficherOeuvrePourApprobation(idOeuvre);
+            });
         }
+        else {//erreur, requête non envoyée
+            document.getElementById("titreModifSoumission").style.border = "1px solid red";
+            document.getElementById("titreModifSoumission").value = "";
+        }
+    });
+    
+    //MODIF ADRESSE------------------------------------------------------------
+    $("#panneauApprobation").on("click", "#adresseAffichageSoumission", function(){
+
+        //Click sur champ éditable
+        if (!document.getElementById("adresseModifSoumission")) {//Si l'élément n'est pas déjà présent dans le document...
+            var contenu = document.getElementById("adresseAffichageSoumission").innerHTML;
+            document.getElementById("adresseAffichageSoumission").innerHTML = "<input type='text' id='adresseModifSoumission' value='" + contenu + "'><input type='button' id='boutonAdresseModif' class='boutonMoyenne' value=OK><input type='button' id='boutonCancelModifAdresse' class='boutonMoyenne' value=X>";
+            
+            //Bouton de fermeture/cancel
+            $("#adresseAffichageSoumission").on("click", "#boutonCancelModifAdresse", function(){
+                document.getElementById("adresseAffichageSoumission").innerHTML = contenu;
+            });
+        } 
+    });
+    //Envoi de la requête pour une modification
+    $("#panneauApprobation").on("click", "#boutonAdresseModif", function(){
         
-//        $.post("ajaxControler.php?rAjax=afficherSelectRecherche&typeRecherche="+this.value, function(reponse){
-//            //ceci est la fonction de callback
-//            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
-//            $(".deuxiemeSelectRecherche").html(reponse);
-//            $(".submitRecherche").html("");//Pour corriger un bug où le bouton restait affiché si on changeait le type de recherche après son affichage.
-//        });
+        document.getElementById("adresseModifSoumission").style.border = "";//reset border
+        var adresse = document.getElementById("adresseModifSoumission").value.trim();
+        var adresseAuthorisee = new RegExp("^[0-9]+[A-ÿ.,' \-]+$", "i");//doit avoir la forme d'adresse chiffre suivi d'un ou plusieurs noms.
+        var resultat = adresseAuthorisee.exec(adresse);
+        if (document.getElementById("adresseModifSoumission").value !== "" && resultat) {
+            var idOeuvre = document.getElementById("idOeuvreSoumise").value;
+            var langue = getCookie("langue");
+            var adresseModifSoumission = document.getElementById("adresseModifSoumission").value.trim();
+            $.post("ajaxControler.php?rAjax=modifierOeuvreSoumise", {idOeuvre:idOeuvre, adresseModif:adresseModifSoumission}, function(reponse){
+                afficherOeuvrePourApprobation(idOeuvre);
+            });
+        }
+        else {//erreur, requête non envoyée
+            document.getElementById("adresseModifSoumission").style.border = "1px solid red";
+            document.getElementById("adresseModifSoumission").value = "";
+        }
     });
     
-    
-    
-    
-//    afficherOeuvrePourApprobation
-    
-    //Accordéon Jquery pour l'onglet des soumissions dans la page de gestion
-    $( "#accordeon" ).accordion({
-        active: false,
-        collapsible: true,
-        animate: 400,
-        heightStyle: "content"
-    });
+    //MODIF DESCRIPTION FR------------------------------------------------------------
+    $("#panneauApprobation").on("click", "#descriptionFrAffichageSoumission", function(){
 
-    //SLIDE MENU MOBILE
-    $("#navAMobile").hide();//Cache le menu mobile au chargement
-    $("#navMobile").click(function(){
-        $("#navAMobile").slideToggle("medium");
+        //Click sur champ éditable
+        if (!document.getElementById("descriptionFrModifSoumission")) {//Si l'élément n'est pas déjà présent dans le document...
+            var contenu = document.getElementById("descriptionFrAffichageSoumission").innerHTML;
+            var regEx = new RegExp("^(<span)", "i");//pour trouver du code html.
+            var contenuFiltre = regEx.exec(contenu) ? "" : contenu;//Forme ternaire : Si l'expression est trouvée, chaîne vide. Sinon, contenu non altéré.
+            document.getElementById("descriptionFrAffichageSoumission").innerHTML = "<input type='text' id='descriptionFrModifSoumission' value='" + contenuFiltre + "'><input type='button' id='boutonDescriptionFrModif' class='boutonMoyenne' value=OK><input type='button' id='boutonCancelModifDescriptionFR' class='boutonMoyenne' value=X>";
+            
+            //Bouton de fermeture/cancel
+            $("#descriptionFrAffichageSoumission").on("click", "#boutonCancelModifDescriptionFR", function(){
+                document.getElementById("descriptionFrAffichageSoumission").innerHTML = contenu;
+            });
+        } 
     });
-
-    //SLIDE BARRE DE RECHERCHE MOBILE
-    $(".boutonRechercheMobile").click(function(){
-        $(".barreRechercheContenuMobile").slideToggle("medium");
-    });
-    
-    //SLIDE BARRE DE RECHERCHE
-    $(".barreRecherche").hide();
-    $(".boutonRecherche").click(function(){
+    //Envoi de la requête pour une modification
+    $("#panneauApprobation").on("click", "#boutonDescriptionFrModif", function(){
         
-        $( ".barreRecherche").animate({
-            width: "toggle"
+        var idOeuvre = document.getElementById("idOeuvreSoumise").value;
+        var langue = getCookie("langue");
+        var descriptionFrModifSoumission = document.getElementById("descriptionFrModifSoumission").value.trim();
+        $.post("ajaxControler.php?rAjax=modifierOeuvreSoumise", {idOeuvre:idOeuvre, descriptionFrModif:descriptionFrModifSoumission}, function(reponse){
+            afficherOeuvrePourApprobation(idOeuvre);
         });
     });
     
-    //AJAX SELECT TYPE DE RECHERCHE
-    $(".barreRecherche").on("change", ".typeRecherche", function(){
+    //MODIF DESCRIPTION EN------------------------------------------------------------
+    $("#panneauApprobation").on("click", "#descriptionEnAffichageSoumission", function(){
+
+        //Click sur champ éditable
+        if (!document.getElementById("descriptionEnModifSoumission")) {//Si l'élément n'est pas déjà présent dans le document...
+            var contenu = document.getElementById("descriptionEnAffichageSoumission").innerHTML;
+            var regEx = new RegExp("^(<span)", "i");//pour trouver du code html.
+            var contenuFiltre = regEx.exec(contenu) ? "" : contenu;//Forme ternaire : Si l'expression est trouvée, chaîne vide. Sinon, contenu non altéré.
+            document.getElementById("descriptionEnAffichageSoumission").innerHTML = "<input type='text' id='descriptionEnModifSoumission' value='" + contenuFiltre + "'><input type='button' id='boutonDescriptionEnModif' class='boutonMoyenne' value=OK><input type='button' id='boutonCancelModifDescriptionEN' class='boutonMoyenne' value=X>";
+            
+            //Bouton de fermeture/cancel
+            $("#descriptionEnAffichageSoumission").on("click", "#boutonCancelModifDescriptionEN", function(){
+                document.getElementById("descriptionEnAffichageSoumission").innerHTML = contenu;
+            });
+        } 
+    });
+    //Envoi de la requête pour une modification
+    $("#panneauApprobation").on("click", "#boutonDescriptionEnModif", function(){
         
-        $.get("ajaxControler.php?rAjax=afficherSelectRecherche&typeRecherche="+this.value, function(reponse){
-            //ceci est la fonction de callback
-            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
-            $(".deuxiemeSelectRecherche").html(reponse);
-            $(".submitRecherche").html("");//Pour corriger un bug où le bouton restait affiché si on changeait le type de recherche après son affichage.
-        });
-    });
-    //AJAX SELECT CATEGORIE
-    $(".barreRecherche").on("change", ".selectCategorie", function(){
-        $.get("ajaxControler.php?rAjax=afficherBoutonRecherche&selectCategorie="+this.value, function(reponse){
-            //ceci est la fonction de callback
-            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
-            $(".submitRecherche").html(reponse);
-        });
-    });
-    //AJAX SELECT ARRONDISSEMENT
-    $(".barreRecherche").on("change", ".selectArrondissement", function(){
-        $.get("ajaxControler.php?rAjax=afficherBoutonRecherche&selectArrondissement="+this.value, function(reponse){
-            //ceci est la fonction de callback
-            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
-            $(".submitRecherche").html(reponse);
+        var idOeuvre = document.getElementById("idOeuvreSoumise").value;
+        var langue = getCookie("langue");
+        var descriptionEnModifSoumission = document.getElementById("descriptionEnModifSoumission").value.trim();
+        $.post("ajaxControler.php?rAjax=modifierOeuvreSoumise", {idOeuvre:idOeuvre, descriptionEnModif:descriptionEnModifSoumission}, function(reponse){
+            afficherOeuvrePourApprobation(idOeuvre);
         });
     });
     
-    //AJAX SELECT TYPE DE RECHERCHE MOBILE
+    //MODIF ARRONDISSEMENT------------------------------------------------------------
+    $("#panneauApprobation").on("click", "#arrondissementAffichageSoumission", function(){
 
-    $(".barreRechercheMobile").on("change", ".typeRechercheMobile", function(){
-        
-        $.get("ajaxControler.php?rAjax=afficherSelectRechercheMobile&typeRechercheMobile="+this.value, function(reponse){
-            //ceci est la fonction de callback
-            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
-            $(".deuxiemeSelectRechercheMobile").html(reponse);
-            $(".submitRechercheMobile").html("");//Pour corriger un bug où le bouton restait affiché si on changeait le type de recherche après son affichage.
-        });
+        //Click sur champ éditable
+        if (!document.getElementById("arrondissementModifSoumission")) {//Si l'élément n'est pas déjà présent dans le document...
+            var contenu = document.getElementById("arrondissementAffichageSoumission").innerHTML;
+            var idArrondissement = document.getElementById("idArrondissementSoumis").value;
+            
+            $.post('ajaxControler.php?rAjax=recupererArrondissements', 
+                function(reponse){
+                var arrondissements = jQuery.parseJSON(reponse);
+                var contenuSelect = "<select id='arrondissementModifSoumission'>";
+                var selection = "";
+                var langue = getCookie("langue");
+
+                //Contenu du select
+                    $(arrondissements).each(function(index, arrondissement) {
+                        if (arrondissement.idArrondissement == idArrondissement) {
+                            selection = "selected='selected'";
+                        }
+                        else {
+                            selection = "";
+                        }
+                        contenuSelect += "<option value='" + arrondissement.idArrondissement + "' " + selection + ">" + arrondissement.nomArrondissement + "</option>";
+                    });
+                    contenuSelect += "</select>";
+                    contenuSelect += "<input type='button' id='boutonArrondissementModif' class='boutonMoyenne' value=OK><input type='button' id='boutonCancelModifArrondissement' class='boutonMoyenne' value=X>";
+
+                document.getElementById("arrondissementAffichageSoumission").innerHTML = contenuSelect;
+            });   
+            
+            //Bouton de fermeture/cancel
+            $("#arrondissementAffichageSoumission").on("click", "#boutonCancelModifArrondissement", function(){
+                document.getElementById("arrondissementAffichageSoumission").innerHTML = contenu;
+            });
+        } 
     });
-    //AJAX SELECT CATEGORIE MOBILE
+    //Envoi de la requête pour une modification
+    $("#panneauApprobation").on("click", "#boutonArrondissementModif", function(){
 
-    $(".barreRechercheMobile").on("change", ".selectCategorieMobile", function(){
-        $.get("ajaxControler.php?rAjax=afficherBoutonRechercheMobile&selectCategorieMobile="+this.value, function(reponse){
-            //ceci est la fonction de callback
-            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
-            $(".submitRechercheMobile").html(reponse);
-        });
-    });
-    //AJAX SELECT ARRONDISSEMENT MOBILE
-
-    $(".barreRechercheMobile").on("change", ".selectArrondissementMobile", function(){
-        $.get("ajaxControler.php?rAjax=afficherBoutonRechercheMobile&selectArrondissementMobile="+this.value, function(reponse){
-            //ceci est la fonction de callback
-            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
-            $(".submitRechercheMobile").html(reponse);
+        var idOeuvre = document.getElementById("idOeuvreSoumise").value;
+        var langue = getCookie("langue");
+        var arrondissementModif = document.getElementById("arrondissementModifSoumission").value;
+        $.post("ajaxControler.php?rAjax=modifierOeuvreSoumise", {idOeuvre:idOeuvre, arrondissementModif:arrondissementModif}, function(reponse){
+            afficherOeuvrePourApprobation(idOeuvre);
         });
     });
     
-    /**
-    * @brief fonctions jQuery qui affiche et masque les sections en fonction du lien cliqué par l'utilisateur.
-    */
-    //------------ DEBUT ONGLETS JQUERY PAGE GESTION -------------
+    //MODIF CATEGORIE------------------------------------------------------------
+    $("#panneauApprobation").on("click", "#categorieAffichageSoumission", function(){
+
+        //Click sur champ éditable
+        if (!document.getElementById("categorieModifSoumission")) {//Si l'élément n'est pas déjà présent dans le document...
+            var contenu = document.getElementById("categorieAffichageSoumission").innerHTML;
+            var idCategorie = document.getElementById("idCategorieSoumise").value;
+            $.post('ajaxControler.php?rAjax=recupererCategories', 
+                function(reponse){
+                var categories = jQuery.parseJSON(reponse);
+                var contenuSelect = "<select id='categorieModifSoumission'>";
+                var selection = "";
+                var langue = getCookie("langue");
+
+                //Contenu du select en fonction de la langue
+                    $(categories).each(function(index, categorie) {
+                        if (categorie.idCategorie == idCategorie) {
+                            selection = "selected='selected'";
+                        }
+                        else {
+                            selection = "";
+                        }
+                        if (langue == "FR") {
+                            contenuSelect += "<option value='" + categorie.idCategorie + "' " + selection + ">" + categorie.nomCategorieFR + "</option>";
+                        }
+                        else if (langue == "EN") {
+                            contenuSelect += "<option value='" + categorie.idCategorie + "' " + selection + ">" + categorie.nomCategorieEN + "</option>";
+                        }
+                    });
+                    contenuSelect += "</select>";
+                    contenuSelect += "<input type='button' id='boutonCategorieModif' class='boutonMoyenne' value=OK><input type='button' id='boutonCancelModifCategorie' class='boutonMoyenne' value=X>";
+
+                document.getElementById("categorieAffichageSoumission").innerHTML = contenuSelect;
+            });   
+            
+            //Bouton de fermeture/cancel
+            $("#categorieAffichageSoumission").on("click", "#boutonCancelModifCategorie", function(){
+                document.getElementById("categorieAffichageSoumission").innerHTML = contenu;
+            });
+        } 
+    });
+    //Envoi de la requête pour une modification
+    $("#panneauApprobation").on("click", "#boutonCategorieModif", function(){
+
+        var idOeuvre = document.getElementById("idOeuvreSoumise").value;
+        var categorieModif = document.getElementById("categorieModifSoumission").value;
+        $.post("ajaxControler.php?rAjax=modifierOeuvreSoumise", {idOeuvre:idOeuvre, categorieModif:categorieModif}, function(reponse){
+            afficherOeuvrePourApprobation(idOeuvre);
+        });
+    });
+    
+    //MODIF PRENOM/NOM ARTISTE------------------------------------------------------------
+    $("#panneauApprobation").on("click", ".artisteAffichageSoumission", function(){
+
+        //Click sur champ éditable
+        if (!document.getElementById("pArtisteModifSoumission") && !document.getElementById("nArtisteModifSoumission")) {//Si l'élément n'est pas déjà présent dans le document...
+            var contenuPrenom = document.getElementById("pArtisteAffichageSoumission").innerHTML;
+            var contenuNom = document.getElementById("nArtisteAffichageSoumission").innerHTML;
+            var regEx = new RegExp("^(<span)", "i");//pour trouver du code html.
+            var contenuPrenomFiltre = regEx.exec(contenuPrenom) ? "" : contenuPrenom;//Forme ternaire : Si l'expression est trouvée, chaîne vide. Sinon, contenu non altéré.
+            var contenuNomFiltre = regEx.exec(contenuNom) ? "" : contenuNom;//Forme ternaire : Si l'expression est trouvée, chaîne vide. Sinon, contenu non altéré.
+            document.getElementById("pArtisteAffichageSoumission").innerHTML = "<input type='text' id='pArtisteModifSoumission' value='" + contenuPrenomFiltre + "'>";
+            document.getElementById("nArtisteAffichageSoumission").innerHTML = "<input type='text' id='nArtisteModifSoumission' value='" + contenuNomFiltre + "'><input type='button' id='boutonArtisteModif' class='boutonMoyenne' value=OK><input type='button' id='boutonCancelModifArtiste' class='boutonMoyenne' value=X>";
+            
+            //Bouton de fermeture/cancel
+            $("#nArtisteAffichageSoumission").on("click", "#boutonCancelModifArtiste", function(){
+                document.getElementById("pArtisteAffichageSoumission").innerHTML = contenuPrenom;
+                document.getElementById("nArtisteAffichageSoumission").innerHTML = contenuNom;
+            });
+        }
+    });
+    //Envoi de la requête pour une modification
+    $("#panneauApprobation").on("click", "#boutonArtisteModif", function(){
+
+        document.getElementById("nArtisteModifSoumission").style.border = "";
+        if (document.getElementById("nArtisteModifSoumission").value.trim() !== "" || document.getElementById("nArtisteModifSoumission").value.trim() == "" && document.getElementById("pArtisteModifSoumission").value.trim() == "") {
+            var idOeuvre = document.getElementById("idOeuvreSoumise").value;
+            var idArtiste = document.getElementById("idArtisteSoumis").value;
+            var pArtisteModifSoumission = document.getElementById("pArtisteModifSoumission").value.trim();
+            var nArtisteModifSoumission = document.getElementById("nArtisteModifSoumission").value.trim();
+            $.post("ajaxControler.php?rAjax=modifierArtisteSoumis", {idOeuvre:idOeuvre, idArtiste:idArtiste, pArtisteModif:pArtisteModifSoumission, nArtisteModif:nArtisteModifSoumission}, function(reponse){
+                afficherOeuvrePourApprobation(idOeuvre);
+            });
+        }
+        else {//erreur, requête non envoyée
+            document.getElementById("nArtisteModifSoumission").style.border = "1px solid red";
+            document.getElementById("nArtisteModifSoumission").value = "";
+        }
+    });
+    
+    /* --------------------------------------------------------------------
+    =================== EDITION COMMENTAIRE APPROBATION ===================
+    -------------------------------------------------------------------- */
+       
+    //MODIF TITRE------------------------------------------------------------
+    $("#panneauApprobation").on("click", "#commentaireAffichageSoumission", function(){
+
+        //Click sur champ éditable
+        if (!document.getElementById("commentaireModifSoumission")) {//Si l'élément n'est pas déjà présent dans le document...
+            var contenu = document.getElementById("commentaireAffichageSoumission").innerHTML;
+            document.getElementById("commentaireAffichageSoumission").innerHTML = "<textarea id='commentaireModifSoumission'>" + contenu + "</textarea><input type='button' id='boutonCommentaireModif' class='boutonMoyenne' value=OK><input type='button' id='boutonCancelModifCommentaire' class='boutonMoyenne' value=X>";
+            
+            //Bouton de fermeture/cancel
+            $("#commentaireAffichageSoumission").on("click", "#boutonCancelModifCommentaire", function(){
+                document.getElementById("commentaireAffichageSoumission").innerHTML = contenu;
+            });
+        } 
+    });
+    //Envoi de la requête pour une modification
+    $("#panneauApprobation").on("click", "#boutonCommentaireModif", function(){
+        document.getElementById("commentaireModifSoumission").style.border = "";
+        if (document.getElementById("commentaireModifSoumission").value.trim() !== "") {
+            var idCommentaire = document.getElementById("idCommentaireSoumis").value;
+            var langue = getCookie("langue");
+            var commentaireModifSoumission = document.getElementById("commentaireModifSoumission").value;
+            $.post("ajaxControler.php?rAjax=modifierCommentaireSoumis", {idCommentaire:idCommentaire, commentaireModif:commentaireModifSoumission}, function(reponse){
+                afficherCommentairePourApprobation(idCommentaire);
+            });
+        }
+        else {//erreur, requête non envoyée
+            document.getElementById("commentaireModifSoumission").style.border = "1px solid red";
+            document.getElementById("commentaireModifSoumission").value = "";
+        }
+    });
+    
+    
+    /* --------------------------------------------------------------------
+    ======================== ONGLETS PAGE GESTION =========================
+    -------------------------------------------------------------------- */
 
     //ONGLET 1
     $("#lienGestion1").click(function(){
@@ -352,11 +545,101 @@ $(document).ready(function(){
         $("#Onglet-5").hide();
         $("#Onglet-6").hide();
         $("#Onglet-7").hide();
-//------------ FIN ONGLETS JQUERY PAGE GESTION -------------
+    
+    //------------ FIN ONGLETS JQUERY PAGE GESTION -------------
+
+
+    /* --------------------------------------------------------------------
+    ======================== ACCORDEON PAGE GESTION =======================
+    -------------------------------------------------------------------- */
+    
+    $( "#accordeon" ).accordion({
+        active: false,
+        collapsible: true,
+        animate: 400,
+        heightStyle: "content"
+    });
+
+    //SLIDE MENU MOBILE
+    $("#navAMobile").hide();//Cache le menu mobile au chargement
+    $("#navMobile").click(function(){
+        $("#navAMobile").slideToggle("medium");
+    });
+
+    //SLIDE BARRE DE RECHERCHE MOBILE
+    $(".boutonRechercheMobile").click(function(){
+        $(".barreRechercheContenuMobile").slideToggle("medium");
+    });
+    
+    //SLIDE BARRE DE RECHERCHE
+    $(".barreRecherche").hide();
+    $(".boutonRecherche").click(function(){
+        
+        $( ".barreRecherche").animate({
+            width: "toggle"
+        });
+    });
+    
+    //AJAX SELECT TYPE DE RECHERCHE
+    $(".barreRecherche").on("change", ".typeRecherche", function(){
+        
+        $.get("ajaxControler.php?rAjax=afficherSelectRecherche&typeRecherche="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".deuxiemeSelectRecherche").html(reponse);
+            $(".submitRecherche").html("");//Pour corriger un bug où le bouton restait affiché si on changeait le type de recherche après son affichage.
+        });
+    });
+    //AJAX SELECT CATEGORIE
+    $(".barreRecherche").on("change", ".selectCategorie", function(){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRecherche&selectCategorie="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".submitRecherche").html(reponse);
+        });
+    });
+    //AJAX SELECT ARRONDISSEMENT
+    $(".barreRecherche").on("change", ".selectArrondissement", function(){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRecherche&selectArrondissement="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".submitRecherche").html(reponse);
+        });
+    });
+    
+    //AJAX SELECT TYPE DE RECHERCHE MOBILE
+
+    $(".barreRechercheMobile").on("change", ".typeRechercheMobile", function(){
+        
+        $.get("ajaxControler.php?rAjax=afficherSelectRechercheMobile&typeRechercheMobile="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".deuxiemeSelectRechercheMobile").html(reponse);
+            $(".submitRechercheMobile").html("");//Pour corriger un bug où le bouton restait affiché si on changeait le type de recherche après son affichage.
+        });
+    });
+    //AJAX SELECT CATEGORIE MOBILE
+
+    $(".barreRechercheMobile").on("change", ".selectCategorieMobile", function(){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRechercheMobile&selectCategorieMobile="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".submitRechercheMobile").html(reponse);
+        });
+    });
+    //AJAX SELECT ARRONDISSEMENT MOBILE
+
+    $(".barreRechercheMobile").on("change", ".selectArrondissementMobile", function(){
+        $.get("ajaxControler.php?rAjax=afficherBoutonRechercheMobile&selectArrondissementMobile="+this.value, function(reponse){
+            //ceci est la fonction de callback
+            //elle sera appelée lorsque le contenu obtenu par AJAX sera rendu du côté client
+            $(".submitRechercheMobile").html(reponse);
+        });
+    });
 });
 
 /* --------------------------------------------------------------------
-========================= DÉBUT VALIDATION JS =========================
+==================== VALIDATION JS / REQUÊTES AJAX ====================
 -------------------------------------------------------------------- */
 
 /**
@@ -915,46 +1198,26 @@ function validerFormAjoutUtilisateur(){
     document.getElementById("msg").innerHTML = msg;
     return (!erreurs);
 }
+
 /* --------------------------------------------------------------------
-========================== FIN VALIDATION JS ==========================
+========================= FONCTIONS DIVERSES ==========================
 -------------------------------------------------------------------- */
+
 /**
-* @brief Fonction qui mets à jour les oeuvres de la BDD avec les oeuvres de la ville et mets à jour l'affichage dans la page de gestion.
+* @brief Fonction qui récupère la valeur d'un cookie selon le nom passé en paramètre
 * @access public
-* @author David Lachambre
+* @author W3Schools
 * @return void
 */
-function updateOeuvresVille() {
-    
-    $("#msgUpdateDate").html("<span style='color:green'>En traitement...</span>");
-    
-    $.post('ajaxControler.php?rAjax=updateOeuvresVille',
-        function(reponse){
-
-            var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
-
-            if (msgErreurs.length == 0) {//Si aucune erreur...
-
-                $("#msgUpdateDate").html("<span style='color:green'>Mise à jour complétée !</span>");
-
-                //Récupération de la nouvelle date de mise à jour.
-                $.post('ajaxControler.php?rAjax=updateDate',
-                    function(reponse){
-                        var tableauDate = jQuery.parseJSON(reponse);
-
-                        var date = "Dernière mise à jour : Le " + tableauDate["dateDernierUpdate"] + " à " + tableauDate["heureDernierUpdate"];
-                        $("#affichageDate").html(date);
-                    });
-            }
-            else {//Sinon indique les erreurs à l'utilisateur.
-                $(msgErreurs).each(function(index, valeur) {
-                    if (valeur.errUrl) {
-                        $("#msgUpdateDate").html(valeur.errUrl);
-                    }
-                })
-            }
-    });
-    return false;
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0; i<ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
+    }
+    return "";
 }
 
 /**
@@ -978,56 +1241,7 @@ function afficherFormModif() {
     }
     
 }
-/**
-* @brief Fonction d'autocomplete pour la recherche
-* @access public
-* @return void
-*/
-function autoComplete(rechercheVoulue, nomServeur)
-{
-    var MIN_LENGTH = 1;
-    var url =  "ajaxControler.php?rAjax=autoComplete&rechercheVoulue=";
-    
-    $("#keyword").keyup(function() {
-        
-        var keyword = $("#keyword").val();
-        if (keyword.length >= MIN_LENGTH) {
-            $.get(url + rechercheVoulue, { keyword: keyword } )
-            
-            .done(function( data ) {
-                
-                
-                
-                $('#results').html('');
-                var results = jQuery.parseJSON(data);
-                
-                $(results).each(function(key, value) {
 
-                    if (rechercheVoulue=="titre") {
-                        $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=oeuvre&o="+value['idOeuvre']+">"+value['titre']+"</a></div>");
-                    }
-                    if (rechercheVoulue=="artiste") {
-                        if (value['nomCollectif'] != null) {
-                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCollectif']+"</a></div>");
-                        }
-                        else {
-                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCompletArtiste']+"</a></div>");
-                        }
-                    }
-                })
-                $("#results").show();
-            });
-        }
-        else {
-            $('#results').html('');
-        }
-    });
-    
-    $("#keyword").blur(function(){
-        
-        $("#results").fadeOut(500);
-    })
-}
 /**
 * @brief Fonction d'initialisation Google Map Page Trajet, service des directions
 * @access public
@@ -1145,6 +1359,60 @@ var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
     }
   });
 }
+
+/* --------------------------------------------------------------------
+========================= FONCTIONS RECHERCHE =========================
+-------------------------------------------------------------------- */
+
+/**
+* @brief Fonction d'autocomplete pour la recherche
+* @access public
+* @return void
+*/
+function autoComplete(rechercheVoulue, nomServeur)
+{
+    var MIN_LENGTH = 1;
+    var url =  "ajaxControler.php?rAjax=autoComplete&rechercheVoulue=";
+    
+    $("#keyword").keyup(function() {
+        
+        var keyword = $("#keyword").val();
+        if (keyword.length >= MIN_LENGTH) {
+            $.get(url + rechercheVoulue, { keyword: keyword } )
+            
+            .done(function( data ) {
+                
+                $('#results').html('');
+                var results = jQuery.parseJSON(data);
+                
+                $(results).each(function(key, value) {
+
+                    if (rechercheVoulue=="titre") {
+                        $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=oeuvre&o="+value['idOeuvre']+">"+value['titre']+"</a></div>");
+                    }
+                    else if (rechercheVoulue=="artiste") {
+                        if (value['nomCollectif'] != null) {
+                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCollectif']+"</a></div>");
+                        }
+                        else {
+                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCompletArtiste']+"</a></div>");
+                        }
+                    }
+                })
+                $("#results").show();
+            });
+        }
+        else {
+            $('#results').html('');
+        }
+    });
+    
+    $("#keyword").blur(function(){
+        
+        $("#results").fadeOut(500);
+    })
+}
+
 /**
 * @brief Fonction d'autocomplete pour la recherche mobile
 * @access public
@@ -1196,6 +1464,9 @@ function autoCompleteMobile(rechercheVoulue, nomServeur)
     })
 }
 
+/* --------------------------------------------------------------------
+======================== FONCTIONS GOOGLE API =========================
+-------------------------------------------------------------------- */
 
 /**
 * @brief Fonction d'initialisation Google Map
@@ -1319,9 +1590,9 @@ function trouveMarqueurPlusPres(lat, lng) {
                         $.post('ajaxControler.php?rAjax=visiteOeuvres',{idOeuvre, idUtilisateur ,laDate });
                   }
             }
-});
-    
+     });  
 }
+
 /**
 * @brief Haversine pour calculer la distance entre deux point sur une sphere selon leurs point cardinaux  et instructions pour generer les inputs pour le calcule d'un itinairaire
 * @access public
@@ -1436,21 +1707,48 @@ function formRevisionPhotos(idPhoto){
     document.getElementById('formRevisionPhotos').innerHTML="<form action='#' id='formRevisionPhoto' method='post' name='formRevisionPhoto'><button id='fermer' onclick ='fermer()'>X</button><h3>Id Image:</h3><p>Adresse Oeuvre</p><img src='<?php $photoAffiche = $this->$photoAReviser['image']?>'><input id='insererPhoto' name='insererPhoto' type='submit' onclick='fermer()' value='Insérer'><input id='suprimmerPhoto' name='suprimmerPhoto' type='submit' onclick='fermer()' value='Suprimmer'></form>";
 }
 
+
+/* --------------------------------------------------------------------
+======================= FONCTIONS PAGE GESTION ========================
+-------------------------------------------------------------------- */
+
 /**
-* @brief Fonction qui récupère la valeur d'un cookie selon le nom passé en paramètre
+* @brief Fonction qui mets à jour les oeuvres de la BDD avec les oeuvres de la ville et mets à jour l'affichage dans la page de gestion.
 * @access public
-* @author W3Schools
+* @author David Lachambre
 * @return void
 */
-function getCookie(cname) {
-    var name = cname + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0; i<ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1);
-        if (c.indexOf(name) == 0) return c.substring(name.length,c.length);
-    }
-    return "";
+function updateOeuvresVille() {
+    
+    $("#msgUpdateDate").html("<span style='color:green'>En traitement...</span>");
+    
+    $.post('ajaxControler.php?rAjax=updateOeuvresVille',
+        function(reponse){
+
+            var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+
+            if (msgErreurs.length == 0) {//Si aucune erreur...
+
+                $("#msgUpdateDate").html("<span style='color:green'>Mise à jour complétée !</span>");
+
+                //Récupération de la nouvelle date de mise à jour.
+                $.post('ajaxControler.php?rAjax=updateDate',
+                    function(reponse){
+                        var tableauDate = jQuery.parseJSON(reponse);
+
+                        var date = "Dernière mise à jour : Le " + tableauDate["dateDernierUpdate"] + " à " + tableauDate["heureDernierUpdate"];
+                        $("#affichageDate").html(date);
+                    });
+            }
+            else {//Sinon indique les erreurs à l'utilisateur.
+                $(msgErreurs).each(function(index, valeur) {
+                    if (valeur.errUrl) {
+                        $("#msgUpdateDate").html(valeur.errUrl);
+                    }
+                })
+            }
+    });
+    return false;
 }
 
 /**
@@ -1466,69 +1764,67 @@ function afficherOeuvrePourApprobation(idOeuvre) {
         function(reponse){
         var oeuvre = jQuery.parseJSON(reponse);
         var langue = getCookie("langue");
-
         var contenu = "";
         var type = "\"oeuvre\"";
-        var id = idOeuvre;
         
         //Vérification des champs null
-        if (oeuvre.descriptionFR != null) {
+        if (oeuvre.descriptionFR != null && oeuvre.descriptionFR != "") {
             var descriptionFR = oeuvre.descriptionFR;
         }
         else {
-            var descriptionFR = "";
+            var descriptionFR = "<span style='color:grey'>vide</span>";
         }
         
-        if (oeuvre.descriptionEN != null) {
+        if (oeuvre.descriptionEN != null && oeuvre.descriptionEN != "") {
             var descriptionEN = oeuvre.descriptionEN;
         }
         else {
-            var descriptionEN = "";
+            var descriptionEN = "<span style='color:grey'>vide</span>";
         }
         
-        if (oeuvre.prenomArtiste != null) {
+        if (oeuvre.prenomArtiste != null && oeuvre.prenomArtiste != "") {
             var prenomArtiste = oeuvre.prenomArtiste;
         }
         else {
-            var prenomArtiste = "";
+            var prenomArtiste = "<span style='color:grey'>vide</span>";
         }
         
-        if (oeuvre.nomArtiste != null) {
+        if (oeuvre.nomArtiste != null && oeuvre.nomArtiste != "") {
             var nomArtiste = oeuvre.nomArtiste;
         }
         else {
-            var nomArtiste = "";
+            var nomArtiste = "<span style='color:grey'>vide</span>";
         }
         
-        if (oeuvre.nomCategorieFR != null) {
-            var nomCategorieFR = oeuvre.nomCategorieFR;
+        if (langue = "FR") {
+            if (oeuvre.nomCategorieFR != null) {
+                var nomCategorie = oeuvre.nomCategorieFR;
+            }
         }
-        else {
-            var nomCategorieFR = "";
-        }
-        
-        if (oeuvre.nomCategorieEN != null) {
-            var nomCategorieEN = oeuvre.nomCategorieEN;
-        }
-        else {
-            var nomCategorieEN = "";
+        else if (langue = "EN") {
+            if (oeuvre.nomCategorieEN != null) {
+                var nomCategorie = oeuvre.nomCategorieEN;
+            }
         }
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
-        contenu += "<h2>Oeuvre soumise</h2>";
+        contenu += "<h2>L'oeuvre <a target = '_blank' href='?r=oeuvreSoumise&o=" + oeuvre.idOeuvre + "'>" + oeuvre.titre + "</a></h2>";
+        contenu += "<input type='hidden' id='idOeuvreSoumise' value='" + oeuvre.idOeuvre + "'>";
+        contenu += "<input type='hidden' id='idCategorieSoumise' value='" + oeuvre.idCategorie + "'>";
+        contenu += "<input type='hidden' id='idArrondissementSoumis' value='" + oeuvre.idArrondissement + "'>";
+        contenu += "<input type='hidden' id='idArtisteSoumis' value='" + oeuvre.idArtiste + "'>";
         contenu += "<p>Titre : <span style='color:green' id='titreAffichageSoumission'>" + oeuvre.titre + "</span><br>";
         contenu += "Adresse : <span style='color:green' id='adresseAffichageSoumission'>" + oeuvre.adresse + "</span><br>";
         contenu += "Description en français : <span style='color:green' id='descriptionFrAffichageSoumission'>" + descriptionFR + "</span><br>";
         contenu += "Description en anglais : <span style='color:green' id='descriptionEnAffichageSoumission'>" + descriptionEN + "</span><br>";
         contenu += "Arrondissement : <span style='color:green' id='arrondissementAffichageSoumission'>" + oeuvre.nomArrondissement + "</span><br>";
-        contenu += "Catégorie : <span style='color:green' id='categorieFrAffichageSoumission'>" + nomCategorieFR + "</span><br>";
-        contenu += "Catégorie : <span style='color:green' id='categorieEnAffichageSoumission'>" + nomCategorieEN + "</span><br>";
-        contenu += "Prénom de l'artiste : <span style='color:green' id='prenomArtisteAffichageSoumission'>" + prenomArtiste + "</span><br>";
-        contenu += "Nom de l'artiste : <span style='color:green' id='nomArtisteAffichageSoumission'>" + nomArtiste + "</span><br>";
+        contenu += "Catégorie : <span style='color:green' id='categorieAffichageSoumission'>" + nomCategorie + "</span><br>";
+        contenu += "Prénom de l'artiste : <span style='color:green' id='pArtisteAffichageSoumission' class='artisteAffichageSoumission'>" + prenomArtiste + "</span><br>";
+        contenu += "Nom de l'artiste : <span style='color:green' id='nArtisteAffichageSoumission' class='artisteAffichageSoumission'>" + nomArtiste + "</span><br>";
         contenu += "</p>";
-        contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + id + ")'>";
-        contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + id + ")'>";
+        contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + oeuvre.idOeuvre + ")'>";
+        contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + oeuvre.idOeuvre + ")'>";
         contenu += "<div id='msgErreurApprobation'></div>";
         contenu += "</div>";
         
@@ -1552,16 +1848,15 @@ function afficherPhotoPourApprobation(idPhoto) {
         var photo = jQuery.parseJSON(reponse);
         var contenu = "";
         var type = "\"photo\"";
-        var id = idPhoto;
         var regEx = new RegExp("^[\\w\\W\\s\\S.]*\/([\\w\\W\\s\\S.]+.[a-z]{3,4})$", "i");//pour trouver le nom du fichier.
-        var alt = regEx.exec(photo.image) ? regEx.exec(photo.image)[1] : "photo soumise par un utilisateur";//Forme ternaire : Si l'expression est trouvée, alt devient le résultat de l'expression. Sinon, alt devient le texte par défaut.
+        var alt = regEx.exec(photo.image) ? "photo soumise par un utilisateur" + regEx.exec(photo.image)[1] : "photo soumise par un utilisateur";//Forme ternaire : Si l'expression est trouvée, alt devient le résultat de l'expression. Sinon, alt devient le texte par défaut.
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
-        contenu += "<h2>Photo soumise</h2>";
-        contenu += "<img src='../" + photo.image + "' alt='photo soumise par un utilisateur : " + alt + "'></span><br>";
-        contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + id + ")'>";
-        contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + id + ")'>";
+        contenu += "<h2>Photo pour l'oeuvre <a target = '_blank' href='?r=oeuvreSoumise&o=" + photo.idOeuvre + "'>" + photo.titre + "</a></h2>";
+        contenu += "<img src='../" + photo.image + "' alt='" + alt + "'><br>";
+        contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + photo.idPhoto + ")'>";
+        contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + photo.idPhoto + ")'>";
         contenu += "<div id='msgErreurApprobation'></div>";
         contenu += "</div>";
         
@@ -1570,8 +1865,6 @@ function afficherPhotoPourApprobation(idPhoto) {
         document.getElementById("panneauApprobation").innerHTML = contenu;
     });
 }
-
-//   "^[\/]([\w\W\s\S.]+.[a-z]{3,4})$"
 
 /**
 * @brief Fonction qui récupère la photo choisie et affiche son contenu dans un panneau de style pop-up
@@ -1587,14 +1880,14 @@ function afficherCommentairePourApprobation(idCommentaire) {
         var commentaire = jQuery.parseJSON(reponse);
         var contenu = "";
         var type = "\"commentaire\"";
-        var id = idCommentaire;
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
-        contenu += "<h2>Commentaire soumis</h2>";
-        contenu += "<p>" + commentaire.texteCommentaire + "</p>";
-        contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + id + ")'>";
-        contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + id + ")'>";
+        contenu += "<h2>Commentaire pour l'oeuvre <a target = '_blank' href='?r=oeuvreSoumise&o=" + commentaire.idOeuvre + "'>" + commentaire.titre + "</a></h2>";
+        contenu += "<input type='hidden' id='idCommentaireSoumis' value='" + commentaire.idCommentaire + "'>";
+        contenu += "<p id='commentaireAffichageSoumission'>" + commentaire.texteCommentaire + "</p>";
+        contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + commentaire.idCommentaire + ")'>";
+        contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + commentaire.idCommentaire + ")'>";
         contenu += "</div id='msgErreurApprobation'></div>";
         contenu += "</div>";
         

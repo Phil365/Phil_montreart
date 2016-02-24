@@ -55,6 +55,12 @@ class Controler {
     */
     private $pOeuvre;
     
+     /**
+    * @var string $pOeuvreSoumise Page d'une oeuvre pas encore approuvée - pour l'admin
+    * @access private
+    */
+    private $pOeuvreSoumise;
+    
     /**
     * @var string $pTrajet Page de trajet
     * @access private
@@ -107,6 +113,7 @@ class Controler {
         
         $this->pAccueil = "accueil";
         $this->pOeuvre = "oeuvre";
+        $this->pOeuvreSoumise = "oeuvreSoumise";
         $this->pTrajet = "trajet";
         $this->pSoumission = "soumission";
         $this->pProfil = "profil";
@@ -132,6 +139,9 @@ class Controler {
                 break;
             case $this->pOeuvre:
                 $this->oeuvre();
+                break;
+            case $this->pOeuvreSoumise:
+                $this->oeuvreSoumise();
                 break;
             case $this->pTrajet:
                 $this->trajet();
@@ -220,6 +230,34 @@ class Controler {
         $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre, $this->langueAffichage);
         $this->oVue->setMsgPhoto($msgInsertPhoto);
         $this->oVue->setMsgCommentaire($msgInsertCommentaire);
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
+    }
+    
+    /**
+    * @brief Méthode qui appelle la vue d'affichage de la page d'une oeuvre qui n'a pas encore été approuvée - pour les utilisateurs admin
+    * @access private
+    * @return void
+    */
+    private function oeuvreSoumise() {
+        
+        $oeuvre = new Oeuvre();
+        $oeuvreAffichee = $oeuvre->getAnyOeuvreById($_GET["o"]);
+        
+        $commentaire = new Commentaire();
+        $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
+                
+        $photo = new Photo();
+        $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"], false);
+ 
+        $artiste = new Artiste();
+        $artistesOeuvre = $artiste->getArtistesbyOeuvreId ($_GET["o"]);
+        
+        $this->oVue = new VueOeuvreSoumise();
+        $this->oVue->setDataGlobal('oeuvreSoumise', "page d'une oeuvre soumise", $this->langueAffichage, $this->pOeuvreSoumise);
+        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre, $this->langueAffichage);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();

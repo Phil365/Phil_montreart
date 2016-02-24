@@ -64,6 +64,15 @@ switch ($_GET['rAjax']) {//requête
     case 'modifierOeuvre':
         modifierOeuvre();
         break;
+    case 'modifierOeuvreSoumise':
+        modifierOeuvreSoumise();
+        break;
+    case 'modifierArtisteSoumis':
+        modifierArtisteSoumis();
+        break;
+    case 'modifierCommentaireSoumis':
+        modifierCommentaireSoumis();
+        break;
     case 'updateOeuvresVille':
         updateOeuvresVille();
         break;
@@ -72,6 +81,9 @@ switch ($_GET['rAjax']) {//requête
         break;
     case 'recupererCategories':
         recupererCategories();
+        break;
+    case 'recupererArrondissements':
+        recupererArrondissements();
         break;
     case 'recupererOeuvres':
         recupererOeuvres();
@@ -158,6 +170,20 @@ function recupererCategories () {
     $categories = $categorie->getAllCategories($_COOKIE["langue"]);
     
     echo json_encode($categories);//Encode le tableau de catégories retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui récupère tous les arrondissements de la BDD.
+* @access public
+* @author David Lachambre
+* @return void
+*/
+function recupererArrondissements () {
+
+    $arrondissement = new Arrondissement();
+    $arrondissements = $arrondissement->getAllArrondissements();
+    
+    echo json_encode($arrondissements);//Encode le tableau de catégories retourné par la requête en Json.
 } 
 
 /**
@@ -345,6 +371,82 @@ function modifierOeuvre () {
     
     $oeuvre = new Oeuvre();
     $msgErreurs = $oeuvre->modifierOeuvre($_POST["idOeuvre"], $_POST["titre"], $_POST["adresse"], $_POST["description"], $_POST["idCategorie"], $_POST["idArrondissement"], $_COOKIE["langue"]);
+    echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui modifie un champs de l'oeuvre soumise par un utilisateur pour approbation
+* @access public
+* @author David Lachambre
+* @return void
+*/
+function modifierOeuvreSoumise () {
+    
+    $oeuvre = new Oeuvre();
+    $elementModif = array();
+    $msgErreurs = array();
+    
+    if (isset($_POST["titreModif"])) {
+        $elementModif["titre"] = $_POST["titreModif"];
+        $msgErreurs = $oeuvre->modifierOeuvreSoumise($_POST["idOeuvre"], $elementModif);
+    }
+    else if (isset($_POST["adresseModif"])) {
+        $elementModif["adresse"] = $_POST["adresseModif"];
+        $msgErreurs = $oeuvre->modifierOeuvreSoumise($_POST["idOeuvre"], $elementModif);
+    }
+    else if (isset($_POST["descriptionFrModif"])) {
+        $elementModif["descriptionFR"] = $_POST["descriptionFrModif"];
+        $msgErreurs = $oeuvre->modifierOeuvreSoumise($_POST["idOeuvre"], $elementModif);
+    }
+    else if (isset($_POST["descriptionEnModif"])) {
+        $elementModif["descriptionEN"] = $_POST["descriptionEnModif"];
+        $msgErreurs = $oeuvre->modifierOeuvreSoumise($_POST["idOeuvre"], $elementModif);
+    }
+    else if (isset($_POST["arrondissementModif"])) {
+        $elementModif["idArrondissement"] = $_POST["arrondissementModif"];
+        $msgErreurs = $oeuvre->modifierOeuvreSoumise($_POST["idOeuvre"], $elementModif);
+    }
+    else if (isset($_POST["categorieModif"])) {
+        $elementModif["idCategorie"] = $_POST["categorieModif"];
+        $msgErreurs = $oeuvre->modifierOeuvreSoumise($_POST["idOeuvre"], $elementModif);
+    }
+    echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui modifie un artiste
+* @access public
+* @author David Lachambre
+* @return void
+*/
+function modifierArtisteSoumis () {
+    
+    $artiste = new Artiste();
+    $elementModif = array();
+    $msgErreurs = array();
+    
+    if (isset($_POST["pArtisteModif"]) && isset($_POST["nArtisteModif"])) {
+        $elementsModif["prenomArtiste"] = $_POST["pArtisteModif"];
+        $elementsModif["nomArtiste"] = $_POST["nArtisteModif"];
+        $msgErreurs = $artiste->modifierArtisteSoumis($_POST["idOeuvre"], $_POST["idArtiste"], $elementsModif);
+    }
+    echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
+}
+
+/**
+* @brief Fonction qui modifie un commentaire soumis par un utilisateur pour approbation
+* @access public
+* @author David Lachambre
+* @return void
+*/
+function modifierCommentaireSoumis () {
+    
+    $commentaire = new Commentaire();
+    $msgErreurs = array();
+    
+    if (isset($_POST["idCommentaire"]) && isset($_POST["commentaireModif"])) {
+        $msgErreurs = $commentaire->modifierCommentaireSoumis($_POST["idCommentaire"], $_POST["commentaireModif"]);
+    }
     echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
 }
 

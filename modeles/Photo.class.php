@@ -140,7 +140,7 @@ class Photo {
         
         $infoPhoto = array();
 
-        self::$database->query('SELECT * FROM photos where photos.idPhoto = :idPhoto');
+        self::$database->query('SELECT Photos.image, Photos.idPhoto, Oeuvres.titre, Oeuvres.idOeuvre FROM photos JOIN Oeuvres ON Photos.idOeuvre = Oeuvres.idOeuvre WHERE photos.idPhoto = :idPhoto');
         self::$database->bind(':idPhoto', $idPhoto);
 
         if($photoBDD = self::$database->uneLigne()){
