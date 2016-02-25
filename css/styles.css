@@ -175,6 +175,7 @@ footer{
     font-weight: 500;
     margin: 40px 10px;
     text-indent: 0;
+    text-align: center;
 }
 
 .bold {
@@ -499,7 +500,7 @@ footer{
 
 .selectGestion {
     margin-top: 20px;
-    width: 87.5%;
+    width: 80%;
 }
 
 .televersionTexteGestion {
@@ -593,6 +594,7 @@ footer{
     background-color:#fff;
 }
 
+/*
 #click1 {
     margin-left: 40px;
     background-color: #70212F;
@@ -628,6 +630,7 @@ footer{
 #click3:hover {
     background-color: #B32A42;
 }
+*/
 
 #misAJour {
     margin-top: 30px;
@@ -690,7 +693,7 @@ input {
 }
 
 select {
-    width: 92%;
+    width: 79%;
 }
 
 input, select {
@@ -841,8 +844,10 @@ select:focus, textarea, textarea:focus {
 }
 
 #form_itineraire, #contribuer_oeuvre {
-    padding: 10px 50px 30px 50px;
+    padding: 10px 50px 30px 80px;
+    margin: 0 auto;
     font-family: 'Source Sans Pro', sans-serif;
+    text-align: center;
 }
 
 #form_itineraire input[type="submit"]{
@@ -1091,8 +1096,9 @@ nav {
 
 #form_itineraire input[type="submit"] {
     float: none;
-    margin-left: 42px;
+    margin-left: 80px;
 }
+
 
 #navBoutonMobile {
     width: 30px;
@@ -1136,6 +1142,14 @@ nav {
 
 #descriptionTitreOeuvre {
     margin-left: 35px;
+}
+
+#depart {
+    width: 73%;
+}
+
+#fin {
+    width: 245px;
 }
 
 /*======================================== Style recherche mobile ====================================================*/
@@ -1291,6 +1305,17 @@ nav {
     height: 300px !important;
     margin: 0 auto;
     border-bottom: solid 4px #F8F274;
+    top: 20px;
+    order: 1;
+    top: 0px;
+}
+
+#texteAccueilTablette {
+        display: none;
+}
+
+#aProposMontreart {
+        display: none;
 }
 
 /*======================================== FIN DES STYLES POUR MOBILE ====================================================*/
@@ -1327,10 +1352,6 @@ nav {
         line-height: 36px;
         background-color: #659CEF;
         border-radius: 5px;
-    }
-
-    nav a:first-child {
-        margin-left: 2%;
     }
 
     .barreRechercheContenuMobile {
@@ -1507,11 +1528,11 @@ nav {
     }
     
     #texteAccueil {
-        margin-left: 20px;
+        display: none;
     }
     
     #map {
-        height: 300px !important;
+        height: 400px !important;
         margin: 0 auto;
     }
     
@@ -1529,6 +1550,34 @@ nav {
     #formlogin, #contribuer_article, #form_profil {
         max-width: 300px;
     }
+
+    #form_itineraire input[type="submit"] {
+    margin: 0 auto;
+    margin-top: 30px;
+    }
+    
+    #fin {
+    width: 280px;
+    }
+    
+    #formSoumissionConteneur {
+        margin-left: 90px;
+        width: 100%;
+    }
+    
+    #aProposMontreart {
+        display: block;
+    }
+    
+    #texteAccueilTablette {
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+        width: 100%;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+    
     
     /*--------------------STYLES SLIDER----------------*/
     
@@ -1596,7 +1645,7 @@ nav {
     }
 
       nav a:first-child {
-        margin-left: 14%;
+        margin-left: 16%;
     }
     
     h2{
@@ -1817,7 +1866,7 @@ nav {
     }
     
     #itineraire{
-    width: 40%; 
+    width: 100%; 
     }
     
 
@@ -1866,6 +1915,10 @@ nav {
     .reseauxsociaux{
         position: absolute;
         right: 0;
+    }
+    
+    #fin {
+    width: 558px;
     }
     /*------------- PAGE ADMIN 800px ET+ -----------------------*/
 
@@ -1925,6 +1978,13 @@ nav {
     #lionMobile {
         display: none;
     }
+    
+/*
+    #form_itineraire input[type="submit"] {
+        margin-left: 0px;
+        
+    }
+*/
 
 }
 /*-------------FIN PAGE ADMIN ---------------------*/    
@@ -2002,7 +2062,7 @@ nav {
     }
 
     #map {
-        height: 300px !important;
+        height: 400px !important;
         margin: 0 auto;
     }
 
@@ -2017,6 +2077,10 @@ nav {
     }
      .pubAccueil img{
        width: 360px;
+    }
+    
+    #fin {
+    width: 670px;
     }
 }
 /*========================================FIN DU STYLES POUR DESKTOP ====================================================*/

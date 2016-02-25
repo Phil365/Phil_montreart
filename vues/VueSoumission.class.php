@@ -91,12 +91,13 @@ class VueSoumission extends Vue {
        
         
         <main>
+            
             <h2>Contribuez à Montréart!</h2>
             <p class="noIndent">Vous avez trouvé une oeuvre, qui, selon vous, devrait être sur notre site?</p>
             <p class="noIndent">Veuillez remplir le formulaire ci-dessous avec les informations de l'oeuvre en question.
             Toute contribution sera sujette à une approbation de la part d'un administrateur.</p>
 
-                 
+            <div id="formSoumissionConteneur">    
             <form method="POST" name="formAjoutOeuvre" onsubmit="return valideAjoutOeuvre(false);" action="?r=soumission" enctype="multipart/form-data" >
                 <input type='text' class="inputGestion" name='titreAjout' id='titreAjout' placeholder="Titre de l'oeuvre" value="<?php echo  $_POST["titreAjout"]; ?>"/>
                 <br> <span  id="erreurTitreOeuvre" class="erreur"><?php if (isset($this->msgErreurs["errTitre"])) {echo $this->msgErreurs["errTitre"];} ?></span><br>                  
@@ -153,10 +154,8 @@ class VueSoumission extends Vue {
             echo $msgAjout;
             ?>  
             </span>
+            </div>
         </main>
-        <div class="aside1"  id="DevenirMembre">
-            Devenir membre a ses avantages!
-        </div>
 
     <?php
     }
