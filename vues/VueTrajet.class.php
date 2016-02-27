@@ -49,13 +49,14 @@ class VueTrajet extends Vue {
                 <input class="submit" id="envoyerTrajetBouton" type="submit" value="Envoyer" name="Envoyer">
             </div>
             </div>
+                <div id="directions-panel">
+                </div>
+
          <div id="map">
                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMapTrajet"></script>
                  
         </div>
         
-                <div id="directions-panel">
-                </div>
         
     <?php
     }
