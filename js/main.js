@@ -18,6 +18,15 @@ $(document).ready(function(){
     ===================== EDITION OEUVRE APPROBATION ======================
     -------------------------------------------------------------------- */
     
+    $('.sliderOeuvre').slick({
+        infinite: true,
+        speed: 300,
+        slidesToShow: 1,
+        autoplay: true,
+        easing: "easeInOutCubic",
+        speed: 500
+    });
+    
     //MODIF TITRE------------------------------------------------------------
     $("#panneauApprobation").on("click", "#titreAffichageSoumission", function(){
 
@@ -1153,8 +1162,8 @@ function valideAjoutCommentaireOeuvre() {
 * @return boolean
 */
 function validerFormAjoutUtilisateur(){
-     var erreurs = false;
-     var msg = "";
+    var erreurs = false;
+    var msg = "";
     document.getElementById("erreurNomUsager").innerHTML = "";
     document.getElementById("erreurMotPasse").innerHTML = "";
     document.getElementById("erreurPrenom").innerHTML = "";
@@ -1197,6 +1206,66 @@ function validerFormAjoutUtilisateur(){
 
     document.getElementById("msg").innerHTML = msg;
     return (!erreurs);
+}
+
+/**
+* @brief Fonction de validation du login
+* @access public
+* @author David Lachambre
+* @return boolean
+*/
+function validerLogin(){
+    
+    var erreurs = false;
+    var msgErreur = "";
+    var passEncrypte = "";
+    
+    document.formLogin.user.style.border = "";
+    document.formLogin.pass.style.border = "";
+        
+    if (document.formLogin.user.value.trim() == "") {
+        document.formLogin.user.style.border = "solid 2px red";
+        document.formLogin.user.value = "";
+        erreurs = true;
+    }
+
+    if (document.formLogin.pass.value.trim() == "") {
+        document.formLogin.pass.style.border = "solid 2px red";
+        document.formLogin.pass.value = "";
+        erreurs = true;
+    }
+    if (!erreurs) {
+
+        passEncrypte = encrypter();
+//        console.log("pass md5 + grain de sel : ", passEncrypte);
+        $.post('ajaxControler.php?rAjax=connexion', {pass: passEncrypte, user:document.formLogin.user.value}, 
+            function(reponse){
+            
+            if (reponse) {
+                console.log("utilisateur authentifié");
+                location.reload(true);
+            }
+            else {
+                console.log("erreur user/pass");
+                document.formLogin.user.value = "";
+                document.formLogin.pass.value = "";
+                document.getElementById("erreurLogin").innerHTML = "nom et\/ou mot de passe incorrect(s)";
+            }
+        });
+    }
+}
+
+/**
+* @brief Fonction qui déconnecte l'usager du site
+* @access public
+* @author David Lachambre
+*/
+function deconnexion(){
+    
+    $.post('ajaxControler.php?rAjax=deconnexion',
+            function(){
+            window.location.href = "?r=accueil";
+        });
 }
 
 /* --------------------------------------------------------------------
@@ -1683,18 +1752,18 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 function doNothing() {}
 
-//methode pour monter le formulaire login
-function montrer_form() {
+//fonction pour monter le formulaire login
+function afficherLogin() {
     document.getElementById('div_bgform').style.display = "block";
     document.getElementById('div_form').style.display = "block";
 }
-//methode pour cacher le formulaire
+//fonction pour cacher le formulaire
 function fermer(){
     document.getElementById('div_bgform').style.display = "none";
     document.getElementById('div_form').style.display = "none";
 }
 
-//methode pour cacher le formulaire
+//fonction pour cacher le formulaire
 function fermerApprob(){
     document.getElementById('bgPanneauApprobation').style.display = "none";
     document.getElementById('panneauApprobation').style.display = "none";

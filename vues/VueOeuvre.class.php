@@ -122,10 +122,6 @@ class VueOeuvre extends Vue {
         else {
             $msgPhoto = $this->msgPhoto;
         }
-    ?>
-
-    <body>
-        <?php
         if (empty($this->oeuvre)) {
             echo "<p>Cette oeuvre n'a pas été trouvée dans la base de données</p>";
         }
@@ -147,11 +143,8 @@ class VueOeuvre extends Vue {
             echo "<div class='infosOeuvre'>
             <h4>Titre: </h4>";
         echo  "<p>".$this->oeuvre['titre']."</p>"; 
-            echo "<h4>Classement:</h4>
-        <div class='rating'>
-
-        </div>";
-
+            echo "<h4>Classement:</h4><div class='rating'></div>";
+        
         echo "<h4>Artiste(s) : </h4><p>";
         foreach ($this->artistes as $artiste) {
             if (isset($artiste["nomArtiste"])) {
@@ -275,8 +268,6 @@ class VueOeuvre extends Vue {
                     echo "<p class='textStandard'>Aucun commentaire</p>";
                 }//fin div commentaires 
             echo "</div>";
-
-            echo "</body>";
         }
     }
 }

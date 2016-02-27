@@ -149,6 +149,7 @@ footer{
     line-height: 1.6em;
     color: #ffffff;
     padding: 0px, 0px, 10px, 0px;
+    margin-bottom: 30px;
 }
 
 .global {
@@ -257,11 +258,6 @@ footer{
 .sliderOeuvre{
     width: 100%;
     height: auto;
-}
-
-.sliderOeuvre img{
-    width: 94%;
-    margin: 3%;
 }
 
 .boutonMoyenne{
@@ -700,6 +696,21 @@ select:focus, textarea, textarea:focus {
     border-radius: 5px;
 }
 
+.inputLogin {
+    margin: 20px auto 0 auto;
+}
+
+#erreurLogin {
+    display: block;
+    margin: 10px auto 0 auto;
+}
+
+.msgAccesNonAuthorise {
+    text-align: center;
+    font-size: 1.5em;
+    margin: 60px 0 30px 0;
+}
+
 .boutonAccepter, .boutonRefuser {
     width:100px;
     text-align:center;
@@ -809,7 +820,7 @@ select:focus, textarea, textarea:focus {
     line-height: 1.4em;
 }
 
-#formlogin, #form_profil, #divPanneauApprobation {
+#formLogin, #form_profil, #divPanneauApprobation {
     padding: 10px 50px;
     border: 2px solid #F8F274;
     border-radius: 10px;
@@ -817,11 +828,11 @@ select:focus, textarea, textarea:focus {
     background-color: #fff;
 }
 
-#formlogin, #form_profil {
+#formLogin, #form_profil {
     text-align: center;
 }
 
-#formlogin h2 {
+#formLogin h2 {
     text-align: center;
 }
 
@@ -1522,33 +1533,13 @@ nav {
         color: #B32A42;
     }
     
-    #formlogin, #contribuer_article, #form_profil {
+    #formLogin, #contribuer_article, #form_profil {
         max-width: 300px;
     }
-    
-    /*--------------------STYLES SLIDER----------------*/
-    
-    .single-item {
-        width: 99%;
-        text-align: center;
-    }
-    
-    .slick-slide {
-        width: 270px;
-    }
-    
-    .slick-slide img {
-        display: block;
-        width: 50%;
-        margin-left: 25%;
-    }
-    
-    .gm-style .photomap {
-        max-width: 200px;
-    }
-    
-    /*--------------- FIN STYLES SLIDER----------------*/
 }
+
+/*========================================  STYLES POUR TABLETTE 800+ px ====================================================*/
+
 @media (min-width: 620px) {
     #navMobile {
         display: none;
@@ -1636,18 +1627,11 @@ nav {
         height: 110px;
     }
     
-    .sliderOeuvre{
+    .sliderOeuvre {
         width:60%;
-        height: auto;
         margin-top: 45px;
-
-    }
-    
-    .slick-slide img {
-
-        display: block;
-        width: 98%;
-        margin-left: 2%;
+        height: 400px;
+        overflow: hidden;
     }
     
     .aside1{

@@ -134,7 +134,8 @@ INSERT INTO Photos VALUES (5,"images/photosOeuvres/lion.jpg",false,4,CURDATE());
 INSERT INTO Photos VALUES (6,"images/photosOeuvres/chat.jpg",false,5,CURDATE());
 
 INSERT INTO Utilisateurs VALUES ( 1,"anonyme", "","","","", "", null, true);
-INSERT INTO Utilisateurs VALUES ( 2,"dlachambre", "dl12345","David","Lachambre","dlachambre@montreart.net", "J'aime les marches sur la plage et le tricot extrême.", null, true);
+INSERT INTO Utilisateurs VALUES ( 2,"dladmin", "a73e88bbe9a374e808ae94eacd6a1b98","Denis","Ladmin","dladmin@montreart.net", "J'aime les marches sur la plage et le tricot extrême.", null, true);
+INSERT INTO Utilisateurs VALUES ( 3,"bleponge", "8ff4e8b1608ca8904b21942b65038c66","Bob","Leponge","bob.leponge@gmail.com", "J'aime les vitraux baroques et le strip-monopoly.", null, false);
 
 INSERT INTO Commentaires VALUES (1,"Trop hot !", 5, "FR", true, 3, 1,CURDATE());
 INSERT INTO Commentaires VALUES (2,"fantastico banano !", 4, "FR", false, 1, 1, CURDATE());

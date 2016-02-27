@@ -219,6 +219,36 @@ class Utilisateur {
         }
         return $msgErreurs;
 	}
-        
+    
+    /**
+    * @brief méthode qui connecte l'utilisateur
+    * @access public
+    * @return 
+    */
+	public function connexionUtilisateur($nomUsager, $motPasseSoumis){
+
+		self::$database->query('SELECT motPasse FROM Utilisateurs WHERE nomUsager = :nomUsager');
+        self::$database->bind(':nomUsager', $nomUsager);
+		
+		if($utilisateur = self::$database->uneLigne()) {
+
+            $motDePasseGrainSel = md5($_SESSION["grainSel"] . $utilisateur["motPasse"]);
+            
+            if ($motDePasseGrainSel === $motPasseSoumis) {
+                
+                self::$database->query('SELECT nomUsager, idUtilisateur, administrateur FROM Utilisateurs WHERE nomUsager = :nomUsager');
+                self::$database->bind(':nomUsager', $nomUsager);
+                
+                $utilisateur = self::$database->uneLigne();
+                return $utilisateur;
+            }
+            else {
+                return false;
+            }
+		}
+        else {
+			return false;
+		}
+	}      
 }//fin class Utilisateur
 ?>

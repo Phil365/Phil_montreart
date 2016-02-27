@@ -132,6 +132,10 @@ class Controler {
      public function gerer() {
          
         session_start();//Initialisation de la session utilisateur.
+        if(!isset($_SESSION["grainSel"])) {
+            $nombreAleatoire = rand(1, 1000);
+            $_SESSION["grainSel"] = $nombreAleatoire;
+        }
         
         switch ($_GET['r']) {//requête
             case $this->pAccueil:
@@ -175,15 +179,15 @@ class Controler {
     */
     private function accueil() {
         
-     $photo = new Photo();
-     $photosAll = $photo->getAllPhoto();
-     $this->oVue = new VueAccueil();  
-     $this->oVue->setDataGlobal("Accueil", "Page d'accueil", $this->langueAffichage, $this->pAccueil); 
-     $this->oVue->setData($photosAll);
-     $this->oVue->afficherMeta();
-     $this->oVue->afficherEntete();
-     $this->oVue->afficherBody();
-     $this->oVue->afficherPiedPage();
+        $photo = new Photo();
+        $photosAll = $photo->getAllPhoto();
+        $this->oVue = new VueAccueil();  
+        $this->oVue->setDataGlobal("Accueil", "Page d'accueil", $this->langueAffichage, $this->pAccueil); 
+        $this->oVue->setData($photosAll);
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
     }
     
     /**
@@ -465,7 +469,7 @@ class Controler {
         $msgErreurs = array();
         if (isset($_POST['boutonAjoutUtilisateur'])){
             
-            $msgErreurs = $utilisateur->AjouterUtilisateur($_POST['nomUsager'], $_POST['motPasse'], $_POST['prenom'], $_POST['nom'], $_POST['courriel'], $_POST['descriptionProfil'], $droits);
+            $msgErreurs = $utilisateur->AjouterUtilisateur($_POST['nomUsager'], md5($_POST['motPasse']), $_POST['prenom'], $_POST['nom'], $_POST['courriel'], $_POST['descriptionProfil'], $droits);
           
         }
 

@@ -42,9 +42,6 @@ class VueRecherche extends Vue {
     * @return void
     */
     public function afficherBody() {
-    ?> 
-        <body>
-    <?php
         
         $langue = $this->langue;
         

@@ -58,6 +58,7 @@ class Vue {
         <!-- JAVASCRIPT -->
         <script src="./js/plugins.js"></script>
 		<script src="./js/main.js"></script>
+		<script src="./js/encryption.js"></script>
 	</head>
     <?php
                         
@@ -124,11 +125,15 @@ class Vue {
                     <a href="?r=accueil" id="NavAccueil">Accueil</a>
                     <a href="?r=trajet">Trajet</a>
                     <a href="?r=soumission">Soumettre une oeuvre</a>
-                    <?php if ($_GET["r"] == "admin") {
-                        echo '<a href="#" onclick="#">Deconnexion</a><h4>Bienvenue nomUtilisateurAdmin</h4>';
+                    <?php if (isset($_SESSION["idUsager"])) {
+                        echo '<a href="?r=profil">Profil</a>';
+                        if (isset($_SESSION["idUsager"]) && $_SESSION["admin"] === "1") {
+                            echo '<a href="?r=gestion">Gestion</a>';
+                        }
+                        echo '<a href="#" onclick="deconnexion()">Deconnexion</a>';
                     }
                     else {
-                        echo '<a href="#" onclick="montrer_form()">Se connecter</a>';
+                        echo '<a href="#" onclick="afficherLogin()">Se connecter</a>';
                     }
                     ?>
                 </nav>
@@ -139,11 +144,15 @@ class Vue {
                     <a href="?r=accueil" id="NavAccueil">Accueil</a>
                     <a href="?r=trajet">Trajet</a>
                     <a href="?r=soumission">Soumettre une oeuvre</a>
-                    <?php if ($_GET["r"] == "admin") {
-                        echo '<a href="#" onclick="#">Deconnexion</a><h4>Bienvenue nomUtilisateurAdmin</h4>';
+                    <?php if (isset($_SESSION["idUsager"])) {
+                        echo '<a href="?r=profil">Profil</a>';
+                        if (isset($_SESSION["idUsager"]) && $_SESSION["admin"] === "1") {
+                            echo '<a href="?r=gestion">Gestion</a>';
+                        }               
+                        echo '<a href="#" onclick="deconnexion()">Deconnexion</a>';
                     }
                     else {
-                        echo '<a href="#" onclick="montrer_form()">Se connecter</a>';
+                        echo '<a href="#" onclick="afficherLogin()">Se connecter</a>';
                     }
                     ?>
                     </div>
@@ -153,14 +162,16 @@ class Vue {
             <div id="div_bgform">
                 <div id="div_form">
                     <button id="fermer" onclick ="fermer()">X</button>
+                    
                     <!-- Formulaire login -->
-                    <form action="#" id="formlogin" method="post" name="formlogin">
+                    <form id="formLogin" method="post" name="formLogin">
                     <h2>Connectez vous</h2>
 
-                        <input id="nomutilisateur" name="nomutilisateur" placeholder="Votre identifiant" type="text">
-                        <input id="motpasse" name="motpasse" placeholder="Mot de passe" type="password">
-
-                        <button onclick="validerform()" class="submit" id="submit">Envoyer</button>
+                        <input id="user" class='inputLogin' name="user" placeholder="Nom d'utilisateur" type="text">
+                        <input id="pass" class='inputLogin' name="pass" placeholder="Mot de passe" type="password">
+                        <input type='hidden' name='grainSel' value='<?php echo $_SESSION['grainSel'];?>'>
+                        <br><span class="erreur centrerTexte" id="erreurLogin"></span>
+                        <button type="button" class="boutonMoyenne" onclick="validerLogin()">Envoyer</button>
                         <a href="?r=devenir_membre"><h3>Devenez Membre!</h3></a>
                     </form>
                 </div>

@@ -124,6 +124,12 @@ switch ($_GET['rAjax']) {//requête
     case 'updateLiensApprobCommentaires':
         updateLiensApprobCommentaires();
         break;
+    case 'connexion':
+        connexion();
+        break;
+    case 'deconnexion':
+        deconnexion();
+        break;
 }
 
 /* --------------------------------------------------------------------
@@ -866,5 +872,46 @@ function googleMapTrajet ($lat, $lng) {
     header("Content-type: text/xml");
     //echo $dom->saveXML();
     
+}
+
+/* --------------------------------------------------------------------
+================================LOGIN==================================
+-------------------------------------------------------------------- */
+
+/**
+* @brief Fonction qui authentifie une connexion usager
+* @access public
+* @author David Lachambre
+* @return void
+*/
+function connexion () {
+
+    if (isset($_POST["pass"]) && isset($_POST["user"])) {
+        
+        session_start();
+        $utilisateur = new Utilisateur();
+        if($utilisateur = $utilisateur->connexionUtilisateur($_POST["user"], $_POST["pass"])) {
+            
+            $_SESSION["idUsager"] = $utilisateur["idUtilisateur"];
+            $_SESSION["nomUsager"] = $utilisateur["nomUsager"];
+            $_SESSION["admin"] = $utilisateur["administrateur"];
+            echo true;
+        }
+        else {
+            echo false;
+        }
+    }
+}
+
+/**
+* @brief Fonction qui déconnecte l'usager usager
+* @access public
+* @author David Lachambre
+* @return void
+*/
+function deconnexion () {
+        
+    session_start();
+    session_destroy();
 }
 ?>

@@ -77,10 +77,7 @@ class VueOeuvreSoumise extends Vue {
     * @return void
     */
     public function afficherBody() {
-    ?>
 
-    <body>
-        <?php
         if (empty($this->oeuvre)) {
             echo "<p>Cette oeuvre n'a pas été trouvée dans la base de données</p>";
         }
@@ -197,8 +194,6 @@ class VueOeuvreSoumise extends Vue {
                     echo "<p class='textStandard'>Aucun commentaire</p>";
                 }//fin div commentaires 
             echo "</div>";
-
-            echo "</body>";
         }
     }
 }
