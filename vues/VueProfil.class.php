@@ -21,6 +21,11 @@ class VueProfil extends Vue {
     * @return void
     */
     public function afficherBody() {
+        
+        if (!isset($_SESSION["idUsager"])) {
+            echo "<p class='msgAccesNonAuthorise'>Vous devez être connecté pour accéder à cette page</p>";
+        }
+        else {
     ?>
             <!-- Espace de l'utilisateur -->
         
@@ -83,6 +88,7 @@ class VueProfil extends Vue {
             </div>
         </div>
 <?php
+        }
     }
 }
 ?>

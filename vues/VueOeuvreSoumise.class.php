@@ -1,14 +1,14 @@
 <?php
 /**
- * @brief Class VueOeuvre
+ * @brief Class VueOeuvreSoumise
  * @author David Lachambre
  * @version 1.0
- * @update 2015-12-15
+ * @update 2016-02-22
  * 
  */
 header('Content-Type: text/html; charset=utf-8');//Affichage du UTF-8 par PHP.
 
-class VueOeuvre extends Vue {
+class VueOeuvreSoumise extends Vue {
     
     /**
     * @var array $oeuvre Information sur l'oeuvre
@@ -42,18 +42,6 @@ class VueOeuvre extends Vue {
     protected $langue;
     
     /**
-    * @var string $msgPhoto Message destiné à l'utilisateur lors de la soumission d'une photo unique
-    * @access protected
-    */
-    protected $msgPhoto;
-    
-    /**
-    * @var string $msgCommentaire Message destiné à l'utilisateur lors de la soumission d'un commentaire
-    * @access protected
-    */
-    protected $msgCommentaire;
-    
-    /**
     * @brief Constructeur. Initialise les propriétés communes de la classe mère
     * @access public
     * @return voids
@@ -61,7 +49,7 @@ class VueOeuvre extends Vue {
     function __construct() {
         
         $this->titrePage = "MontréArt - Oeuvre";
-        $this->descriptionPage = "Cette page affiche une oeuvre spécifique du site MontréArt";
+        $this->descriptionPage = "Cette page affiche une oeuvre soumise par un utilisateur";
     }
     
     /**
@@ -84,44 +72,12 @@ class VueOeuvre extends Vue {
     }
     
     /**
-    * @brief Méthode qui assigne une valeur à la propriété msgPhoto
-    * @param string $msg
-    * @access public
-    * @return void
-    */
-    public function setMsgPhoto($msg) {
-        
-        $this->msgPhoto = $msg;
-    }
-     /**
-    * @brief Méthode qui assigne une valeur à la propriété msgCommentaire
-    * @param string $msgComm
-    * @access public
-    * @return void
-    */
-    public function setMsgCommentaire($msgComm) {
-        
-        $this->MsgCommentaire = $msgComm;
-    }
-    
-    /**
     * @brief Méthode qui affiche le corps du document HTML
     * @access public
     * @return void
     */
     public function afficherBody() {
-        
-        if ($this->msgPhoto == "") {
-            if (isset($_POST["soumettrePhotoUnique"])) {
-                $msgPhoto = "<span style='color:green'>Photo envoyée !</span>";
-            }
-            else {
-                $msgPhoto = "";
-            }
-        }
-        else {
-            $msgPhoto = $this->msgPhoto;
-        }
+
         if (empty($this->oeuvre)) {
             echo "<p>Cette oeuvre n'a pas été trouvée dans la base de données</p>";
         }
@@ -143,8 +99,11 @@ class VueOeuvre extends Vue {
             echo "<div class='infosOeuvre'>
             <h4>Titre: </h4>";
         echo  "<p>".$this->oeuvre['titre']."</p>"; 
-            echo "<h4>Classement:</h4><div class='rating'></div>";
-        
+            echo "<h4>Classement:</h4>
+        <div class='rating'>
+
+        </div>";
+
         echo "<h4>Artiste(s) : </h4><p>";
         foreach ($this->artistes as $artiste) {
             if (isset($artiste["nomArtiste"])) {
@@ -190,40 +149,7 @@ class VueOeuvre extends Vue {
         }//fin div description
     ?>
 
-
-                <form name="formPhotoUnique" id="formPhotoUnique" action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerPhoto" onsubmit="return validePhotoSubmit();" method="post" enctype="multipart/form-data">
-                    <h4 id="selectImageUpload">Soumettez une nouvelle image pour cette oeuvre :</h4>
-                    <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
-                    <br>
-                    <input class='boutonMoyenne' type="submit" value="Soumettre" name="soumettrePhotoUnique">
-                    <br>
-                    <span id="msg" class="erreur"><?php echo $msgPhoto; ?></span>
-                </form>
-
                 <div class='borderMobile'></div>
-        
-                <form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();">            <p><h3 class='titresPageOeuvre'>Commentaire :</h3></p>    
-                <input type="hidden" name="idOeuvreencours" value="<?php echo $idOeuvreencours ?>">
-                <div class="cont">
-                  <div class="stars">
-                      <input class="star star-5" name='vote' id="star-5-2" type="radio" name="star" value='5'/>
-                      <label class="star star-5" for="star-5-2"></label>
-                      <input class="star star-4"  name='vote'id="star-4-2" type="radio" name="star" value='4'/>
-                      <label class="star star-4" for="star-4-2"></label>
-                      <input class="star star-3" name='vote' id="star-3-2" type="radio" name="star" checked="checked" value='3'/>
-                      <label class="star star-3" for="star-3-2"></label>
-                      <input class="star star-2" name='vote' id="star-2-2" type="radio" name="star" value='2'/>
-                      <label class="star star-2" for="star-2-2"></label>
-                      <input class="star star-1"  name='vote' id="star-1-2" type="radio" name="star" value='1'/>
-                      <label class="star star-1" for="star-1-2"></label>
-                  </div>
-                </div>
-                <textarea name='commentaireAjout' id='commentaireAjout' ></textarea>
-
-                <input  class='boutonMoyenne' id="boutonAjouterCom" type='submit' name='ajoutCommentaire' value='Ajouter un commentaire'  >
-            <br>
-                    <span id="erreurCommentaire" class="erreur"><?php if (isset($this->MsgCommentaire)) {echo $this->MsgCommentaire;} ?></span>
-            </form>
                 <?php
 //                echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser un commentaire</button>";
                 if ($this->commentaires) {//Si des commentaires existent pour cette oeuvre dans la langue d'affichage...

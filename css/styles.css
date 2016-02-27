@@ -149,6 +149,7 @@ footer{
     line-height: 1.6em;
     color: #ffffff;
     padding: 0px, 0px, 10px, 0px;
+    margin-bottom: 30px;
 }
 
 .global {
@@ -257,11 +258,6 @@ footer{
 .sliderOeuvre{
     width: 100%;
     height: auto;
-}
-
-.sliderOeuvre img{
-    width: 94%;
-    margin: 3%;
 }
 
 .boutonMoyenne{
@@ -590,6 +586,30 @@ footer{
     margin-top: 30px;
 }
 
+#boutonTitreModif, #boutonAdresseModif, #boutonDescriptionFrModif, #boutonDescriptionEnModif, #boutonArrondissementModif, #boutonCategorieModif, #boutonCommentaireModif, #boutonArtisteModif, #boutonCancelModifAdresse, #boutonCancelModifTitre, #boutonCancelModifDescriptionFR, #boutonCancelModifDescriptionEN, #boutonCancelModifArrondissement, #boutonCancelModifCategorie, #boutonCancelModifCommentaire, #boutonCancelModifArtiste {
+    padding: 0;
+    margin: 0 0 0 5px;
+    width: 29px;
+    height: 26px;
+    font-size: 16px;
+}
+
+#boutonCancelModifAdresse, #boutonCancelModifTitre, #boutonCancelModifDescriptionFR, #boutonCancelModifDescriptionEN, #boutonCancelModifArrondissement, #boutonCancelModifCategorie, #boutonCancelModifCommentaire, #boutonCancelModifArtiste {
+    background-color: #B32A42;
+}
+
+#titreModifSoumission, #adresseModifSoumission, #descriptionFrModifSoumission, #descriptionEnModifSoumission, #arrondissementModifSoumission, #categorieModifSoumission, #commentaireModifSoumission, #pArtisteModifSoumission, #nArtisteModifSoumission {
+    padding: 0 0 0 5px;
+    margin: 0;
+    height: 24px;
+    width: 40%;
+}
+
+#commentaireModifSoumission {
+    height: 100px;
+    width: 100%;
+}
+
 /*========NAV PRINCIPALE=====*/
 
 nav ul, nav	li, nav	a {
@@ -669,6 +689,21 @@ select:focus, textarea, textarea:focus {
     border-radius: 5px;
 }
 
+.inputLogin {
+    margin: 20px auto 0 auto;
+}
+
+#erreurLogin {
+    display: block;
+    margin: 10px auto 0 auto;
+}
+
+.msgAccesNonAuthorise {
+    text-align: center;
+    font-size: 1.5em;
+    margin: 60px 0 30px 0;
+}
+
 .boutonAccepter, .boutonRefuser {
     width:100px;
     text-align:center;
@@ -685,11 +720,13 @@ select:focus, textarea, textarea:focus {
 
 .boutonRefuser {
     float: right;
-    background: #B32A42; 
+    background: #B32A42;
+    margin-right: 20%;
 }
 
 .boutonAccepter {
     margin-bottom: 20px;
+    margin-left: 20%;
 }
 
 .submit {
@@ -767,13 +804,16 @@ select:focus, textarea, textarea:focus {
     padding: 20px 35px;
     margin: -10px -50px;
 }
+#panneauApprobation h2 {
+    text-align: center;
+}
 
 #panneauApprobation p {
     font-size: 1.2em;
-    line-height: 1.2em;
+    line-height: 1.4em;
 }
 
-#formlogin, #form_profil, #divPanneauApprobation {
+#formLogin, #form_profil, #divPanneauApprobation {
     padding: 10px 50px;
     border: 2px solid #F8F274;
     border-radius: 10px;
@@ -781,11 +821,11 @@ select:focus, textarea, textarea:focus {
     background-color: #fff;
 }
 
-#formlogin, #form_profil {
+#formLogin, #form_profil {
     text-align: center;
 }
 
-#formlogin h2 {
+#formLogin h2 {
     text-align: center;
 }
 
@@ -1528,12 +1568,11 @@ nav {
     }
     
     #divPanneauApprobation {
-        max-width: 500px;
-        min-width: 300px;
+        min-width: 400px;
     }
     
-    #formlogin, #contribuer_article, #form_profil {
-        max-width: 300px;
+    #panneauApprobation h2 a:hover {
+        color: #B32A42;
     }
 
     #form_itineraire input[type="submit"] {
@@ -1590,32 +1629,20 @@ nav {
     margin-left: 44%;    
     }
     
-    /*--------------------STYLES SLIDER----------------*/
-    
-    .single-item {
-        width: 99%;
-        text-align: center;
+    #formLogin, #contribuer_article, #form_profil {
+        max-width: 300px;
     }
-    
-    .slick-slide {
-        width: 270px;
-    }
-    
-    .slick-slide img {
-        display: block;
-        width: 50%;
-        margin-left: 25%;
-    }
-    
-    .gm-style .photomap {
-        max-width: 200px;
-    }
-    
-    /*--------------- FIN STYLES SLIDER----------------*/
 }
+
+/*========================================  STYLES POUR TABLETTE 800+ px ====================================================*/
+
 @media (min-width: 620px) {
     #navMobile {
         display: none;
+    }
+    
+    #divPanneauApprobation {
+        min-width: 450px;
     }
     
     nav {
@@ -1696,18 +1723,11 @@ nav {
         height: 110px;
     }
     
-    .sliderOeuvre{
+    .sliderOeuvre {
         width:60%;
-        height: auto;
         margin-top: 45px;
-
-    }
-    
-    .slick-slide img {
-
-        display: block;
-        width: 98%;
-        margin-left: 2%;
+        height: 400px;
+        overflow: hidden;
     }
     
     .aside1{

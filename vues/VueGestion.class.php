@@ -211,6 +211,10 @@ class VueGestion extends Vue {
         else {
             $date = "Dernière mise à jour : Le " . $this->dateDernierUpdate["dateDernierUpdate"] . " à " . $this->dateDernierUpdate["heureDernierUpdate"];
         }
+        if (!isset($_SESSION["admin"]) || $_SESSION["admin"] !== "1") {
+            echo "<p class='msgAccesNonAuthorise'>Vous devez être administrateur pour accéder à cette page</p>";
+        }
+        else {
     ?>
 
         <h1>Administration</h1>
@@ -510,7 +514,8 @@ class VueGestion extends Vue {
                 </div>
             </div>
         </div>
-    <?php    
-    } 
+    <?php
+        }
+    }
 }
 ?>

@@ -55,6 +55,12 @@ class Controler {
     */
     private $pOeuvre;
     
+     /**
+    * @var string $pOeuvreSoumise Page d'une oeuvre pas encore approuvée - pour l'admin
+    * @access private
+    */
+    private $pOeuvreSoumise;
+    
     /**
     * @var string $pTrajet Page de trajet
     * @access private
@@ -107,6 +113,7 @@ class Controler {
         
         $this->pAccueil = "accueil";
         $this->pOeuvre = "oeuvre";
+        $this->pOeuvreSoumise = "oeuvreSoumise";
         $this->pTrajet = "trajet";
         $this->pSoumission = "soumission";
         $this->pProfil = "profil";
@@ -125,6 +132,10 @@ class Controler {
      public function gerer() {
          
         session_start();//Initialisation de la session utilisateur.
+        if(!isset($_SESSION["grainSel"])) {
+            $nombreAleatoire = rand(1, 1000);
+            $_SESSION["grainSel"] = $nombreAleatoire;
+        }
         
         switch ($_GET['r']) {//requête
             case $this->pAccueil:
@@ -132,6 +143,9 @@ class Controler {
                 break;
             case $this->pOeuvre:
                 $this->oeuvre();
+                break;
+            case $this->pOeuvreSoumise:
+                $this->oeuvreSoumise();
                 break;
             case $this->pTrajet:
                 $this->trajet();
@@ -165,15 +179,15 @@ class Controler {
     */
     private function accueil() {
         
-     $photo = new Photo();
-     $photosAll = $photo->getAllPhoto();
-     $this->oVue = new VueAccueil();  
-     $this->oVue->setDataGlobal("Accueil", "Page d'accueil", $this->langueAffichage, $this->pAccueil); 
-     $this->oVue->setData($photosAll);
-     $this->oVue->afficherMeta();
-     $this->oVue->afficherEntete();
-     $this->oVue->afficherBody();
-     $this->oVue->afficherPiedPage();
+        $photo = new Photo();
+        $photosAll = $photo->getAllPhoto();
+        $this->oVue = new VueAccueil();  
+        $this->oVue->setDataGlobal("Accueil", "Page d'accueil", $this->langueAffichage, $this->pAccueil); 
+        $this->oVue->setData($photosAll);
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
     }
     
     /**
@@ -220,6 +234,34 @@ class Controler {
         $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre, $this->langueAffichage);
         $this->oVue->setMsgPhoto($msgInsertPhoto);
         $this->oVue->setMsgCommentaire($msgInsertCommentaire);
+        $this->oVue->afficherMeta();
+        $this->oVue->afficherEntete();
+        $this->oVue->afficherBody();
+        $this->oVue->afficherPiedPage();
+    }
+    
+    /**
+    * @brief Méthode qui appelle la vue d'affichage de la page d'une oeuvre qui n'a pas encore été approuvée - pour les utilisateurs admin
+    * @access private
+    * @return void
+    */
+    private function oeuvreSoumise() {
+        
+        $oeuvre = new Oeuvre();
+        $oeuvreAffichee = $oeuvre->getAnyOeuvreById($_GET["o"]);
+        
+        $commentaire = new Commentaire();
+        $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
+                
+        $photo = new Photo();
+        $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"], false);
+ 
+        $artiste = new Artiste();
+        $artistesOeuvre = $artiste->getArtistesbyOeuvreId ($_GET["o"]);
+        
+        $this->oVue = new VueOeuvreSoumise();
+        $this->oVue->setDataGlobal('oeuvreSoumise', "page d'une oeuvre soumise", $this->langueAffichage, $this->pOeuvreSoumise);
+        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre, $this->langueAffichage);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
@@ -414,6 +456,12 @@ class Controler {
         $this->oVue->afficherBody();
         $this->oVue->afficherPiedPage();
     }
+    
+    /**
+    * @brief Méthode qui affiche la page pour la demande d'adhésion d'un nouveau membre
+    * @access private
+    * @return void
+    */
     private function devenirMembre(){
        
         $utilisateur = new Utilisateur();
@@ -421,7 +469,7 @@ class Controler {
         $msgErreurs = array();
         if (isset($_POST['boutonAjoutUtilisateur'])){
             
-            $msgErreurs = $utilisateur->AjouterUtilisateur($_POST['nomUsager'], $_POST['motPasse'], $_POST['prenom'], $_POST['nom'], $_POST['courriel'], $_POST['descriptionProfil'], $droits);
+            $msgErreurs = $utilisateur->AjouterUtilisateur($_POST['nomUsager'], md5($_POST['motPasse']), $_POST['prenom'], $_POST['nom'], $_POST['courriel'], $_POST['descriptionProfil'], $droits);
           
         }
 

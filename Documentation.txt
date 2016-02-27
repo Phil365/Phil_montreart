@@ -1,4 +1,4 @@
-Barre de recherche centralisée
+﻿Barre de recherche centralisée
 
 
 But:
@@ -151,3 +151,9 @@ L'utilisateur laissera les coordonées déjà remplis par default, ou il tapera 
 Programmation:
 
 Utilisation de l'API Google Maps Directions. Il est de noter que ceci ne prend pas la geolocalisation en temps réel, cet-a-dire, il n'est pas capable de changer le point de départ, une fois envoyé la requet. On a employé la formule Haversine pour calculer les oeuvres les plus proches a l'utilisateur dans un rayon determiné. Cette rayon est presentement en fonction du zoom de la carte Google.
+
+-------------------------------------------------------------------------
+
+Se connecter
+
+Pour se connecter au site, il faut appuyer sur l’onglet « se connecter » dans la barre de navigation. Le nom d’usager et le mot de passe doivent être entrés exactement comme lors de l’inscription, incluant les majuscules, sans quoi l’accès sera refusé. Un utilisateur régulier connecté au site pourra visualiser et modifier sa page de profil, en plus d’accumuler des points en fonctions des œuvres visitées. Un utilisateur de type administrateur aura en plus accès à la page gestion pour interagir avec la base de données. Une fois connecté, les liens pour accéder à ces fonctionnalités s’ajouterons à la barre de navigation.

@@ -115,7 +115,7 @@ class Commentaire {
         
         $infoCommentaire = array();
 
-        self::$database->query('SELECT * FROM Commentaires where Commentaires.idCommentaire = :idCommentaire');
+        self::$database->query('SELECT Oeuvres.titre, Oeuvres.idOeuvre, Commentaires.idCommentaire, Commentaires.texteCommentaire, Commentaires.voteCommentaire FROM Commentaires JOIN Oeuvres ON Commentaires.idOeuvre = Oeuvres.idOeuvre WHERE Commentaires.idCommentaire = :idCommentaire');
         self::$database->bind(':idCommentaire', $idCommentaire);
 
         if($commentaireBDD = self::$database->uneLigne()){
@@ -225,6 +225,27 @@ class Commentaire {
             $msgErreurs["errRequeteSupp"] = $e->getMessage();
         }
         return $msgErreurs;
+    }
+        
+    /**
+    * @brief Méthode qui modifie un commentaire dans la BDD.
+    * @access public
+    * @return array
+    */
+    public function modifierCommentaireSoumis($idCommentaire, $texteCommentaire) {
+        
+        $msgErreurs = array();
+        
+        try {
+            self::$database->query('UPDATE Commentaires SET texteCommentaire= :texteCommentaire WHERE idCommentaire = :idCommentaire');
+            self::$database->bind(':texteCommentaire', $texteCommentaire);
+            self::$database->bind(':idCommentaire', $idCommentaire);
+            self::$database->execute();
+        }
+        catch(Exception $e) {
+            $msgErreurs["errModifCommentaire"] = $e->getMessage();
+        }
+        return $msgErreurs;//array vide = succès.
     }
 }    
 ?>

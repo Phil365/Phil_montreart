@@ -29,9 +29,10 @@ class VueAccueil extends Vue {
     * @return void
     */
     public function afficherBody() {
+        
     ?>          
-
-
+                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMap"></script>
+                <script type="text/javascript" src="js/vendor/js-marker-clusterer-gh-pages/src/markerclusterer.js"></script>
 
                 <img id="logoMobile" src="images/logo.png" alt="logoMobile">
                 <p class="textStandard" id="texteAccueil">
@@ -44,19 +45,14 @@ Bienvenue sur le site de Montréart, où les oeuvres publiques les plus fantasti
 Bienvenue sur le site de Montréart, où les oeuvres publiques les plus fantastiques en ville sont répertoriées. Idéal pour en apprendre sur les artistes les plus branchés, des techniques de création des plus diverses et des pièces d'art à couper le souffle. Vous pourrez vous balader et partager vos trouvailles avec vos propres photos, et exprimer vos opinions en ligne. En plus de découvrir l'art d'ici, vous avec la possibilité de gagner des rabais incroyables grâce à notre système dès que vous vous trouvez proche d'une oeuvre! Partez à l'aventure, ça en vaut le coup!
                 </p>
 
+    <div class="oeuvreVedette">
+           <img src="images/LionBelfortDesktop.png" id="lionDesktop">
+           <img src="images/LionBelfortMobile.png" id="lionMobile">
+    </div>
 
-
-             <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMap"></script>
-       <script type="text/javascript" src="js/vendor/js-marker-clusterer-gh-pages/src/markerclusterer.js"></script>
-            
-            <div class="oeuvreVedette">
-                   <img src="images/LionBelfortDesktop.png" id="lionDesktop">
-                   <img src="images/LionBelfortMobile.png" id="lionMobile">
-            </div>
-
-            <div class="pubAccueil">
-                <img src="images/Promo.png">
-            </div>
+    <div class="pubAccueil">
+        <img src="images/Promo.png">
+    </div>
     <?php
     }
 }

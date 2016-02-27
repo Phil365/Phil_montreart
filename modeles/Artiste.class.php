@@ -47,7 +47,7 @@ class Artiste {
     
         $infoOeuvres = array();
             
-        self::$database->query("SELECT Oeuvres.titre, Oeuvres.idOeuvre, CONCAT(prenomArtiste, ' ', nomArtiste) AS nomCompletArtiste, nomCollectif, Artistes.idArtiste FROM Oeuvres JOIN OeuvresArtistes ON Oeuvres.idOeuvre = OeuvresArtistes.idOeuvre JOIN Artistes ON OeuvresArtistes.idArtiste = Artistes.idArtiste WHERE (nomArtiste IS NOT NULL OR nomCollectif IS NOT NULL) AND authorise = true AND (prenomArtiste LIKE :keyword OR nomArtiste LIKE :keyword OR nomCollectif LIKE :keyword) GROUP BY idArtiste");
+        self::$database->query("SELECT Oeuvres.titre, Oeuvres.idOeuvre, CONCAT(prenomArtiste, ' ', nomArtiste) AS nomCompletArtiste, nomCollectif, Artistes.idArtiste FROM Oeuvres JOIN OeuvresArtistes ON Oeuvres.idOeuvre = OeuvresArtistes.idOeuvre JOIN Artistes ON OeuvresArtistes.idArtiste = Artistes.idArtiste WHERE (nomArtiste IS NOT NULL OR nomCollectif IS NOT NULL) AND authorise = true AND (prenomArtiste LIKE :keyword OR nomArtiste LIKE :keyword OR nomCollectif LIKE :keyword) GROUP BY idArtiste ORDER BY nomArtiste");
 
         $keyword = '%'.$keyword.'%';
 
@@ -163,20 +163,72 @@ class Artiste {
     }
     
     /**
-    * @brief Méthode qui lie les artistes à une oeuvres dans la BDD.
+    * @brief Méthode qui annule le lien entre un artiste et une oeuvre dans la BDD.
     * @param int $idOeuvre
     * @param int $idArtiste
     * @access public
     * @return void
     */
-    public function lierArtistesOeuvrePoursoummision ($idOeuvre, $idArtiste) {
+    public function supprimerLienArtisteOeuvrePoursoummision ($idOeuvre, $idArtiste) {
         
-        self::$database->query('INSERT INTO OeuvresArtistes (idOeuvre, idArtiste) VALUES (:idOeuvre, :idArtiste)');
+        self::$database->query('DELETE FROM OeuvresArtistes WHERE idOeuvre = :idOeuvre AND idArtiste = :idArtiste');
 
         self::$database->bind(':idOeuvre', $idOeuvre);
         self::$database->bind(':idArtiste', $idArtiste);
 
-        self::$database->execute();  
+        self::$database->execute();
+    }
+    
+    /**
+    * @brief Méthode qui change l'artiste soumis.
+    * @param int $idOeuvre
+    * @param int $idArtiste
+    * @access public
+    * @return void
+    */
+    public function modifierArtisteSoumis($idOeuvre, $idAncienArtiste, $elementsModif) {
+        
+        $msgErreurs = array();
+        $idArtistes = array();
+        if (isset($elementsModif["prenomArtiste"]) && isset($elementsModif["nomArtiste"])) {
+            if (empty($elementsModif["prenomArtiste"])) {
+                $elementsModif["prenomArtiste"] = null;
+            }
+            if (empty($elementsModif["nomArtiste"])) {
+                $elementsModif["nomArtiste"] = null;
+            }
+            try {
+                $this->supprimerLienArtisteOeuvrePoursoummision($idOeuvre, $idAncienArtiste);//Suppression de l'ancien lien
+                
+                $idNouvelArtiste = $this->getArtisteIdByName($elementsModif["prenomArtiste"], $elementsModif["nomArtiste"], null);//Récupération de l'id de l'artiste
+                if ($idNouvelArtiste) {//Si l'artiste existe...
+                    $idArtistes[] = $idNouvelArtiste;
+                    $this->lierArtistesOeuvre($idOeuvre, $idArtistes);//Nouveau lien oeuvre artiste
+                }
+                else {//Sinon...
+                    $this->ajouterArtiste($elementsModif["prenomArtiste"], $elementsModif["nomArtiste"], null);//Ajout nouvel artiste
+                    $idNouvelArtiste = $this->getArtisteIdByName($elementsModif["prenomArtiste"], $elementsModif["nomArtiste"], null);//Récupération de l'id de l'artiste
+                    $idArtistes[] = $idNouvelArtiste;
+                    $this->lierArtistesOeuvre($idOeuvre, $idArtistes);//Nouveau lien oeuvre artiste
+                }
+                $this->nettoyerArtistesInutiles();
+            }
+            catch(Exception $e) {
+                $msgErreurs["errModifArtiste"] = $e->getMessage();
+            }
+            return $msgErreurs;//array vide = succès.
+        }
+    }
+    
+    /**
+    * @brief Méthode qui efface les artistes non liés à des oeuvres de la BDD.
+    * @access public
+    * @return void
+    */
+    public function nettoyerArtistesInutiles() {
+        
+        self::$database->query("DELETE FROM Artistes WHERE Artistes.idArtiste NOT IN (SELECT OeuvresArtistes.idArtiste FROM OeuvresArtistes)");
+        self::$database->execute();
     }
 }
 ?>
