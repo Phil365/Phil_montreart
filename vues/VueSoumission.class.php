@@ -91,15 +91,16 @@ class VueSoumission extends Vue {
        
         
         <main>
-            <h2>Contribuez à Montréart!</h2>
+            
+            <h2 id="ContribuezAMontreart">Contribuez à Montréart!</h2>
             <p class="noIndent">Vous avez trouvé une oeuvre, qui, selon vous, devrait être sur notre site?</p>
             <p class="noIndent">Veuillez remplir le formulaire ci-dessous avec les informations de l'oeuvre en question.
             Toute contribution sera sujette à une approbation de la part d'un administrateur.</p>
 
-                 
+               
             <form method="POST" name="formAjoutOeuvre" onsubmit="return valideAjoutOeuvre(false);" action="?r=soumission" enctype="multipart/form-data" >
                 <input type='text' class="inputGestion" name='titreAjout' id='titreAjout' placeholder="Titre de l'oeuvre" value="<?php echo  $_POST["titreAjout"]; ?>"/>
-                <br> <span  id="erreurTitreOeuvre" class="erreur"><?php if (isset($this->msgErreurs["errTitre"])) {echo $this->msgErreurs["errTitre"];} ?></span><br>                  
+                <span  id="erreurTitreOeuvre" class="erreur"><?php if (isset($this->msgErreurs["errTitre"])) {echo $this->msgErreurs["errTitre"];} ?></span>                 
 
                 <input type='text' class="inputGestion" name='prenomArtisteAjout' id='prenomArtisteAjout' value="<?php echo  $_POST["prenomArtisteAjout"]; ?>" placeholder="Prénom de l'artiste"/>
 
@@ -146,17 +147,15 @@ class VueSoumission extends Vue {
                 <h3 class="televersionTexteGestion">Téléversez l'image de l'oeuvre</h3>
                 <input type="file" name="fileToUpload" id="fileToUpload" class="fileToUploadGestion">
                <span id="erreurPhoto" class="erreur"><?php if (isset($this->msgErreurs["errPhoto"])) {echo $this->msgErreurs["errPhoto"];} ?></span><br>
-                <input class="boutonMoyenne" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
+                <input class="boutonMoyenne" id="boutonAjouterSoumission" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
             </form>
             <span class="msgUser" id="msgAjout">
             <?php
             echo $msgAjout;
             ?>  
             </span>
+            
         </main>
-        <div class="aside1"  id="DevenirMembre">
-            Devenir membre a ses avantages!
-        </div>
 
     <?php
     }

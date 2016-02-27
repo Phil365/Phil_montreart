@@ -27,21 +27,21 @@ class VueTrajet extends Vue {
     
     ?>
 
-         <div class="section1" id="itineraire">
+         <div id="itineraire">
             <div id="distanceMarqueur"></div>
              <div id="form_itineraire" method="post" name="form_itineraire">
                 <h3>Point de départ:</h3>
-                <p>Veuillez taper une adresse si votre point de départ est différent à celle qui est montré pour l'icône</p>
+                <p>Veuillez taper une adresse si votre point de départ est différent de celui qui est montré pour l'icône</p>
                 <input type="text" id= "depart" name="pointA" value="" placeholder="votre localisation">
-               
-                <h3>Destination:</h3>
+                <br>
+                <br><br><br><h3>Destination:</h3>
              
                 <select id= "fin" name="fin">
-                    <option>Sélectionnez le fin de votre route</option>
+                    <option>Sélectionnez la fin de votre route</option>
                 </select>
                 
-                 <h3>Sélectionnez vos arrêts intermédiaires:</h3>
-                 <p>Ctrl+click pour séléctionner plusieurs options</p>
+                 <br><br><br><h3>Sélectionnez vos arrêts intermédiaires:</h3>
+                 <p>Ctrl+clic pour sélectionner plusieurs options</p>
                  
                  <select multiple id="waypoints">
                     
@@ -49,13 +49,14 @@ class VueTrajet extends Vue {
                 <input class="submit" id="envoyerTrajetBouton" type="submit" value="Envoyer" name="Envoyer">
             </div>
             </div>
-         <div class="section2" id="map">
-               <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMapTrajet"></script>
-                 
-            </div>
-        
                 <div id="directions-panel">
                 </div>
+
+         <div id="map">
+               <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBX7W9IA4ew3pHEhUYUId7DYSRaVaUrDJM&signed_in=true&callback=initMapTrajet"></script>
+                 
+        </div>
+        
         
     <?php
     }

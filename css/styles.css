@@ -174,8 +174,8 @@ footer{
     line-height: 1.4em;
     letter-spacing: .9px;
     font-weight: 500;
-    margin: 40px 10px;
     text-indent: 0;
+    text-align: center;
 }
 
 .bold {
@@ -489,17 +489,13 @@ footer{
     font-size: 20px;
 }
 
-.inputGestion, .selectGestion {
-    margin-left: 30px;
-}
 
 .selectGestion {
     margin-top: 20px;
-    width: 87.5%;
 }
 
 .televersionTexteGestion {
-    margin-left: 30px;
+    text-align: center;
 }
 
 .msgUser {
@@ -511,12 +507,9 @@ footer{
     margin-top: 100px;
 }
 
-.fileToUploadGestion {
-    margin-left: 30px;
-}
 
 .textAreaGestion {
-    width:80%;
+    width: 69%;
     height: 100px;
 }
 
@@ -674,14 +667,14 @@ input {
 }
 
 select {
-    width: 92%;
+    width: 79%;
 }
 
 input, select {
     padding: 10px;
+    margin: 0 auto;
     margin-top: 30px;
     border: 1px solid #ccc;
-    padding-left: 40px;
     font-size: 16px;
     font-family: 'Source Sans Pro', sans-serif;
     border-radius: 5px;
@@ -845,8 +838,10 @@ select:focus, textarea, textarea:focus {
 }
 
 #form_itineraire, #contribuer_oeuvre {
-    padding: 10px 50px 30px 50px;
+    padding: 10px 50px 30px 80px;
+    margin: 0 auto;
     font-family: 'Source Sans Pro', sans-serif;
+    text-align: center;
 }
 
 #form_itineraire input[type="submit"]{
@@ -1095,8 +1090,9 @@ nav {
 
 #form_itineraire input[type="submit"] {
     float: none;
-    margin-left: 42px;
+    margin-left: 25%;
 }
+
 
 #navBoutonMobile {
     width: 30px;
@@ -1140,6 +1136,25 @@ nav {
 
 #descriptionTitreOeuvre {
     margin-left: 35px;
+}
+
+#depart {
+    width: 73%;
+}
+
+#fin {
+    width: 245px;
+}
+
+.inputGestion, .selectGestion {
+    margin-left: 60px;
+    margin-right: 30px;
+}
+
+.fileToUploadGestion {
+    margin-left: 60px;
+    width: 63%;
+    
 }
 
 /*======================================== Style recherche mobile ====================================================*/
@@ -1295,6 +1310,37 @@ nav {
     height: 300px !important;
     margin: 0 auto;
     border-bottom: solid 4px #F8F274;
+    top: 20px;
+    order: 1;
+    top: 0px;
+}
+
+#texteAccueilTablette {
+        display: none;
+}
+
+#aProposMontreart {
+        display: none;
+}
+
+#logoMobile {
+        display: block;
+        width: 30%;
+        padding-top: 50px;
+        margin: 0 auto;
+}
+
+#directions-panel {
+    text-align: center;
+    margin: 0 auto;
+}
+
+.selectGestion {
+        width: 70%;
+}
+
+#boutonAjouterSoumission {
+    margin-left: 37%;    
 }
 
 /*======================================== FIN DES STYLES POUR MOBILE ====================================================*/
@@ -1331,10 +1377,6 @@ nav {
         line-height: 36px;
         background-color: #659CEF;
         border-radius: 5px;
-    }
-
-    nav a:first-child {
-        margin-left: 2%;
     }
 
     .barreRechercheContenuMobile {
@@ -1511,11 +1553,11 @@ nav {
     }
     
     #texteAccueil {
-        margin-left: 20px;
+        display: none;
     }
     
     #map {
-        height: 300px !important;
+        height: 400px !important;
         margin: 0 auto;
     }
     
@@ -1531,6 +1573,60 @@ nav {
     
     #panneauApprobation h2 a:hover {
         color: #B32A42;
+    }
+
+    #form_itineraire input[type="submit"] {
+    margin: 0 auto;
+    margin-top: 30px;
+    }
+    
+    #fin {
+    width: 280px;
+    }
+    
+    #formSoumissionConteneur {
+        margin-left: 90px;
+        width: 100%;
+    }
+    
+    #aProposMontreart {
+        display: block;
+    }
+    
+    #texteAccueilTablette {
+        display: block;
+        text-align: center;
+        margin: 0 auto;
+        width: 100%;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+    
+    #logoMobile {
+        display: none;
+    }
+    
+    .inputGestion {
+        width: 65%;
+        margin-left: 15%;
+    }
+    
+    .selectGestion {
+        width: 68%;
+        margin-left: 15%;
+    }
+    
+    .textAreaGestion {
+    width: 67%;
+    }
+    
+    .fileToUploadGestion {
+        width: 65%;
+        margin-left: 15%;
+    }
+    
+    #boutonAjouterSoumission {
+    margin-left: 44%;    
     }
     
     #formLogin, #contribuer_article, #form_profil {
@@ -1587,7 +1683,7 @@ nav {
     }
 
       nav a:first-child {
-        margin-left: 14%;
+        margin-left: 16%;
     }
     
     h2{
@@ -1619,7 +1715,7 @@ nav {
         margin: 40px 10px;
     }
 
-    .textStandard, .noIndent{
+    .textStandard {
         margin: 40px 20px;
     }
     
@@ -1801,7 +1897,7 @@ nav {
     }
     
     #itineraire{
-    width: 40%; 
+    width: 100%; 
     }
     
 
@@ -1839,17 +1935,55 @@ nav {
     #texteAccueil {
         margin-left: 80px;
     }
-    #directions-panel{
-        width: 57%;
+    #directions-panel {
+        width: 100%;
         height: auto;
-        float: right;
-        clear: none;
-        position: relative;
-        top: -700px;
+        text-align: center;
     }
     .reseauxsociaux{
         position: absolute;
         right: 0;
+    }
+    
+    #fin {
+    width: 558px;
+    }
+    
+    .inputGestion {
+        width: 100%;
+        margin-left: 30%;
+    }
+    
+    .selectGestion {
+        width: 100%;
+        margin-left: 30%;
+    }
+    
+    .televersionTexteGestion {
+        margin-left: 60%;
+    }
+    
+    .fileToUploadGestion {
+        width: 100%;
+        margin-left: 30%;
+    }
+    
+    .textAreaGestion {
+    width: 102%;
+    }
+    
+    #boutonAjouterSoumission {
+    margin-left: 75%;    
+    }
+    
+    .noIndent {
+        margin-left: 40%;
+        width: 80%;
+    }
+    
+    #ContribuezAMontreart {
+        margin-left: 70%;
+        text-align: center;
     }
     /*------------- PAGE ADMIN 800px ET+ -----------------------*/
 
@@ -1909,6 +2043,10 @@ nav {
     #lionMobile {
         display: none;
     }
+    
+    .selectGestion {
+        width: 104%;
+    }
 
 }
 /*-------------FIN PAGE ADMIN ---------------------*/    
@@ -1950,7 +2088,7 @@ nav {
         height: 120px;
     }
 
-    .textStandard, .noIndent, h2 {
+    .textStandard, h2 {
         max-width: 800px;
         margin-left: 30px;
     }
@@ -1986,7 +2124,7 @@ nav {
     }
 
     #map {
-        height: 300px !important;
+        height: 400px !important;
         margin: 0 auto;
     }
 
@@ -2001,6 +2139,10 @@ nav {
     }
      .pubAccueil img{
        width: 360px;
+    }
+    
+    #fin {
+    width: 670px;
     }
 }
 /*========================================FIN DU STYLES POUR DESKTOP ====================================================*/
