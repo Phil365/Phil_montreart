@@ -586,7 +586,7 @@ footer{
     margin-top: 30px;
 }
 
-#boutonTitreModif, #boutonAdresseModif, #boutonDescriptionFrModif, #boutonDescriptionEnModif, #boutonArrondissementModif, #boutonCategorieModif, #boutonCommentaireModif, #boutonArtisteModif, #boutonCancelModifAdresse, #boutonCancelModifTitre, #boutonCancelModifDescriptionFR, #boutonCancelModifDescriptionEN, #boutonCancelModifArrondissement, #boutonCancelModifCategorie, #boutonCancelModifCommentaire, #boutonCancelModifArtiste {
+#boutonTitreModif, #boutonAdresseModif, #boutonDescriptionFrModif, #boutonDescriptionEnModif, #boutonArrondissementModif, #boutonCategorieModif, #boutonCommentaireModif, #boutonLangueCommentaireModif, #boutonArtisteModif, #boutonCancelModifAdresse, #boutonCancelModifTitre, #boutonCancelModifDescriptionFR, #boutonCancelModifDescriptionEN, #boutonCancelModifArrondissement, #boutonCancelModifCategorie, #boutonCancelModifCommentaire, #boutonCancelModifLangueCommentaire, #boutonCancelModifArtiste {
     padding: 0;
     margin: 0 0 0 5px;
     width: 29px;
@@ -594,7 +594,7 @@ footer{
     font-size: 16px;
 }
 
-#boutonCancelModifAdresse, #boutonCancelModifTitre, #boutonCancelModifDescriptionFR, #boutonCancelModifDescriptionEN, #boutonCancelModifArrondissement, #boutonCancelModifCategorie, #boutonCancelModifCommentaire, #boutonCancelModifArtiste {
+#boutonCancelModifAdresse, #boutonCancelModifTitre, #boutonCancelModifDescriptionFR, #boutonCancelModifDescriptionEN, #boutonCancelModifArrondissement, #boutonCancelModifCategorie, #boutonCancelModifCommentaire, #boutonCancelModifLangueCommentaire, #boutonCancelModifArtiste {
     background-color: #B32A42;
 }
 
@@ -603,6 +603,13 @@ footer{
     margin: 0;
     height: 24px;
     width: 40%;
+}
+
+#selectLangueCommentaireModif {
+    padding: 0 0 0 5px;
+    margin: 0;
+    height: 24px;
+    width: 10%;
 }
 
 #commentaireModifSoumission {

@@ -137,8 +137,9 @@ INSERT INTO Utilisateurs VALUES ( 1,"anonyme", "","","","", "", null, true);
 INSERT INTO Utilisateurs VALUES ( 2,"dladmin", "a73e88bbe9a374e808ae94eacd6a1b98","Denis","Ladmin","dladmin@montreart.net", "J'aime les marches sur la plage et le tricot extrême.", null, true);
 INSERT INTO Utilisateurs VALUES ( 3,"bleponge", "8ff4e8b1608ca8904b21942b65038c66","Bob","Leponge","bob.leponge@gmail.com", "J'aime les vitraux baroques et le strip-monopoly.", null, false);
 
-INSERT INTO Commentaires VALUES (1,"Trop hot !", 5, "FR", true, 3, 1,CURDATE());
-INSERT INTO Commentaires VALUES (2,"fantastico banano !", 4, "FR", false, 1, 1, CURDATE());
+INSERT INTO Commentaires VALUES (1,"Trop hot !", 5, "FR", true, 3, 3,CURDATE());
+INSERT INTO Commentaires VALUES (2,"fantastico banano !", 4, "FR", false, 1, 3, CURDATE());
 INSERT INTO Commentaires VALUES (3,"Vous allez tous brûler en enfer bande de caves hahahahahahahahahahahahahahhahahahhahah !!!1!", 4, "FR", false, 2, 1, CURDATE());
-INSERT INTO Commentaires VALUES (4,"Meh...", 2, "EN", false, 3, 1, CURDATE());
-INSERT INTO Commentaires VALUES (5,"Brillante représentation d'une porte pendant la période du jour.", 5, "FR", false, 2, 1, CURDATE());
+INSERT INTO Commentaires VALUES (4,"Meh... It's all right I guess.", 2, "EN", false, 3, 1, CURDATE());
+INSERT INTO Commentaires VALUES (5,"Brillante représentation d'une porte pendant la période du jour.", 5, "FR", false, 2, 2, CURDATE());
+INSERT INTO Commentaires VALUES (6,"Pas mal beau ça.", 5, "EN", false, 2, 3, CURDATE());
