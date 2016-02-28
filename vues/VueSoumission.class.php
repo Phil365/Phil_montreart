@@ -99,20 +99,20 @@ class VueSoumission extends Vue {
 
                
             <form method="POST" name="formAjoutOeuvre" onsubmit="return valideAjoutOeuvre(false);" action="?r=soumission" enctype="multipart/form-data" >
-                <input type='text' class="inputGestion" name='titreAjout' id='titreAjout' placeholder="Titre de l'oeuvre" value="<?php echo  $_POST["titreAjout"]; ?>"/>
+                <input type='text' class="inputSoumission" name='titreAjout' id='titreAjout' placeholder="Titre de l'oeuvre" value="<?php echo  $_POST["titreAjout"]; ?>"/>
                 <span  id="erreurTitreOeuvre" class="erreur"><?php if (isset($this->msgErreurs["errTitre"])) {echo $this->msgErreurs["errTitre"];} ?></span>                 
 
-                <input type='text' class="inputGestion" name='prenomArtisteAjout' id='prenomArtisteAjout' value="<?php echo  $_POST["prenomArtisteAjout"]; ?>" placeholder="Prénom de l'artiste"/>
+                <input type='text' class="inputSoumission" name='prenomArtisteAjout' id='prenomArtisteAjout' value="<?php echo  $_POST["prenomArtisteAjout"]; ?>" placeholder="Prénom de l'artiste"/>
 
-                <input type='text' class="inputGestion" name='nomArtisteAjout' id='nomArtisteAjout' value="<?php echo $_POST["nomArtisteAjout"]; ?>" placeholder="Nom de l'artiste "/>
+                <input type='text' class="inputSoumission" name='nomArtisteAjout' id='nomArtisteAjout' value="<?php echo $_POST["nomArtisteAjout"]; ?>" placeholder="Nom de l'artiste "/>
 
-                <input type='text' class="inputGestion" name='adresseAjout' id='adresseAjout' value="<?php echo $_POST["adresseAjout"]; ?>" placeholder="Adresse "/>
+                <input type='text' class="inputSoumission" name='adresseAjout' id='adresseAjout' value="<?php echo $_POST["adresseAjout"]; ?>" placeholder="Adresse "/>
                 <br>  <span class="erreur" id="erreurAdresseOeuvre"><?php if (isset($this->msgErreurs["errAdresse"])) {echo $this->msgErreurs["errAdresse"];} ?></span><br>
 
-                <textarea name='descriptionAjout' class="inputGestion textAreaGestion" id='descriptionAjout' placeholder="Description "><?php echo $_POST["descriptionAjout"]; ?></textarea>
+                <textarea name='descriptionAjout' class="inputSoumission" id='descriptionAjout' placeholder="Description "><?php echo $_POST["descriptionAjout"]; ?></textarea>
                 <br>  <span class="erreur" id="erreurDescription"><?php if (isset($this->msgErreurs["errDescription"])) {echo $this->msgErreurs["errDescription"];} ?></span><br>
 
-                <select name="selectArrondissement"  id="selectArrondissement" class="selectGestion">
+                <select name="selectArrondissement"  id="selectArrondissement" class="selectSoumission">
                     <option value="">Choisir un arrondissement</option>
                     <?php
                         foreach ($this->arrondissementsBDD as $arrondissement) {
@@ -128,7 +128,7 @@ class VueSoumission extends Vue {
                     ?>
                 </select>
                 <br>  <span class="erreur" id="erreurSelectArrondissement"><?php if (isset($this->msgErreurs["errArrondissement"])) {echo $this->msgErreurs["errArrondissement"];} ?></span><br>
-                <select name="selectCategorie"  id="selectCategorie" class="selectGestion">
+                <select name="selectCategorie"  id="selectCategorie" class="selectSoumission">
                     <option value="">Choisir une catégorie</option>
                     <?php
                         foreach ($this->categoriesBDD as $categorie) {
@@ -144,8 +144,8 @@ class VueSoumission extends Vue {
                     ?>
                 </select>   
                 <br><span class="erreur" id="erreurSelectCategorie"><?php if (isset($this->msgErreurs["errCategorie"])) {echo $this->msgErreurs["errCategorie"];} ?></span><br>
-                <h3 class="televersionTexteGestion">Téléversez l'image de l'oeuvre</h3>
-                <input type="file" name="fileToUpload" id="fileToUpload" class="fileToUploadGestion">
+                <h3 class="televersionTexteSoumission">Téléversez l'image de l'oeuvre</h3>
+                <input type="file" name="fileToUpload" id="fileToUpload" class="fileToUploadSoumission">
                <span id="erreurPhoto" class="erreur"><?php if (isset($this->msgErreurs["errPhoto"])) {echo $this->msgErreurs["errPhoto"];} ?></span><br>
                 <input class="boutonMoyenne" id="boutonAjouterSoumission" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
             </form>
