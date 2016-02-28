@@ -450,8 +450,13 @@ function modifierCommentaireSoumis () {
     $commentaire = new Commentaire();
     $msgErreurs = array();
     
-    if (isset($_POST["idCommentaire"]) && isset($_POST["commentaireModif"])) {
-        $msgErreurs = $commentaire->modifierCommentaireSoumis($_POST["idCommentaire"], $_POST["commentaireModif"]);
+    if (isset($_POST["commentaireModif"])) {
+        $elementModif["texteCommentaire"] = $_POST["commentaireModif"];
+        $msgErreurs = $commentaire->modifierCommentaireSoumis($_POST["idCommentaire"], $elementModif);
+    }
+    else if (isset($_POST["langueCommentaireModif"])) {
+        $elementModif["langueCommentaire"] = $_POST["langueCommentaireModif"];
+        $msgErreurs = $commentaire->modifierCommentaireSoumis($_POST["idCommentaire"], $elementModif);
     }
     echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
 }

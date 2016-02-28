@@ -115,7 +115,7 @@ class Commentaire {
         
         $infoCommentaire = array();
 
-        self::$database->query('SELECT Oeuvres.titre, Oeuvres.idOeuvre, Commentaires.idCommentaire, Commentaires.texteCommentaire, Commentaires.voteCommentaire FROM Commentaires JOIN Oeuvres ON Commentaires.idOeuvre = Oeuvres.idOeuvre WHERE Commentaires.idCommentaire = :idCommentaire');
+        self::$database->query('SELECT Oeuvres.titre, Oeuvres.idOeuvre, Commentaires.idCommentaire, Commentaires.texteCommentaire, Commentaires.voteCommentaire, Commentaires.langueCommentaire FROM Commentaires JOIN Oeuvres ON Commentaires.idOeuvre = Oeuvres.idOeuvre WHERE Commentaires.idCommentaire = :idCommentaire');
         self::$database->bind(':idCommentaire', $idCommentaire);
 
         if($commentaireBDD = self::$database->uneLigne()){
@@ -229,21 +229,36 @@ class Commentaire {
         
     /**
     * @brief Méthode qui modifie un commentaire dans la BDD.
+    * @param integer $idCommentaire
+    * @param array $elementModif
     * @access public
     * @return array
     */
-    public function modifierCommentaireSoumis($idCommentaire, $texteCommentaire) {
+    public function modifierCommentaireSoumis($idCommentaire, $elementModif) {
         
         $msgErreurs = array();
         
-        try {
-            self::$database->query('UPDATE Commentaires SET texteCommentaire= :texteCommentaire WHERE idCommentaire = :idCommentaire');
-            self::$database->bind(':texteCommentaire', $texteCommentaire);
-            self::$database->bind(':idCommentaire', $idCommentaire);
-            self::$database->execute();
+        if (isset($elementModif["texteCommentaire"])) {
+            try {
+                self::$database->query('UPDATE Commentaires SET texteCommentaire= :texteCommentaire WHERE idCommentaire = :idCommentaire');
+                self::$database->bind(':texteCommentaire', $elementModif["texteCommentaire"]);
+                self::$database->bind(':idCommentaire', $idCommentaire);
+                self::$database->execute();
+            }
+            catch(Exception $e) {
+                $msgErreurs["errModifTexteCommentaire"] = $e->getMessage();
+            }
         }
-        catch(Exception $e) {
-            $msgErreurs["errModifCommentaire"] = $e->getMessage();
+        else if (isset($elementModif["langueCommentaire"])) {
+            try {
+                self::$database->query('UPDATE Commentaires SET langueCommentaire= :langueCommentaire WHERE idCommentaire = :idCommentaire');
+                self::$database->bind(':langueCommentaire', $elementModif["langueCommentaire"]);
+                self::$database->bind(':idCommentaire', $idCommentaire);
+                self::$database->execute();
+            }
+            catch(Exception $e) {
+                $msgErreurs["errModifLangueCommentaire"] = $e->getMessage();
+            }
         }
         return $msgErreurs;//array vide = succès.
     }

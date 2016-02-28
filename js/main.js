@@ -292,7 +292,7 @@ $(document).ready(function(){
     =================== EDITION COMMENTAIRE APPROBATION ===================
     -------------------------------------------------------------------- */
        
-    //MODIF TITRE------------------------------------------------------------
+    //MODIF COMMENTAIRE------------------------------------------------------------
     $("#panneauApprobation").on("click", "#commentaireAffichageSoumission", function(){
 
         //Click sur champ éditable
@@ -321,6 +321,48 @@ $(document).ready(function(){
             document.getElementById("commentaireModifSoumission").style.border = "1px solid red";
             document.getElementById("commentaireModifSoumission").value = "";
         }
+    });
+    
+    //MODIF LANGUE COMMENTAIRE------------------------------------------------------------
+    $("#panneauApprobation").on("click", "#langueCommentaireModif", function(){
+
+        //Click sur champ éditable
+        if (!document.getElementById("selectLangueCommentaireModif")) {//Si l'élément n'est pas déjà présent dans le document...
+            var contenu = document.getElementById("langueCommentaireModif").innerHTML;
+
+            var selectionFR = "";
+            var selectionEN = "";
+            
+            if (contenu == "FR") {
+                selectionFR = "selected='selected'";
+            }
+            else if (contenu == "EN") {
+                selectionEN = "selected='selected'";
+            }
+            document.getElementById("langueCommentaireModif").innerHTML = "<select id='selectLangueCommentaireModif'><option value='1' " + selectionFR + ">FR</option><option value='2' " + selectionEN + ">EN</option></select><input type='button' id='boutonLangueCommentaireModif' class='boutonMoyenne' value=OK><input type='button' id='boutonCancelModifLangueCommentaire' class='boutonMoyenne' value=X>";
+            
+            //Bouton de fermeture/cancel
+            $("#langueCommentaireModif").on("click", "#boutonCancelModifLangueCommentaire", function(){
+                document.getElementById("langueCommentaireModif").innerHTML = contenu;
+            });
+        } 
+    });
+    //Envoi de la requête pour une modification
+    $("#panneauApprobation").on("click", "#boutonLangueCommentaireModif", function(){
+
+        var idCommentaire = document.getElementById("idCommentaireSoumis").value;
+        var optionSelectionnee = document.getElementById("selectLangueCommentaireModif").value;
+        var langueChoisie = "";
+
+        if (optionSelectionnee == 1) {
+            langueChoisie = "FR";
+        }
+        else if (optionSelectionnee == 2) {
+            langueChoisie = "EN";
+        }
+        $.post("ajaxControler.php?rAjax=modifierCommentaireSoumis", {idCommentaire:idCommentaire, langueCommentaireModif:langueChoisie}, function(reponse){
+            afficherCommentairePourApprobation(idCommentaire);
+        });
     });
     
     
@@ -538,6 +580,9 @@ $(document).ready(function(){
             else {
                 $("#Onglet-7").slideToggle(500);
             }
+            rechargerOeuvresApprob();
+            rechargerPhotosApprob();
+            rechargerCommentairesApprob();
         }
         $("#Onglet-1").slideUp(350);
         $("#Onglet-2").slideUp(450);
@@ -1241,11 +1286,24 @@ function validerLogin(){
         $.post('ajaxControler.php?rAjax=connexion', {pass: passEncrypte, user:document.formLogin.user.value}, 
             function(reponse){
             
-            if (reponse) {
+            if (reponse) {//reponse === true
                 console.log("utilisateur authentifié");
-                location.reload(true);
+                
+                //--------------------------------------------------------------------------
+                //Code pour renvoyer l'usager sur la page actuelle, en éliminant les paramètres $_POST et $_GET inutiles, ce qui n'est pas possible avec "location.reload".
+                //--------------------------------------------------------------------------
+                var urlActuel = new RegExp("([\\?r=oeuvre&o=]*[0-9]+|\\?r=accueil|\\?r=trajet|\\?r=soumission)", "i");//Pages pouvant être trouvées.
+                var resultat = urlActuel.exec(document.URL);//Cherche le lien de la page actuelle dans l'url.
+                
+                if (resultat) {
+                    window.location.href = resultat[1];//Si trouvé, renvoyer l'usager sur la page actuelle.
+                }
+                else {
+                    window.location.href = "?r=accueil";//Sinon, valeur par défaut.
+                }
+                //--------------------------------------------------------------------------
             }
-            else {
+            else {//reponse === false
                 console.log("erreur user/pass");
                 document.formLogin.user.value = "";
                 document.formLogin.pass.value = "";
@@ -1955,6 +2013,7 @@ function afficherCommentairePourApprobation(idCommentaire) {
         contenu += "<h2>Commentaire pour l'oeuvre <a target = '_blank' href='?r=oeuvreSoumise&o=" + commentaire.idOeuvre + "'>" + commentaire.titre + "</a></h2>";
         contenu += "<input type='hidden' id='idCommentaireSoumis' value='" + commentaire.idCommentaire + "'>";
         contenu += "<p id='commentaireAffichageSoumission'>" + commentaire.texteCommentaire + "</p>";
+        contenu += "<p>Langue d'origine : <span style='color:green' id='langueCommentaireModif'>" + commentaire.langueCommentaire + "</span></p>";
         contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + commentaire.idCommentaire + ")'>";
         contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + commentaire.idCommentaire + ")'>";
         contenu += "</div id='msgErreurApprobation'></div>";
@@ -2055,8 +2114,6 @@ function refuserSoumissions(type, id) {
 
 /**
 * @brief Fonction qui mets à jour dans la page gestion la liste des oeuvres à approuver
-* @param type string
-* @param id integer
 * @access public
 * @author David Lachambre
 * @return void
@@ -2079,8 +2136,6 @@ function rechargerOeuvresApprob() {
 
 /**
 * @brief Fonction qui mets à jour dans la page gestion la liste des photos à approuver
-* @param type string
-* @param id integer
 * @access public
 * @author David Lachambre
 * @return void
@@ -2103,8 +2158,6 @@ function rechargerPhotosApprob() {
 
 /**
 * @brief Fonction qui mets à jour dans la page gestion la liste des commentaires à approuver
-* @param type string
-* @param id integer
 * @access public
 * @author David Lachambre
 * @return void
