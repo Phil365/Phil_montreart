@@ -126,6 +126,8 @@ class VueOeuvre extends Vue {
             echo "<p id='oeuvreNonTrouveeP'>Cette oeuvre n'a pas été trouvée dans la base de données</p>";
         }
         else {
+            
+            echo "<div id='backgroundOeuvreHead'>";
             echo "<div class='sliderOeuvre'>";
             if ($this->photos) {//Si des photos existent pour cette oeuvre...
                 for ($i = 0; $i < count($this->photos); $i++) {
@@ -141,11 +143,11 @@ class VueOeuvre extends Vue {
             $idOeuvreencours=$this->oeuvre["idOeuvre"];
 
             echo "<div class='infosOeuvre'>
-            <h4>Titre: </h4>";
+            <h4 class='h4InfosOeuvre' id='TitreOeuvre'>Titre: </h4>";
         echo  "<p>".$this->oeuvre['titre']."</p>"; 
-            echo "<h4>Classement:</h4><div class='rating'></div>";
+            echo "<h4 class='h4InfosOeuvre'>Classement:</h4><div class='rating'></div>";
         
-        echo "<h4>Artiste(s) : </h4><p>";
+        echo "<h4 class='h4InfosOeuvre'>Artiste(s) : </h4><p>";
         foreach ($this->artistes as $artiste) {
             if (isset($artiste["nomArtiste"])) {
 
@@ -165,28 +167,32 @@ class VueOeuvre extends Vue {
         echo "</p>";
 
         if (isset($this->oeuvre["nomCategorie" . $this->langue])) {
-            echo "<h4>Catégorie : </h4>"."<p>". $this->oeuvre["nomCategorie" . $this->langue]."</p>";
+            echo "<h4 class='h4InfosOeuvre'>Catégorie : </h4>"."<p>". $this->oeuvre["nomCategorie" . $this->langue]."</p>";
         }
 
         if ( $this->oeuvre["parc"]) {
-            echo "<h4>Parc : </h4>"."<p>". $this->oeuvre["parc"]."</p>";
+            echo "<h4 class='h4InfosOeuvre'>Parc : </h4>"."<p>". $this->oeuvre["parc"]."</p>";
         }
         if ( $this->oeuvre["batiment"]) {
-            echo "<h4>Bâtiment : </h4>"."<p>". $this->oeuvre["batiment"]."</p>";
+            echo "<h4 class='h4InfosOeuvre'>Bâtiment : </h4>"."<p>". $this->oeuvre["batiment"]."</p>";
         }
         if ( $this->oeuvre["adresse"]) {
-            echo "<h4>Adresse : </h4>"."<p>". $this->oeuvre["adresse"]."</p>";
+            echo "<h4 class='h4InfosOeuvre'>Adresse : </h4>"."<p>". $this->oeuvre["adresse"]."</p>";
         }
         if ( $this->oeuvre["nomArrondissement"]) {
-            echo "<h4>Arrondissement : </h4>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
+            echo "<h4 class='h4InfosOeuvre'>Arrondissement : </h4>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
         }
         echo "<button class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</button></div>";//fin div infosOeuvre
+            
+            
+            
 
-        echo "<div class='borderMobile' id='premiereBordureMobile'></div>";    
+         
         if (isset($this->oeuvre["description" . $this->langue])) {
             echo "<div>
             <h3 class='titresPageOeuvre' id='descriptionTitreOeuvre'>Description :</h3>
-            <p class='textStandard'>".$this->oeuvre["description" . $this->langue]."</p></div>";
+            <p class='textStandard' id='texteDescriptionOeuvre'>".$this->oeuvre["description" . $this->langue]."</p></div>";
+            echo "</div>";
         }//fin div description
     ?>
 
@@ -195,14 +201,14 @@ class VueOeuvre extends Vue {
                     <h4 id="selectImageUpload">Soumettez une nouvelle image pour cette oeuvre :</h4>
                     <input class='boutonMoyenne' type="file" name="fileToUpload" id="fileToUpload">
                     <br>
-                    <input class='boutonMoyenne' type="submit" value="Soumettre" name="soumettrePhotoUnique">
+                    <input class='boutonMoyenne' id="btnSoumettrePhoto" type="submit" value="Soumettre" name="soumettrePhotoUnique">
                     <br>
                     <span id="msg" class="erreur"><?php echo $msgPhoto; ?></span>
                 </form>
 
                 <div class='borderMobile'></div>
         
-                <form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();">            <p><h3 class='titresPageOeuvre'>Commentaire :</h3></p>    
+                <form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();">            <p><h3 class='titresPageOeuvre' id="h3CommentaireTitre">Commentaire :</h3></p>    
                 <input type="hidden" name="idOeuvreencours" value="<?php echo $idOeuvreencours ?>">
                 <div class="cont">
                   <div class="stars">
@@ -260,12 +266,12 @@ class VueOeuvre extends Vue {
                         echo "<h5 id='idUtilisateur'>".$this->commentaires[$i]["nomUsager"]."</h5>";
 
                         echo "<div class='ratingUtilisateur'><p><img src = 'images/$imgVote'></div></p>";
-                        echo "<p class='textStandard'>".$this->commentaires[$i]["texteCommentaire"]."</p>"."</div>";
+                        echo "<p class='textStandard' id='texteCommP'>".$this->commentaires[$i]["texteCommentaire"]."</p>"."</div>";
                         //fin div unCommentaire
                     }
                 }
                 else {
-                    echo "<p class='textStandard'>Aucun commentaire</p>";
+                    echo "<p class='textStandard' id='aucunCommP'>Aucun commentaire</p>";
                 }//fin div commentaires 
             echo "</div>";
         }
