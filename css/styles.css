@@ -502,6 +502,11 @@ footer {
     margin: 10px 0 5px 0;
 }
 
+#oeuvreNonTrouveeP {
+    text-align: center;
+    margin-top: 40px;
+}
+
 
 /*------------- PAGE GESTION -----------------------*/
 
@@ -612,8 +617,7 @@ footer {
 }
 
 .MAJgestion {
-    margin-top: 30px;
-    margin-left: 30px;
+    text-align: center;
     display: block;
 }
 
@@ -1315,11 +1319,11 @@ nav {
 }
 
 .boutonsGestion {
-    margin-left: 36%;
+    margin-left: 33%;
 }
 
 #btnAjoutOeuvre {
-    margin-left: 37%;
+    margin-left: 38%;
 }
 
 #btnSupOeuvre {
@@ -1331,7 +1335,7 @@ nav {
 }
 
 #btnAjoutCat {
-    margin-left: 37%;
+    margin-left: 38%;
 }
 
 #btnSupCat {
