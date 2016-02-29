@@ -123,7 +123,7 @@ class VueOeuvre extends Vue {
             $msgPhoto = $this->msgPhoto;
         }
         if (empty($this->oeuvre)) {
-            echo "<p>Cette oeuvre n'a pas été trouvée dans la base de données</p>";
+            echo "<p id='oeuvreNonTrouveeP'>Cette oeuvre n'a pas été trouvée dans la base de données</p>";
         }
         else {
             echo "<div class='sliderOeuvre'>";
