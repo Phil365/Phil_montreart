@@ -259,7 +259,6 @@ footer {
     line-height: 1.5em;
     letter-spacing: .9px;
     font-weight: 500;
-    text-indent: 50px;
     margin: 40px 10px;
 }
 
@@ -387,6 +386,7 @@ footer {
 .infosOeuvre p {
     margin-top: 6px;
     margin-bottom: 20px;
+    color: #2a2a2a;
 }
 
 .rating {
@@ -505,6 +505,23 @@ footer {
 #oeuvreNonTrouveeP {
     text-align: center;
     margin-top: 40px;
+}
+
+#backgroundOeuvreHead {
+    background-color: aquamarine;
+    height: 580px;
+}
+
+.h4InfosOeuvre {
+    color: azure;
+}
+
+#h3CommentaireTitre {
+    text-align: center;
+}
+
+#aucunCommP {
+    text-align: center;
 }
 
 
@@ -1022,11 +1039,15 @@ textarea:focus {
 }
 
 #formPhotoUnique h4 {
-    margin-left: 20px;
+    text-align: center;
 }
 
-#commentaireAjout {
-    width: 215px;
+.infosOeuvres p {
+    color: #540e1b;
+}
+
+.infosOeuvres h4 {
+    color: #540e1b;
 }
 
 
@@ -1141,10 +1162,11 @@ nav {
 
 .borderMobile {
     border-bottom: 2px solid rgba(179, 42, 66, 0.65);
-    border-bottom-width: 2px;
+    border-bottom-width: 15px;
     border-bottom-style: solid;
-    border-bottom-color: rgba(179, 42, 66, 0.65);
+    border-bottom-color: #70212F;
     margin-top: 40px;
+    
 }
 
 .inputPageAdmin {
@@ -1283,10 +1305,11 @@ nav {
 #formPhotoUnique input[type="file"] {
     width: 260px;
     text-align: left;
+    margin-left: 16%;
 }
 
 #formPhotoUnique h4 {
-    margin-top: 50px;
+    margin-top: 5%;
     margin-left: 30px;
 }
 
@@ -1296,7 +1319,13 @@ nav {
 }
 
 #descriptionTitreOeuvre {
-    margin-left: 35px;
+    text-align: center;
+    color: azure;
+}
+
+#texteDescriptionOeuvre {
+    color: #2a2a2a;
+    text-align: center;
 }
 
 #depart {
@@ -1368,6 +1397,15 @@ nav {
     margin-right: 15px;
 }
 
+#backgroundOeuvreHead {
+    background-color: rgba(179, 42, 66, 0.84);
+    height: 1080px;
+}
+
+#commentaireAjout {
+    width: 325px;
+    height: 150px;
+}
 
 /*======================================== Style recherche mobile ====================================================*/
 
@@ -1551,6 +1589,18 @@ nav {
 
 #boutonAjouterSoumission {
     margin-left: 37%;
+}
+
+#btnSoumettrePhoto {
+    margin-left: 36%;
+}
+
+div.stars {
+    margin-left: 15%;
+}
+
+#boutonAjouterCom {
+    margin-left: 25%;
 }
 
 
@@ -1831,6 +1881,31 @@ nav {
     .fileToUploadSoumission {
         width: 65%;
     }
+    
+    #backgroundOeuvreHead {
+        height: 50%;
+    }
+    
+    #formPhotoUnique input[type="file"] {
+    margin-left: 28%;
+    }
+    
+    #btnSoumettrePhoto {
+    margin-left: 45%;
+    }
+    
+    div.stars {
+    margin-left: 30%;
+    }
+    
+    #commentaireAjout {
+    width: 450px;
+    margin-left: 15%;
+    }
+    
+    #boutonAjouterCom {
+    margin-left: 35%;
+    }
 }
 
 
@@ -1900,7 +1975,6 @@ nav {
         line-height: 1.4em;
         letter-spacing: .9px;
         font-weight: 500;
-        text-indent: 50px;
         margin: 40px 10px;
     }
     .textStandard {
@@ -2084,9 +2158,7 @@ nav {
         position: relative;
         top: 210px;
     }
-    #premiereBordureMobile {
-        display: none;
-    }
+
     #texteAccueil {
         margin-left: 80px;
     }
@@ -2146,12 +2218,10 @@ nav {
     #btnSupCat {
         margin-left: 43%;
     }
-    #descriptionAjout {
-        width: 103%;
-    }
+
     .inputSoumission {
         margin-left: 30%;
-        width: 100%;
+        width: 103%;
     }
     .selectSoumission {
         margin-left: 30%;
@@ -2167,6 +2237,37 @@ nav {
     .televersionTexteSoumission {
         margin-left: 63%;
     }
+    #backgroundOeuvreHead {
+        height: 580px;
+    }
+    
+    #descriptionTitreOeuvre {
+    margin-left: 25%;
+    text-align: left;
+    }
+    
+    #texteDescriptionOeuvre {
+    margin-left: 18%;
+    text-align: left;
+    }
+    
+    #formPhotoUnique input[type="file"] {
+    margin-left: 34%;
+    }
+    
+    div.stars {
+    margin-left: 37%;
+    }
+    
+    #commentaireAjout {
+    width: 450px;
+    margin-left: 25%;
+    }
+    
+    #boutonAjouterCom {
+    margin-left: 40%;
+    }
+    
     /*------------- PAGE ADMIN 800px ET+ -----------------------*/
     .premiereColonne {
         width: 58%;
@@ -2220,6 +2321,8 @@ nav {
     .selectGestion {
         width: 67%;
     }
+    
+    
 }
 
 
@@ -2331,6 +2434,23 @@ nav {
     }
     #btnSupCat {
         margin-left: 45%;
+    }
+    
+    .inputSoumission {
+        width: 103%;
+    }
+    
+    #formPhotoUnique input[type="file"] {
+    margin-left: 37%;
+    }
+    
+    #btnSoumettrePhoto {
+    margin-left: 47%;
+    }
+    
+    #commentaireAjout {
+    width: 450px;
+    margin-left: 27%;
     }
 }
 
