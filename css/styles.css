@@ -524,6 +524,35 @@ footer {
     text-align: center;
 }
 
+/*
+.fieldsetRecherche {
+    border: 2px solid #70212F;
+    border-radius: 5px;
+    padding-bottom: 3%;
+    padding-top: 3%;
+    margin-top: 3%;
+    
+}
+
+.fieldsetRecherche img {
+    width: 15%;
+    margin-left: 2%;
+}
+*/
+
+/*-----------Classes d'incrémentation des résultats de la page recherche-------------*/
+
+.1 { 
+    float: left; width: 33%; 
+}
+
+.2 { 
+    float: right; width: 33%; 
+}
+
+.3 { 
+    display: inline-block; width: 33%; 
+}
 
 /*------------- PAGE GESTION -----------------------*/
 
@@ -1603,6 +1632,54 @@ div.stars {
     margin-left: 25%;
 }
 
+/*------------ Classes générés dynamiquement sur chaque résultat de recherche----------------*/
+    
+    .fieldsetRecherche1 { 
+    float: none;
+    width: 100%;
+    border: 2px solid #70212F;
+    border-radius: 5px;
+    padding-bottom: 3%;
+    padding-top: 3%;
+    margin-top: 8.5%;
+    }
+
+    .fieldsetRecherche2 { 
+    width: 100%;
+    border: 2px solid #70212F;
+    border-radius: 5px;
+    padding-bottom: 3%;
+    padding-top: 3%;
+
+    }
+
+    .fieldsetRecherche3 { 
+    float: none;
+    width: 100%;
+    border: 2px solid #70212F;
+    border-radius: 5px;
+    padding-bottom: 3%;
+    padding-top: 3%;
+    margin-top: 3%;
+
+    }
+    
+    .fieldsetRecherche1 img {
+    width: 20%;
+    margin-left: 2%;
+    }
+    
+    .fieldsetRecherche2 img {
+    width: 20%;
+    margin-left: 2%;
+    }
+    
+    .fieldsetRecherche3 img {
+    width: 20%;
+    margin-left: 2%;
+    }
+/*------------ Fin des classes générés dynamiquement sur chaque résultat de recherche----------------*/
+
 
 /*======================================== FIN DES STYLES POUR MOBILE ====================================================*/
 
@@ -2452,6 +2529,74 @@ div.stars {
     width: 450px;
     margin-left: 27%;
     }
+
+/*------------ Classes générés dynamiquement sur chaque résultat de recherche----------------*/
+    
+
+    .fieldsetRecherche1 { 
+    float: left;
+    width: 30%;
+    border: 2px solid #70212F;
+    border-radius: 5px;
+    padding-bottom: 3%;
+    padding-top: 3%;
+    margin-top: 8%;
+    }
+    
+    .fieldsetRecherche1:first-child {
+        margin-top: 10.1%;
+    }
+
+    .fieldsetRecherche2 { 
+    width: 30%;
+    display: block;
+    border: 2px solid #70212F;
+    border-radius: 5px;
+    padding-bottom: 3%;
+    padding-top: 3%;
+    margin-top: 8%;
+
+    }
+    
+    .fieldsetRecherche2:first-child {
+        margin-top: 9.8%;
+    }
+    
+    
+    .fieldsetRecherche3 { 
+    float: right;
+    width: 30%;
+    border: 2px solid #70212F;
+    border-radius: 5px;
+    padding-bottom: 3%;
+    padding-top: 3%;
+    margin-top: 3%;
+    }
+    
+    .fieldsetRecherche3:first-child {
+        position: absolute;
+        float: none;
+        top: 400px;
+    }
+
+
+    
+    .fieldsetRecherche1 img {
+    width: 20%;
+    margin-left: 2%;
+    }
+    
+    .fieldsetRecherche2 img {
+    width: 20%;
+    margin-left: 2%;
+    }
+    
+    .fieldsetRecherche3 img {
+    width: 20%;
+    margin-left: 2%;
+    }
+/*------------ Fin des classes générés dynamiquement sur chaque résultat de recherche----------------*/
+    
 }
 
 
