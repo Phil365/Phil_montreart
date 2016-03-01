@@ -262,5 +262,39 @@ class Commentaire {
         }
         return $msgErreurs;//array vide = succès.
     }
+	
+	/**
+    * @brief fonction qui retourne une array avec les oeuvres les plus populaires selon les commentaires
+    * @access public
+    * @return array
+    */
+	public function getOeuvresPopulaires(){
+		$oeuvresPopulaires = array();
+			self::$database->query('SELECT idOeuvre FROM commentaires WHERE authorise=1 GROUP BY idOeuvre HAVING AVG(voteCommentaire)>3');
+			
+			 if ($oeuvresBDD = self::$database->resultset()) {
+				foreach($oeuvresBDD as $unOeuvre){
+					$oeuvresPopulaires[] = $unOeuvre;
+				}
+        }
+        return $oeuvresPopulaires;
+	}
+	
+	/**
+    * @brief fonction qui retourne une array avec la moyenne de classement par oeuvre
+    * @access public
+    * @return array
+    */
+	public function getClassementOeuvre($idOeuvre){
+		$oeuvre = array();
+			self::$database->query('SELECT idOeuvre, ROUND(AVG(voteCommentaire),0) AS moyenne FROM commentaires WHERE authorise = 1 AND idOeuvre = :idOeuvre GROUP BY idOeuvre');
+			self::$database->bind(':idOeuvre', $idOeuvre);
+			 if ($oeuvreBDD = self::$database->uneLigne()) {
+				$oeuvre = $oeuvreBDD;
+        }
+        return $oeuvre;
+	}
+	
+	
 }    
 ?>
