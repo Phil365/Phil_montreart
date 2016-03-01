@@ -691,7 +691,21 @@ $(document).ready(function(){
         });
     });
 });
-
+ /* --------------------------------------------------------------------
+    =================== EDITION INFORMATION PAGE PROFIL ===================
+    -------------------------------------------------------------------- */
+    //ONGLET 4
+    $("#lienModifProfil").click(function(){
+        if ($("#Onglet-Modif").is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-Modif").slideToggle(500);
+        }
+        else {
+                $("#Onglet-Modif").slideToggle(500);
+            }
+      
+        
+    });
+ $("#Onglet-Modif").hide();
 /* --------------------------------------------------------------------
 ==================== VALIDATION JS / REQUÊTES AJAX ====================
 -------------------------------------------------------------------- */
@@ -1355,7 +1369,124 @@ function deconnexion(){
             window.location.href = "?r=accueil";
         });
 }
+/**
+* @brief Fonction de validation de modification d'un utilisateur. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
+* @access public
+* @author Philippe Germain
+* @return boolean
+*/
+function valideModifierUtilisateur() {
+    
+    var erreurs = false;
+    var idUtilisateur= document.getElementById("idUtilisateur").value;
+    var motPasse= document.getElementById("motdepasseModif").value.trim();
+    var prenom = document.getElementById("prenomModif").value.trim();
+    var nom = document.getElementById("nomModif").value.trim();
+    var description = document.getElementById("descriptionModif").value.trim();
+    var photo = document.getElementById("fileToUpload");
+    var msgErreurPhoto = "";
+    
+    document.getElementById("erreurPrenomUtilisateurModif").innerHTML = "";
+    document.getElementById("erreurNomUtilisateurModif").innerHTML = "";
+    document.getElementById("erreurDescriptionModif").innerHTML = "";
+    document.getElementById("msgModif").innerHTML = "";
 
+    if (prenom == "") {
+        document.getElementById("erreurPrenomUtilisateurModif").innerHTML = "Veuillez entrer le nom";
+        erreurs = true;
+    }
+    if (nom == "") {
+        document.getElementById("erreurNomUtilisateurModif").innerHTML = "Veuillez entrer l'adresse";
+        erreurs = true;
+    }
+
+    if (description == "") {
+        document.getElementById("erreurDescriptionModif").innerHTML = "Veuillez entrer une description";
+        erreurs = true;
+    }
+     if (photo.value != "") {
+        var fichiersAuthorises = new RegExp("(.jpg|.jpeg|.png)$", "i");//doit se terminer par une des extensions suivantes.
+        var resultat = fichiersAuthorises.exec(photo.value);
+        if (!resultat) {
+            msgErreurPhoto = "Seules les images de type \"JPG\" ou \"PNG\" sont acceptées.";
+            erreurs = true;
+        }
+        if (photo.files[0].size > 5000000) {//Si plus gros que 5Mb...
+            if (msgErreurPhoto != "") {
+                msgErreurPhoto += "<br>";
+            }
+            msgErreurPhoto += "Votre image ne doit pas dépasser 5Mb.";
+            erreurs = true;
+        }
+        document.getElementById("erreurPhoto").innerHTML = msgErreurPhoto;
+    } 
+    //-----------------------------------------
+    //Requête AJAX si aucune erreur.
+    if (!erreurs) {
+        $.post('ajaxControler.php?rAjax=modifierUtilisateur', {motPasse: motPasse, prenom: prenom, nom: nom, description: description, idUtilisateur: idUtilisateur}, 
+            
+            function(reponse){
+ console.log(reponse); 
+                var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+            console.log(document.getElementById("fileToUpload").value);
+            
+                if (msgErreurs.length == 0) {//Si aucune erreur...
+                    document.getElementById("prenomModif").value = "";
+                    document.getElementById("nomModif").value = "";
+                    document.getElementById("descriptionModif").value = "";
+                    $('#formModif').html('');
+  
+                    $("#msgModif").html("<span style='color:green'>Modification complétée !</span>");
+                     window.location.href = "?r=profil";
+                } 
+                else {//Sinon indique les erreurs à l'utilisateur.
+                    $(msgErreurs).each(function(index, valeur) {
+                        if (valeur.errRequeteAjout) {
+                            $("#msgModif").html(valeur.errRequeteAjout);
+                        }
+                        if (valeur.errTitre) {
+                            $("#erreurPrenomUtilisateurModif").html(valeur.errTitre);
+                        }
+                        if (valeur.errAdresse) {
+                            $("#erreurNomUtilisateurModif").html(valeur.errAdresse);
+                        }
+                        if (valeur.errDescription) {
+                            $("#erreurDescriptionModif").html(valeur.errDescription);
+                        }
+                      
+                    })
+                }
+            if (document.getElementById("fileToUpload").value != "") {//Si l'utilisateur a soumis un fichier photo...
+                //Nouvelle requête Ajax pour connaître l'id de la nouvelle oeuvre créée.
+               
+                   
+
+                        //Soumission Ajax de la photo une fois la création de l'oeuvre complétée et l'id de l'oeuvre connue.
+                        var fd = new FormData();
+                        fd.append( 'fileToUpload', $('#fileToUpload')[0].files[0]);
+
+                        $.ajax({
+                            url: 'ajaxControler.php?rAjax=ajouterPhotoUtilisateur&idUtilisateur='+idUtilisateur,
+                            data: fd,
+                            processData: false,
+                            contentType: false,
+                            type: 'POST',
+                            success: function(msgErreurs){
+
+                                if (msgErreurs != "") {//Si erreur avec l'insertion de la photo...
+                                    $("#erreurPhoto").html(msgErreurs);
+                                }
+                                else {
+                                    document.getElementById("fileToUpload").value = "";
+                                }
+                            }
+                        });
+               
+            }
+        });
+    }
+    return false;//Retourne toujours false pour que le formulaire ne soit pas soumit.
+}
 /* --------------------------------------------------------------------
 ========================= FONCTIONS DIVERSES ==========================
 -------------------------------------------------------------------- */
