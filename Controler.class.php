@@ -177,13 +177,18 @@ class Controler {
     * @access private
     * @return void
     */
-    private function accueil() {
+      private function accueil() {
         
+        $commentaire = new Commentaire ();
+        $oeuvresPopulaires = $commentaire->getOeuvresPopulaires();
+        $nbOeuvresPopulaires = count($oeuvresPopulaires);
+        $noAleatoire = rand(1,$nbOeuvresPopulaires);
+        $oeuvreVedette[] = $oeuvresPopulaires[$noAleatoire-1];
         $photo = new Photo();
-        $photosAll = $photo->getAllPhoto();
+        $photoOeuvreVedette = $photo->getPhotoByIdOeuvre($oeuvreVedette[0]["idOeuvre"]);
         $this->oVue = new VueAccueil();  
         $this->oVue->setDataGlobal("Accueil", "Page d'accueil", $this->langueAffichage, $this->pAccueil); 
-        $this->oVue->setData($photosAll);
+        $this->oVue->setData($photoOeuvreVedette);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
@@ -202,6 +207,8 @@ class Controler {
         
         $commentaire = new Commentaire();
         $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
+        
+        $classement = $commentaire-> getClassementOeuvre($_GET["o"]);
                 
         $photo = new Photo();
         $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"], false);
@@ -231,7 +238,7 @@ class Controler {
         
         $this->oVue = new VueOeuvre();
         $this->oVue->setDataGlobal('oeuvre', "page d'une oeuvre", $this->langueAffichage, $this->pOeuvre);
-        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre, $this->langueAffichage);
+        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre,$classement, $this->langueAffichage);
         $this->oVue->setMsgPhoto($msgInsertPhoto);
         $this->oVue->setMsgCommentaire($msgInsertCommentaire);
         $this->oVue->afficherMeta();

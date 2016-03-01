@@ -150,6 +150,23 @@ class Photo {
     }
 
     /**
+    * @brief Méthode qui récupère une photo dans la BDD en fonction du id d'une oeuvre.
+    * @access public
+    * @return array
+    */
+    public function getPhotoByIdOeuvre($idOeuvre){
+        
+        $infoPhoto = array();
+
+        self::$database->query('SELECT Photos.image, Photos.idPhoto, Oeuvres.titre, Oeuvres.idOeuvre FROM photos JOIN Oeuvres ON Photos.idOeuvre = Oeuvres.idOeuvre WHERE Oeuvres.idOeuvre = :idOeuvre');
+        self::$database->bind(':idOeuvre', $idOeuvre);
+
+        if($photoBDD = self::$database->uneLigne()){
+            $infoPhoto = $photoBDD;
+        }
+        return $infoPhoto;        
+    }
+    /**
     * @brief Méthode qui insère une photo dans la BDD.
     * @param string $id
     * @param boolean $authorise

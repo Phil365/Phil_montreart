@@ -1312,7 +1312,37 @@ function validerLogin(){
         });
     }
 }
+/**
+* @brief Fonction de validation formulaire page trajet
+* @access public
+* @author Cristina Mahneke
+* @return boolean
+*/
 
+/*function validerFormTrajet(){
+    var erreurs = false;
+    
+    document.getElementById("erreurDepart").innerHTML = "";
+    document.getElementById("erreurDestination").innerHTML = "";
+    document.getElementById("erreurWaypoints").innerHTML = "";
+    document.getElementById("erreurDepart").innerHTML = "";
+    
+     if (document.getElementById("depart").value.trim() == "") {
+        document.getElementById("erreurDepart").innerHTML = "Veuillez entrer votre adresse ou localisation";
+        erreurs = true;
+    }
+    if (document.getElementById("destination").value.trim() == "") {
+        document.getElementById("erreurDestination").innerHTML = "Veuillez choisir une destination";
+        erreurs = true;
+    }
+    if (document.getElementById("waypoints").value.trim() == "") {
+        document.getElementById("erreurDestination").innerHTML = "Veuillez choisir vos arrêts intermédiaires";
+        erreurs = true;
+    }
+    if (!erreurs) {
+        
+    }
+}*/
 /**
 * @brief Fonction qui déconnecte l'usager du site
 * @access public
@@ -1471,18 +1501,18 @@ var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
       directionsDisplay.setDirections(response);
       var route = response.routes[0];
       var summaryPanel = document.getElementById('directions-panel');
-      summaryPanel.innerHTML = '';
+      summaryPanel.innerHTML = ' <h2>Votre Trajet: </h2>';
       // For each route, display summary information.
       for (var i = 0; i < route.legs.length; i++) {
         var routeSegment = i + 1;
-        summaryPanel.innerHTML += '<h4>Route Segment: ' + routeSegment +
-            '</h4><br>';
-        summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+        summaryPanel.innerHTML += '<h4>Partie ' + routeSegment +
+            ' , Marchez à</h4><br>';
+        summaryPanel.innerHTML += route.legs[i].start_address + ' à ';
         summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
         summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
       }
     } else {
-      window.alert('Directions request failed due to ' + status);
+      window.alert('Requête de Google Directions à échoué ' + status);
     }
   });
 }
