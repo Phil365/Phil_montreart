@@ -1,141 +1,141 @@
-ï»¿Barre de recherche centralisÃ©e
+Barre de recherche centralisée
 
 
 But:
 
-Cette fonctionnalitÃ© permet de rechercher une Å“uvre en particulier dans la base de donnÃ©es Ã  lâ€™aide dâ€™un type prÃ©cis de recherche et selon lâ€™information que lâ€™utilisateur possÃ¨de en main. 
+Cette fonctionnalité permet de rechercher une œuvre en particulier dans la base de données à l’aide d’un type précis de recherche et selon l’information que l’utilisateur possède en main. 
 
-La barre de recherche est situÃ©e toutes les pages, elle est donc facile dâ€™accÃ¨s.
+La barre de recherche est située toutes les pages, elle est donc facile d’accès.
 
 Utilisation: 
 
-Lâ€™utilisateur devra donc en premier lieu dÃ©rouler la barre de recherche en appuyant sur une petite flÃ¨che vers le bas, et sÃ©lectionner le type de recherche quâ€™il veut faire Ã  lâ€™aide dâ€™un input select, soit par artiste, arrondissement, ou catÃ©gorie. 
+L’utilisateur devra donc en premier lieu dérouler la barre de recherche en appuyant sur une petite flèche vers le bas, et sélectionner le type de recherche qu’il veut faire à l’aide d’un input select, soit par artiste, arrondissement, ou catégorie. 
 
-Suite au premier choix, un deuxiÃ¨me select contenant les arrondissements ou catÃ©gories disponibles, ou bien un input de type texte avec auto-complete apparaÃ®tra pour finaliser la recherche. 
+Suite au premier choix, un deuxième select contenant les arrondissements ou catégories disponibles, ou bien un input de type texte avec auto-complete apparaîtra pour finaliser la recherche. 
 
-Finalement, lâ€™utilisateur devra appuyer sur le submit pour accÃ©der Ã  la page de rÃ©sultats.
+Finalement, l’utilisateur devra appuyer sur le submit pour accéder à la page de résultats.
 
 Design:
 
-Le design de la barre de recherche se veut simple, en rapport avec le reste du site. Les couleurs seront les mÃªmes que celles choisies pour le site, afin de se marier et de ne pas surcharger la page.
+Le design de la barre de recherche se veut simple, en rapport avec le reste du site. Les couleurs seront les mêmes que celles choisies pour le site, afin de se marier et de ne pas surcharger la page.
 
 Programmation:
 
-La barre de recherche sera programmÃ©e en PHP/Javascript, et sera dÃ©roulÃ©e Ã  lâ€™aide de JQuery. 
+La barre de recherche sera programmée en PHP/Javascript, et sera déroulée à l’aide de JQuery. 
 
-Le choix du type sera effectuÃ© Ã  lâ€™aide dâ€™un input type sÃ©lect, et qui affichera la seconde partie de la recherche suite Ã  un submit via un onchange.
+Le choix du type sera effectué à l’aide d’un input type sélect, et qui affichera la seconde partie de la recherche suite à un submit via un onchange.
 
-Un deuxiÃ¨me sÃ©lect, rempli cette fois avec PHP pour recueillir les informations de la base de donnÃ©es, offrira des arrondissements avec la location des Å“uvres ou une catÃ©gorie spÃ©cifique reliÃ©e Ã  lâ€™Å“uvre recherchÃ©e.
+Un deuxième sélect, rempli cette fois avec PHP pour recueillir les informations de la base de données, offrira des arrondissements avec la location des œuvres ou une catégorie spécifique reliée à l’œuvre recherchée.
 
-Dans le cas dâ€™un nom dâ€™artiste, un auto-complete fait Ã  lâ€™aide de JQuery offrira des rÃ©sultats existants Ã  lâ€™utilisateur selon les lettres quâ€™il entrera dans le Input texte.
+Dans le cas d’un nom d’artiste, un auto-complete fait à l’aide de JQuery offrira des résultats existants à l’utilisateur selon les lettres qu’il entrera dans le Input texte.
 
-Une requÃªte filtrera les rÃ©sultats selon lâ€™information fournie par lâ€™utilisateur.
+Une requête filtrera les résultats selon l’information fournie par l’utilisateur.
 
-Gestion des Å“uvres (ajout)
+Gestion des œuvres (ajout)
 
 
 But:
 
-Cette fonctionnalitÃ© permet Ã  un utilisateur et un administrateur du site de soumettre une nouvelle Å“uvre sur le site de Montreart, afin de rendre la base de donnÃ©es du site la plus complÃ¨te et Ã  jour possible.
+Cette fonctionnalité permet à un utilisateur et un administrateur du site de soumettre une nouvelle œuvre sur le site de Montreart, afin de rendre la base de données du site la plus complète et à jour possible.
 
 Utilisation:
 
-Lâ€™utilisateur/administrateur doit dâ€™abord passer par un formulaire dâ€™ajout lui demandant dâ€™entrer les informations de base concernant lâ€™Å“uvre, Ã©tant le titre, lâ€™artiste, lâ€™adresse, une description, la catÃ©gorie et lâ€™arrondissement dans lequel lâ€™Å“uvre se trouve.
+L’utilisateur/administrateur doit d’abord passer par un formulaire d’ajout lui demandant d’entrer les informations de base concernant l’œuvre, étant le titre, l’artiste, l’adresse, une description, la catégorie et l’arrondissement dans lequel l’œuvre se trouve.
 
 Design:
 
-Le design de la page de gestion nâ€™est pas trop chargÃ© pour ne pas entrer en conflit avec le formulaire, qui se veut le plus clair possible. Le thÃ¨me et les couleurs se marient avec le reste du site.
+Le design de la page de gestion n’est pas trop chargé pour ne pas entrer en conflit avec le formulaire, qui se veut le plus clair possible. Le thème et les couleurs se marient avec le reste du site.
 
 Programmation:
 
-Ã€ lâ€™aide de requÃªtes, les informations seront soumises dans la base de donnÃ©es aprÃ¨s lâ€™approbation de lâ€™administrateur du site. Une validation des champs supprime les espaces vides et requiert une chaÃ®ne de caractÃ¨res dans ceux-ci.
+À l’aide de requêtes, les informations seront soumises dans la base de données après l’approbation de l’administrateur du site. Une validation des champs supprime les espaces vides et requiert une chaîne de caractères dans ceux-ci.
 
 
 ______________________________________________________________________
 
 
 
-Gestion des Å“uvres (suppression)
+Gestion des œuvres (suppression)
 
 
 But:
 
-Cette fonctionnalitÃ© permet Ã  un administrateur du site de supprimer une Å“uvre sur le site de Montreart, afin de rendre la base de donnÃ©es du site la plus Ã  jour possible et Ã©viter les Å“uvres bidons ou en double. Un utilisateur nâ€™a pas accÃ¨s Ã  cette fonctionnalitÃ©.
+Cette fonctionnalité permet à un administrateur du site de supprimer une œuvre sur le site de Montreart, afin de rendre la base de données du site la plus à jour possible et éviter les œuvres bidons ou en double. Un utilisateur n’a pas accès à cette fonctionnalité.
 
 Utilisation:
 
-Lâ€™administrateur doit dâ€™abord passer par un Select regroupant les noms des Å“uvres dans la base de donnÃ©es, puis choisir lâ€™Å“uvre obsolÃ¨te.
+L’administrateur doit d’abord passer par un Select regroupant les noms des œuvres dans la base de données, puis choisir l’œuvre obsolète.
 Design:
 
-Le design de la page de gestion nâ€™est pas trop chargÃ© pour ne pas entrer en conflit avec le formulaire, qui se veut le plus clair possible. Le thÃ¨me et les couleurs se marient avec le reste du site.
+Le design de la page de gestion n’est pas trop chargé pour ne pas entrer en conflit avec le formulaire, qui se veut le plus clair possible. Le thème et les couleurs se marient avec le reste du site.
 
 Programmation:
 
-Ã€ lâ€™aide dâ€™une requÃªte, le titre de lâ€™Å“uvre Ã  supprimer ira chercher lâ€™ensemble des informations de lâ€™Å“uvre en question via la base de donnÃ©es afin de la supprimer. Elle ne sera plus visible suite Ã  cette intervention.
+À l’aide d’une requête, le titre de l’œuvre à supprimer ira chercher l’ensemble des informations de l’œuvre en question via la base de données afin de la supprimer. Elle ne sera plus visible suite à cette intervention.
 
 
 ______________________________________________________________________
 
 
 
-Gestion des Å“uvres (modification)
+Gestion des œuvres (modification)
 
 
 But:
 
-Cette fonctionnalitÃ© permet Ã  lâ€™administrateur du site de modifier une Å“uvre existante sur le site de Montreart, afin de rendre la base de donnÃ©es du site la plus complÃ¨te et Ã  jour possible, et au cas oÃ¹ un utilisateur aurait fait une erreur ayant Ã©chappÃ© Ã  lâ€™administrateur lors de la soumission.
+Cette fonctionnalité permet à l’administrateur du site de modifier une œuvre existante sur le site de Montreart, afin de rendre la base de données du site la plus complète et à jour possible, et au cas où un utilisateur aurait fait une erreur ayant échappé à l’administrateur lors de la soumission.
 
 Utilisation:
 
-Lâ€™administrateur doit dâ€™abord passer par un formulaire de modification lui demandant dâ€™entrer les informations de base concernant lâ€™Å“uvre, Ã©tant le titre, lâ€™artiste, lâ€™adresse, une description, la catÃ©gorie et lâ€™arrondissement dans lequel lâ€™Å“uvre se trouve, pour mettre Ã  jour les informations.
+L’administrateur doit d’abord passer par un formulaire de modification lui demandant d’entrer les informations de base concernant l’œuvre, étant le titre, l’artiste, l’adresse, une description, la catégorie et l’arrondissement dans lequel l’œuvre se trouve, pour mettre à jour les informations.
 
 Design:
 
-Le design de la page de gestion nâ€™est pas trop chargÃ© pour ne pas entrer en conflit avec le formulaire, qui se veut le plus clair possible. Le thÃ¨me et les couleurs se marient avec le reste du site.
+Le design de la page de gestion n’est pas trop chargé pour ne pas entrer en conflit avec le formulaire, qui se veut le plus clair possible. Le thème et les couleurs se marient avec le reste du site.
 
 Programmation:
 
-Ã€ lâ€™aide de requÃªtes, les nouvelles informations seront soumises dans la base de donnÃ©es afin dâ€™Ã©craser les anciennes donnÃ©es de lâ€™Å“uvre.
+À l’aide de requêtes, les nouvelles informations seront soumises dans la base de données afin d’écraser les anciennes données de l’œuvre.
 
 
-Ajouter une catÃ©gorie
+Ajouter une catégorie
 
 
-Dans la page de gestion, cliquez sur lâ€™onglet Â«Â Ajouter une catÃ©gorieÂ Â». Entrez le nom de la nouvelle catÃ©gorie dans les champs. Vous devez entrer un nom en franÃ§ais et son Ã©quivalent traduit en anglais. Aucun champ ne peut Ãªtre laissÃ© libre sinon une erreur sera gÃ©nÃ©rÃ©e. De plus, si vous tentez de crÃ©er une catÃ©gorie existant dÃ©jÃ  dans lâ€™une ou lâ€™autre des deux langues du site, un message dâ€™erreur vous spÃ©cifiant que la catÃ©gorie existe dÃ©jÃ  sera gÃ©nÃ©rÃ©.
+Dans la page de gestion, cliquez sur l’onglet « Ajouter une catégorie ». Entrez le nom de la nouvelle catégorie dans les champs. Vous devez entrer un nom en français et son équivalent traduit en anglais. Aucun champ ne peut être laissé libre sinon une erreur sera générée. De plus, si vous tentez de créer une catégorie existant déjà dans l’une ou l’autre des deux langues du site, un message d’erreur vous spécifiant que la catégorie existe déjà sera généré.
 
 
 ______________________________________________________________________
 
 
 
-Supprimer une catÃ©gorie
+Supprimer une catégorie
 
 
-Dans la page de gestion, cliquez sur lâ€™onglet Â«Â Supprimer une catÃ©gorieÂ Â». Faites une sÃ©lection et cliquez sur supprimer. La catÃ©gorie Ã  supprimer ne peut Ãªtre associÃ©e Ã  une Å“uvre existante dans la base de donnÃ©es, sinon un message dâ€™erreur sera gÃ©nÃ©rÃ©.
+Dans la page de gestion, cliquez sur l’onglet « Supprimer une catégorie ». Faites une sélection et cliquez sur supprimer. La catégorie à supprimer ne peut être associée à une œuvre existante dans la base de données, sinon un message d’erreur sera généré.
 
 ------------------------------------------------------------------------------
 Vue Devenir Membre
 
 But:
 
-Rendu Ã  cette page, l'utilisateur pourrait s'enregistrer pour devenir membre du site et profiter des fonctionnalitÃ©s supplÃ©mentaires.
+Rendu à cette page, l'utilisateur pourrait s'enregistrer pour devenir membre du site et profiter des fonctionnalités supplémentaires.
 
 Utilisation:
 
-L'utilisateur Ã  d'entrer ses informations tel que prÃ©nom, nom, courriel, mot de passe et nom usager par un formulaire pour s'inscrire.
+L'utilisateur à d'entrer ses informations tel que prénom, nom, courriel, mot de passe et nom usager par un formulaire pour s'inscrire.
 
 Programmation:
 
-Classes Membre et Utilisateur ont Ã©tÃ© crÃ©Ã©es ainsi que ses fonctions d'ajout, set, et get. On stock les informations reÃ§us par le formulaire dans un table utilisateurs dans la base de donnÃ©es. 
+Classes Membre et Utilisateur ont été créées ainsi que ses fonctions d'ajout, set, et get. On stock les informations reçus par le formulaire dans un table utilisateurs dans la base de données. 
 
 
 ____________________________________________________________________
 
 Accepter ou refuser une soumission utilisateur
 
-Lâ€™onglet Â«Â Approuver les soumissionsÂ Â» dans la page de gestion permet de visualiser toutes les soumissions nÃ©cessitant dâ€™Ãªtre approuvÃ©es par un administrateur avant dâ€™Ãªtre rendues visible sur le site. Il sâ€™agit des soumissions dâ€™Å“uvres, de photos et de commentaires. Lorsque vous accÃ©dez Ã  cet onglet, cliquez sur une des sections pour visualiser les liens vers les soumissions de la catÃ©gorie. La mention Â«Â En attenteÂ :Â Â» suivie dâ€™un chiffre Ã  la droite des onglets permet de visualiser le nombre de soumissions en attente dâ€™une approbation sans avoir Ã  dÃ©rouler lâ€™onglet. 
-Lorsque vous cliquez sur un lien vers une soumission en attente, un panneau affichant les informations soumises par lâ€™utilisateur sâ€™affiche. Deux boutons vous permettent soit dâ€™accepter ou refuser la soumission. Si vous lâ€™acceptez, elle sera dÃ©sormais instantanÃ©ment visible pour tous les visiteurs du site. Si vous cliquez sur refuser, la soumission sera supprimÃ©e de la base de donnÃ©e. Si la requÃªte est rÃ©ussie, le panneau se ferme et le nombre de soumissions restantes se met Ã  jour. Dans le cas contraire, le panneau restera ouvert et un message dâ€™erreur indiquant la nature du problÃ¨me sâ€™y affichera.
-Dans chacun des affichages de soumission, il est possible de cliquer sur le titre de lâ€™Å“uvre correspondant Ã  la soumission dans le haut du panneau dâ€™affichage. Ce lien vous redirigera vers une nouvelle page affichant toutes les informations de lâ€™Å“uvre telle quâ€™affichÃ©e sur le site actuellement. 
+L’onglet « Approuver les soumissions » dans la page de gestion permet de visualiser toutes les soumissions nécessitant d’être approuvées par un administrateur avant d’être rendues visible sur le site. Il s’agit des soumissions d’œuvres, de photos et de commentaires. Lorsque vous accédez à cet onglet, cliquez sur une des sections pour visualiser les liens vers les soumissions de la catégorie. La mention « En attente : » suivie d’un chiffre à la droite des onglets permet de visualiser le nombre de soumissions en attente d’une approbation sans avoir à dérouler l’onglet. 
+Lorsque vous cliquez sur un lien vers une soumission en attente, un panneau affichant les informations soumises par l’utilisateur s’affiche. Deux boutons vous permettent soit d’accepter ou refuser la soumission. Si vous l’acceptez, elle sera désormais instantanément visible pour tous les visiteurs du site. Si vous cliquez sur refuser, la soumission sera supprimée de la base de donnée. Si la requête est réussie, le panneau se ferme et le nombre de soumissions restantes se met à jour. Dans le cas contraire, le panneau restera ouvert et un message d’erreur indiquant la nature du problème s’y affichera.
+Dans chacun des affichages de soumission, il est possible de cliquer sur le titre de l’œuvre correspondant à la soumission dans le haut du panneau d’affichage. Ce lien vous redirigera vers une nouvelle page affichant toutes les informations de l’œuvre telle qu’affichée sur le site actuellement. 
 
 -----------------------------------------------------------------------------
 
@@ -143,21 +143,21 @@ Vue Trajet
 
 But:
 
-L'utilisateur sera capable de visualiser sa localisation sur la rate et les Å“uvres d'art public les plus proches. A partir de sa position ou de un point de dÃ©part tapÃ© dans le premier champ du formulaire, il sera capable de se faire un itinÃ©raire pour une promenade dans son proximitÃ©.
+L'utilisateur sera capable de visualiser sa localisation sur la rate et les œuvres d'art public les plus proches. A partir de sa position ou de un point de départ tapé dans le premier champ du formulaire, il sera capable de se faire un itinéraire pour une promenade dans son proximité.
 
 Utilisation: 
 
-L'utilisateur laissera les coordonnÃ©es dÃ©jÃ  remplis par default, ou il tapera une adresse comme point de dÃ©part. Ensuite il choisira une des Å“uvres d'une select comme destin. Finalement il choisira dâ€™un select multiple les Å“uvres qu'il dÃ©sire comme arrÃªts intermÃ©diaires. En envoyant le formulaire, une route se tracera sur la carte, et un texte contenant la description de sa route apparaitra en dessous de la carte.
+L'utilisateur laissera les coordonnées déjà remplis par default, ou il tapera une adresse comme point de départ. Ensuite il choisira une des œuvres d'une select comme destin. Finalement il choisira d’un select multiple les œuvres qu'il désire comme arrêts intermédiaires. En envoyant le formulaire, une route se tracera sur la carte, et un texte contenant la description de sa route apparaitra en dessous de la carte.
 
 Programmation:
 
-Utilisation de l'API Google Maps Directions. Il est de noter que ceci ne prend pas la gÃ©olocalisation en temps rÃ©el, câ€™est-Ã -dire, il n'est pas capable de changer le point de dÃ©part, une fois envoyÃ© la requÃªte. On a employÃ© la formule Haversine pour calculer les Å“uvres les plus proches a l'utilisateur dans un rayon dÃ©terminÃ©. Ce rayon est prÃ©sentement en fonction du zoom de la carte Google.
+Utilisation de l'API Google Maps Directions. Il est de noter que ceci ne prend pas la géolocalisation en temps réel, c’est-à-dire, il n'est pas capable de changer le point de départ, une fois envoyé la requête. On a employé la formule Haversine pour calculer les œuvres les plus proches a l'utilisateur dans un rayon déterminé. Ce rayon est présentement en fonction du zoom de la carte Google.
 
 -------------------------------------------------------------------------
 
 Se connecter
 
-Pour se connecter au site, il faut appuyer sur lâ€™onglet Â«Â se connecterÂ Â» dans la barre de navigation. Le nom dâ€™usager et le mot de passe doivent Ãªtre entrÃ©s exactement comme lors de lâ€™inscription, incluant les majuscules, sans quoi lâ€™accÃ¨s sera refusÃ©. Un utilisateur rÃ©gulier connectÃ© au site pourra visualiser et modifier sa page de profil, en plus dâ€™accumuler des points en fonctions des Å“uvres visitÃ©es. Un utilisateur de type administrateur aura en plus accÃ¨s Ã  la page gestion pour interagir avec la base de donnÃ©es. Une fois connectÃ©, les liens pour accÃ©der Ã  ces fonctionnalitÃ©s sâ€™ajouterons Ã  la barre de navigation.
+Pour se connecter au site, il faut appuyer sur l’onglet « se connecter » dans la barre de navigation. Le nom d’usager et le mot de passe doivent être entrés exactement comme lors de l’inscription, incluant les majuscules, sans quoi l’accès sera refusé. Un utilisateur régulier connecté au site pourra visualiser et modifier sa page de profil, en plus d’accumuler des points en fonctions des œuvres visitées. Un utilisateur de type administrateur aura en plus accès à la page gestion pour interagir avec la base de données. Une fois connecté, les liens pour accéder à ces fonctionnalités s’ajouterons à la barre de navigation.
 
 -------------------------------------------------------------------------
 
@@ -165,4 +165,10 @@ Pour se connecter au site, il faut appuyer sur lâ€™onglet Â«Â se connecterÂ Â» d
 
 Modifier une soumission utilisateur
 
-Il est possible de modifier une soumission dâ€™Å“uvre ou de commentaire directement dans lâ€™onglet Â«Â Approuver les soumissionsÂ Â» de la page gestion. Pour y parvenir, vous devez dâ€™abord sÃ©lectionner une Å“uvre ou un commentaire en particulier sous lâ€™onglet correspondant. Une fenÃªtre affiche alors les informations soumises. Pour modifier un champ, cliquez se le texte. Vous pourrez alors canceller le changement en appuyant sur le bouton Â«Â XÂ Â» ou confirmer le changement en appuyant sur le bouton Â«Â OKÂ Â». Toutes les informations peuvent Ãªtre modifiÃ©es. Les champs Â«Â titreÂ Â» et Â«Â adresseÂ Â» ne peuvent Ãªtre laissÃ©s vides. Lâ€™adresse doit commencer par un numÃ©ro civique, suivi dâ€™un espace et du nom de la rue. Le commentaire ne peut Ãªtre vide. Lâ€™artiste ne peut avoir un prÃ©nom sans nom, mais les deux champs (prÃ©nom et nom) peuvent Ãªtre vides. Si ces particularitÃ©s ne sont pas respectÃ©es, il sera impossible de confirmer le changement et une bordure rouge indiquera lâ€™emplacement de lâ€™erreur Ã  corriger.
+Il est possible de modifier une soumission d’œuvre ou de commentaire directement dans l’onglet « Approuver les soumissions » de la page gestion. Pour y parvenir, vous devez d’abord sélectionner une œuvre ou un commentaire en particulier sous l’onglet correspondant. Une fenêtre affiche alors les informations soumises. Pour modifier un champ, cliquez se le texte. Vous pourrez alors canceller le changement en appuyant sur le bouton « X » ou confirmer le changement en appuyant sur le bouton « OK ». Toutes les informations peuvent être modifiées. Les champs « titre » et « adresse » ne peuvent être laissés vides. L’adresse doit commencer par un numéro civique, suivi d’un espace et du nom de la rue. Le commentaire ne peut être vide. L’artiste ne peut avoir un prénom sans nom, mais les deux champs (prénom et nom) peuvent être vides. Si ces particularités ne sont pas respectées, il sera impossible de confirmer le changement et une bordure rouge indiquera l’emplacement de l’erreur à corriger.
+
+-------------------------------------------------------------------------
+
+Modifier Profil Utilisateur
+
+Il est possible de modifier le profil d'un utilisateur directement dans l'onglet «Profil». Pour y parvenir, vous devez être connecter. Ensuite l'onglet profila apparait. Pour modifier les descriptions ou la photo de profil, vous devez cliquer sur le bouton modifier apparait. Ensuite vous pouvez faire accepter en bas de la page. Il y a aussi un onglet qui dit le nombre d'oeuvre visité et le nombre de points associé.

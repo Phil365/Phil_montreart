@@ -961,7 +961,9 @@ textarea:focus {
     list-style: circle;
     line-height: 1.6em;
 }
-
+.imageProfile{
+    width: 100px;
+}
 #div_bgform,
 #bgPanneauApprobation {
     width: 100%;
