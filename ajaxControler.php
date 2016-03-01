@@ -135,6 +135,9 @@ switch ($_GET['rAjax']) {//requête
         break;    
     case 'modifierUtilisateur':
         modifierUtilisateur();
+        break;   
+    case 'ajouterPhotoUtilisateur':
+        ajouterPhotoUtilisateur();
         break;          
 }
 
@@ -965,6 +968,7 @@ function ajouterPhotoUtilisateur () {
     $photo = new Photo();
     $typePhoto = "utilisateur";
     $msgErreurs = $photo->ajouterPhoto($_GET["idUtilisateur"], true, $typePhoto);
+//    $msgErreurs = 'ttoto';
     
     
     echo $msgErreurs;
