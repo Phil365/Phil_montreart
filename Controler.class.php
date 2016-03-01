@@ -322,9 +322,26 @@ class Controler {
     * @return void
     */
     private function profil() {
-        
+        $msgErreurs = array();
+        $utilisateur = new Utilisateur();
+        $nbrOeuvreVisite='';
+        $profilUtilisateur="";    
+
+        if (isset($_SESSION["idUsager"])){
+        //Affichage du nombre d'oeuvre visité
+        $nbrOeuvreVisite = $utilisateur->countVisiteOeuvre($_SESSION["idUsager"]);
+        //Affichage du profil utilisateur
+        $profilUtilisateur = $utilisateur->getUtilisateurById($_SESSION["idUsager"]);
+        $informationsAModifier = $utilisateur->getUtilisateurById($_SESSION["idUsager"]); 
+            
+        //Tente la modif et récupère les messages d'erreur si présents.
+//        if (isset($_POST["boutonModifOeuvre"])) {
+//            $msgErreurs = $utilisateur->modifierOeuvre($_SESSION["idUsager"], md5($_POST["motdepasseModif"]), $_POST["prenomModif"], $_POST["nomModif"], $_POST["descriptionModif"],'');
+//        }    
+        }
         $this->oVue = new VueProfil();
         $this->oVue->setDataGlobal('profil', "page de profil utilisateur", $this->langueAffichage, $this->pProfil);
+        $this->oVue->setData($nbrOeuvreVisite,$profilUtilisateur,$informationsAModifier,$msgErreurs);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
