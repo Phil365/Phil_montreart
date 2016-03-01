@@ -249,6 +249,111 @@ class Utilisateur {
         else {
 			return false;
 		}
-	}      
+	}
+    /**
+    * @brief Méthode pour compter le nombre d'oeuvre visité
+    * @param string $type
+    * @param integer $idUtilisateur
+    * @access public
+    * @return boolean
+    */
+     public function countVisiteOeuvre($idUtilisateur){
+        self::$database->query('SELECT COUNT(*) FROM visitent WHERE idUtilisateur = :idUtilisateur');
+
+        self::$database->bind(':idUtilisateur', $idUtilisateur);
+        
+
+       if ($oeuvreBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $idOeuvre = $oeuvreBDD;
+        }else $idOeuvre = 0;
+        return $idOeuvre;
+    }
+    /**
+    * @brief Méthode qui récupère une oeuvre authorisée dans la BD
+    * @param integer $id
+    * @access public
+    * @return array
+    */
+    public function getUtilisateurById($idUtilisateur) {
+        
+        self::$database->query('SELECT * FROM utilisateurs WHERE idUtilisateur = :utilisateur');
+        
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':utilisateur', $idUtilisateur);
+        
+        $infoUtilisateur = array();
+        
+        if ($utilisateurBDD = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            $infoUtilisateur = $utilisateurBDD;
+        }
+        return $infoUtilisateur;
+    }
+        /**
+    * @brief Méthode qui modifie le contenu d'un utilisateur
+    * @param integer $idUtilisateur
+    * @param string $nomUsager
+    * @param string $motPasse
+    * @param string $prenom
+    * @param string $nom
+    * @param string $courriel
+    * @param string $descriptionProfil
+    * @param string $photoProfil
+    * @param string $administrateur
+    * @access public
+    * @return void
+    */
+    public function modifierOeuvre($motPasse, $prenom, $nom, $descriptionProfil,$idUtilisateur) {
+ 
+        $msgErreurs = $this->validerFormUtilisateur($prenom, $nom, $descriptionProfil);//Validation des champs obligatoires.
+        
+        if (!empty($msgErreurs)) {
+            return $msgErreurs;//Retourne le/les message(s) d'erreur de la validation.
+        }
+        else {
+            try {
+                self::$database->query('UPDATE utilisateurs SET motPasse= :motPasse, prenom= :prenom, nom= :nom, descriptionProfil= :descriptionProfil WHERE idUtilisateur = :idUtilisateur');           
+                self::$database->bind(':motPasse', $motPasse);       
+                self::$database->bind(':prenom', $prenom);       
+                self::$database->bind(':nom', $nom);
+                self::$database->bind(':descriptionProfil', $descriptionProfil);
+                self::$database->bind(':idUtilisateur', $idUtilisateur);
+                self::$database->execute();
+                
+              
+            }
+            catch(Exception $e) {
+                $msgErreurs["errRequeteModif"] = $e->getMessage();
+            }
+        }
+        return $msgErreurs;//array vide = succès. 
+    }
+     /**
+    * @brief Méthode qui valide les champs obligatoires lors d'une modification ou d'un ajout d'oeuvre.
+    * @param string $titre
+    * @param string $adresse
+    * @param string $description
+    * @param string $categorie
+    * @param string $arrondissement
+    * @access private
+    * @return array
+    */
+    private function validerFormUtilisateur($prenom, $nom, $descriptionProfil) {
+        
+        $msgErreurs = array();//Initialise les messages d'erreur à un tableau vide.
+        
+        $prenom = trim($prenom);
+        if (empty($prenom)) {
+            $msgErreurs["errTitre"] = "Veuillez entrer un titre";
+        }
+        $nom = trim($nom);
+        if (empty($nom)) {
+            $msgErreurs["errAdresse"] = "Veuillez entrer une adresse";
+        }
+        $descriptionProfil = trim($descriptionProfil);
+        if (empty($descriptionProfil)) {
+            $msgErreurs["errDescription"] = "Veuillez entrer une description";
+        }
+        return $msgErreurs;
+    }
 }//fin class Utilisateur
 ?>
