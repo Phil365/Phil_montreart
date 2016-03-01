@@ -305,6 +305,7 @@ footer {
 }
 
 .oeuvreVedette {
+    display: block;
     width: 100%;
     margin-bottom: 20px;
 }
@@ -508,12 +509,12 @@ footer {
 }
 
 #backgroundOeuvreHead {
-    background-color: aquamarine;
+    /*background-color: aquamarine;*/
     height: 580px;
 }
 
 .h4InfosOeuvre {
-    color: azure;
+    color: #000000;
 }
 
 #h3CommentaireTitre {
@@ -1427,7 +1428,8 @@ nav {
 }
 
 #backgroundOeuvreHead {
-    background-color: rgba(179, 42, 66, 0.84);
+    /*background-color: rgba(179, 42, 66, 0.84);*/
+    background: #ffffff;
     height: 1080px;
 }
 
@@ -2104,11 +2106,24 @@ div.stars {
         position: relative;
         top: 24px;
         margin-right: 0;
+        margin-left: 20px;
     }
     .oeuvreVedette img {
         max-width: 390px;
         margin: 0 auto;
     }
+    
+    #titreOeuvreVedette{
+        display: block;
+        max-width: 375px;
+        background: rgba(234,234,234,0.5);
+        height: 32px;
+        position: relative;
+        bottom: 39px;
+        padding-top: 7px;
+        padding-left: 15px;
+    }
+  
     .section4 {
         height: 300px;
         width: 59%;
@@ -2119,6 +2134,7 @@ div.stars {
         left: 21.3%;
     }
     .pubAccueil {
+        display:none;
         width: 47%;
         float: right;
         clear: none;
@@ -2188,7 +2204,7 @@ div.stars {
         top: 28%;
     }
     .ratingUtilisateur img {
-        width: 8%;
+        width: 20%;
     }
     #titre {
         left: 100px;
@@ -2315,6 +2331,7 @@ div.stars {
         margin-left: 63%;
     }
     #backgroundOeuvreHead {
+        
         height: 580px;
     }
     
