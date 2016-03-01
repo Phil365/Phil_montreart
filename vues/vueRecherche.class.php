@@ -44,6 +44,8 @@ class VueRecherche extends Vue {
     public function afficherBody() {
         
         $langue = $this->langue;
+        $noClasse = 1;
+
         
         if (empty($this->oeuvres)) {
             echo "<p id='aucuneOeuvre'>Aucune oeuvre n'a été trouvée selon vos critères de recherche</p>";
@@ -52,8 +54,18 @@ class VueRecherche extends Vue {
             if ( isset($this->oeuvres[0]["nomCategorie$langue"])) {
                 echo "<br><h1 class='rechercheResultTitre'>Résultats de la recherche :";
             }
+            
             foreach ($this->oeuvres as $oeuvre) {
+                
+                        if ($noClasse == 4) {
+        
+                            $noClasse = 1;
+                        }
+        
+                
                 if ( isset($oeuvre["titre"])) {
+                    echo "<fieldset class='fieldsetRecherche" . $noClasse. "'>";
+                    echo "<img src='./images/logo.png'>";
                     echo "<h5 class='rechercheResultTitre'>Titre : </h5>"."<a class='infoResult' href='http://localhost/?r=oeuvre&o=".$oeuvre["idOeuvre"]."'>". $oeuvre["titre"]."</a>";
                 }
                 if (isset($oeuvre["nomArtiste"])) {
@@ -72,7 +84,13 @@ class VueRecherche extends Vue {
                 
 echo "<a class='pourEnSavoirPlus' href=http://".$_SERVER['HTTP_HOST']."?r=oeuvre&o=".$oeuvre["idOeuvre"]."'>Pour en savoir plus...</a>";
                 
-                echo "<br><br><br><br>";
+
+                echo "</fieldset>";
+                
+                $noClasse++;
+//                echo "<br><br><br><br>";
+                
+                
             }
         }
     }
