@@ -1306,7 +1306,7 @@ function validerLogin(){
                 //--------------------------------------------------------------------------
                 //Code pour renvoyer l'usager sur la page actuelle, en éliminant les paramètres $_POST et $_GET inutiles, ce qui n'est pas possible avec "location.reload".
                 //--------------------------------------------------------------------------
-                var urlActuel = new RegExp("([\\?r=oeuvre&o=]*[0-9]+|\\?r=accueil|\\?r=trajet|\\?r=soumission)", "i");//Pages pouvant être trouvées.
+                var urlActuel = new RegExp("(\\?r=oeuvre&o=[0-9]+|\\?r=accueil|\\?r=trajet|\\?r=soumission|\\?r=devenir_membre)", "i");//Pages pouvant être trouvées.
                 var resultat = urlActuel.exec(document.URL);//Cherche le lien de la page actuelle dans l'url.
                 
                 if (resultat) {
@@ -1315,6 +1315,7 @@ function validerLogin(){
                 else {
                     window.location.href = "?r=accueil";//Sinon, valeur par défaut.
                 }
+                console.log(resultat);
                 //--------------------------------------------------------------------------
             }
             else {//reponse === false
@@ -1428,16 +1429,16 @@ function valideModifierUtilisateur() {
             function(reponse){
  console.log(reponse); 
                 var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
-            console.log(document.getElementById("fileToUpload").value);
             
                 if (msgErreurs.length == 0) {//Si aucune erreur...
                     document.getElementById("prenomModif").value = "";
                     document.getElementById("nomModif").value = "";
                     document.getElementById("descriptionModif").value = "";
-                    $('#formModif').html('');
+//                    $('#formModif').html('');
   
                     $("#msgModif").html("<span style='color:green'>Modification complétée !</span>");
-                     window.location.href = "?r=profil";
+//                    window.location.href = "?r=profil";
+                    
                 } 
                 else {//Sinon indique les erreurs à l'utilisateur.
                     $(msgErreurs).each(function(index, valeur) {
@@ -1453,36 +1454,34 @@ function valideModifierUtilisateur() {
                         if (valeur.errDescription) {
                             $("#erreurDescriptionModif").html(valeur.errDescription);
                         }
-                      
                     })
                 }
-            if (document.getElementById("fileToUpload").value != "") {//Si l'utilisateur a soumis un fichier photo...
-                //Nouvelle requête Ajax pour connaître l'id de la nouvelle oeuvre créée.
-               
-                   
+                if (document.getElementById("fileToUpload").value != "") {//Si l'utilisateur a soumis un fichier photo...
+                    //Nouvelle requête Ajax pour connaître l'id de la nouvelle oeuvre créée.
 
-                        //Soumission Ajax de la photo une fois la création de l'oeuvre complétée et l'id de l'oeuvre connue.
-                        var fd = new FormData();
-                        fd.append( 'fileToUpload', $('#fileToUpload')[0].files[0]);
-
-                        $.ajax({
-                            url: 'ajaxControler.php?rAjax=ajouterPhotoUtilisateur&idUtilisateur='+idUtilisateur,
-                            data: fd,
-                            processData: false,
-                            contentType: false,
-                            type: 'POST',
-                            success: function(msgErreurs){
-
-                                if (msgErreurs != "") {//Si erreur avec l'insertion de la photo...
-                                    $("#erreurPhoto").html(msgErreurs);
-                                }
-                                else {
-                                    document.getElementById("fileToUpload").value = "";
-                                }
+                    //Soumission Ajax de la photo une fois la création de l'oeuvre complétée et l'id de l'oeuvre connue.
+                    var fd = new FormData();
+                    fd.append( 'fileToUpload', $('#fileToUpload')[0].files[0]);
+                    
+                    $.ajax({
+                        url: 'ajaxControler.php?rAjax=ajouterPhotoUtilisateur&idUtilisateur='+idUtilisateur,
+                        data: fd,
+                        processData: false,
+                        contentType: false,
+                        type: 'POST',
+                        success: function(msgErreurs){
+                            console.log(msgErreurs);
+                            if (msgErreurs != "") {//Si erreur avec l'insertion de la photo...
+                                $("#erreurPhoto").html(msgErreurs);
                             }
-                        });
-               
-            }
+                            else {
+                                document.getElementById("fileToUpload").value = "";
+                            }
+                            window.location.href = "?r=profil";
+                        }
+                    });
+
+                }else{ window.location.href = "?r=profil";}  
         });
     }
     return false;//Retourne toujours false pour que le formulaire ne soit pas soumit.

@@ -90,7 +90,7 @@ class VueProfil extends Vue {
             <h3>NomUser</h3>
             <p><?php echo $this->profilUtilisateur['nomUsager']; ?></p>
             <h3>Photo de profil</h3>
-            <p id="ImageProfile">
+            <p class="imageProfile">
             <?php
             if ($this->profilUtilisateur['photoProfil'] != null) {//Si des photos existent pour cette oeuvre...
                         $imgPhoto = $this->profilUtilisateur['photoProfil'];
