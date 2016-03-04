@@ -1,4 +1,4 @@
-﻿Barre de recherche centralisée
+Barre de recherche centralisée
 
 
 But:
@@ -166,3 +166,14 @@ Pour se connecter au site, il faut appuyer sur l’onglet « se connecter » d
 Modifier une soumission utilisateur
 
 Il est possible de modifier une soumission d’œuvre ou de commentaire directement dans l’onglet « Approuver les soumissions » de la page gestion. Pour y parvenir, vous devez d’abord sélectionner une œuvre ou un commentaire en particulier sous l’onglet correspondant. Une fenêtre affiche alors les informations soumises. Pour modifier un champ, cliquez se le texte. Vous pourrez alors canceller le changement en appuyant sur le bouton « X » ou confirmer le changement en appuyant sur le bouton « OK ». Toutes les informations peuvent être modifiées. Les champs « titre » et « adresse » ne peuvent être laissés vides. L’adresse doit commencer par un numéro civique, suivi d’un espace et du nom de la rue. Le commentaire ne peut être vide. L’artiste ne peut avoir un prénom sans nom, mais les deux champs (prénom et nom) peuvent être vides. Si ces particularités ne sont pas respectées, il sera impossible de confirmer le changement et une bordure rouge indiquera l’emplacement de l’erreur à corriger.
+
+
+-------------------------------------------------------------------------------
+Section Oeuvre en Vedette Page Accueil
+
+Cette section montre une image d'une des oeuvres les plus populaires. Les oeuvres les plus populaires sont calculés a partir des votes (etoiles) donnés par les usagers. Une oeuvre doit avoir une moyenne de au moins 4 etoiles pour figurer comme oeuvre vedette. L'image montré contienne aussi une légende avec son titre et une lien de façon qu'en cliquant sur l'image l'utilisateur est ammené à la page de l'oeuvre en question.
+
+--------------------------------------------------------------------------------
+Fonction de classement d'un oeuvre
+
+Sur la page de chaque oeuvre, sous la section qui donne les informations de l'oeuvre il existe une une sous-titre de classement qui montre le nombre des étoiles donnés par les utilisateurs. Le nombre des étoiles montré répresent la moyenne de classement donné par les utlisateurs. Si l'oeuvre n'a pas encore reçu de votes/commentaires, les 5 étoiles apparaitront vides.
