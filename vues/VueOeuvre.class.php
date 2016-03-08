@@ -74,12 +74,13 @@ class VueOeuvre extends Vue {
     * @access public
     * @return void
     */
-    public function setData($oeuvre, $commentaires, $photos, $artistes, $langue) {
+    public function setData($oeuvre, $commentaires, $photos, $artistes,$classement, $langue) {
         
         $this->oeuvre = $oeuvre;
         $this->commentaires = $commentaires;
         $this->photos = $photos;
         $this->artistes = $artistes;
+        $this->classement = $classement;
         $this->langue = $langue;
     }
     
@@ -145,7 +146,35 @@ class VueOeuvre extends Vue {
             echo "<div class='infosOeuvre'>
             <h4 class='h4InfosOeuvre' id='TitreOeuvre'>Titre: </h4>";
         echo  "<p>".$this->oeuvre['titre']."</p>"; 
-            echo "<h4 class='h4InfosOeuvre'>Classement:</h4><div class='rating'></div>";
+            echo "<h4 class='h4InfosOeuvre'>Classement:</h4>";
+            
+            if(isset($this->classement) && $this->classement!=null){
+                 switch ($this->classement['moyenne']) {//Sélection de l'image d'étoile appropriée selon le vote
+                            case 1:
+                                $imgVote = "etoiles_1.png";
+                                break;
+                            case 2:
+                                $imgVote = "etoiles_2.png";
+                                break;
+                            case 3:
+                                $imgVote = "etoiles_3.png";
+                                break;
+                            case 4:
+                                $imgVote = "etoiles_4.png";
+                                break;
+                            case 5:
+                                $imgVote = "etoiles_5.png";
+                                break;
+                            default:
+                                $imgVote = "etoiles_0.png";
+                                break;
+                        }
+                 echo "<div class='ratingUtilisateur'><p><img src = 'images/$imgVote'></div></p>";
+            }else{
+                echo "<p>Non-classé</p>";
+            }
+            
+            echo "<div class='rating'></div>";
         
         echo "<h4 class='h4InfosOeuvre'>Artiste(s) : </h4><p>";
         foreach ($this->artistes as $artiste) {
