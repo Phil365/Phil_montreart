@@ -1778,6 +1778,14 @@ function initMap() {
         icon: image,        
         title:"Un MontréArtlais"
         }); 
+    var positionTimer = navigator.geolocation.getCurrentPosition(
+                function (position) {
+                  map.panTo(new google.maps.LatLng(
+                    position.coords.latitude,
+                    position.coords.longitude
+                ));
+                    
+                });
     // Try HTML5 geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.watchPosition(function(position) {
@@ -1789,7 +1797,7 @@ function initMap() {
         trouveMarqueurPlusPres(position.coords.latitude, position.coords.longitude); // fonction 
        // map.setCenter(pos);
         // map.setZoom(14);
-        map.panTo(pos);
+        //map.panTo(pos);
     }, function() {
       handleLocationError(true, infoWindow, map.getCenter());
     },{enableHighAccuracy: true, maximumAge: 100, timeout: 60000 });
