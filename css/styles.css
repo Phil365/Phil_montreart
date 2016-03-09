@@ -306,7 +306,11 @@ footer {
 
 .oeuvreVedette {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 90px;
+}
+
+.oeuvreVedette img {
+    width: 100%;
 }
 
 .section4 {
@@ -478,6 +482,19 @@ footer {
     background-color: #70212F;
 }
 
+.pourEnSavoirPlusProfil {
+    margin-top: 50px;
+    color: #ffffff;
+    padding: 5px;
+    background-color: #659CEF;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.pourEnSavoirPlusProfil:hover {
+    background-color: #70212F;
+}
+
 #sponsorsTrajet {
     width: 100%;
     height: 300px;
@@ -525,6 +542,10 @@ footer {
 }
 
 #aucunCommP {
+    text-align: center;
+}
+
+#titreOeuvreVedette {
     text-align: center;
 }
 
@@ -964,9 +985,7 @@ textarea:focus {
     list-style: circle;
     line-height: 1.6em;
 }
-.imageProfile {
-    width: 100px;
-}
+
 #div_bgform,
 #bgPanneauApprobation {
     width: 100%;
@@ -1129,7 +1148,6 @@ label.star:before {
     content: '\f006';
     font-family: FontAwesome;
 }
-
 
 /*========================================  FIN DU STYLES GENERAUX ====================================================*/
 
@@ -1407,8 +1425,17 @@ nav {
     margin-left: 36%;
 }
 
+#descriptionSoumission {
+    width: 103%;
+}
+
 #descriptionAjout {
     width: 69%;
+}
+
+#descriptionAjoutSoumission {
+    width: 69%;
+    height: 50px;
 }
 
 .inputSoumission {
@@ -1690,6 +1717,20 @@ div.stars {
     margin-left: 2%;
     }
 /*------------ Fin des classes générés dynamiquement sur chaque résultat de recherche----------------*/
+    .profileUser {
+  text-align: center;
+
+    }
+    .profileUserBio  {
+         text-align: justify;
+  margin: 0 auto;
+  width: 30em;
+          max-width: 80%;
+    }
+    .profileUser img{
+       max-width: 200px;
+    height: auto;
+    }
 
 
 /*======================================== FIN DES STYLES POUR MOBILE ====================================================*/
@@ -1994,6 +2035,10 @@ div.stars {
     #boutonAjouterCom {
     margin-left: 35%;
     }
+    
+    #descriptionAjoutSoumission {
+    width: 67%;
+    }
 }
 
 
@@ -2119,6 +2164,7 @@ div.stars {
     .oeuvreVedette img {
         max-width: 390px;
         margin: 0 auto;
+        margin-left: 5px;
     }
     .section4 {
         height: 300px;
@@ -2129,7 +2175,7 @@ div.stars {
         top: -300px;
         left: 21.3%;
     }
-    .pubAccueil {
+    #promoMobile {
         display: none;
     }
     .pubAccueil img {
@@ -2353,6 +2399,14 @@ div.stars {
     margin-left: 40%;
     }
     
+    #descriptionAjoutSoumission {
+    width: 106%;
+    }
+    
+    .oeuvreVedette img {
+        margin-left: 5px;
+    }
+    
     /*------------- PAGE ADMIN 800px ET+ -----------------------*/
     .premiereColonne {
         width: 58%;
@@ -2525,6 +2579,11 @@ div.stars {
         width: 103%;
     }
     
+    #descriptionAjoutSoumission {
+    width: 106%;
+    }
+
+    
     #formPhotoUnique input[type="file"] {
     margin-left: 37%;
     }
@@ -2536,6 +2595,19 @@ div.stars {
     #commentaireAjout {
     width: 450px;
     margin-left: 27%;
+    }
+    
+    .pubAccueil {
+    height: auto;
+    width: 40%;
+    float: right;
+    position: absolute;
+    top: 69%;
+    left: 50%;
+    }
+    
+    .oeuvreVedette img {
+    margin-left: 45px;
     }
 
 /*------------ Classes générés dynamiquement sur chaque résultat de recherche----------------*/
