@@ -177,13 +177,18 @@ class Controler {
     * @access private
     * @return void
     */
-    private function accueil() {
+      private function accueil() {
         
+        $commentaire = new Commentaire ();
+        $oeuvresPopulaires = $commentaire->getOeuvresPopulaires();
+        $nbOeuvresPopulaires = count($oeuvresPopulaires);
+        $noAleatoire = rand(1,$nbOeuvresPopulaires);
+        $oeuvreVedette[] = $oeuvresPopulaires[$noAleatoire-1];
         $photo = new Photo();
-        $photosAll = $photo->getAllPhoto();
+        $photoOeuvreVedette = $photo->getPhotoByIdOeuvre($oeuvreVedette[0]["idOeuvre"]);
         $this->oVue = new VueAccueil();  
         $this->oVue->setDataGlobal("Accueil", "Page d'accueil", $this->langueAffichage, $this->pAccueil); 
-        $this->oVue->setData($photosAll);
+        $this->oVue->setData($photoOeuvreVedette);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();
@@ -202,6 +207,8 @@ class Controler {
         
         $commentaire = new Commentaire();
         $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
+        
+        $classement = $commentaire-> getClassementOeuvre($_GET["o"]);
                 
         $photo = new Photo();
         $photosOeuvre = $photo->getPhotosByOeuvre($_GET["o"], false);
@@ -231,7 +238,7 @@ class Controler {
         
         $this->oVue = new VueOeuvre();
         $this->oVue->setDataGlobal('oeuvre', "page d'une oeuvre", $this->langueAffichage, $this->pOeuvre);
-        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre, $this->langueAffichage);
+        $this->oVue->setData($oeuvreAffichee, $commentairesOeuvre, $photosOeuvre, $artistesOeuvre,$classement, $this->langueAffichage);
         $this->oVue->setMsgPhoto($msgInsertPhoto);
         $this->oVue->setMsgCommentaire($msgInsertCommentaire);
         $this->oVue->afficherMeta();
@@ -322,9 +329,26 @@ class Controler {
     * @return void
     */
     private function profil() {
-        
+        $msgErreurs = array();
+        $utilisateur = new Utilisateur();
+        $nbrOeuvreVisite='';
+        $profilUtilisateur="";    
+
+        if (isset($_SESSION["idUsager"])){
+        //Affichage du nombre d'oeuvre visité
+        $nbrOeuvreVisite = $utilisateur->countVisiteOeuvre($_SESSION["idUsager"]);
+        //Affichage du profil utilisateur
+        $profilUtilisateur = $utilisateur->getUtilisateurById($_SESSION["idUsager"]);
+        $informationsAModifier = $utilisateur->getUtilisateurById($_SESSION["idUsager"]); 
+            
+        //Tente la modif et récupère les messages d'erreur si présents.
+//        if (isset($_POST["boutonModifOeuvre"])) {
+//            $msgErreurs = $utilisateur->modifierOeuvre($_SESSION["idUsager"], md5($_POST["motdepasseModif"]), $_POST["prenomModif"], $_POST["nomModif"], $_POST["descriptionModif"],'');
+//        }    
+        }
         $this->oVue = new VueProfil();
         $this->oVue->setDataGlobal('profil', "page de profil utilisateur", $this->langueAffichage, $this->pProfil);
+        $this->oVue->setData($nbrOeuvreVisite,$profilUtilisateur,$informationsAModifier,$msgErreurs);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();

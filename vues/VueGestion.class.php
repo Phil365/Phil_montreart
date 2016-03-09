@@ -232,12 +232,12 @@ class VueGestion extends Vue {
         <!-- ----- METTRE OEUVRES VILLE À JOUR ------- -->
 
         <div id="Onglet-1">
-            <h2>Mise à jour des oeuvre de la ville de Montréal</h2>
+            <h2 class="h2PageGestion">Mise à jour des oeuvre de la ville de Montréal</h2>
             <span class='MAJgestion' id='affichageDate'>
                 <?php echo $date; ?>
             </span>
             <form action="?r=gestion" method="post" onsubmit='return updateOeuvresVille()'>
-                <input class="boutonHover boutonMoyenne" type="submit" id="misAJour" name='misAJour' class="boutonMoyenne" value='Mettre à Jour' />
+                <input class="boutonHover boutonMoyenne boutonsGestion" type="submit" id="misAJour" name='misAJour' class="boutonMoyenne" value='Mettre à Jour' />
             </form>
             <br><span class="erreur" id="msgUpdateDate"><?php if (isset($this->msgErreurs["errUrl"])) {echo $this->msgErreurs["errUrl"];} ?></span>
         </div>
@@ -245,7 +245,7 @@ class VueGestion extends Vue {
         <!-- ----- AJOUT OEUVRE ------- -->
 
         <div id="Onglet-2">
-            <h2>Ajouter une oeuvre</h2>
+            <h2 class="h2PageGestion">Ajouter une oeuvre</h2>
 
             <form method="POST" name="formAjoutOeuvre" onsubmit="return valideAjoutOeuvre(true);" action="?r=gestion" enctype="multipart/form-data" >
                 <input type='text' class="inputGestion" name='titreAjout' id='titreAjout' placeholder="Titre de l'oeuvre" value="<?php echo  $_POST["titreAjout"]; ?>"/>
@@ -295,7 +295,7 @@ class VueGestion extends Vue {
                 <h3 class="televersionTexteGestion">Téléversez l'image de l'oeuvre</h3>
                 <input type="file" name="fileToUpload" id="fileToUpload" class="fileToUploadGestion">
                <span id="erreurPhoto" class="erreur"><?php if (isset($this->msgErreurs["errPhoto"])) {echo $this->msgErreurs["errPhoto"];} ?></span><br>
-                <input class="boutonHover boutonMoyenne" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
+                <input class="boutonHover boutonMoyenne" id="btnAjoutOeuvre" type='submit' name='boutonAjoutOeuvre' value='Ajouter'>
             </form>
             <span class="erreur" id="msgAjout">
             <?php
@@ -307,7 +307,7 @@ class VueGestion extends Vue {
         <!-- ----- SUPPRESSION OEUVRE ------- -->
 
         <div id="Onglet-3">  
-            <h2>Supprimer une oeuvre</h2>
+            <h2 class="h2PageGestion">Supprimer une oeuvre</h2>
             <form method="POST" name="formSuppOeuvre" action="?r=gestion"  onsubmit="return valideSupprimerOeuvre();">
 
                 <select name="selectOeuvreSupp" id='selectOeuvreSupp' class="selectGestion">
@@ -326,7 +326,7 @@ class VueGestion extends Vue {
                 </select>
                 <br><span class="erreur" id='erreurSelectSuppression'><?php if (isset($this->msgErreurs["errSelectOeuvreSupp"])) {echo $this->msgErreurs["errSelectOeuvreSupp"];} ?></span><br>
 
-                <input class="boutonHover boutonMoyenne" type='submit' name='boutonSuppOeuvre' value='Supprimer'>
+                <input class="boutonHover boutonMoyenne" id="btnSupOeuvre" type='submit' name='boutonSuppOeuvre' value='Supprimer'>
             </form>
             <span class="erreur" id="msgSupp">
             <?php
@@ -338,7 +338,7 @@ class VueGestion extends Vue {
         <!-- ----- MODIFICATION OEUVRE ------- -->
 
        <div id="Onglet-4">
-            <h2>Modifier une oeuvre</h2>
+            <h2 class="h2PageGestion">Modifier une oeuvre</h2>
             <form method="POST" name="formSelectOeuvreModif" id='formSelectOeuvreModif' action="?r=gestion" onchange="afficherFormModif()">
 
                 <select name="selectOeuvreModif" class="selectGestion" id='selectOeuvreModif' onchange="afficherFormModif()">
@@ -408,7 +408,7 @@ class VueGestion extends Vue {
                 </select> 
                 <br><span class="erreur" id="erreurSelectCategorieModif"><?php if (isset($this->msgErreurs["errCategorie"])) {echo $this->msgErreurs["errCategorie"];} ?></span>
 
-                <br><input class="boutonHover boutonMoyenne" type='submit' name='boutonModifOeuvre' value='Modifer'>
+                <br><input class="boutonHover boutonMoyenne" id="btnModCat" type='submit' name='boutonModifOeuvre' value='Modifer'>
             </form>
 
        <?php
@@ -425,7 +425,7 @@ class VueGestion extends Vue {
         <!-- ----- AJOUT CATÉGORIE ------- -->
 
         <div id="Onglet-5">
-            <h2>Ajouter une catégorie</h2>
+            <h2 class="h2PageGestion">Ajouter une catégorie</h2>
 
             <form method="POST" name="formAjoutCategorie" action="?r=gestion" onsubmit="return valideAjoutCategorie();">
 
@@ -434,7 +434,7 @@ class VueGestion extends Vue {
                 <input type='text' class="inputGestion" name='categorieEnAjout' id='categorieEnAjout' placeholder="nom anglais de la catégorie" value="<?php echo $_POST["categorieEnAjout"] ?>"/>
                 <br> <span class="erreur" id="erreurAjoutCategorieEN"><?php if (isset($this->msgErreurs["errAjoutCategorieEN"])) {echo $this->msgErreurs["errAjoutCategorieEN"];} ?></span><br>                  
 
-                <input class="boutonHover boutonMoyenne" type='submit' name='boutonAjoutCategorie' value='Ajouter'>
+                <input class="boutonHover boutonMoyenne" id="btnAjoutCat" type='submit' name='boutonAjoutCategorie' value='Ajouter'>
             </form>
             <span class="erreur" id="msgAjoutCat">
             <?php
@@ -446,7 +446,7 @@ class VueGestion extends Vue {
         <!-- ----- SUPPRESSION CATÉGORIE ------- -->
 
         <div id="Onglet-6">  
-            <h2>Supprimer une catégorie</h2>
+            <h2 class="h2PageGestion">Supprimer une catégorie</h2>
 
             <form method="POST" name="formSuppCategorie" action="?r=gestion"  onsubmit="return valideSuppCategorie();">
 
@@ -467,7 +467,7 @@ class VueGestion extends Vue {
                 </select>
                 <br><span class="erreur" id='erreurSelectSuppCategorie'><?php if (isset($this->msgErreurs["errSelectCategorieSupp"])) {echo $this->msgErreurs["errSelectCategorieSupp"];} ?></span><br>
 
-                <input class="boutonHover boutonMoyenne" type='submit' name='boutonSuppCategorie' value='Supprimer'>
+                <input class="boutonHover boutonMoyenne" id="btnSupCat" type='submit' name='boutonSuppCategorie' value='Supprimer'>
             </form>
             <span class="erreur" id="msgSuppCat">
             <?php
@@ -479,7 +479,7 @@ class VueGestion extends Vue {
         <!-- ----- APPROUVER LES SOUMISSIONS ------- -->
 
         <div id="Onglet-7">  
-            <h2>Approuver les soumissions</h2>
+            <h2 class="h2PageGestion">Approuver les soumissions</h2>
             
             <div id="accordeon">
                 <h3 class="boutonMoyenne boutonSoumission">Oeuvres <span id="nbOeuvresEnAttente">En attente : <?php echo count($this->oeuvresApprobation); ?></span></h3>

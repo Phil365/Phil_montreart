@@ -130,6 +130,15 @@ switch ($_GET['rAjax']) {//requête
     case 'deconnexion':
         deconnexion();
         break;
+     case 'recupererInfoUtilisateur':
+        recupererInfoUtilisateur();
+        break;    
+    case 'modifierUtilisateur':
+        modifierUtilisateur();
+        break;   
+    case 'ajouterPhotoUtilisateur':
+        ajouterPhotoUtilisateur();
+        break;          
 }
 
 /* --------------------------------------------------------------------
@@ -918,5 +927,50 @@ function deconnexion () {
         
     session_start();
     session_destroy();
+}
+/**
+* @brief Fonction qui récupère toutes les oeuvres de la BDD.
+* @access public
+* @author David Lachambre
+* @return void
+*/
+/* --------------------------------------------------------------------
+================================PROFIL==================================
+-------------------------------------------------------------------- */
+function recupererInfoUtilisateur() {
+
+    $utilisateur = new Utilisateur();
+    $utilisateurs = $utilisateur->getUtilisateurById();
+        
+   echo json_encode($utilisateurs);//Encode le tableau d'oeuvres retourné par la requête en Json.
+}
+/**
+* @brief Fonction qui modifie l'oeuvre choisie par un administrateur
+//* @access public
+* @author David Lachambre
+* @return void
+*/
+function modifierUtilisateur () {   
+    $utilisateur = new Utilisateur();
+    $msgErreurs = $utilisateur->modifierOeuvre(md5($_POST["motPasse"]), $_POST["prenom"], $_POST["nom"], $_POST["description"], $_POST["idUtilisateur"]);
+    echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
+}
+/**
+* @brief Fonction qui ajoute la photo soumise
+* @access public
+* @author David Lachambre
+* @author Philippe Germain
+* @return void
+*/
+function ajouterPhotoUtilisateur () {
+    
+   //Insertion de la photo de profil si choisie
+    $photo = new Photo();
+    $typePhoto = "utilisateur";
+    $msgErreurs = $photo->ajouterPhoto($_GET["idUtilisateur"], true, $typePhoto);
+//    $msgErreurs = 'ttoto';
+    
+    
+    echo $msgErreurs;
 }
 ?>

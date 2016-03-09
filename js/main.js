@@ -691,7 +691,21 @@ $(document).ready(function(){
         });
     });
 });
-
+ /* --------------------------------------------------------------------
+    =================== EDITION INFORMATION PAGE PROFIL ===================
+    -------------------------------------------------------------------- */
+    //ONGLET 4
+    $("#lienModifProfil").click(function(){
+        if ($("#Onglet-Modif").is( ":visible" )) {//Si l'onglet est visible...
+            $("#Onglet-Modif").slideToggle(500);
+        }
+        else {
+                $("#Onglet-Modif").slideToggle(500);
+            }
+      
+        
+    });
+ $("#Onglet-Modif").hide();
 /* --------------------------------------------------------------------
 ==================== VALIDATION JS / REQUÊTES AJAX ====================
 -------------------------------------------------------------------- */
@@ -1292,7 +1306,7 @@ function validerLogin(){
                 //--------------------------------------------------------------------------
                 //Code pour renvoyer l'usager sur la page actuelle, en éliminant les paramètres $_POST et $_GET inutiles, ce qui n'est pas possible avec "location.reload".
                 //--------------------------------------------------------------------------
-                var urlActuel = new RegExp("([\\?r=oeuvre&o=]*[0-9]+|\\?r=accueil|\\?r=trajet|\\?r=soumission)", "i");//Pages pouvant être trouvées.
+                var urlActuel = new RegExp("(\\?r=oeuvre&o=[0-9]+|\\?r=accueil|\\?r=trajet|\\?r=soumission|\\?r=devenir_membre)", "i");//Pages pouvant être trouvées.
                 var resultat = urlActuel.exec(document.URL);//Cherche le lien de la page actuelle dans l'url.
                 
                 if (resultat) {
@@ -1301,6 +1315,7 @@ function validerLogin(){
                 else {
                     window.location.href = "?r=accueil";//Sinon, valeur par défaut.
                 }
+                console.log(resultat);
                 //--------------------------------------------------------------------------
             }
             else {//reponse === false
@@ -1312,7 +1327,37 @@ function validerLogin(){
         });
     }
 }
+/**
+* @brief Fonction de validation formulaire page trajet
+* @access public
+* @author Cristina Mahneke
+* @return boolean
+*/
 
+/*function validerFormTrajet(){
+    var erreurs = false;
+    
+    document.getElementById("erreurDepart").innerHTML = "";
+    document.getElementById("erreurDestination").innerHTML = "";
+    document.getElementById("erreurWaypoints").innerHTML = "";
+    document.getElementById("erreurDepart").innerHTML = "";
+    
+     if (document.getElementById("depart").value.trim() == "") {
+        document.getElementById("erreurDepart").innerHTML = "Veuillez entrer votre adresse ou localisation";
+        erreurs = true;
+    }
+    if (document.getElementById("destination").value.trim() == "") {
+        document.getElementById("erreurDestination").innerHTML = "Veuillez choisir une destination";
+        erreurs = true;
+    }
+    if (document.getElementById("waypoints").value.trim() == "") {
+        document.getElementById("erreurDestination").innerHTML = "Veuillez choisir vos arrêts intermédiaires";
+        erreurs = true;
+    }
+    if (!erreurs) {
+        
+    }
+}*/
 /**
 * @brief Fonction qui déconnecte l'usager du site
 * @access public
@@ -1325,7 +1370,122 @@ function deconnexion(){
             window.location.href = "?r=accueil";
         });
 }
+/**
+* @brief Fonction de validation de modification d'un utilisateur. Soumet la requête en Ajax si aucune erreur et transmet les erreurs, le cas échéant.
+* @access public
+* @author Philippe Germain
+* @return boolean
+*/
+function valideModifierUtilisateur() {
+    
+    var erreurs = false;
+    var idUtilisateur= document.getElementById("idUtilisateur").value;
+    var motPasse= document.getElementById("motdepasseModif").value.trim();
+    var prenom = document.getElementById("prenomModif").value.trim();
+    var nom = document.getElementById("nomModif").value.trim();
+    var description = document.getElementById("descriptionModif").value.trim();
+    var photo = document.getElementById("fileToUpload");
+    var msgErreurPhoto = "";
+    
+    document.getElementById("erreurPrenomUtilisateurModif").innerHTML = "";
+    document.getElementById("erreurNomUtilisateurModif").innerHTML = "";
+    document.getElementById("erreurDescriptionModif").innerHTML = "";
+    document.getElementById("msgModif").innerHTML = "";
 
+    if (prenom == "") {
+        document.getElementById("erreurPrenomUtilisateurModif").innerHTML = "Veuillez entrer le nom";
+        erreurs = true;
+    }
+    if (nom == "") {
+        document.getElementById("erreurNomUtilisateurModif").innerHTML = "Veuillez entrer l'adresse";
+        erreurs = true;
+    }
+
+    if (description == "") {
+        document.getElementById("erreurDescriptionModif").innerHTML = "Veuillez entrer une description";
+        erreurs = true;
+    }
+     if (photo.value != "") {
+        var fichiersAuthorises = new RegExp("(.jpg|.jpeg|.png)$", "i");//doit se terminer par une des extensions suivantes.
+        var resultat = fichiersAuthorises.exec(photo.value);
+        if (!resultat) {
+            msgErreurPhoto = "Seules les images de type \"JPG\" ou \"PNG\" sont acceptées.";
+            erreurs = true;
+        }
+        if (photo.files[0].size > 5000000) {//Si plus gros que 5Mb...
+            if (msgErreurPhoto != "") {
+                msgErreurPhoto += "<br>";
+            }
+            msgErreurPhoto += "Votre image ne doit pas dépasser 5Mb.";
+            erreurs = true;
+        }
+        document.getElementById("erreurPhoto").innerHTML = msgErreurPhoto;
+    } 
+    //-----------------------------------------
+    //Requête AJAX si aucune erreur.
+    if (!erreurs) {
+        $.post('ajaxControler.php?rAjax=modifierUtilisateur', {motPasse: motPasse, prenom: prenom, nom: nom, description: description, idUtilisateur: idUtilisateur}, 
+            
+            function(reponse){
+ console.log(reponse); 
+                var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
+            
+                if (msgErreurs.length == 0) {//Si aucune erreur...
+                    document.getElementById("prenomModif").value = "";
+                    document.getElementById("nomModif").value = "";
+                    document.getElementById("descriptionModif").value = "";
+//                    $('#formModif').html('');
+  
+                    $("#msgModif").html("<span style='color:green'>Modification complétée !</span>");
+//                    window.location.href = "?r=profil";
+                    
+                } 
+                else {//Sinon indique les erreurs à l'utilisateur.
+                    $(msgErreurs).each(function(index, valeur) {
+                        if (valeur.errRequeteAjout) {
+                            $("#msgModif").html(valeur.errRequeteAjout);
+                        }
+                        if (valeur.errTitre) {
+                            $("#erreurPrenomUtilisateurModif").html(valeur.errTitre);
+                        }
+                        if (valeur.errAdresse) {
+                            $("#erreurNomUtilisateurModif").html(valeur.errAdresse);
+                        }
+                        if (valeur.errDescription) {
+                            $("#erreurDescriptionModif").html(valeur.errDescription);
+                        }
+                    })
+                }
+                if (document.getElementById("fileToUpload").value != "") {//Si l'utilisateur a soumis un fichier photo...
+                    //Nouvelle requête Ajax pour connaître l'id de la nouvelle oeuvre créée.
+
+                    //Soumission Ajax de la photo une fois la création de l'oeuvre complétée et l'id de l'oeuvre connue.
+                    var fd = new FormData();
+                    fd.append( 'fileToUpload', $('#fileToUpload')[0].files[0]);
+                    
+                    $.ajax({
+                        url: 'ajaxControler.php?rAjax=ajouterPhotoUtilisateur&idUtilisateur='+idUtilisateur,
+                        data: fd,
+                        processData: false,
+                        contentType: false,
+                        type: 'POST',
+                        success: function(msgErreurs){
+                            console.log(msgErreurs);
+                            if (msgErreurs != "") {//Si erreur avec l'insertion de la photo...
+                                $("#erreurPhoto").html(msgErreurs);
+                            }
+                            else {
+                                document.getElementById("fileToUpload").value = "";
+                            }
+                            window.location.href = "?r=profil";
+                        }
+                    });
+
+                }else{ window.location.href = "?r=profil";}  
+        });
+    }
+    return false;//Retourne toujours false pour que le formulaire ne soit pas soumit.
+}
 /* --------------------------------------------------------------------
 ========================= FONCTIONS DIVERSES ==========================
 -------------------------------------------------------------------- */
@@ -1471,18 +1631,18 @@ var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
       directionsDisplay.setDirections(response);
       var route = response.routes[0];
       var summaryPanel = document.getElementById('directions-panel');
-      summaryPanel.innerHTML = '';
+      summaryPanel.innerHTML = ' <h2>Votre Trajet: </h2>';
       // For each route, display summary information.
       for (var i = 0; i < route.legs.length; i++) {
         var routeSegment = i + 1;
-        summaryPanel.innerHTML += '<h4>Route Segment: ' + routeSegment +
-            '</h4><br>';
-        summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
+        summaryPanel.innerHTML += '<h4>Partie ' + routeSegment +
+            ' , Marchez à</h4><br>';
+        summaryPanel.innerHTML += route.legs[i].start_address + ' à ';
         summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
         summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
       }
     } else {
-      window.alert('Directions request failed due to ' + status);
+      window.alert('Requête de Google Directions à échoué ' + status);
     }
   });
 }

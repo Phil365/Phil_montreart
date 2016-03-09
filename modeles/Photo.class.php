@@ -150,6 +150,23 @@ class Photo {
     }
 
     /**
+    * @brief Méthode qui récupère une photo dans la BDD en fonction du id d'une oeuvre.
+    * @access public
+    * @return array
+    */
+    public function getPhotoByIdOeuvre($idOeuvre){
+        
+        $infoPhoto = array();
+
+        self::$database->query('SELECT Photos.image, Photos.idPhoto, Oeuvres.titre, Oeuvres.idOeuvre FROM photos JOIN Oeuvres ON Photos.idOeuvre = Oeuvres.idOeuvre WHERE Oeuvres.idOeuvre = :idOeuvre');
+        self::$database->bind(':idOeuvre', $idOeuvre);
+
+        if($photoBDD = self::$database->uneLigne()){
+            $infoPhoto = $photoBDD;
+        }
+        return $infoPhoto;        
+    }
+    /**
     * @brief Méthode qui insère une photo dans la BDD.
     * @param string $id
     * @param boolean $authorise
@@ -158,7 +175,6 @@ class Photo {
     * @return string
     */
     public function ajouterPhoto($id, $authorise, $typePhoto) {
-         
         $msgErreurs = "";
         $erreurs = false;
 
@@ -166,7 +182,7 @@ class Photo {
             
             //Condition définie par le type de photo (profil ou oeuvre)
             if ($typePhoto == "utilisateur") {
-                $target_dir = "images/photosUsagers/";
+                $target_dir = "images/photoProfil/";
             }
             else if ($typePhoto == "oeuvre") {
                 $target_dir = "images/photosOeuvres/";
@@ -189,7 +205,7 @@ class Photo {
                 
                 //Condition définie par le type de photo (profil ou oeuvre)
                 if ($typePhoto == "utilisateur") {
-                    self::$database->query("UPDATE utilisateurs SET photoProfil = 'images/photosUsagers/$nouveauNomImage' WHERE idUtilisateur = :idUsager");
+                    self::$database->query("UPDATE utilisateurs SET photoProfil = 'images/photoProfil/$nouveauNomImage' WHERE idUtilisateur = :idUsager");
                     self::$database->bind(':idUsager', $id);
                 }
                 else if ($typePhoto == "oeuvre") {
