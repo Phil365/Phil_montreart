@@ -1784,7 +1784,7 @@ function initMap() {
                     position.coords.latitude,
                     position.coords.longitude
                 ));
-                    
+                    map.setZoom(15);
                 });
     // Try HTML5 geolocation.
   if (navigator.geolocation) {
