@@ -220,13 +220,13 @@ class VueGestion extends Vue {
         <h1>Administration</h1>
 
         <div class="containerLiensGestion">
-            <a id ="lienGestion1" class="boutonMoyenne boutonsLiens boutonHover" href="#">Mise à jour des oeuvres</a>
-            <a id ="lienGestion2" class="boutonMoyenne boutonsLiens boutonHover" href="#">Ajouter une oeuvre</a>
-            <a id ="lienGestion3" class="boutonMoyenne boutonsLiens boutonHover" href="#">Supprimer une oeuvre</a>
-            <a id ="lienGestion4" class="boutonMoyenne boutonsLiens boutonHover" href="#">Modifier une oeuvre</a>
-            <a id ="lienGestion5" class="boutonMoyenne boutonsLiens boutonHover" href="#">Ajouter une catégorie</a>
-            <a id ="lienGestion6" class="boutonMoyenne boutonsLiens boutonHover" href="#">Supprimer une catégorie</a>
-            <a id ="lienGestion7" class="boutonMoyenne boutonsLiens boutonHover" href="#">Approuver les soumissions</a>
+            <a id ="lienGestion1" class="boutonMoyenne boutonsLiens boutonHover" href="javascript:;">Mise à jour des oeuvres</a>
+            <a id ="lienGestion2" class="boutonMoyenne boutonsLiens boutonHover" href="javascript:;">Ajouter une oeuvre</a>
+            <a id ="lienGestion3" class="boutonMoyenne boutonsLiens boutonHover" href="javascript:;">Supprimer une oeuvre</a>
+            <a id ="lienGestion4" class="boutonMoyenne boutonsLiens boutonHover" href="javascript:;">Modifier une oeuvre</a>
+            <a id ="lienGestion5" class="boutonMoyenne boutonsLiens boutonHover" href="javascript:;">Ajouter une catégorie</a>
+            <a id ="lienGestion6" class="boutonMoyenne boutonsLiens boutonHover" href="javascript:;">Supprimer une catégorie</a>
+            <a id ="lienGestion7" class="boutonMoyenne boutonsLiens boutonHover" href="javascript:;">Approuver les soumissions</a>
         </div>
 
         <!-- ----- METTRE OEUVRES VILLE À JOUR ------- -->
@@ -487,7 +487,7 @@ class VueGestion extends Vue {
                     <?php
 
                         for ($i = 1; $i <= count($this->oeuvresApprobation); $i++) {
-                            echo '<a href="#" onclick="afficherOeuvrePourApprobation('.$this->oeuvresApprobation[$i-1]['idOeuvre'].')">Oeuvre '.$i.' <span>Soumise le '.$this->oeuvresApprobation[$i-1]['dateSoumissionOeuvre'].'</span></a>';
+                            echo '<a href="javascript:;" onclick="afficherOeuvrePourApprobation('.$this->oeuvresApprobation[$i-1]['idOeuvre'].')">Oeuvre '.$i.' <span>Soumise le '.$this->oeuvresApprobation[$i-1]['dateSoumissionOeuvre'].'</span></a>';
                         }
                     ?>
                 </div>
@@ -495,7 +495,7 @@ class VueGestion extends Vue {
                 <div id="contenuSoumissionPhotos">
                     <?php
                         for ($i = 1; $i <= count($this->photosApprobation); $i++) {
-                            echo '<a href="#" onclick="afficherPhotoPourApprobation('.$this->photosApprobation[$i-1]['idPhoto'].')">Photo '.$i.' <span>Soumise le '.$this->photosApprobation[$i-1]['dateSoumissionPhoto'].'</span></a>';
+                            echo '<a href="javascript:;" onclick="afficherPhotoPourApprobation('.$this->photosApprobation[$i-1]['idPhoto'].')">Photo '.$i.' <span>Soumise le '.$this->photosApprobation[$i-1]['dateSoumissionPhoto'].'</span></a>';
                         }
                     ?>
                 </div>
@@ -503,7 +503,7 @@ class VueGestion extends Vue {
                 <div id="contenuSoumissionCommentaires">
                     <?php
                         for ($i = 1; $i <= count($this->commentairesApprobation); $i++) {
-                            echo '<a href="#" onclick="afficherCommentairePourApprobation('.$this->commentairesApprobation[$i-1]['idCommentaire'].')">Commentaire '.$i.' <span>Soumise le '.$this->commentairesApprobation[$i-1]['dateSoumissionCommentaire'].'</span></a>';
+                            echo '<a href="javascript:;" onclick="afficherCommentairePourApprobation('.$this->commentairesApprobation[$i-1]['idCommentaire'].')">Commentaire '.$i.' <span>Soumise le '.$this->commentairesApprobation[$i-1]['dateSoumissionCommentaire'].'</span></a>';
                         }
                     ?>
                 </div>

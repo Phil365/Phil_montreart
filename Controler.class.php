@@ -440,41 +440,70 @@ class Controler {
     private function recherche() {
         
         $oeuvres = array();
-        
+        $typeRecherche = "";
+        $nomRecherche = "";
+            
         if (isset($_POST["boutonRecherche"])) {
             
             if (isset($_POST["selectArrondissement"]) && $_POST["selectArrondissement"] != "") {
                 $oeuvre = new Oeuvre();
-                $oeuvres = $oeuvre->getAllOeuvresByArrondissement($_POST["selectArrondissement"]);    
+                $oeuvres = $oeuvre->getAllOeuvresByArrondissement($_POST["selectArrondissement"]); 
+                $typeRecherche = "par arrondissement";
+                $arrondissement = new Arrondissement();
+                $nomRecherche = $arrondissement->getArrondissementNameById($_POST["selectArrondissement"]);
             }
             else if (isset($_POST["selectCategorie"]) && $_POST["selectCategorie"] != "") {
                 $oeuvre = new Oeuvre();
                 $oeuvres = $oeuvre->getAllOeuvresByCategorie($_POST["selectCategorie"]);
+                $typeRecherche = "par catégorie";
+                $categorie = new Categorie();
+                $nomRecherche = $categorie->getCategorieNameById($_POST["selectCategorie"]);
             }
         }
         else if (isset($_GET["rechercheParArtiste"])) {
             $oeuvre = new Oeuvre();
             $oeuvres = $oeuvre->getAllOeuvresByArtiste($_GET["rechercheParArtiste"]);
+            $typeRecherche = "par artiste";
+            $nomRecherche = $_GET["nomArtiste"];
         }
         else if (isset($_POST["boutonRechercheMobile"])) {
             
             if (isset($_POST["selectArrondissementMobile"]) && $_POST["selectArrondissementMobile"] != "") {
                 $oeuvre = new Oeuvre();
-                $oeuvres = $oeuvre->getAllOeuvresByArrondissement($_POST["selectArrondissementMobile"]);    
+                $oeuvres = $oeuvre->getAllOeuvresByArrondissement($_POST["selectArrondissementMobile"]); 
+                $typeRecherche = "par arrondissement";
+                $arrondissement = new Arrondissement();
+                $nomRecherche = $arrondissement->getArrondissementNameById($_POST["selectArrondissementMobile"]);
             }
             else if (isset($_POST["selectCategorieMobile"]) && $_POST["selectCategorieMobile"] != "") {
                 $oeuvre = new Oeuvre();
                 $oeuvres = $oeuvre->getAllOeuvresByCategorie($_POST["selectCategorieMobile"]);
+                $typeRecherche = "par catégorie";
+                $categorie = new Categorie();
+                $nomRecherche = $categorie->getCategorieNameById($_POST["selectCategorieMobile"]);
             }
         }
         else if (isset($_GET["rechercheParArtisteMobile"])) {
             $oeuvre = new Oeuvre();
             $oeuvres = $oeuvre->getAllOeuvresByArtiste($_GET["rechercheParArtisteMobile"]);
+            $typeRecherche = "par artiste";
+            $nomRecherche = $_GET["nomArtiste"];
+        }
+        if (isset($oeuvres)) {
+            $photo = new Photo();
+            $oeuvresTemp = array();
+            foreach ($oeuvres as $oeuvre) {
+                if ($photoOeuvre = $photo->getPhotoByOeuvre($oeuvre["idOeuvre"])) {
+                    $oeuvre["photo"] = $photoOeuvre["image"];
+                }
+                $oeuvresTemp[] = $oeuvre;
+            }
+            $oeuvres = $oeuvresTemp;
         }
         
         $this->oVue = new VueRecherche();
         $this->oVue->setDataGlobal('recherche', 'page de recherche', $this->langueAffichage, $this->pRecherche);
-        $this->oVue->setOeuvres($oeuvres);
+        $this->oVue->setData($oeuvres, $typeRecherche, $nomRecherche);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();

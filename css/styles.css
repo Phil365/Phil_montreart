@@ -306,7 +306,11 @@ footer {
 
 .oeuvreVedette {
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: 90px;
+}
+
+.oeuvreVedette img {
+    width: 100%;
 }
 
 .section4 {
@@ -466,7 +470,7 @@ footer {
 
 .pourEnSavoirPlus {
     margin-top: 50px;
-    margin-left: 30px;
+/*    margin-left: 30px;*/
     color: #ffffff;
     padding: 5px;
     background-color: #659CEF;
@@ -528,21 +532,9 @@ footer {
     text-align: center;
 }
 
-/*
-.fieldsetRecherche {
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-    margin-top: 3%;
-    
+#titreOeuvreVedette {
+    text-align: center;
 }
-
-.fieldsetRecherche img {
-    width: 15%;
-    margin-left: 2%;
-}
-*/
 
 /*-----------Classes d'incrémentation des résultats de la page recherche-------------*/
 
@@ -613,7 +605,6 @@ footer {
 }
 
 .rechercheResultTitre {
-    margin-left: 30px;
     margin-top: 20px;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 20px;
@@ -633,14 +624,7 @@ footer {
 }
 
 .infoResult {
-    margin-left: 30px;
-    font-size: 20px;
-}
-
-.rechercheResultTitre {
-    margin-left: 30px;
-    margin-top: 20px;
-    font-family: 'Source Sans Pro', sans-serif;
+    margin-top: 0;
     font-size: 20px;
 }
 
@@ -839,9 +823,11 @@ nav a:active {
     color: #b95364;
 }
 
+/*
 nav a:first-child {
     margin-left: 9%;
 }
+*/
 
 nav a:hover {
     background-color: #70212F;
@@ -1407,8 +1393,17 @@ nav {
     margin-left: 36%;
 }
 
+#descriptionSoumission {
+    width: 103%;
+}
+
 #descriptionAjout {
     width: 69%;
+}
+
+#descriptionAjoutSoumission {
+    width: 69%;
+    height: 50px;
 }
 
 .inputSoumission {
@@ -1645,49 +1640,18 @@ div.stars {
 
 /*------------ Classes générés dynamiquement sur chaque résultat de recherche----------------*/
     
-    .fieldsetRecherche1 { 
-    float: none;
+    .fieldsetRecherche { 
+    display: block;
     width: 100%;
-    border: 2px solid #70212F;
-    border-radius: 5px;
+    border-top: 2px solid #70212F;
+    border-bottom: 2px solid #70212F;
     padding-bottom: 3%;
     padding-top: 3%;
     margin-top: 8.5%;
     }
-
-    .fieldsetRecherche2 { 
-    width: 100%;
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-
-    }
-
-    .fieldsetRecherche3 { 
-    float: none;
-    width: 100%;
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-    margin-top: 3%;
-
-    }
     
-    .fieldsetRecherche1 img {
-    width: 20%;
-    margin-left: 2%;
-    }
-    
-    .fieldsetRecherche2 img {
-    width: 20%;
-    margin-left: 2%;
-    }
-    
-    .fieldsetRecherche3 img {
-    width: 20%;
-    margin-left: 2%;
+    .fieldsetRecherche img {
+    width: 94%;
     }
 /*------------ Fin des classes générés dynamiquement sur chaque résultat de recherche----------------*/
 
@@ -1710,20 +1674,20 @@ div.stars {
         position: fixed;
         top: 57px;
         z-index: 2;
-    }
-    nav a {
-        letter-spacing: .4px;
         text-align: center;
-        padding: 0 20px;
-        line-height: 30px;
+    }
+    nav a {/*modif David*/
+        margin: 0 2px;
+        letter-spacing: .4px;
         font-family: 'Source Sans Pro', sans-serif;
         font-size: 1.2em;
         display: initial;
         color: white;
         text-decoration: none;
-        line-height: 36px;
         background-color: #659CEF;
         border-radius: 5px;
+        padding-top: 0;
+        padding-bottom: 0;
     }
     .barreRechercheContenuMobile {
         display: none;
@@ -1837,6 +1801,11 @@ div.stars {
         border-radius: 8px;
         margin: 20px;
         font-weight: bold;
+    }
+    .resultatsRecherche {
+        display: block;
+        width: 100%;
+        text-align: center;
     }
     #icon_menu {
         margin-left: 2%;
@@ -1994,6 +1963,10 @@ div.stars {
     #boutonAjouterCom {
     margin-left: 35%;
     }
+    
+    #descriptionAjoutSoumission {
+    width: 67%;
+    }
 }
 
 
@@ -2008,6 +1981,23 @@ div.stars {
     }
     nav {
         display: block;
+    }
+    .fieldsetRecherche { 
+        display: inline-block;
+        width: 45%;
+        margin: 0 2%;
+        border: 3px solid #70212F;
+        border-radius: 5px;
+        padding-bottom: 3%;
+        padding-top: 1%;
+        margin-top: 5%;
+    }
+    .fieldsetRecherche:hover { 
+    border: 3px solid #B32A42;
+    }
+    
+    .fieldsetRecherche img {
+        width: 94%;
     }
 }
 
@@ -2035,12 +2025,16 @@ div.stars {
         height: 76px;
         width: 100%;
     }
+/*
     nav {
         margin: 0 auto;
     }
+*/
+/*
     nav a:first-child {
         margin-left: 16%;
     }
+*/
     h2 {
         margin-left: 20px;
         margin-right: 20px;
@@ -2353,6 +2347,14 @@ div.stars {
     margin-left: 40%;
     }
     
+    #descriptionAjoutSoumission {
+    width: 106%;
+    }
+    
+    .oeuvreVedette img {
+        margin-left: 45px;
+    }
+    
     /*------------- PAGE ADMIN 800px ET+ -----------------------*/
     .premiereColonne {
         width: 58%;
@@ -2441,9 +2443,11 @@ div.stars {
         width: 980px;
         top: 86px;
     }
+/*
     nav a:first-child {
         margin-left: 20%;
     }
+*/
     .dummy {
         height: 120px;
     }
@@ -2525,6 +2529,11 @@ div.stars {
         width: 103%;
     }
     
+    #descriptionAjoutSoumission {
+    width: 106%;
+    }
+
+    
     #formPhotoUnique input[type="file"] {
     margin-left: 37%;
     }
@@ -2541,68 +2550,21 @@ div.stars {
 /*------------ Classes générés dynamiquement sur chaque résultat de recherche----------------*/
     
 
-    .fieldsetRecherche1 { 
-    float: left;
-    width: 30%;
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-    margin-top: 8%;
+    .fieldsetRecherche { 
+        display: inline-block;
+        width: 30%;
+        margin: 0 1%;
+        border: 3px solid #70212F;
+        border-radius: 5px;
+        padding-bottom: 3%;
+        padding-top: 1%;
+        margin-top: 5%;
     }
     
-    .fieldsetRecherche1:first-child {
-        margin-top: 10.1%;
+    .fieldsetRecherche img {
+        width: 94%;
     }
 
-    .fieldsetRecherche2 { 
-    width: 30%;
-    display: block;
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-    margin-top: 8%;
-
-    }
-    
-    .fieldsetRecherche2:first-child {
-        margin-top: 9.8%;
-    }
-    
-    
-    .fieldsetRecherche3 { 
-    float: right;
-    width: 30%;
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-    margin-top: 3%;
-    }
-    
-    .fieldsetRecherche3:first-child {
-        position: absolute;
-        float: none;
-        top: 400px;
-    }
-
-
-    
-    .fieldsetRecherche1 img {
-    width: 20%;
-    margin-left: 2%;
-    }
-    
-    .fieldsetRecherche2 img {
-    width: 20%;
-    margin-left: 2%;
-    }
-    
-    .fieldsetRecherche3 img {
-    width: 20%;
-    margin-left: 2%;
-    }
 /*------------ Fin des classes générés dynamiquement sur chaque résultat de recherche----------------*/
     
 }

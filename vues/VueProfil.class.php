@@ -107,11 +107,11 @@ class VueProfil extends Vue {
             <p><?php echo $this->profilUtilisateur['descriptionProfil']; ?></p>
             <p> Oeuvres Visités  <?php echo $this->nbrOeuvreVisite['COUNT(*)']; ?></p>
             <p>nombres de points: <?php echo (5*$this->nbrOeuvreVisite['COUNT(*)']); ?></p>
-            <a id ="lienGestion4" class="boutonMoyenne boutonsLiens boutonHover" href="#">Modifier informations</a>
+            <a id ="lienGestion4" class="boutonMoyenne boutonsLiens boutonHover" href="javascript:;">Modifier informations</a>
 <!--    
             <a href="contribuerArticle.php" ><h3>Contribuer article</h3></a>
                 
-            <a href="#" onclick="montrer_form()"><h3>Gérer mon profil</h3></a>
+            <a href="javascript:;" onclick="montrer_form()"><h3>Gérer mon profil</h3></a>
 -->
         </div>
         

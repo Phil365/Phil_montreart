@@ -60,6 +60,27 @@ class Arrondissement {
     }
     
     /**
+    * @brief Méthode qui récupère le nom en fonction du id passé en paramètre, s'il existe.
+    * @param string $idArrondissement
+    * @access public
+    * @return string ou boolean
+    */
+    public function getArrondissementNameById($idArrondissement) {
+        
+        self::$database->query('SELECT nomArrondissement FROM Arrondissements WHERE Arrondissements.idArrondissement = :idArrondissement');
+
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':idArrondissement', $idArrondissement);
+
+        if ($arrondissement = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            return $arrondissement["nomArrondissement"];
+        }
+        else {
+            return false;
+        }
+    }
+    
+    /**
     * @brief Méthode qui ajoute un arrondissement à la BDD.
     * @param string $nomArrondissement
     * @access public

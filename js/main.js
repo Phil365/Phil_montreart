@@ -1679,10 +1679,10 @@ function autoComplete(rechercheVoulue, nomServeur)
                     }
                     else if (rechercheVoulue=="artiste") {
                         if (value['nomCollectif'] != null) {
-                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCollectif']+"</a></div>");
+                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+"&nomArtiste="+encodeURIComponent(value['nomCollectif'])+">"+value['nomCollectif']+"</a></div>");
                         }
                         else {
-                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCompletArtiste']+"</a></div>");
+                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+"&nomArtiste="+encodeURIComponent(value['nomCompletArtiste'])+">"+value['nomCompletArtiste']+"</a></div>");
                         }
                     }
                 })
@@ -1730,10 +1730,10 @@ function autoCompleteMobile(rechercheVoulue, nomServeur)
                     }
                     if (rechercheVoulue=="artiste") {
                         if (value['nomCollectif'] != null) {
-                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCollectif']+"</a></div>");
+                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+"&nomArtiste="+encodeURIComponent(value['nomCollectif'])+">"+value['nomCollectif']+"</a></div>");
                         }
                         else {
-                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCompletArtiste']+"</a></div>");
+                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+"&nomArtiste="+encodeURIComponent(value['nomCompletArtiste'])+">"+value['nomCompletArtiste']+"</a></div>");
                         }
                     }
                 })
@@ -2286,7 +2286,7 @@ function rechargerOeuvresApprob() {
         var oeuvresApprob = "";
 
         for (var i = 1; i <= soumissions.length; i++) {
-            oeuvresApprob += '<a href="#"; onclick="afficherOeuvrePourApprobation(' + soumissions[i-1]['idOeuvre'] + ')">Oeuvre ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionOeuvre'] + '</span></a>';
+            oeuvresApprob += '<a href="javascript:;"; onclick="afficherOeuvrePourApprobation(' + soumissions[i-1]['idOeuvre'] + ')">Oeuvre ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionOeuvre'] + '</span></a>';
         }
         $("#contenuSoumissionOeuvres").html(oeuvresApprob);
         $("#nbOeuvresEnAttente").html("En attente : " + soumissions.length);
@@ -2308,7 +2308,7 @@ function rechargerPhotosApprob() {
         var photosApprob = "";
 
         for (var i = 1; i <= soumissions.length; i++) {
-            photosApprob += '<a href="#"; onclick="afficherPhotoPourApprobation(' + soumissions[i-1]['idPhoto'] + ')">Photo ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionPhoto'] + '</span></a>';
+            photosApprob += '<a href="javascript:;"; onclick="afficherPhotoPourApprobation(' + soumissions[i-1]['idPhoto'] + ')">Photo ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionPhoto'] + '</span></a>';
         }
         $("#contenuSoumissionPhotos").html(photosApprob);
         $("#nbPhotosEnAttente").html("En attente : " + soumissions.length);
@@ -2330,7 +2330,7 @@ function rechargerCommentairesApprob() {
         var commentairesApprob = "";
 
         for (var i = 1; i <= soumissions.length; i++) {
-            commentairesApprob += '<a href="#"; onclick="afficherCommentairePourApprobation(' + soumissions[i-1]['idCommentaire'] + ')">Commentaire ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionCommentaire'] + '</span></a>';
+            commentairesApprob += '<a href="javascript:;"; onclick="afficherCommentairePourApprobation(' + soumissions[i-1]['idCommentaire'] + ')">Commentaire ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionCommentaire'] + '</span></a>';
         }
         $("#contenuSoumissionCommentaires").html(commentairesApprob);
         $("#nbCommentairesEnAttente").html("En attente : " + soumissions.length);

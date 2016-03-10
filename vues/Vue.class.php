@@ -72,111 +72,109 @@ class Vue {
     public function afficherEntete() {
         
     ?>
-    <body>
-        <div class="global">
-            <header id="header">
-                <div class="barreRecherche">
-                    <div class="barreRechercheContenu">
-                        <form action="?r=recherche" method="post">
-                            <select name="typeRecherche" class="typeRecherche">
-                                <optgroup>
-                                    <option value="">Chercher une oeuvre par...</option>
-                                    <option value="artiste">Artiste</option>
-                                    <option value="titre">Titre d'oeuvre</option>
-                                    <option value="arrondissement">Arrondissement</option>
-                                    <option value="categorie">Catégorie</option>
-                                </optgroup>
-                            </select>                    
-                            <div class="deuxiemeSelectRecherche"></div>
-                            <div class="submitRecherche"></div>
-                        </form>
-                    </div>
-                </div>
-                <div class="boutonRecherche">
-                    <div class="flecheRecherche"></div>
-                    <img class="iconeRecherche" src="./images/flecheRecherche.png">
-                </div>
-                
-                <div class="boutonRechercheMobile">
-                    <img class="iconeRechercheMobile" src="./images/flecheRecherche.png">
-                </div>
-                   
-                <div class="barreRechercheMobile">
-                    <div class="barreRechercheContenuMobile">
-                        <form action="?r=recherche" method="post">
-                            <select name="typeRechercheMobile" class="typeRechercheMobile">
-                                <optgroup>
-                                    <option value="">Chercher une oeuvre par...</option>
-                                    <option value="artiste">Artiste</option>
-                                    <option value="titre">Titre d'oeuvre</option>
-                                    <option value="arrondissement">Arrondissement</option>
-                                    <option value="categorie">Catégorie</option>
-                                </optgroup>
-                            </select>                    
-                            <div class="deuxiemeSelectRechercheMobile"></div>
-                            <div class="submitRechercheMobile"></div>
-                        </form>
-                    </div>
-                    <div class="flecheRechercheMobile"></div>
-                </div>
-                <img id="logo" src="images/logo.png" alt="logo">
-
-                <nav id="navNormale">
-                    <a href="?r=accueil" id="NavAccueil">Accueil</a>
-                    <a href="?r=trajet">Trajet</a>
-                    <a href="?r=soumission">Soumettre une oeuvre</a>
-                    <?php if (isset($_SESSION["idUsager"])) {
-                        echo '<a href="?r=profil">Profil</a>';
-                        if (isset($_SESSION["idUsager"]) && $_SESSION["admin"] === "1") {
-                            echo '<a href="?r=gestion">Gestion</a>';
-                        }
-                        echo '<a href="#" onclick="deconnexion()">Deconnexion</a>';
-                    }
-                    else {
-                        echo '<a href="#" onclick="afficherLogin()">Se connecter</a>';
-                    }
-                    ?>
-                </nav>
-                
-                <div id="navMobile">
-                    <img src="images/navBouton.png" id="navBoutonMobile">
-                    <div id="navAMobile">
-                    <a href="?r=accueil" id="NavAccueil">Accueil</a>
-                    <a href="?r=trajet">Trajet</a>
-                    <a href="?r=soumission">Soumettre une oeuvre</a>
-                    <?php if (isset($_SESSION["idUsager"])) {
-                        echo '<a href="?r=profil">Profil</a>';
-                        if (isset($_SESSION["idUsager"]) && $_SESSION["admin"] === "1") {
-                            echo '<a href="?r=gestion">Gestion</a>';
-                        }               
-                        echo '<a href="#" onclick="deconnexion()">Deconnexion</a>';
-                    }
-                    else {
-                        echo '<a href="#" onclick="afficherLogin()">Se connecter</a>';
-                    }
-                    ?>
-                    </div>
-                </div>
-            </header>
-
-            <div id="div_bgform">
-                <div id="div_form">
-                    <button id="fermer" onclick ="fermer()">X</button>
-                    
-                    <!-- Formulaire login -->
-                    <form id="formLogin" method="post" name="formLogin">
-                    <h2>Connectez vous</h2>
-
-                        <input id="user" class='inputLogin' name="user" placeholder="Nom d'utilisateur" type="text">
-                        <input id="pass" class='inputLogin' name="pass" placeholder="Mot de passe" type="password">
-                        <input type='hidden' name='grainSel' value='<?php echo $_SESSION['grainSel'];?>'>
-                        <br><span class="erreur centrerTexte" id="erreurLogin"></span>
-                        <button type="button" class="boutonMoyenne" onclick="validerLogin()">Envoyer</button>
-                        <a href="?r=devenir_membre"><h3>Devenez Membre!</h3></a>
+<body>
+    <div class="global">
+        <header id="header">
+            <div class="barreRecherche">
+                <div class="barreRechercheContenu">
+                    <form action="?r=recherche" method="post">
+                        <select name="typeRecherche" class="typeRecherche">
+                            <optgroup>
+                                <option value="">Chercher une oeuvre par...</option>
+                                <option value="artiste">Artiste</option>
+                                <option value="titre">Titre d'oeuvre</option>
+                                <option value="arrondissement">Arrondissement</option>
+                                <option value="categorie">Catégorie</option>
+                            </optgroup>
+                        </select>                    
+                        <div class="deuxiemeSelectRecherche"></div>
+                        <div class="submitRecherche"></div>
                     </form>
                 </div>
             </div>
-            <div class="dummy"><!--Ne mettez rien ici--></div>
+            <div class="boutonRecherche">
+                <div class="flecheRecherche"></div>
+                <img class="iconeRecherche" src="./images/flecheRecherche.png">
+            </div>
+
+            <div class="boutonRechercheMobile">
+                <img class="iconeRechercheMobile" src="./images/flecheRecherche.png">
+            </div>
+
+            <div class="barreRechercheMobile">
+                <div class="barreRechercheContenuMobile">
+                    <form action="?r=recherche" method="post">
+                        <select name="typeRechercheMobile" class="typeRechercheMobile">
+                            <optgroup>
+                                <option value="">Chercher une oeuvre par...</option>
+                                <option value="artiste">Artiste</option>
+                                <option value="titre">Titre d'oeuvre</option>
+                                <option value="arrondissement">Arrondissement</option>
+                                <option value="categorie">Catégorie</option>
+                            </optgroup>
+                        </select>                    
+                        <div class="deuxiemeSelectRechercheMobile"></div>
+                        <div class="submitRechercheMobile"></div>
+                    </form>
+                </div>
+                <div class="flecheRechercheMobile"></div>
+            </div>
+            <img id="logo" src="images/logo.png" alt="logo">
+
+            <nav id="navNormale">
+<!--                Les <a> ici doivent rester coller sinon le navigateur ajout un espace de quelques pixels entre les liens - Je ne comprends pas pourquoi mais ce "fix" règle le problème-->
+                <a href="?r=accueil" id="NavAccueil">Accueil</a><a href="?r=trajet">Trajet</a><a href="?r=soumission">Soumettre une oeuvre</a><?php if (isset($_SESSION["idUsager"])) {
+                    echo '<a href="?r=profil">Profil</a>';
+                    if (isset($_SESSION["idUsager"]) && $_SESSION["admin"] === "1") {
+                        echo '<a href="?r=gestion">Gestion</a>';
+                    }
+                    echo '<a href="javascript:;" onclick="deconnexion()">Deconnexion</a>';
+                }
+                else {
+                    echo '<a href="javascript:;" onclick="afficherLogin()">Se connecter</a>';
+                }
+                ?>
+            </nav>
+
+            <div id="navMobile">
+                <img src="images/navBouton.png" id="navBoutonMobile">
+                <div id="navAMobile">
+                <a href="?r=accueil" id="NavAccueil">Accueil</a>
+                <a href="?r=trajet">Trajet</a>
+                <a href="?r=soumission">Soumettre une oeuvre</a>
+                <?php if (isset($_SESSION["idUsager"])) {
+                    echo '<a href="?r=profil">Profil</a>';
+                    if (isset($_SESSION["idUsager"]) && $_SESSION["admin"] === "1") {
+                        echo '<a href="?r=gestion">Gestion</a>';
+                    }               
+                    echo '<a href="javascript:;" onclick="deconnexion()">Deconnexion</a>';
+                }
+                else {
+                    echo '<a href="javascript:;" onclick="afficherLogin()">Se connecter</a>';
+                }
+                ?>
+                </div>
+            </div>
+        </header>
+
+        <div id="div_bgform">
+            <div id="div_form">
+                <button id="fermer" onclick ="fermer()">X</button>
+
+                <!-- Formulaire login -->
+                <form id="formLogin" method="post" name="formLogin">
+                <h2>Connectez vous</h2>
+
+                    <input id="user" class='inputLogin' name="user" placeholder="Nom d'utilisateur" type="text">
+                    <input id="pass" class='inputLogin' name="pass" placeholder="Mot de passe" type="password">
+                    <input type='hidden' name='grainSel' value='<?php echo $_SESSION['grainSel'];?>'>
+                    <br><span class="erreur centrerTexte" id="erreurLogin"></span>
+                    <button type="button" class="boutonMoyenne" onclick="validerLogin()">Envoyer</button>
+                    <a href="?r=devenir_membre"><h3>Devenez Membre!</h3></a>
+                </form>
+            </div>
+        </div>
+        <div class="dummy"><!--Ne mettez rien ici--></div>
     <?php
     }
     
