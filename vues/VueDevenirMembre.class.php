@@ -123,7 +123,7 @@ class VueDevenirMembre extends Vue {
 
 
             <h3>Téléversez votre photo profil</h3>
-            <input type="file" name="fileToUpload" id="fileToUpload" class="fileToUploadGestion">
+            <input type="file" name="fileToUpload" id="fileToUpload" class="inputDevMembre">
             <br> <span  id="erreurCourriel" class="erreur"><?php if (isset($this->msgErreurs["errPhoto"])) {echo $this->msgErreurs["errPhoto"];} ?></span><br>
             <input class="boutonMoyenne" type='submit' name='boutonAjoutUtilisateur' value='Envoyer'>
         </form>

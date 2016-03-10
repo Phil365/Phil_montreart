@@ -1356,35 +1356,7 @@ function validerLogin(){
         });
     }
 }
-/**
-* @brief Fonction de validation formulaire page trajet
-* @access public
-* @author Cristina Mahneke
-* @return boolean
-*/
 
-function validerFormTrajet(){
-    var erreurs = false;
-    
-    document.getElementById("erreurDepart").innerHTML = "";
-    document.getElementById("erreurDestination").innerHTML = "";
-    document.getElementById("erreurWaypoints").innerHTML = "";
-    document.getElementById("erreurDepart").innerHTML = "";
-    
-     if (document.getElementById("depart").value.trim() == "") {
-        document.getElementById("erreurDepart").innerHTML = "Veuillez entrer votre adresse ou localisation";
-        erreurs = true;
-    }
-    if (document.getElementById("destination").value.trim() == "") {
-        document.getElementById("erreurDestination").innerHTML = "Veuillez choisir une destination";
-        erreurs = true;
-    }
-    if (document.getElementById("waypoints").value.trim() == "") {
-        document.getElementById("erreurDestination").innerHTML = "Veuillez choisir vos arrêts intermédiaires";
-        erreurs = true;
-    }
-    return erreurs;
-}
 /**
 * @brief Fonction qui déconnecte l'usager du site
 * @access public
@@ -1584,7 +1556,7 @@ function initMapTrajet() {
             calculateAndDisplayRoute(directionsService, directionsDisplay);
   });
         
-             
+    var geocoder = new google.maps.Geocoder;        
         
         
     var infoWindow = new google.maps.InfoWindow();
@@ -1621,6 +1593,7 @@ function initMapTrajet() {
     handleLocationError(false, infoWindow, map.getCenter());
   }
    
+    geocodeLatLng(geocoder, map);
     
     var urlAjax = 'ajaxControler.php?rAjax=googleMap';
     downloadUrl(urlAjax, function(data) {
@@ -1712,7 +1685,24 @@ var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
     }
   });
 }
-
+function geocodeLatLng(geocoder, map) {
+  var input = document.getElementById('depart').value;
+  var latlngStr = input.split(',', 2);
+  var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+  geocoder.geocode({'location': latlng}, function(results, status) {
+    if (status === google.maps.GeocoderStatus.OK) {
+      if (results[1]) {
+        document.getElementById('pointA').value = results[1].formatted_address;
+       
+       
+      } else {
+        console.log('No results found');
+      }
+    } else {
+      console.log('Geocoder failed due to: ' + status);
+    }
+  });
+}
 /* --------------------------------------------------------------------
 ========================= FONCTIONS RECHERCHE =========================
 -------------------------------------------------------------------- */
