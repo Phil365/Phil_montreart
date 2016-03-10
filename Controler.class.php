@@ -526,15 +526,19 @@ class Controler {
         $utilisateur = new Utilisateur();
         $droits = false;
         $msgErreurs = array();
+        $msgAjout = "";
         if (isset($_POST['boutonAjoutUtilisateur'])){
             
+             $msgErreurs = $utilisateur->validerFormAjoutUtilisateur($_POST['nomUsager'], md5($_POST['motPasse']), $_POST['prenom'], $_POST['nom'], $_POST['courriel']);
+             
+           if($msgErreurs == null){                                                             
             $msgErreurs = $utilisateur->AjouterUtilisateur($_POST['nomUsager'], md5($_POST['motPasse']), $_POST['prenom'], $_POST['nom'], $_POST['courriel'], $_POST['descriptionProfil'], $droits);
-          
+           }
         }
 
         $this->oVue = new VueDevenirMembre();
         $this->oVue->setDataGlobal('devenirMembre', 'page avec formulaire pour devenir membre', $this->langueAffichage, $this->pDevenirMembre);
-        $this->oVue->setData($msgErreurs);
+        $this->oVue->setData($msgErreurs, $msgAjout);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();

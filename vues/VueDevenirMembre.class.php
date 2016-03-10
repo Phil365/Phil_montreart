@@ -14,6 +14,11 @@ class VueDevenirMembre extends Vue {
     * @access private
     */
     private $msgErreurs;
+  /**
+    * @var string $msgAjout les erreurs d'ajout/exceptions s'il y a lieu
+    * @access private
+    */
+    private $msgAjout;
 /**
     * @brief Constructeur. Initialise les propriétés communes de la classe mère
     * @access public
@@ -31,9 +36,10 @@ class VueDevenirMembre extends Vue {
     * @access public
     * @return void
     */
-    public function setData($msgErreurs) {
+    public function setData($msgErreurs, $msgAjout) {
        
         $this->msgErreurs = $msgErreurs;
+        $this->msgAjout = $msgAjout;
     }
     
 
@@ -44,7 +50,29 @@ class VueDevenirMembre extends Vue {
     */
     public function afficherBody() {
          //Si l'ajout est complété avec succès...
-        if (isset($_POST["boutonAjoutUtilisateur"]) && empty($this->msgErreurs)) {
+        if (isset($_POST["boutonAjoutUtilisateur"]) && $this->msgErreurs == null) {
+            
+             echo '<div id="div_bgform" style="display: block;">
+                <div id="div_form" style="display: block; background:#ffffff; width: 300px; border: 2px solid #F8F274; border-radius: 15px; padding: 20px 0px 20px 50px;">
+                      
+                       <form id="formLoginNouveau" method="post" name="formLoginNouveau">
+                        <h3>Vous êtes maintenant inscrit, bienvienue à MontréArt!</h3>
+                        
+                        <input type="text" class="inputLogin" id="userNouveau" name="userNouveau" value="'.$_POST["nomUsager"].'" readonly>
+                        <input type="password" class="inputLogin" id="passNouveau" name="passNouveau" value="'.$_POST["motPasse"].'" readonly>
+                        <input type="hidden" id="grainSelNouveau" name="grainSelNouveau" value="'.$_SESSION["grainSel"].'">
+                          <script>
+                            var user = document.getElementById("userNouveau").value;
+                            var pass = document.getElementById("passNouveau").value;
+                            var grainSel = document.getElementById("grainSelNouveau").value;
+                        </script>
+                        <button type="button" class="boutonMoyenne" onclick="loginNouveauUsager(user, pass, grainSel)">Continuer</button>
+                        
+                    </form>
+                    
+                </div>
+            </div>';
+            
             $msgAjout = "<div style='color:green' class='erreur'>Enregistrement complété !</div>";
             $_POST["nomUsager"] = "";
             $_POST["motPasse"] = "";
@@ -95,7 +123,7 @@ class VueDevenirMembre extends Vue {
 
 
             <h3>Téléversez votre photo profil</h3>
-            <input type="file" name="fileToUpload" id="fileToUpload" class="fileToUploadGestion">
+            <input type="file" name="fileToUpload" id="fileToUpload" class="inputDevMembre">
             <br> <span  id="erreurCourriel" class="erreur"><?php if (isset($this->msgErreurs["errPhoto"])) {echo $this->msgErreurs["errPhoto"];} ?></span><br>
             <input class="boutonMoyenne" type='submit' name='boutonAjoutUtilisateur' value='Envoyer'>
         </form>
