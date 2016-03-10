@@ -380,5 +380,26 @@ class Utilisateur {
         }
         return $msgErreurs;
     }
+        /**
+    * @brief Méthode qui récupère les artistes d'une oeuvre.
+    * @param int $idOeuvre
+    * @access public
+    * @return array
+    */
+    public function getOeuvresVisiter ($idUtilisateur) {
+        
+        $infoVisite = array();
+        
+        self::$database->query('SELECT * FROM oeuvres JOIN visitent ON visitent.idOeuvre = oeuvres.idOeuvre WHERE visitent.idUtilisateur = :idUtilisateur');
+        self::$database->bind(':idUtilisateur', $idUtilisateur);
+        
+        if ($lignes = self::$database->resultset()) {
+              foreach ($lignes as $oeuvres) {
+                $uneOeuvre = array("titre"=>$oeuvres["titre"], "idOeuvre"=>$oeuvres["idOeuvre"]);
+                $infoVisite[] = $uneOeuvre;
+            }
+           
+        } return $infoVisite;
+    }
 }//fin class Utilisateur
 ?>

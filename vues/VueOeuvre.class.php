@@ -144,6 +144,7 @@ class VueOeuvre extends Vue {
             $idOeuvreencours=$this->oeuvre["idOeuvre"];
 
             echo "<div class='infosOeuvre'>
+            <div id='bordureOeuvre'></div>
             <h4 class='h4InfosOeuvre' id='TitreOeuvre'>Titre: </h4>";
         echo  "<p>".$this->oeuvre['titre']."</p>"; 
             echo "<h4 class='h4InfosOeuvre'>Classement:</h4>";

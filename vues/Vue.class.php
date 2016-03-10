@@ -97,6 +97,7 @@ class Vue {
                     <img class="iconeRecherche" src="./images/flecheRecherche.png">
                 </div>
                 
+                
                 <div class="boutonRechercheMobile">
                     <img class="iconeRechercheMobile" src="./images/flecheRecherche.png">
                 </div>
