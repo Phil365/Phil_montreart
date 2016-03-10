@@ -625,6 +625,11 @@ $(document).ready(function(){
         $(".barreRechercheContenuMobile").slideToggle("medium");
     });
     
+    //SLIDE BARRE DE RECHERCHE MOBILE FLÈCHE
+    $(".flecheRechercheMobile").click(function(){
+        $(".barreRechercheContenuMobile").slideToggle("medium");
+    });
+    
     //SLIDE BARRE DE RECHERCHE
     $(".barreRecherche").hide();
     $(".boutonRecherche").click(function(){

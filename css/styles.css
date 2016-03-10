@@ -380,6 +380,8 @@ footer {
     width: 100%;
     height: auto;
     margin-bottom: 10px;
+    border: none;
+    
 }
 
 .infosOeuvre .boutonMoyenne {
@@ -1069,7 +1071,7 @@ textarea:focus {
 
 #form_itineraire,
 #contribuer_oeuvre {
-    padding: 10px 50px 30px 80px;
+    padding: 10px 50px 30px 60px;
     margin: 0 auto;
     font-family: 'Source Sans Pro', sans-serif;
     text-align: center;
@@ -1152,7 +1154,9 @@ label.star:before {
 /*========================================  FIN DU STYLES GENERAUX ====================================================*/
 
 
-/*========================================  STYLES POUR MOBILE ====================================================*/
+/*========================================  STYLES POUR MOBILE ========================================================*/
+
+
 
 header {
     position: fixed;
@@ -1206,7 +1210,7 @@ nav {
 
 .infosOeuvre {
     text-align: center;
-    margin-bottom: 60px;
+    height: 620px;
 }
 
 .ratingUtilisateur img {
@@ -1462,7 +1466,8 @@ nav {
 
 #backgroundOeuvreHead {
     background-color: rgba(179, 42, 66, 0.84);
-    height: 1080px;
+    height: 1200px;
+    margin-bottom: 30px;
 }
 
 #commentaireAjout {
@@ -1472,6 +1477,10 @@ nav {
 
 #texteCommP {
     margin-top: 0%;
+}
+
+div.stars {
+    margin-left: 11%;
 }
 
 /*======================================== Style recherche mobile ====================================================*/
@@ -1667,7 +1676,15 @@ div.stars {
 }
 
 #boutonAjouterCom {
-    margin-left: 20%;
+    margin-left: 21%;
+}
+
+#promoDesktop {
+    display: none;
+}
+
+.infosOeuvre {
+    width: 100%;   
 }
 
 /*------------ Classes générés dynamiquement sur chaque résultat de recherche----------------*/
@@ -1734,6 +1751,92 @@ div.stars {
 
 
 /*======================================== FIN DES STYLES POUR MOBILE ====================================================*/
+
+
+/*========================================  STYLES POUR IPHONE 5 =======================================================*/
+
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 568px)
+and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 40/71) and (orientation:portrait)
+{
+
+/*----Page Trajet-----*/    
+    
+#fin {
+    width: 180px;
+}
+    
+/*----Page Trajet-----*/ 
+    
+#form_itineraire input[type="submit"] {
+    margin-left: 24%;
+}
+    
+#boutonAjouterSoumission {
+    margin-left: 37%;
+}
+    
+    
+/*----Page gestion-----*/
+    
+.inputGestion, .selectGestion {
+    margin-left: 45px;
+    margin-right: 30px;
+}
+    
+.fileToUploadGestion {
+    margin-left: 46px;
+}
+    
+#btnAjoutOeuvre {
+    margin-left: 36%;
+}
+    
+#btnSupOeuvre {
+    margin-left: 31%;
+}
+    
+#btnSupCat {
+    margin-left: 31%;
+}
+
+/*-----Page oeuvre------*/
+
+#formPhotoUnique input[type="file"] {
+    width: 240px;
+    text-align: center;
+    font-size: 13px;
+    margin-left: 30px;
+}
+
+#commentaireAjout {
+    width: 257px;
+}
+    
+div.stars {
+    margin-left: 9%;
+}
+    
+#boutonAjouterCom {
+    margin-left: 16%;
+}
+    
+.infosOeuvre {
+    width: 97%;   
+}
+    
+#backgroundOeuvreHead {
+    height: 1150px;
+}
+    
+} 
+
+    
+
+
+
+/*======================================== FIN DES STYLES POUR IPHONE 5 ==================================================*/
+
 
 
 /*========================================  STYLES POUR TABLETTE 480 px ====================================================*/
@@ -1833,7 +1936,7 @@ div.stars {
     .boutonRecherche {
         float: right;
         background: #B32A42;
-        width: 60px;
+        width: 80px;
         height: 100%;
         position: relative;
         z-index: 5;
@@ -1843,9 +1946,9 @@ div.stars {
     .iconeRecherche {
         margin: 0 auto;
         position: absolute;
-        left: 8px;
+        left: 15px;
         top: 10%;
-        height: 40px;
+        height: 50px;
         display: block;
     }
     .flecheRecherche {
@@ -2020,7 +2123,7 @@ div.stars {
     }
     
     #btnSoumettrePhoto {
-    margin-left: 45%;
+    margin-left: 44%;
     }
     
     div.stars {
@@ -2075,7 +2178,7 @@ div.stars {
         width: 60%;
     }
     header {
-        background-image: url(../images/Banniere.png);
+        background-image: url(../images/banniereVecto.png);
         background-size: 100% 100%;
         height: 76px;
         width: 100%;
@@ -2196,7 +2299,7 @@ div.stars {
         top: 155px;
         right: 0;
         float: right;
-        border-left: 4px solid #70212F;
+        border-left: 6px solid #ffffff;
     }
     .description {
         display: block;
@@ -2230,7 +2333,7 @@ div.stars {
         width: 30px;
         height: 30px;
         position: absolute;
-        left: -17px;
+        left: -16px;
         top: 28px;
         transform: rotate(45deg);
         border-bottom-left-radius: 5px;
@@ -2238,7 +2341,7 @@ div.stars {
         border-bottom: solid 2px #70212F;
     }
     .iconeRecherche {
-        top: 28%;
+        top: 23%;
     }
     .ratingUtilisateur img {
         width: 8%;
@@ -2368,7 +2471,7 @@ div.stars {
         margin-left: 63%;
     }
     #backgroundOeuvreHead {
-        height: 580px;
+        height: 620px;
     }
     
     #descriptionTitreOeuvre {
@@ -2386,17 +2489,43 @@ div.stars {
     }
     
     div.stars {
-    margin-left: 37%;
+    margin-left: 33%;
     }
     
     #commentaireAjout {
-    width: 90%;
+    width: 50%;
     height: 150px;
-    margin: 0 auto;
+    margin-left: 25%;
     }
     
     #boutonAjouterCom {
-    margin-left: 40%;
+    margin-left: 38%;
+    }
+    
+    #descriptionAjoutSoumission {
+    width: 106%;
+    }
+    
+    .oeuvreVedette img {
+        margin-left: 10px;
+    }
+    
+    .pubAccueil {
+    height: auto;
+    width: 40%;
+    float: right;
+    position: absolute;
+    top: 68%;
+    left: 50%;
+    margin-left: 3%;
+    }
+    
+    #promoDesktop {
+    display: block;
+    }
+    
+    #aucunCommP {
+    margin-left: 5%;
     }
     
     #descriptionAjoutSoumission {
@@ -2507,7 +2636,8 @@ div.stars {
         margin-left: 30px;
     }
     .infosOeuvre {
-        top: 166px;
+    top: 166px;
+    height: 620px;
     }
     .description {
         top: 100px;
@@ -2585,11 +2715,11 @@ div.stars {
 
     
     #formPhotoUnique input[type="file"] {
-    margin-left: 37%;
+    margin-left: 36%;
     }
     
     #btnSoumettrePhoto {
-    margin-left: 47%;
+    margin-left: 44%;
     }
     
     #commentaireAjout {
@@ -2598,17 +2728,37 @@ div.stars {
     }
     
     .pubAccueil {
+<<<<<<< HEAD
+    top: 68%;
+=======
     height: auto;
     width: 40%;
     float: right;
     position: absolute;
     top: 69%;
+>>>>>>> MontreArt/master
     left: 50%;
     }
     
     .oeuvreVedette img {
     margin-left: 45px;
     }
+<<<<<<< HEAD
+    
+    #aucunCommP {
+    margin-left: 10%;
+    }
+    
+    div.stars {
+    margin-left: 36%;
+    }
+    
+    #boutonAjouterCom {
+    margin-left: 40%;
+    }
+    
+=======
+>>>>>>> MontreArt/master
 
 /*------------ Classes générés dynamiquement sur chaque résultat de recherche----------------*/
     
