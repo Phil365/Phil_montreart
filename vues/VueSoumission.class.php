@@ -109,7 +109,7 @@ class VueSoumission extends Vue {
                 <input type='text' class="inputSoumission" name='adresseAjout' id='adresseAjout' value="<?php echo $_POST["adresseAjout"]; ?>" placeholder="Adresse "/>
                 <br>  <span class="erreur" id="erreurAdresseOeuvre"><?php if (isset($this->msgErreurs["errAdresse"])) {echo $this->msgErreurs["errAdresse"];} ?></span><br>
 
-                <textarea name='descriptionAjout' class="inputSoumission" id='descriptionAjoutSoumission' placeholder="Description "><?php echo $_POST["descriptionAjout"]; ?></textarea>
+                <textarea name='descriptionAjout' class="inputSoumission descriptionAjoutSoumission" id='descriptionAjout' placeholder="Description "><?php echo $_POST["descriptionAjout"]; ?></textarea>
                 <br>  <span class="erreur" id="erreurDescription"><?php if (isset($this->msgErreurs["errDescription"])) {echo $this->msgErreurs["errDescription"];} ?></span><br>
 
                 <select name="selectArrondissement"  id="selectArrondissement" class="selectSoumission">
