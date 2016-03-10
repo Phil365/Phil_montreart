@@ -600,9 +600,9 @@ class Oeuvre {
     * @access public
     * @return array
     */
-	public function getAllOeuvres() 
-	{
-				
+    public function getAllOeuvres() 
+    {
+                
         $infoOeuvres = array();
         
         self::$database->query('SELECT * FROM Oeuvres ORDER BY titre');
@@ -613,7 +613,7 @@ class Oeuvre {
             }
         }
         return $infoOeuvres;
-	}
+    }
     
     /**
     * @brief Méthode qui cherche toutes les oeuvres.
@@ -807,15 +807,27 @@ class Oeuvre {
     * @return void
     */
     public function modifierOeuvre($idOeuvre, $titre, $adresse, $description, $categorie, $arrondissement, $langue) {
-  
+        $coords=array();
+        $base_url="http://maps.googleapis.com/maps/api/geocode/xml?";
+        $request_url = $base_url . "address=" . urlencode($adresse).'&sensor=false';
+        $xml = simplexml_load_file($request_url) or die("url not loading");
+        $coords['lat']=$coords['lon']='';
+        $coords['status'] = $xml->status ;
         $msgErreurs = $this->validerFormOeuvre($titre, $adresse, $description, $categorie, $arrondissement);//Validation des champs obligatoires.
-        
+        if($coords['status']=='OK')
+            {
+             $latitude = $xml->result->geometry->location->lat ;
+             $longitude = $xml->result->geometry->location->lng ;
+            }else{
+                    $latitude = null;
+                    $longitude = null;
+                }
         if (!empty($msgErreurs)) {
             return $msgErreurs;//Retourne le/les message(s) d'erreur de la validation.
         }
         else {
             try {
-                self::$database->query('UPDATE Oeuvres SET titre= :titre, adresse= :adresse, descriptionFR= :descriptionFR, descriptionEN= :descriptionEN, idCategorie= :idCategorie, idArrondissement= :idArrondissement WHERE idOeuvre = :idOeuvre');
+                self::$database->query('UPDATE Oeuvres SET titre= :titre, adresse= :adresse, descriptionFR= :descriptionFR, descriptionEN= :descriptionEN, idCategorie= :idCategorie, idArrondissement= :idArrondissement,  latitude= :latitude, longitude=:longitude WHERE idOeuvre = :idOeuvre');
 
                 if ($langue == "FR") {
                     self::$database->bind(':descriptionFR', $description);   
@@ -830,7 +842,8 @@ class Oeuvre {
                 self::$database->bind(':idCategorie', $categorie);
                 self::$database->bind(':idArrondissement', $arrondissement);
                 self::$database->bind(':idOeuvre', $idOeuvre);
-                
+                self::$database->bind(':latitude', $latitude);
+                self::$database->bind(':longitude', $longitude);
                 self::$database->execute();
             }
             catch(Exception $e) {
@@ -852,7 +865,20 @@ class Oeuvre {
     * @return void
     */
     public function modifierOeuvreSoumise($idOeuvre, $elementModif) {
-  
+        $coords=array();
+        $base_url="http://maps.googleapis.com/maps/api/geocode/xml?";
+        $request_url = $base_url . "address=" . urlencode($elementModif["adresse"]).'&sensor=false';
+        $xml = simplexml_load_file($request_url) or die("url not loading");
+        $coords['lat']=$coords['lon']='';
+        $coords['status'] = $xml->status ;
+               if($coords['status']=='OK')
+            {
+             $latitude = $xml->result->geometry->location->lat ;
+             $longitude = $xml->result->geometry->location->lng ;
+            }else{
+                    $latitude = null;
+                    $longitude = null;
+                }
         if ($idArtiste == "") {
             $idArtiste = null;
         }
@@ -871,8 +897,10 @@ class Oeuvre {
         }
         else if (isset($elementModif["adresse"])) {
             try {
-                self::$database->query('UPDATE Oeuvres SET adresse= :adresse WHERE idOeuvre = :idOeuvre');
-                self::$database->bind(':adresse', $elementModif["adresse"]);   
+                self::$database->query('UPDATE Oeuvres SET adresse= :adresse, latitude= :latitude, longitude= :longitude WHERE idOeuvre = :idOeuvre');
+                self::$database->bind(':adresse', $elementModif["adresse"]); 
+                self::$database->bind(':latitude', $latitude);
+                self::$database->bind(':longitude', $longitude);  
                 self::$database->bind(':idOeuvre', $idOeuvre); 
                 self::$database->execute();
             }
