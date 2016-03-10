@@ -1748,7 +1748,10 @@ div.stars {
        max-width: 200px;
     height: auto;
     }
-
+.nomGooglemap {
+  min-width: 40px !important;
+  min-height: 30px !important;
+}
 
 /*======================================== FIN DES STYLES POUR MOBILE ====================================================*/
 

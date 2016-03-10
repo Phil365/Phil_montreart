@@ -670,14 +670,13 @@ function googleMap () {
 
     $oeuvre = new Oeuvre();
     $infoOeuvre = $oeuvre->getAllOeuvresMap();
-    
     $urlOeuvre = "http://".$_SERVER['HTTP_HOST']."?r=oeuvre&o=";
 
     // ADD TO XML DOCUMENT NODE
     for ($i = 0; $i < count($infoOeuvre); $i++) {
         $node = $dom->createElement("marker");
         $newnode = $parnode->appendChild($node);
-        $newnode->setAttribute("name",$infoOeuvre[$i]["titre"]);
+        $newnode->setAttribute("name","<div class='nomGooglemap'>".$infoOeuvre[$i]["titre"]."</div>");
         //$newnode->setAttribute("address", $row['adresse']);
         $newnode->setAttribute("lat", $infoOeuvre[$i]["latitude"]);
         $newnode->setAttribute("lng", $infoOeuvre[$i]["longitude"]); 

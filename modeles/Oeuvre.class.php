@@ -620,12 +620,12 @@ class Oeuvre {
     * @access public
     * @return array
     */
-	public function getAllOeuvresMap() 
-	{
-				
+    public function getAllOeuvresMap() 
+    {
+                
         $infoOeuvres = array();
         
-        self::$database->query('SELECT * FROM Oeuvres where latitude IS NOT null and longitude IS NOT null');
+        self::$database->query('SELECT * FROM Oeuvres where latitude IS NOT null and longitude IS NOT null and authorise = true');
         
         if ($oeuvres = self::$database->resultset()) {
             foreach ($oeuvres as $oeuvre) {
@@ -633,7 +633,7 @@ class Oeuvre {
             }
         }
         return $infoOeuvres;
-	}
+    }
       /**
     * @brief fonction qui cherche et calcule les 9 oeuvres les plus proches en fonction de la localisation de l'utilisateur ou d'un point de depart initial.
     * @param float $center_lat la latitude du point de depart
@@ -712,6 +712,7 @@ class Oeuvre {
     * @access public
     * @return void
     */
+    //http://www.cylman.com/geocoder-une-adresse-en-php-obtenir-sa-latitude-et-sa-longitude_qr29.html
     public function ajouterOeuvre($titre, $adresse, $prenomArtiste, $nomArtiste, $description, $categorie, $arrondissement, $authorise, $langue) {
   
         if ($prenomArtiste == "") {
