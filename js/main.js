@@ -1307,7 +1307,6 @@ function validerLogin(){
     var erreurs = false;
     var msgErreur = "";
     var passEncrypte = "";
-    alert( document.formLogin.user.value );
     document.formLogin.user.style.border = "";
     document.formLogin.pass.style.border = "";
         
@@ -1344,7 +1343,7 @@ function validerLogin(){
                 else {
                     window.location.href = "?r=accueil";//Sinon, valeur par défaut.
                 }
-                console.log(resultat);
+//                console.log(resultat);
                 //--------------------------------------------------------------------------
             }
             else {//reponse === false

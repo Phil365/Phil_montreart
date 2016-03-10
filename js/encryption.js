@@ -284,9 +284,9 @@
 */
 function encrypter() {
 
-    var passwordEncrypte = md5(document.formLogin.passNouveau.value);
+    var passwordEncrypte = md5(document.formLogin.pass.value);
 //    console.log("pass md5 : ", passwordEncrypte);
-    var grainSel = document.formLoginNouveau.grainSelNouveau.value;
+    var grainSel = document.formLogin.grainSel.value;
 //    console.log("grain de sel : ", grainSel);
 
     //formule: md5(grainSel . md5(password))

@@ -176,8 +176,6 @@ class VueOeuvre extends Vue {
                 echo "<div class='ratingUtilisateur'><p><img src = 'images/etoiles_0.png'></div></p>";
                 echo "<p>Non-classé</p>";
             }
-            
-            echo "<div class='rating'></div>";
         
         echo "<h4 class='h4InfosOeuvre'>Artiste(s) : </h4><p>";
         foreach ($this->artistes as $artiste) {
