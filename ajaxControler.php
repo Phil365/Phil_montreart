@@ -127,6 +127,9 @@ switch ($_GET['rAjax']) {//requête
     case 'connexion':
         connexion();
         break;
+	 case 'connexionNouveau':
+        connexionNouveau();
+        break;
     case 'deconnexion':
         deconnexion();
         break;
@@ -891,7 +894,30 @@ function googleMapTrajet ($lat, $lng) {
 /* --------------------------------------------------------------------
 ================================LOGIN==================================
 -------------------------------------------------------------------- */
-
+/**
+* @brief Fonction qui authentifie une connexion usager nouveau
+* @access public
+* @author David Lachambre
+* @author Cristina Mahneke
+* @return void
+*/
+function  connexionNouveau(){
+	if (isset($_POST["passNouveau"]) && isset($_POST["userNouveau"])) {
+        
+        session_start();
+        $utilisateur = new Utilisateur();
+        if($utilisateur = $utilisateur->connexionUtilisateur($_POST["userNouveau"], $_POST["passNouveau"])) {
+            
+            $_SESSION["idUsager"] = $utilisateur["idUtilisateur"];
+            $_SESSION["nomUsager"] = $utilisateur["nomUsager"];
+            $_SESSION["admin"] = $utilisateur["administrateur"];
+            echo true;
+        }
+        else {
+            echo false;
+        }
+    }
+}
 /**
 * @brief Fonction qui authentifie une connexion usager
 * @access public

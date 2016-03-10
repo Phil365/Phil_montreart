@@ -57,8 +57,8 @@ class Vue {
       
         <!-- JAVASCRIPT -->
         <script src="./js/plugins.js"></script>
-		<script src="./js/main.js"></script>
 		<script src="./js/encryption.js"></script>
+		<script src="./js/main.js"></script>
 	</head>
     <?php
                         

@@ -284,11 +284,26 @@
 */
 function encrypter() {
 
-    var passwordEncrypte = md5(document.formLogin.pass.value);
+    var passwordEncrypte = md5(document.formLogin.passNouveau.value);
 //    console.log("pass md5 : ", passwordEncrypte);
-    var grainSel = document.formLogin.grainSel.value;
+    var grainSel = document.formLoginNouveau.grainSelNouveau.value;
 //    console.log("grain de sel : ", grainSel);
 
+    //formule: md5(grainSel . md5(password))
+    var passwordEncryptePlusGrainSel = md5(grainSel + passwordEncrypte);
+    return passwordEncryptePlusGrainSel;
+}
+
+/**
+* @brief Fonction pour encrypter le mot de passe côté client
+* @access public
+* @author David Lachambre
+* @author Cristina Mahneke
+* @return string
+*/
+function encrypterNouveauLogin(pass, grainSel) {
+    var passwordEncrypte = md5(pass);
+    
     //formule: md5(grainSel . md5(password))
     var passwordEncryptePlusGrainSel = md5(grainSel + passwordEncrypte);
     return passwordEncryptePlusGrainSel;

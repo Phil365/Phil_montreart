@@ -1266,6 +1266,30 @@ function validerFormAjoutUtilisateur(){
     document.getElementById("msg").innerHTML = msg;
     return (!erreurs);
 }
+/**
+* @brief methode qui commence une session pour le nouveau utilisateur, ensuite de s'enregistrer, lui envoie a sa page profil
+* @access public
+* @author Cristina Mahneke
+*/
+function loginNouveauUsager(user, pass, grainSel){
+    
+       passEncrypte = encrypterNouveauLogin(pass, grainSel);
+      
+        $.post('ajaxControler.php?rAjax=connexionNouveau', {passNouveau:passEncrypte, userNouveau:user}, 
+            function(reponse){
+            
+            if (reponse) {//reponse === true
+                console.log("utilisateur authentifié");
+                
+                window.location.href = "?r=profil";//Sinon, valeur par défaut.
+                //--------------------------------------------------------------------------
+            }
+            else {//reponse === false
+                console.log("erreur user/pass");
+               
+            }
+        });
+}
 
 /**
 * @brief Fonction de validation du login
@@ -1278,7 +1302,7 @@ function validerLogin(){
     var erreurs = false;
     var msgErreur = "";
     var passEncrypte = "";
-    
+    alert( document.formLogin.user.value );
     document.formLogin.user.style.border = "";
     document.formLogin.pass.style.border = "";
         
@@ -1297,7 +1321,7 @@ function validerLogin(){
 
         passEncrypte = encrypter();
 //        console.log("pass md5 + grain de sel : ", passEncrypte);
-        $.post('ajaxControler.php?rAjax=connexion', {pass: passEncrypte, user:document.formLogin.user.value}, 
+        $.post('ajaxControler.php?rAjax=connexion', {pass:passEncrypte, user:document.formLogin.user.value}, 
             function(reponse){
             
             if (reponse) {//reponse === true
@@ -1306,10 +1330,10 @@ function validerLogin(){
                 //--------------------------------------------------------------------------
                 //Code pour renvoyer l'usager sur la page actuelle, en éliminant les paramètres $_POST et $_GET inutiles, ce qui n'est pas possible avec "location.reload".
                 //--------------------------------------------------------------------------
-                var urlActuel = new RegExp("(\\?r=oeuvre&o=[0-9]+|\\?r=accueil|\\?r=trajet|\\?r=soumission|\\?r=devenir_membre)", "i");//Pages pouvant être trouvées.
+                var urlActuel = new RegExp("(\\?r=oeuvre&o=[0-9]+|\\?r=accueil|\\?r=trajet|\\?r=soumission)", "i");//Pages pouvant être trouvées.
                 var resultat = urlActuel.exec(document.URL);//Cherche le lien de la page actuelle dans l'url.
                 
-                if (resultat) {
+               if (resultat) {
                     window.location.href = resultat[1];//Si trouvé, renvoyer l'usager sur la page actuelle.
                 }
                 else {
@@ -1334,7 +1358,7 @@ function validerLogin(){
 * @return boolean
 */
 
-/*function validerFormTrajet(){
+function validerFormTrajet(){
     var erreurs = false;
     
     document.getElementById("erreurDepart").innerHTML = "";
@@ -1354,10 +1378,8 @@ function validerLogin(){
         document.getElementById("erreurDestination").innerHTML = "Veuillez choisir vos arrêts intermédiaires";
         erreurs = true;
     }
-    if (!erreurs) {
-        
-    }
-}*/
+    return erreurs;
+}
 /**
 * @brief Fonction qui déconnecte l'usager du site
 * @access public
@@ -1535,17 +1557,31 @@ function afficherFormModif() {
 * @return void
 */
 function initMapTrajet() {
+     
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 11,
         center: new google.maps.LatLng(45.512090, -73.550979),
-        mapTypeId: 'roadmap'
+        mapTypeId: 'roadmap',
+        
     });
     directionsDisplay.setMap(map);
+    
         document.getElementById('envoyerTrajetBouton').addEventListener('click', function() {
-        calculateAndDisplayRoute(directionsService, directionsDisplay);
+            
+            document.getElementById("erreurPasTrouve").innerHTML ="";
+            document.getElementById("erreurDepart").innerHTML = "";
+            document.getElementById("erreurDestination").selectedIndex = "";
+            document.getElementById("erreurWaypoints").selectedIndex = "";
+           
+            
+            calculateAndDisplayRoute(directionsService, directionsDisplay);
   });
+        
+             
+        
+        
     var infoWindow = new google.maps.InfoWindow();
      var image = {
     url: 'images/User_icon_BLACK-01.png',
@@ -1591,10 +1627,15 @@ function initMapTrajet() {
             var point = new google.maps.LatLng(
             parseFloat(markers[i].getAttribute("lat")),
             parseFloat(markers[i].getAttribute("lng")));
+            var image = {
+                url: 'images/punaiseMontreart.png',
+                scaledSize: new google.maps.Size(30, 30), // scaled size
+            };
             var html = "<span>" + name + "</span>";
             var marker = new google.maps.Marker({
                 map: map,
                 position: point,
+                icon: image        
             });
             bindInfoWindow(marker, map, infoWindow, html);
         }
@@ -1607,6 +1648,7 @@ function initMapTrajet() {
 * @return void
 */
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+   
   var waypts = [];
   var checkboxArray = document.getElementById('waypoints');
   for (var i = 0; i < checkboxArray.length; i++) {
@@ -1625,7 +1667,8 @@ var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
     destination: selectedOptFin,
     waypoints: waypts,
     optimizeWaypoints: true,
-    travelMode: google.maps.TravelMode.WALKING
+    travelMode: google.maps.TravelMode.WALKING,
+    language: 'fr'
   }, function(response, status) {
     if (status === google.maps.DirectionsStatus.OK) {
       directionsDisplay.setDirections(response);
@@ -1642,7 +1685,25 @@ var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
         summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
       }
     } else {
-      window.alert('Requête de Google Directions à échoué ' + status);
+       
+        
+             document.getElementById("erreurPasTrouve").innerHTML = "Google n'a pas trouvé votre route. Assurez-vous de bien remplir tous les champs";
+                
+            if (document.getElementById("depart").value.trim() == "") {
+                document.getElementById("erreurDepart").innerHTML = "Veuillez entrer votre adresse ou localisation";
+                
+            }
+          
+            if (document.getElementById("fin").selectedIndex == "0") {
+               
+                document.getElementById("erreurDestination").innerHTML = "Veuillez choisir une destination";
+                
+            }
+            if (document.getElementById("waypoints").selectedIndex == "-1") {
+                document.getElementById("erreurWaypoints").innerHTML = "Veuillez choisir vos arrêts intermédiaires";
+               
+            }
+             console.log(status);
     }
   });
 }
@@ -1809,9 +1870,14 @@ function initMap() {
             var point = new google.maps.LatLng(
             parseFloat(markers[i].getAttribute("lat")),
             parseFloat(markers[i].getAttribute("lng")));
+            var image = {
+                url: 'images/punaiseMontreart.png',
+                scaledSize: new google.maps.Size(30, 30), // scaled size
+            };
             var html = "<a href='" + url + "'>" + name + "</a>";
             var marker = new google.maps.Marker({
-                position: point
+                position: point,
+                icon: image 
             });   marker.setMap(map); 
             ClusterMap.push(marker);   
             bindInfoWindow(marker, map, infoWindow, html);
@@ -1968,6 +2034,8 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                         'Error: The Geolocation service failed.' :
                         'Error: Your browser doesn\'t support geolocation.');
 }
+
+//-----fonction bidon----------
 function doNothing() {}
 
 //fonction pour monter le formulaire login
