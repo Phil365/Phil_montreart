@@ -92,6 +92,7 @@ class Vue {
                     </form>
                 </div>
             </div>
+            </div>
             <div class="boutonRecherche">
                 <div class="flecheRecherche"></div>
                 <img class="iconeRecherche" src="./images/flecheRecherche.png">
