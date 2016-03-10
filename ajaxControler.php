@@ -370,7 +370,7 @@ function afficherFormModif () {
 
                 <br><span class="erreur" id="erreurSelectCategorieModif"></span>
 
-                <br><input class="boutonMoyenne  boutonHover" type='submit' name='boutonModifOeuvre' value='Modifer'>
+                <br><input class="boutonMoyenne  boutonHover" id='btnModCat' type='submit' name='boutonModifOeuvre' value='Modifer'>
             </form>
         <?php
     }

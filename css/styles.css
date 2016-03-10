@@ -2674,9 +2674,6 @@ div.stars {
     .selectGestion {
         width: 67%;
     }
-    .boutonsGestion {
-        margin-left: 45%;
-    }
     #btnAjoutOeuvre {
         margin-left: 46%;
     }
@@ -2690,7 +2687,7 @@ div.stars {
         margin-left: 46%;
     }
     #btnSupCat {
-        margin-left: 45%;
+        margin-left: 44%;
     }
     
     .inputSoumission {
