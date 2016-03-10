@@ -2111,7 +2111,7 @@ function afficherOeuvrePourApprobation(idOeuvre) {
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
-        contenu += "<h2>L'oeuvre <a target = '_blank' href='?r=oeuvreSoumise&o=" + oeuvre.idOeuvre + "'>" + oeuvre.titre + "</a></h2>";
+        contenu += "<h2>L'oeuvre <a target = '_blank' href='?r=oeuvre&o=" + oeuvre.idOeuvre + "&approbation=true'>" + oeuvre.titre + "</a></h2>";
         contenu += "<input type='hidden' id='idOeuvreSoumise' value='" + oeuvre.idOeuvre + "'>";
         contenu += "<input type='hidden' id='idCategorieSoumise' value='" + oeuvre.idCategorie + "'>";
         contenu += "<input type='hidden' id='idArrondissementSoumis' value='" + oeuvre.idArrondissement + "'>";
@@ -2155,7 +2155,7 @@ function afficherPhotoPourApprobation(idPhoto) {
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
-        contenu += "<h2>Photo pour l'oeuvre <a target = '_blank' href='?r=oeuvreSoumise&o=" + photo.idOeuvre + "'>" + photo.titre + "</a></h2>";
+        contenu += "<h2>Photo pour l'oeuvre <a target = '_blank' href='?r=oeuvre&o=" + photo.idOeuvre + "&approbation=true'>" + photo.titre + "</a></h2>";
         contenu += "<img src='../" + photo.image + "' alt='" + alt + "'><br>";
         contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + photo.idPhoto + ")'>";
         contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + photo.idPhoto + ")'>";
@@ -2185,7 +2185,7 @@ function afficherCommentairePourApprobation(idCommentaire) {
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
-        contenu += "<h2>Commentaire pour l'oeuvre <a target = '_blank' href='?r=oeuvreSoumise&o=" + commentaire.idOeuvre + "'>" + commentaire.titre + "</a></h2>";
+        contenu += "<h2>Commentaire pour l'oeuvre <a target = '_blank' href='?r=oeuvre&o=" + commentaire.idOeuvre + "&approbation=true'>" + commentaire.titre + "</a></h2>";
         contenu += "<input type='hidden' id='idCommentaireSoumis' value='" + commentaire.idCommentaire + "'>";
         contenu += "<p id='commentaireAffichageSoumission'>" + commentaire.texteCommentaire + "</p>";
         contenu += "<p>Langue d'origine : <span style='color:green' id='langueCommentaireModif'>" + commentaire.langueCommentaire + "</span></p>";

@@ -164,8 +164,7 @@ class Photo {
         if($photoBDD = self::$database->uneLigne()){
             $infoPhoto = $photoBDD;
         }
-//        return $infoPhoto;        
-        return $idOeuvre;        
+        return $infoPhoto;     
     }
     
     /**
@@ -177,7 +176,7 @@ class Photo {
         
         $infoPhoto = array();
 
-        self::$database->query('SELECT Photos.image FROM photos  WHERE Photos.idOeuvre = :idOeuvre');
+        self::$database->query('SELECT Photos.image FROM photos WHERE Photos.idOeuvre = :idOeuvre');
         self::$database->bind(':idOeuvre', $idOeuvre);
 
         if($photoBDD = self::$database->uneLigne()){

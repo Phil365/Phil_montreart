@@ -203,7 +203,12 @@ class Controler {
     private function oeuvre() {
         
         $oeuvre = new Oeuvre();
-        $oeuvreAffichee = $oeuvre->getOeuvreById($_GET["o"]);
+        if (isset($_GET["approbation"])) {
+            $oeuvreAffichee = $oeuvre->getAnyOeuvreById($_GET["o"]);
+        }
+        else {
+            $oeuvreAffichee = $oeuvre->getOeuvreById($_GET["o"]);
+        }
         
         $commentaire = new Commentaire();
         $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);

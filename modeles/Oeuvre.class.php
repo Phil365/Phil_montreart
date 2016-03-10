@@ -605,7 +605,7 @@ class Oeuvre {
     }
     
     /**
-    * @brief Méthode qui cherche toutes les oeuvres avec une longitude et une latitude pour la Google Map.
+    * @brief Méthode qui cherche toutes les oeuvres authorisées ou non.
     * @access public
     * @return array
     */
