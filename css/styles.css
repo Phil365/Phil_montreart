@@ -1433,11 +1433,11 @@ nav {
     width: 103%;
 }
 
-#descriptionAjout {
+.descriptionAjout {
     width: 69%;
 }
 
-#descriptionAjoutSoumission {
+.descriptionAjoutSoumission {
     width: 69%;
     height: 50px;
 }
@@ -2098,7 +2098,7 @@ div.stars {
     #btnSupCat {
         margin-left: 42%;
     }
-    #descriptionAjout {
+    .descriptionAjout {
         width: 67%;
     }
     .inputSoumission {
@@ -2139,7 +2139,7 @@ div.stars {
     margin-left: 35%;
     }
     
-    #descriptionAjoutSoumission {
+    .descriptionAjoutSoumission {
     width: 67%;
     }
 }
@@ -2502,7 +2502,7 @@ div.stars {
     margin-left: 38%;
     }
     
-    #descriptionAjoutSoumission {
+    .descriptionAjoutSoumission {
     width: 106%;
     }
     
@@ -2527,10 +2527,7 @@ div.stars {
     #aucunCommP {
     margin-left: 5%;
     }
-    
-    #descriptionAjoutSoumission {
-    width: 106%;
-    }
+
     
     .oeuvreVedette img {
         margin-left: 5px;
@@ -2709,7 +2706,7 @@ div.stars {
         width: 103%;
     }
     
-    #descriptionAjoutSoumission {
+    .descriptionAjoutSoumission {
     width: 106%;
     }
 
