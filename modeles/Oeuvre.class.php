@@ -720,10 +720,26 @@ class Oeuvre {
         if ($nomArtiste == "") {
             $nomArtiste = null;
         }
+        
         $msgErreurs = array();//Validation des champs obligatoires.
         $idArtistes = array();
+        //pour transformer les adresses en géolocalisation
+        $coords=array();
+        $base_url="http://maps.googleapis.com/maps/api/geocode/xml?";
+        $request_url = $base_url . "address=" . urlencode($adresse).'&sensor=false';
+        $xml = simplexml_load_file($request_url) or die("url not loading");
+        $coords['lat']=$coords['lon']='';
+        $coords['status'] = $xml->status ;
         $msgErreurs = $this->validerFormOeuvre($titre, $adresse, $description, $categorie, $arrondissement);//Validation des champs obligatoires.
-        
+        if($coords['status']=='OK')
+            {
+             $latitude = $xml->result->geometry->location->lat ;
+             $longitude = $xml->result->geometry->location->lng ;
+            }else{
+                    $latitude = null;
+                    $longitude = null;
+                }
+        //fin
         if (!empty($msgErreurs)) {
             return $msgErreurs;//Retourne le/les message(s) d'erreur de la validation.
         }
@@ -739,7 +755,7 @@ class Oeuvre {
                 }
                 $idArtistes[] = $idArtisteAjoute;
 
-                self::$database->query('INSERT INTO Oeuvres ( titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCategorie, idArrondissement, dateSoumissionOeuvre) VALUES (:titre, null, null, null, null, null, :adresse, :descriptionFR, :descriptionEN, :authorise, :idCategorie, :idArrondissement, CURDATE())');
+                self::$database->query('INSERT INTO Oeuvres ( titre, noInterneMtl, latitude, longitude, parc, batiment, adresse, descriptionFR, descriptionEN, authorise, idCategorie, idArrondissement, dateSoumissionOeuvre) VALUES (:titre, null, :latitude, :longitude, null, null, :adresse, :descriptionFR, :descriptionEN, :authorise, :idCategorie, :idArrondissement, CURDATE())');
 
                 if ($langue == "FR") {
                     self::$database->bind(':descriptionFR', $description);
@@ -754,6 +770,8 @@ class Oeuvre {
                 self::$database->bind(':adresse', $adresse);       
                 self::$database->bind(':idCategorie', $categorie);
                 self::$database->bind(':idArrondissement', $arrondissement);
+                self::$database->bind(':latitude', $latitude);
+                self::$database->bind(':longitude', $longitude);
                 self::$database->execute();
             
                 $idOeuvre = $this->getIdOeuvreByTitreandAdresse($titre, $adresse);//aller chercher id oeuvre insérée
@@ -767,7 +785,7 @@ class Oeuvre {
                     if ($msgInsertPhoto != "" && $_FILES["fileToUpload"]["error"] != 4) {
                         $msgErreurs["errPhoto"] = $msgInsertPhoto;
                     }
-                }
+                }                
             }
             catch(Exception $e) {
                 $msgErreurs["errRequeteAjout"] = $e->getMessage();
