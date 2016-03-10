@@ -1,6 +1,7 @@
 Barre de recherche centralisée
 
 
+
 But:
 
 Cette fonctionnalité permet de rechercher une œuvre en particulier dans la base de données à l’aide d’un type précis de recherche et selon l’information que l’utilisateur possède en main. 
@@ -165,6 +166,20 @@ Pour se connecter au site, il faut appuyer sur l’onglet « se connecter » dans la
 
 Modifier une soumission utilisateur
 
+
+Il est possible de modifier une soumission dâ€™Å“uvre ou de commentaire directement dans lâ€™onglet Â«Â Approuver les soumissionsÂ Â» de la page gestion. Pour y parvenir, vous devez dâ€™abord sÃ©lectionner une Å“uvre ou un commentaire en particulier sous lâ€™onglet correspondant. Une fenÃªtre affiche alors les informations soumises. Pour modifier un champ, cliquez se le texte. Vous pourrez alors canceller le changement en appuyant sur le bouton Â«Â XÂ Â» ou confirmer le changement en appuyant sur le bouton Â«Â OKÂ Â». Toutes les informations peuvent Ãªtre modifiÃ©es. Les champs Â«Â titreÂ Â» et Â«Â adresseÂ Â» ne peuvent Ãªtre laissÃ©s vides. Lâ€™adresse doit commencer par un numÃ©ro civique, suivi dâ€™un espace et du nom de la rue. Le commentaire ne peut Ãªtre vide. Lâ€™artiste ne peut avoir un prÃ©nom sans nom, mais les deux champs (prÃ©nom et nom) peuvent Ãªtre vides. Si ces particularitÃ©s ne sont pas respectÃ©es, il sera impossible de confirmer le changement et une bordure rouge indiquera lâ€™emplacement de lâ€™erreur Ã  corriger.
+
+
+-------------------------------------------------------------------------------
+Section Oeuvre en Vedette Page Accueil
+
+Cette section montre une image d'une des oeuvres les plus populaires. Les oeuvres les plus populaires sont calculÃ©s a partir des votes (etoiles) donnÃ©s par les usagers. Une oeuvre doit avoir une moyenne de au moins 4 etoiles pour figurer comme oeuvre vedette. L'image montrÃ© contienne aussi une lÃ©gende avec son titre et une lien de faÃ§on qu'en cliquant sur l'image l'utilisateur est ammenÃ© Ã  la page de l'oeuvre en question.
+
+--------------------------------------------------------------------------------
+Fonction de classement d'un oeuvre
+
+Sur la page de chaque oeuvre, sous la section qui donne les informations de l'oeuvre il existe une une sous-titre de classement qui montre le nombre des Ã©toiles donnÃ©s par les utilisateurs. Le nombre des Ã©toiles montrÃ© rÃ©present la moyenne de classement donnÃ© par les utlisateurs. Si l'oeuvre n'a pas encore reÃ§u de votes/commentaires, les 5 Ã©toiles apparaitront vides.
+
 Il est possible de modifier une soumission d’œuvre ou de commentaire directement dans l’onglet « Approuver les soumissions » de la page gestion. Pour y parvenir, vous devez d’abord sélectionner une œuvre ou un commentaire en particulier sous l’onglet correspondant. Une fenêtre affiche alors les informations soumises. Pour modifier un champ, cliquez se le texte. Vous pourrez alors canceller le changement en appuyant sur le bouton « X » ou confirmer le changement en appuyant sur le bouton « OK ». Toutes les informations peuvent être modifiées. Les champs « titre » et « adresse » ne peuvent être laissés vides. L’adresse doit commencer par un numéro civique, suivi d’un espace et du nom de la rue. Le commentaire ne peut être vide. L’artiste ne peut avoir un prénom sans nom, mais les deux champs (prénom et nom) peuvent être vides. Si ces particularités ne sont pas respectées, il sera impossible de confirmer le changement et une bordure rouge indiquera l’emplacement de l’erreur à corriger.
 
 -------------------------------------------------------------------------
@@ -172,3 +187,4 @@ Il est possible de modifier une soumission d’œuvre ou de commentaire directement
 Modifier Profil Utilisateur
 
 Il est possible de modifier le profil d'un utilisateur directement dans l'onglet «Profil». Pour y parvenir, vous devez être connecter. Ensuite l'onglet profila apparait. Pour modifier les descriptions ou la photo de profil, vous devez cliquer sur le bouton modifier apparait. Ensuite vous pouvez faire accepter en bas de la page. Il y a aussi un onglet qui dit le nombre d'oeuvre visité et le nombre de points associé.
+

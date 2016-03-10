@@ -172,6 +172,8 @@ class VueOeuvre extends Vue {
                         }
                  echo "<div class='ratingUtilisateur'><p><img src = 'images/$imgVote'></div></p>";
             }else{
+                
+                echo "<div class='ratingUtilisateur'><p><img src = 'images/etoiles_0.png'></div></p>";
                 echo "<p>Non-classé</p>";
             }
             
