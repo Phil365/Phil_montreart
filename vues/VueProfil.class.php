@@ -29,6 +29,11 @@ class VueProfil extends Vue {
     * @access private
     */
     private $profilUtilisateur;
+    /**
+    * @var array $oeuvreVisiter qui dit les oeuvres visiter
+    * @access private
+    */
+    private $oeuvreVisiter;
     
     function __construct() {
         $this->titrePage = "MontréArt - Profil";
@@ -40,11 +45,12 @@ class VueProfil extends Vue {
     * @access public
     * @return void
     */
-    public function setData($nbrOeuvreVisite,$profilUtilisateur,$informationsAModifier,$msgErreurs) {
+    public function setData($nbrOeuvreVisite,$profilUtilisateur,$informationsAModifier,$msgErreurs,$oeuvreVisiter) {
         $this->nbrOeuvreVisite = $nbrOeuvreVisite;
         $this->profilUtilisateur = $profilUtilisateur;
         $this->informationsAModifier = $informationsAModifier;
         $this->msgErreurs = $msgErreurs;
+        $this->oeuvreVisiter = $oeuvreVisiter;
     }
     
     /**
@@ -86,7 +92,7 @@ class VueProfil extends Vue {
             <!-- Espace de l'utilisateur -->
         
             
-        <div class="section1" id="profileUser">
+        <div class="profileUser" id="">
             <h3>NomUser</h3>
             <p><?php echo $this->profilUtilisateur['nomUsager']; ?></p>
             <h3>Photo de profil</h3>
@@ -104,15 +110,22 @@ class VueProfil extends Vue {
                
             </p>
             <h3>Bio</h3>
-            <p><?php echo $this->profilUtilisateur['descriptionProfil']; ?></p>
-            <p> Oeuvres Visités  <?php echo $this->nbrOeuvreVisite['COUNT(*)']; ?></p>
-            <p>nombres de points: <?php echo (5*$this->nbrOeuvreVisite['COUNT(*)']); ?></p>
-            <a id ="lienGestion4" class="boutonMoyenne boutonsLiens boutonHover" href="#">Modifier informations</a>
-<!--    
-            <a href="contribuerArticle.php" ><h3>Contribuer article</h3></a>
-                
-            <a href="#" onclick="montrer_form()"><h3>Gérer mon profil</h3></a>
--->
+            <h4>Description du profil: </h4>
+            <?php echo "<div class='profileUserBio'>".$this->profilUtilisateur['descriptionProfil']."</div>"; ?>
+            <h4>Quantité d'oeuvres Visités</h4> 
+            <?php echo "<p>".$this->nbrOeuvreVisite['COUNT(*)']."</p>"; ?>
+            <h4>Nombres de points:</h4>
+            <?php echo "<p>".(5*$this->nbrOeuvreVisite['COUNT(*)'])."</p>"; ?>
+             <h4>Nom des oeuvres Visités:</h4>
+            <?php 
+            for ($i = 0; $i < count($this->oeuvreVisiter); $i++)
+                {    
+                echo "<p>".$this->oeuvreVisiter[$i]["titre"]."</p>";
+                echo "<p><a class='pourEnSavoirPlusProfil' href=http://".$_SERVER['HTTP_HOST']."?r=oeuvre&o=".$this->oeuvreVisiter[$i]["idOeuvre"]."'>Pour en savoir plus...</a>"."</p>";
+                }
+            ?>
+            <a id ="lienGestion4" class="boutonMoyenne boutonsLiens boutonHover" href="javascript:;">Modifier informations</a>
+            
         </div>
         
                <!-- ----- MODIFICATION Utilisateur ------- -->
@@ -160,44 +173,6 @@ class VueProfil extends Vue {
         
        
         
-
-<!--
-        <div id="div_bgform">
-            <div id="div_form">
-
-                <form action="#" id="form_profil" method="post" name="form_profil">
-                    <button id="fermer" onclick ="fermer()">X</button>
--->
-
-<!--
-
-                    <h3>Actualiser ma photo</h3>
-                       
-
-                        <div id="ImageProfile">image du user</div>
-
-                        <h3>À propos de moi:</h3>
-                        <textarea rows="10" cols="20"></textarea>
-
-                        <h3>Nom usager:</h3>
-                        <input type="nomUsager" name="nomUsager" value="">
-
-                        <h3>Mot de passe:</h3>
-                        <input type="motPasse" name="motPasse" value="">
-
-                        <h3>Mot de passe répété:</h3>
-                        <input type="motPasse" name="motPasse" value="">
-
-                        <h3>Mon courriel:</h3>
-                        <input type="courriel" name="courriel" value="">        
-
-                     <input class="boutonMoyenne" type='submit' name='boutonAjoutUtilisateur' value='Envoyer'>
--->
-<!--
-                </form>
-            </div>
-        </div>
--->
 <?php
         }     
     }

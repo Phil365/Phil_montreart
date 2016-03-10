@@ -1766,12 +1766,13 @@ function autoCompleteMobile(rechercheVoulue, nomServeur)
 * @return void
 */
 function initMap() {
-
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 11,
+      var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 14,
         center: new google.maps.LatLng(45.512090, -73.550979),
         mapTypeId: 'roadmap'
+         
     });
+  
     var infoWindow = new google.maps.InfoWindow();
     var image = {
     url: 'images/User_icon_BLACK-01.png',
@@ -1782,6 +1783,14 @@ function initMap() {
         icon: image,        
         title:"Un MontréArtlais"
         }); 
+    var positionTimer = navigator.geolocation.getCurrentPosition(
+                function (position) {
+                  map.panTo(new google.maps.LatLng(
+                    position.coords.latitude,
+                    position.coords.longitude
+                ));
+                    map.setZoom(15);
+                });
     // Try HTML5 geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.watchPosition(function(position) {
@@ -1791,15 +1800,16 @@ function initMap() {
       }; 
         Lemarker.setPosition(pos); // Marqueur de la geolocalisation
         trouveMarqueurPlusPres(position.coords.latitude, position.coords.longitude); // fonction 
-      map.setCenter(pos);
-        map.setZoom(14);
+       // map.setCenter(pos);
+        // map.setZoom(14);
+        //map.panTo(pos);
     }, function() {
       handleLocationError(true, infoWindow, map.getCenter());
     },{enableHighAccuracy: true, maximumAge: 100, timeout: 60000 });
   } else {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
-  } 
+  }  
     downloadUrl("ajaxControler.php?rAjax=googleMap", function(data) {
         var markerArray='';
         var mcOptions = {gridSize: 50, maxZoom: 15};
@@ -1822,7 +1832,7 @@ function initMap() {
             bindInfoWindow(marker, map, infoWindow, html);
          
         }var markerCluster = new MarkerClusterer(map, ClusterMap,mcOptions);
-    });
+    });  
 }
 
 /**

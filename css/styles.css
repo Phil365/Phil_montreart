@@ -484,6 +484,19 @@ footer {
     background-color: #70212F;
 }
 
+.pourEnSavoirPlusProfil {
+    margin-top: 50px;
+    color: #ffffff;
+    padding: 5px;
+    background-color: #659CEF;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.pourEnSavoirPlusProfil:hover {
+    background-color: #70212F;
+}
+
 #sponsorsTrajet {
     width: 100%;
     height: 300px;
@@ -974,9 +987,7 @@ textarea:focus {
     list-style: circle;
     line-height: 1.6em;
 }
-.imageProfile {
-    width: 100px;
-}
+
 #div_bgform,
 #bgPanneauApprobation {
     width: 100%;
@@ -1139,7 +1150,6 @@ label.star:before {
     content: '\f006';
     font-family: FontAwesome;
 }
-
 
 /*========================================  FIN DU STYLES GENERAUX ====================================================*/
 
@@ -1724,6 +1734,20 @@ div.stars {
     margin-left: 2%;
     }
 /*------------ Fin des classes générés dynamiquement sur chaque résultat de recherche----------------*/
+    .profileUser {
+  text-align: center;
+
+    }
+    .profileUserBio  {
+         text-align: justify;
+  margin: 0 auto;
+  width: 30em;
+          max-width: 80%;
+    }
+    .profileUser img{
+       max-width: 200px;
+    height: auto;
+    }
 
 
 /*======================================== FIN DES STYLES POUR MOBILE ====================================================*/
@@ -2504,6 +2528,14 @@ div.stars {
     margin-left: 5%;
     }
     
+    #descriptionAjoutSoumission {
+    width: 106%;
+    }
+    
+    .oeuvreVedette img {
+        margin-left: 5px;
+    }
+    
     /*------------- PAGE ADMIN 800px ET+ -----------------------*/
     .premiereColonne {
         width: 58%;
@@ -2696,13 +2728,22 @@ div.stars {
     }
     
     .pubAccueil {
+<<<<<<< HEAD
     top: 68%;
+=======
+    height: auto;
+    width: 40%;
+    float: right;
+    position: absolute;
+    top: 69%;
+>>>>>>> MontreArt/master
     left: 50%;
     }
     
     .oeuvreVedette img {
     margin-left: 45px;
     }
+<<<<<<< HEAD
     
     #aucunCommP {
     margin-left: 10%;
@@ -2716,6 +2757,8 @@ div.stars {
     margin-left: 40%;
     }
     
+=======
+>>>>>>> MontreArt/master
 
 /*------------ Classes générés dynamiquement sur chaque résultat de recherche----------------*/
     
