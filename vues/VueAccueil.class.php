@@ -55,7 +55,8 @@ Bienvenue sur le site de Montréart, où les oeuvres publiques les plus fantasti
            ?>
 
     <div class="pubAccueil">
-        <img src="images/Promo.png">
+        <img src="images/Promo.png" id="promoMobile">
+        <img src="images/promoDesktop.png" id="promoDesktop">
     </div>
     <?php
     }
