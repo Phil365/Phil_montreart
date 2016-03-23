@@ -49,6 +49,11 @@ class VueDevenirMembre extends Vue {
     * @return void
     */
     public function afficherBody() {
+        
+        if (isset($_SESSION["idUsager"])) {
+            echo "<p class='msgAccesNonAuthorise'>Vous êtes déjà un membre enregistré</p>";
+        }
+        else {
          //Si l'ajout est complété avec succès...
         if (isset($_POST["boutonAjoutUtilisateur"]) && $this->msgErreurs == null) {
             
@@ -130,6 +135,7 @@ class VueDevenirMembre extends Vue {
         <span class="erreur"></span>
         <span id="msg"><?PHP echo $msgAjout; ?></span>
     </div>
-  <?php  
+  <?php
+        }
     }
 }

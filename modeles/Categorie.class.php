@@ -61,6 +61,27 @@ class Categorie {
     }
     
     /**
+    * @brief Méthode qui récupère le nom en fonction du id passé en paramètre, s'il existe.
+    * @param string $idCategorie
+    * @access private
+    * @return string ou boolean
+    */
+    public function getCategorieNameById($idCategorie) {
+        
+        self::$database->query('SELECT nomCategorieFR FROM Categories WHERE Categories.idCategorie = :idCategorie');
+
+        //Lie les paramètres aux valeurs
+        self::$database->bind(':idCategorie', $idCategorie);
+
+        if ($categorie = self::$database->uneLigne()) {//Si trouvé dans la BDD
+            return $categorie["nomCategorieFR"];
+        }
+        else {
+            return false;
+        }
+    }
+    
+    /**
     * @brief Méthode qui ajoute une catégorie à la BDD.
     * @param string $nomCategorieFR
     * @param string $nomCategorieEN

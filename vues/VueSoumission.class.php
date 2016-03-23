@@ -140,7 +140,6 @@ class VueSoumission extends Vue {
                             }
                             echo "<option value='".$categorie["idCategorie"]."'".$selection.">".$categorie["nomCategorie$this->langue"];
                         }
-                        echo "</select>";
                     ?>
                 </select>   
                 <br><span class="erreur" id="erreurSelectCategorie"><?php if (isset($this->msgErreurs["errCategorie"])) {echo $this->msgErreurs["errCategorie"];} ?></span><br>

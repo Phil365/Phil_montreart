@@ -327,21 +327,31 @@ class Utilisateur {
     * @access public
     * @return void
     */
-    public function modifierOeuvre($motPasse, $prenom, $nom, $descriptionProfil,$idUtilisateur) {
+    public function modifierUtilisateur($motPasse, $prenom, $nom, $descriptionProfil,$idUtilisateur) {
  
         $msgErreurs = $this->validerFormUtilisateur($prenom, $nom, $descriptionProfil);//Validation des champs obligatoires.
         
-        if (!empty($msgErreurs)) {
+        if ($msgErreurs === null) {
             return $msgErreurs;//Retourne le/les message(s) d'erreur de la validation.
         }
         else {
             try {
-                self::$database->query('UPDATE utilisateurs SET motPasse= :motPasse, prenom= :prenom, nom= :nom, descriptionProfil= :descriptionProfil WHERE idUtilisateur = :idUtilisateur');           
-                self::$database->bind(':motPasse', $motPasse);       
-                self::$database->bind(':prenom', $prenom);       
-                self::$database->bind(':nom', $nom);
-                self::$database->bind(':descriptionProfil', $descriptionProfil);
-                self::$database->bind(':idUtilisateur', $idUtilisateur);
+                if ($motPasse == "") {
+//                    return "test2";
+                    self::$database->query('UPDATE utilisateurs SET prenom= :prenom, nom= :nom, descriptionProfil= :descriptionProfil WHERE idUtilisateur = :idUtilisateur');      
+                    self::$database->bind(':prenom', $prenom);       
+                    self::$database->bind(':nom', $nom);
+                    self::$database->bind(':descriptionProfil', $descriptionProfil);
+                    self::$database->bind(':idUtilisateur', $idUtilisateur);
+                }
+                else {
+                    self::$database->query('UPDATE utilisateurs SET motPasse= :motPasse, prenom= :prenom, nom= :nom, descriptionProfil= :descriptionProfil WHERE idUtilisateur = :idUtilisateur');
+                    self::$database->bind(':motPasse', $motPasse);       
+                    self::$database->bind(':prenom', $prenom);       
+                    self::$database->bind(':nom', $nom);
+                    self::$database->bind(':descriptionProfil', $descriptionProfil);
+                    self::$database->bind(':idUtilisateur', $idUtilisateur);
+                }        
                 self::$database->execute();
                 
               

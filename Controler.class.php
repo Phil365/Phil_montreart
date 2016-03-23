@@ -177,15 +177,20 @@ class Controler {
     * @access private
     * @return void
     */
-      private function accueil() {
+    private function accueil() {
         
         $commentaire = new Commentaire ();
-        $oeuvresPopulaires = $commentaire->getOeuvresPopulaires();
-        $nbOeuvresPopulaires = count($oeuvresPopulaires);
-        $noAleatoire = rand(1,$nbOeuvresPopulaires);
-        $oeuvreVedette[] = $oeuvresPopulaires[$noAleatoire-1];
-        $photo = new Photo();
-        $photoOeuvreVedette = $photo->getPhotoByIdOeuvre($oeuvreVedette[0]["idOeuvre"]);
+        $photoOeuvreVedette = "";
+        
+        if ($oeuvresPopulaires = $commentaire->getOeuvresPopulaires()) {
+            $nbOeuvresPopulaires = count($oeuvresPopulaires);
+            $noAleatoire = rand(1,$nbOeuvresPopulaires);
+            $oeuvreVedette = array();
+            $oeuvreVedette[] = $oeuvresPopulaires[$noAleatoire-1];
+            $photo = new Photo();
+            $photoOeuvreVedette = $photo->getPhotoByIdOeuvre($oeuvreVedette[0]["idOeuvre"]);
+        }
+        
         $this->oVue = new VueAccueil();  
         $this->oVue->setDataGlobal("Accueil", "Page d'accueil", $this->langueAffichage, $this->pAccueil); 
         $this->oVue->setData($photoOeuvreVedette);
@@ -203,7 +208,12 @@ class Controler {
     private function oeuvre() {
         
         $oeuvre = new Oeuvre();
-        $oeuvreAffichee = $oeuvre->getOeuvreById($_GET["o"]);
+        if (isset($_GET["approbation"])) {
+            $oeuvreAffichee = $oeuvre->getAnyOeuvreById($_GET["o"]);
+        }
+        else {
+            $oeuvreAffichee = $oeuvre->getOeuvreById($_GET["o"]);
+        }
         
         $commentaire = new Commentaire();
         $commentairesOeuvre = $commentaire->getCommentairesByOeuvre($_GET["o"], $this->langueAffichage);
@@ -334,18 +344,15 @@ class Controler {
         $nbrOeuvreVisite='';
         $profilUtilisateur="";
         $oeuvreVisiter="";
+        $informationsAModifier = "";
 
         if (isset($_SESSION["idUsager"])){
-        //Affichage du nombre d'oeuvre visité
-        $nbrOeuvreVisite = $utilisateur->countVisiteOeuvre($_SESSION["idUsager"]);
-        //Affichage du profil utilisateur
-        $profilUtilisateur = $utilisateur->getUtilisateurById($_SESSION["idUsager"]);
-        $informationsAModifier = $utilisateur->getUtilisateurById($_SESSION["idUsager"]); 
-        $oeuvreVisiter = $utilisateur->getOeuvresVisiter($_SESSION["idUsager"]);    
-        //Tente la modif et récupère les messages d'erreur si présents.
-//        if (isset($_POST["boutonModifOeuvre"])) {
-//            $msgErreurs = $utilisateur->modifierOeuvre($_SESSION["idUsager"], md5($_POST["motdepasseModif"]), $_POST["prenomModif"], $_POST["nomModif"], $_POST["descriptionModif"],'');
-//        }    
+            //Affichage du nombre d'oeuvre visité
+            $nbrOeuvreVisite = $utilisateur->countVisiteOeuvre($_SESSION["idUsager"]);
+            //Affichage du profil utilisateur
+            $profilUtilisateur = $utilisateur->getUtilisateurById($_SESSION["idUsager"]);
+            $informationsAModifier = $profilUtilisateur; 
+            $oeuvreVisiter = $utilisateur->getOeuvresVisiter($_SESSION["idUsager"]);      
         }
         $this->oVue = new VueProfil();
         $this->oVue->setDataGlobal('profil', "page de profil utilisateur", $this->langueAffichage, $this->pProfil);
@@ -441,41 +448,70 @@ class Controler {
     private function recherche() {
         
         $oeuvres = array();
-        
+        $typeRecherche = "";
+        $nomRecherche = "";
+            
         if (isset($_POST["boutonRecherche"])) {
             
             if (isset($_POST["selectArrondissement"]) && $_POST["selectArrondissement"] != "") {
                 $oeuvre = new Oeuvre();
-                $oeuvres = $oeuvre->getAllOeuvresByArrondissement($_POST["selectArrondissement"]);    
+                $oeuvres = $oeuvre->getAllOeuvresByArrondissement($_POST["selectArrondissement"]); 
+                $typeRecherche = "par arrondissement";
+                $arrondissement = new Arrondissement();
+                $nomRecherche = $arrondissement->getArrondissementNameById($_POST["selectArrondissement"]);
             }
             else if (isset($_POST["selectCategorie"]) && $_POST["selectCategorie"] != "") {
                 $oeuvre = new Oeuvre();
                 $oeuvres = $oeuvre->getAllOeuvresByCategorie($_POST["selectCategorie"]);
+                $typeRecherche = "par catégorie";
+                $categorie = new Categorie();
+                $nomRecherche = $categorie->getCategorieNameById($_POST["selectCategorie"]);
             }
         }
         else if (isset($_GET["rechercheParArtiste"])) {
             $oeuvre = new Oeuvre();
             $oeuvres = $oeuvre->getAllOeuvresByArtiste($_GET["rechercheParArtiste"]);
+            $typeRecherche = "par artiste";
+            $nomRecherche = $_GET["nomArtiste"];
         }
         else if (isset($_POST["boutonRechercheMobile"])) {
             
             if (isset($_POST["selectArrondissementMobile"]) && $_POST["selectArrondissementMobile"] != "") {
                 $oeuvre = new Oeuvre();
-                $oeuvres = $oeuvre->getAllOeuvresByArrondissement($_POST["selectArrondissementMobile"]);    
+                $oeuvres = $oeuvre->getAllOeuvresByArrondissement($_POST["selectArrondissementMobile"]); 
+                $typeRecherche = "par arrondissement";
+                $arrondissement = new Arrondissement();
+                $nomRecherche = $arrondissement->getArrondissementNameById($_POST["selectArrondissementMobile"]);
             }
             else if (isset($_POST["selectCategorieMobile"]) && $_POST["selectCategorieMobile"] != "") {
                 $oeuvre = new Oeuvre();
                 $oeuvres = $oeuvre->getAllOeuvresByCategorie($_POST["selectCategorieMobile"]);
+                $typeRecherche = "par catégorie";
+                $categorie = new Categorie();
+                $nomRecherche = $categorie->getCategorieNameById($_POST["selectCategorieMobile"]);
             }
         }
         else if (isset($_GET["rechercheParArtisteMobile"])) {
             $oeuvre = new Oeuvre();
             $oeuvres = $oeuvre->getAllOeuvresByArtiste($_GET["rechercheParArtisteMobile"]);
+            $typeRecherche = "par artiste";
+            $nomRecherche = $_GET["nomArtiste"];
+        }
+        if (isset($oeuvres)) {
+            $photo = new Photo();
+            $oeuvresTemp = array();
+            foreach ($oeuvres as $oeuvre) {
+                if ($photoOeuvre = $photo->getPhotoByOeuvre($oeuvre["idOeuvre"])) {
+                    $oeuvre["photo"] = $photoOeuvre["image"];
+                }
+                $oeuvresTemp[] = $oeuvre;
+            }
+            $oeuvres = $oeuvresTemp;
         }
         
         $this->oVue = new VueRecherche();
         $this->oVue->setDataGlobal('recherche', 'page de recherche', $this->langueAffichage, $this->pRecherche);
-        $this->oVue->setOeuvres($oeuvres);
+        $this->oVue->setData($oeuvres, $typeRecherche, $nomRecherche);
         $this->oVue->afficherMeta();
         $this->oVue->afficherEntete();
         $this->oVue->afficherBody();

@@ -189,7 +189,7 @@ h1 {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 2em;
     color: #70212F;
-    margin: 40px 10px 20px 10px;
+    margin: 30px 10px 20px 10px;
     text-align: center;
     font-weight: bolder;
 }
@@ -243,13 +243,12 @@ footer {
     letter-spacing: .6px;
     line-height: 1.6em;
     color: #ffffff;
-    padding: 0px, 0px, 10px, 0px;
-    margin-bottom: 30px;
+    padding: 0;
+    padding-bottom: 10px;
 }
 
 .global {
     background-color: #ffffff;
-    padding-bottom: 30px;
 }
 
 .textStandard {
@@ -259,7 +258,7 @@ footer {
     line-height: 1.5em;
     letter-spacing: .9px;
     font-weight: 500;
-    margin: 40px 10px;
+    padding: 10px;
 }
 
 .noIndent {
@@ -285,7 +284,7 @@ footer {
 /*div bidon qui reste en dessous du nav fixe*/
 
 .dummy {
-    height: 89px;
+    height: 100px;
 }
 
 .section1 {
@@ -348,6 +347,7 @@ footer {
     float: right;
     width: 150px;
     margin-right: 10px;
+    margin-top: 5px;
 }
 
 .reseauxsociaux img {
@@ -435,6 +435,9 @@ footer {
 
 .unCommentaire {
     width: 100%;
+    margin-top: 20px;
+    border-bottom: solid 2px #d6d6d6;
+    text-align: center;
 }
 
 .aside1 {
@@ -454,25 +457,10 @@ footer {
 .thumbnail {
     width: 50px;
     height: 50px;
-    margin-left: 5%;
-}
-
-#idUtilisateur {
-    margin-left: 5%;
-}
-
-.ratingUtilisateur {
-    height: 10px;
-    margin-left: 5%;
-}
-
-.ratingUtilisateur img {
-    width: 8%;
 }
 
 .pourEnSavoirPlus {
     margin-top: 50px;
-    margin-left: 30px;
     color: #ffffff;
     padding: 5px;
     background-color: #659CEF;
@@ -504,12 +492,14 @@ footer {
     border: 2px solid #47ce51;
 }
 
-#distanceMarqueur {
-    display: block;
-    height: auto;
-    margin-top: 20px;
+.distanceMarqueur {
     font-size: 1.1em;
     color: #70212F;
+    width: 100%;
+    background-color: #B32A42;
+    color: white;
+    text-align: center;
+    padding-top: 10px;
 }
 
 #directions-panel {
@@ -530,11 +520,6 @@ footer {
     margin-top: 40px;
 }
 
-#backgroundOeuvreHead {
-    background-color: aquamarine;
-    height: 580px;
-}
-
 .h4InfosOeuvre {
     color: azure;
 }
@@ -551,35 +536,6 @@ footer {
     text-align: center;
 }
 
-/*
-.fieldsetRecherche {
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-    margin-top: 3%;
-    
-}
-
-.fieldsetRecherche img {
-    width: 15%;
-    margin-left: 2%;
-}
-*/
-
-/*-----------Classes d'incrémentation des résultats de la page recherche-------------*/
-
-.1 { 
-    float: left; width: 33%; 
-}
-
-.2 { 
-    float: right; width: 33%; 
-}
-
-.3 { 
-    display: inline-block; width: 33%; 
-}
 
 /*------------- PAGE GESTION -----------------------*/
 
@@ -636,7 +592,6 @@ footer {
 }
 
 .rechercheResultTitre {
-    margin-left: 30px;
     margin-top: 20px;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 20px;
@@ -647,23 +602,25 @@ footer {
 }
 
 .boutonsLiens {
-    width: 15%;
+    width: 80%;
     display: inline-block;
     background: #B32A42;
     border-radius: 8px;
-    margin: 20px;
+    margin: 0 0 20px 0;
     font-weight: bold;
 }
 
-.infoResult {
-    margin-left: 30px;
-    font-size: 20px;
+.lienOeuvreProfil {
+    color: #659CEF;
+    font-weight: bold;
 }
 
-.rechercheResultTitre {
-    margin-left: 30px;
-    margin-top: 20px;
-    font-family: 'Source Sans Pro', sans-serif;
+.lienOeuvreProfil:hover {
+    color: #70212F;
+}
+
+.infoResult {
+    margin-top: 0;
     font-size: 20px;
 }
 
@@ -755,6 +712,10 @@ footer {
     border-radius: 10px;
     font-family: 'Source Sans Pro', sans-serif;
     background-color: #fff;
+}
+
+#modifInfosProfil {
+    margin-top: 20px;
 }
 
 #misAJour {
@@ -862,9 +823,11 @@ nav a:active {
     color: #b95364;
 }
 
+/*
 nav a:first-child {
     margin-left: 9%;
 }
+*/
 
 nav a:hover {
     background-color: #70212F;
@@ -1077,7 +1040,7 @@ textarea:focus {
     text-align: center;
 }
 
-#form_itineraire input[type="submit"] {
+#form_itineraire input[type="button"] {
     float: right;
     width: 100px;
 }
@@ -1113,6 +1076,7 @@ div.stars {
     width: 270px;
     display: inline-block;
     margin-left: 15px;
+    margin-top: 20px;
 }
 
 input.star {
@@ -1178,30 +1142,30 @@ nav {
 .erreur {
     color: red;
     margin-left: 30px;
-    margin-top: 10px;
     display: block;
     font-weight: bold;
 }
 
 .lienPageMembre {
+    float: left;
     display: block;
-    position: absolute;
-    top: 16px;
     width: 80px;
-    height: 60px;
     background-color: #ffffff;
     border: 2px solid #F8F274;
-    border-radius: 14px;
+    margin-left: 40px;
+    margin-top: 25px;
+    border-radius: 8px;
+    font-size: 1.1em;
 }
 
-.lienPageMembre h3 {
-    margin: 0 auto;
-    size: 1.1em;
+.lienPageMembre:hover {
+    background-color: #F8F274;
+    border: 2px solid #70212F;
 }
 
 .reseauxsociaux img {
     width: 30px;
-    margin-top: 20px;
+    margin-top: 24px;
 }
 
 .titresPageOeuvre {
@@ -1210,11 +1174,25 @@ nav {
 
 .infosOeuvre {
     text-align: center;
-    height: 620px;
+    height: auto;
+    padding-bottom: 10px;
 }
 
-.ratingUtilisateur img {
+.ratingUtilisateur {
+    width: 30%;
+    display: inline-block;
+    margin-top: 40px;
+}
+
+.ratingOeuvre {
+    text-align: center;
+    display: inline-block;
+}
+
+.ratingOeuvre img {
+    margin-top: 10px;
     width: 20%;
+    display: inline-block;
 }
 
 .borderMobile {
@@ -1230,39 +1208,16 @@ nav {
     margin-left: 30px;
 }
 
-.premiereColonne h3 {
-    margin-top: 50px;
-    margin-left: 30px;
-}
-
-.deuxiemmeColonne h3 {
-    margin-left: 30px;
-    overflow-y: none;
-}
-
-.troisiemmeColonne h3 {
-    margin-left: 30px;
-    overflow-y: none;
-}
-
-.lienPageMembre {
-    display: block;
-    position: absolute;
-    top: 11px;
-    width: 80px;
-    height: 50px;
-    margin-left: 10px;
-    background-color: #ffffff;
-    border: 2px solid #70212F;
-    border-radius: 10px;
-}
-
 .boutonRecherche {
     display: none;
 }
 
 .inputDevMembre {
     margin-left: 30px;
+}
+
+#boutonDirection {
+    display: none;
 }
 
 #logo {
@@ -1329,7 +1284,7 @@ nav {
     font-size: 1.2em;
 }
 
-#form_itineraire input[type="submit"] {
+#form_itineraire input[type="button"] {
     float: none;
     margin-left: 29%;
 }
@@ -1338,15 +1293,6 @@ nav {
     width: 30px;
     margin-top: 10px;
     margin-left: 7px;
-}
-
-#distanceMarqueur {
-    width: 100%;
-    background-color: #B32A42;
-    color: white;
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 #lionDesktop {
@@ -1466,8 +1412,9 @@ nav {
 
 #backgroundOeuvreHead {
     background-color: rgba(179, 42, 66, 0.84);
-    height: 1200px;
+    height: auto;
     margin-bottom: 30px;
+    padding-bottom: 20px;
 }
 
 #commentaireAjout {
@@ -1475,8 +1422,8 @@ nav {
     height: 150px;
 }
 
-#texteCommP {
-    margin-top: 0%;
+.texteCommP {
+    margin: 10px auto 30px auto;
 }
 
 div.stars {
@@ -1484,10 +1431,6 @@ div.stars {
 }
 
 /*======================================== Style recherche mobile ====================================================*/
-
-.boutonsLiens {
-    width: auto;
-}
 
 .boutonRechercheMobile {
     background: #B32A42;
@@ -1572,6 +1515,12 @@ div.stars {
     display: none;
 }
 
+.resultatsRecherche {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
 #results {
     width: 92%;
     border: 1px solid #c0c0c0;
@@ -1654,6 +1603,10 @@ div.stars {
     margin: 0 auto;
 }
 
+#promoMobile {
+    margin-bottom: 30px;
+}
+
 #directions-panel {
     text-align: center;
     margin: 0 auto;
@@ -1689,61 +1642,25 @@ div.stars {
 
 /*------------ Classes générés dynamiquement sur chaque résultat de recherche----------------*/
     
-    .fieldsetRecherche1 { 
-    float: none;
+    .fieldsetRecherche { 
+    display: block;
     width: 100%;
-    border: 2px solid #70212F;
-    border-radius: 5px;
+    border-top: 2px solid #70212F;
+    border-bottom: 2px solid #70212F;
     padding-bottom: 3%;
     padding-top: 3%;
     margin-top: 8.5%;
     }
-
-    .fieldsetRecherche2 { 
-    width: 100%;
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-
-    }
-
-    .fieldsetRecherche3 { 
-    float: none;
-    width: 100%;
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-    margin-top: 3%;
-
-    }
     
-    .fieldsetRecherche1 img {
-    width: 20%;
-    margin-left: 2%;
-    }
-    
-    .fieldsetRecherche2 img {
-    width: 20%;
-    margin-left: 2%;
-    }
-    
-    .fieldsetRecherche3 img {
-    width: 20%;
-    margin-left: 2%;
+    .fieldsetRecherche img {
+    width: 94%;
     }
 /*------------ Fin des classes générés dynamiquement sur chaque résultat de recherche----------------*/
     .profileUser {
   text-align: center;
 
     }
-    .profileUserBio  {
-         text-align: justify;
-  margin: 0 auto;
-  width: 30em;
-          max-width: 80%;
-    }
+
     .profileUser img{
        max-width: 200px;
     height: auto;
@@ -1763,75 +1680,70 @@ div.stars {
 and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 40/71) and (orientation:portrait)
 {
 
-/*----Page Trajet-----*/    
-    
-#fin {
-    width: 180px;
-}
-    
-/*----Page Trajet-----*/ 
-    
-#form_itineraire input[type="submit"] {
-    margin-left: 24%;
-}
-    
-#boutonAjouterSoumission {
-    margin-left: 37%;
-}
-    
-    
-/*----Page gestion-----*/
-    
-.inputGestion, .selectGestion {
-    margin-left: 45px;
-    margin-right: 30px;
-}
-    
-.fileToUploadGestion {
-    margin-left: 46px;
-}
-    
-#btnAjoutOeuvre {
-    margin-left: 36%;
-}
-    
-#btnSupOeuvre {
-    margin-left: 31%;
-}
-    
-#btnSupCat {
-    margin-left: 31%;
-}
+    /*----Page Trajet-----*/    
 
-/*-----Page oeuvre------*/
+    #fin {
+        width: 180px;
+    }
 
-#formPhotoUnique input[type="file"] {
-    width: 240px;
-    text-align: center;
-    font-size: 13px;
-    margin-left: 30px;
-}
+    /*----Page Trajet-----*/ 
 
-#commentaireAjout {
-    width: 257px;
-}
-    
-div.stars {
-    margin-left: 9%;
-}
-    
-#boutonAjouterCom {
-    margin-left: 16%;
-}
-    
-.infosOeuvre {
-    width: 97%;   
-}
-    
-#backgroundOeuvreHead {
-    height: 1150px;
-}
-    
+    #form_itineraire input[type="button"] {
+        margin-left: 24%;
+    }
+
+    #boutonAjouterSoumission {
+        margin-left: 37%;
+    }
+
+
+    /*----Page gestion-----*/
+
+    .inputGestion, .selectGestion {
+        margin-left: 45px;
+        margin-right: 30px;
+    }
+
+    .fileToUploadGestion {
+        margin-left: 46px;
+    }
+
+    #btnAjoutOeuvre {
+        margin-left: 36%;
+    }
+
+    #btnSupOeuvre {
+        margin-left: 31%;
+    }
+
+    #btnSupCat {
+        margin-left: 31%;
+    }
+
+    /*-----Page oeuvre------*/
+
+    #formPhotoUnique input[type="file"] {
+        width: 240px;
+        text-align: center;
+        font-size: 13px;
+        margin-left: 30px;
+    }
+
+    #commentaireAjout {
+        width: 257px;
+    }
+
+    div.stars {
+        margin-left: 9%;
+    }
+
+    #boutonAjouterCom {
+        margin-left: 16%;
+    }
+
+    .infosOeuvre {
+        width: 97%;   
+    }    
 } 
 
     
@@ -1848,8 +1760,20 @@ div.stars {
     header {
         height: 57px;
     }
+    .lienPageMembre {
+        float: left;
+        display: block;
+        width: 140px;
+        height: 40px;
+        margin-left: 40px;
+        margin-top: 18px;
+        font-size: 1.1em;
+    }
+    .global {
+        padding-bottom: 30px;
+    }
     nav {
-        display: none;
+        display: block;
         width: 100%;
         background-color: #ffffff;
         border-top: #70212F solid 4px;
@@ -1857,20 +1781,23 @@ div.stars {
         position: fixed;
         top: 57px;
         z-index: 2;
+        text-align: center;
     }
     nav a {
+        margin: 0 2px;
         letter-spacing: .4px;
-        text-align: center;
-        padding: 0 20px;
-        line-height: 30px;
         font-family: 'Source Sans Pro', sans-serif;
-        font-size: 1.2em;
+        font-size: 1em;
         display: initial;
         color: white;
         text-decoration: none;
-        line-height: 36px;
         background-color: #659CEF;
         border-radius: 5px;
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .ratingUtilisateur {
+        width: 10%;
     }
     .barreRechercheContenuMobile {
         display: none;
@@ -1984,6 +1911,10 @@ div.stars {
         border-radius: 8px;
         margin: 20px;
         font-weight: bold;
+        font-size: 0.8em;
+    }
+    #navMobile {
+        display: none;
     }
     #icon_menu {
         margin-left: 2%;
@@ -2035,7 +1966,7 @@ div.stars {
     #panneauApprobation h2 a:hover {
         color: #B32A42;
     }
-    #form_itineraire input[type="submit"] {
+    #form_itineraire input[type="button"] {
         margin: 0 auto;
         margin-top: 30px;
     }
@@ -2062,18 +1993,18 @@ div.stars {
     }
     .inputGestion {
         width: 65%;
-        margin-left: 15%;
+        margin-left: 16%;
     }
     .selectGestion {
         width: 68%;
-        margin-left: 15%;
+        margin-left: 16%;
     }
     .textAreaGestion {
         width: 67%;
     }
     .fileToUploadGestion {
         width: 65%;
-        margin-left: 15%;
+        margin-left: 16%;
     }
     #boutonAjouterSoumission {
         margin-left: 44%;
@@ -2141,7 +2072,7 @@ div.stars {
     #boutonAjouterCom {
     margin-left: 35%;
     }
-    
+
     .descriptionAjoutSoumission {
     width: 67%;
     }
@@ -2151,14 +2082,26 @@ div.stars {
 /*========================================  STYLES POUR TABLETTE 800+ px ====================================================*/
 
 @media (min-width: 620px) {
-    #navMobile {
-        display: none;
-    }
+    
     #divPanneauApprobation {
-        min-width: 450px;
+        min-width: 500px;
     }
-    nav {
-        display: block;
+    .fieldsetRecherche { 
+        display: inline-block;
+        width: 45%;
+        margin: 0 2%;
+        border: 3px solid #70212F;
+        border-radius: 5px;
+        padding-bottom: 3%;
+        padding-top: 1%;
+        margin-top: 5%;
+    }
+    .fieldsetRecherche:hover { 
+    border: 3px solid #B32A42;
+    }
+    
+    .fieldsetRecherche img {
+        width: 94%;
     }
 }
 
@@ -2186,11 +2129,8 @@ div.stars {
         height: 76px;
         width: 100%;
     }
-    nav {
-        margin: 0 auto;
-    }
-    nav a:first-child {
-        margin-left: 16%;
+    nav a {
+        font-size: 1.2em;
     }
     h2 {
         margin-left: 20px;
@@ -2214,9 +2154,6 @@ div.stars {
         line-height: 1.4em;
         letter-spacing: .9px;
         font-weight: 500;
-        margin: 40px 10px;
-    }
-    .textStandard {
         margin: 40px 20px;
     }
     .dummy {
@@ -2224,7 +2161,7 @@ div.stars {
     }
     .sliderOeuvre {
         width: 60%;
-        margin-top: 45px;
+        margin-top: 36px;
         height: 400px;
         overflow: hidden;
     }
@@ -2289,12 +2226,6 @@ div.stars {
         height: auto;
         margin: 0 auto;
     }
-    .lienPageMembre {
-        right: 82%;
-        width: 140px;
-        height: 50px;
-        top: 15px;
-    }
     .infosOeuvre {
         width: 38%;
         display: block;
@@ -2346,9 +2277,7 @@ div.stars {
     .iconeRecherche {
         top: 23%;
     }
-    .ratingUtilisateur img {
-        width: 8%;
-    }
+
     #titre {
         left: 100px;
         font-weight: 900;
@@ -2404,8 +2333,7 @@ div.stars {
         text-align: center;
     }
     .reseauxsociaux {
-        position: absolute;
-        right: 0;
+        margin-top: 0;
     }
     #fin {
         width: 558px;
@@ -2536,6 +2464,14 @@ div.stars {
         margin-left: 5px;
     }
     
+    #descriptionAjoutSoumission {
+    width: 106%;
+    }
+    
+    .oeuvreVedette img {
+        margin-left: 45px;
+    }
+    
     /*------------- PAGE ADMIN 800px ET+ -----------------------*/
     .premiereColonne {
         width: 58%;
@@ -2577,6 +2513,7 @@ div.stars {
         border-radius: 8px;
         margin: 20px;
         font-weight: bold;
+        font-size: 1.2em;
     }
     #lionDesktop {
         width: 100%;
@@ -2624,16 +2561,19 @@ div.stars {
         width: 980px;
         top: 86px;
     }
-    nav a:first-child {
-        margin-left: 20%;
+    
+    footer {
+        margin-bottom: 30px;
     }
+
     .dummy {
-        height: 120px;
+        height: 130px;
     }
     .textStandard,
     h2 {
         max-width: 800px;
         margin-left: 30px;
+        margin-right: 30px;
     }
     .infosOeuvre {
     top: 166px;
@@ -2686,9 +2626,6 @@ div.stars {
     .selectGestion {
         width: 67%;
     }
-    .boutonsGestion {
-        margin-left: 45%;
-    }
     #btnAjoutOeuvre {
         margin-left: 46%;
     }
@@ -2702,17 +2639,16 @@ div.stars {
         margin-left: 46%;
     }
     #btnSupCat {
-        margin-left: 45%;
+        margin-left: 44%;
     }
     
     .inputSoumission {
         width: 103%;
     }
-    
+
     .descriptionAjoutSoumission {
     width: 106%;
     }
-
     
     #formPhotoUnique input[type="file"] {
     margin-left: 36%;
@@ -2728,22 +2664,16 @@ div.stars {
     }
     
     .pubAccueil {
-<<<<<<< HEAD
-    top: 68%;
-=======
-    height: auto;
-    width: 40%;
-    float: right;
-    position: absolute;
-    top: 69%;
->>>>>>> MontreArt/master
-    left: 50%;
+        height: auto;
+      width: 40%;
+      float: right;
+      position: absolute;
+      top: 69%;
     }
     
     .oeuvreVedette img {
     margin-left: 45px;
     }
-<<<<<<< HEAD
     
     #aucunCommP {
     margin-left: 10%;
@@ -2756,75 +2686,25 @@ div.stars {
     #boutonAjouterCom {
     margin-left: 40%;
     }
-    
-=======
->>>>>>> MontreArt/master
 
 /*------------ Classes générés dynamiquement sur chaque résultat de recherche----------------*/
     
 
-    .fieldsetRecherche1 { 
-    float: left;
-    width: 30%;
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-    margin-top: 8%;
+    .fieldsetRecherche { 
+        display: inline-block;
+        width: 30%;
+        margin: 0 1%;
+        border: 3px solid #70212F;
+        border-radius: 5px;
+        padding-bottom: 3%;
+        padding-top: 1%;
+        margin-top: 5%;
     }
     
-    .fieldsetRecherche1:first-child {
-        margin-top: 10.1%;
+    .fieldsetRecherche img {
+        width: 94%;
     }
 
-    .fieldsetRecherche2 { 
-    width: 30%;
-    display: block;
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-    margin-top: 8%;
-
-    }
-    
-    .fieldsetRecherche2:first-child {
-        margin-top: 9.8%;
-    }
-    
-    
-    .fieldsetRecherche3 { 
-    float: right;
-    width: 30%;
-    border: 2px solid #70212F;
-    border-radius: 5px;
-    padding-bottom: 3%;
-    padding-top: 3%;
-    margin-top: 3%;
-    }
-    
-    .fieldsetRecherche3:first-child {
-        position: absolute;
-        float: none;
-        top: 400px;
-    }
-
-
-    
-    .fieldsetRecherche1 img {
-    width: 20%;
-    margin-left: 2%;
-    }
-    
-    .fieldsetRecherche2 img {
-    width: 20%;
-    margin-left: 2%;
-    }
-    
-    .fieldsetRecherche3 img {
-    width: 20%;
-    margin-left: 2%;
-    }
 /*------------ Fin des classes générés dynamiquement sur chaque résultat de recherche----------------*/
     
 }
