@@ -607,6 +607,12 @@ $(document).ready(function(){
     ======================== ACCORDEON PAGE GESTION =======================
     -------------------------------------------------------------------- */
     
+    //ONGLET MODIF INFOS PROFIL
+    $("#OngletModifProfil").hide();
+    $("#modifInfosProfil").click(function(){
+        $("#OngletModifProfil").slideToggle(500);
+    });
+    
     $( "#accordeon" ).accordion({
         active: false,
         collapsible: true,
@@ -1278,19 +1284,19 @@ function validerFormAjoutUtilisateur(){
 */
 function loginNouveauUsager(user, pass, grainSel){
     
-       passEncrypte = encrypterNouveauLogin(pass, grainSel);
+       passEncrypte = encrypterMotPasse(pass, grainSel);
       
         $.post('ajaxControler.php?rAjax=connexionNouveau', {passNouveau:passEncrypte, userNouveau:user}, 
             function(reponse){
             
             if (reponse) {//reponse === true
-                console.log("utilisateur authentifié");
+//                console.log("utilisateur authentifié");
                 
                 window.location.href = "?r=profil";//Sinon, valeur par défaut.
                 //--------------------------------------------------------------------------
             }
             else {//reponse === false
-                console.log("erreur user/pass");
+//                console.log("erreur user/pass");
                
             }
         });
@@ -1309,27 +1315,30 @@ function validerLogin(){
     var passEncrypte = "";
     document.formLogin.user.style.border = "";
     document.formLogin.pass.style.border = "";
+    var user = document.formLogin.user.value;
+    var pass = document.formLogin.pass.value;
+    var grainSel = document.formLogin.grainSel.value;
         
-    if (document.formLogin.user.value.trim() == "") {
+    if (user.trim() == "") {
         document.formLogin.user.style.border = "solid 2px red";
         document.formLogin.user.value = "";
         erreurs = true;
     }
 
-    if (document.formLogin.pass.value.trim() == "") {
+    if (pass.trim() == "") {
         document.formLogin.pass.style.border = "solid 2px red";
         document.formLogin.pass.value = "";
         erreurs = true;
     }
     if (!erreurs) {
 
-        passEncrypte = encrypter();
-//        console.log("pass md5 + grain de sel : ", passEncrypte);
-        $.post('ajaxControler.php?rAjax=connexion', {pass:passEncrypte, user:document.formLogin.user.value}, 
+        passEncrypte = encrypterMotPasse(pass, grainSel);
+
+        $.post('ajaxControler.php?rAjax=connexion', {pass:passEncrypte, user:user}, 
             function(reponse){
             
             if (reponse) {//reponse === true
-                console.log("utilisateur authentifié");
+//                console.log("utilisateur authentifié");
                 
                 //--------------------------------------------------------------------------
                 //Code pour renvoyer l'usager sur la page actuelle, en éliminant les paramètres $_POST et $_GET inutiles, ce qui n'est pas possible avec "location.reload".
@@ -1347,7 +1356,7 @@ function validerLogin(){
                 //--------------------------------------------------------------------------
             }
             else {//reponse === false
-                console.log("erreur user/pass");
+//                console.log("erreur user/pass");
                 document.formLogin.user.value = "";
                 document.formLogin.pass.value = "";
                 document.getElementById("erreurLogin").innerHTML = "nom et\/ou mot de passe incorrect(s)";
@@ -1378,7 +1387,11 @@ function valideModifierUtilisateur() {
     
     var erreurs = false;
     var idUtilisateur= document.getElementById("idUtilisateur").value;
-    var motPasse= document.getElementById("motdepasseModif").value.trim();
+    var motPasse = document.getElementById("motdepasseModif").value.trim();
+    var motPasseEncrypte = "";
+    if (motPasse != "") {
+        motPasseEncrypte = md5(motPasse);
+    }
     var prenom = document.getElementById("prenomModif").value.trim();
     var nom = document.getElementById("nomModif").value.trim();
     var description = document.getElementById("descriptionModif").value.trim();
@@ -1387,7 +1400,6 @@ function valideModifierUtilisateur() {
     
     document.getElementById("erreurPrenomUtilisateurModif").innerHTML = "";
     document.getElementById("erreurNomUtilisateurModif").innerHTML = "";
-    document.getElementById("erreurDescriptionModif").innerHTML = "";
     document.getElementById("msgModif").innerHTML = "";
 
     if (prenom == "") {
@@ -1399,10 +1411,6 @@ function valideModifierUtilisateur() {
         erreurs = true;
     }
 
-    if (description == "") {
-        document.getElementById("erreurDescriptionModif").innerHTML = "Veuillez entrer une description";
-        erreurs = true;
-    }
      if (photo.value != "") {
         var fichiersAuthorises = new RegExp("(.jpg|.jpeg|.png)$", "i");//doit se terminer par une des extensions suivantes.
         var resultat = fichiersAuthorises.exec(photo.value);
@@ -1422,10 +1430,10 @@ function valideModifierUtilisateur() {
     //-----------------------------------------
     //Requête AJAX si aucune erreur.
     if (!erreurs) {
-        $.post('ajaxControler.php?rAjax=modifierUtilisateur', {motPasse: motPasse, prenom: prenom, nom: nom, description: description, idUtilisateur: idUtilisateur}, 
+        $.post('ajaxControler.php?rAjax=modifierUtilisateur', {motPasse: motPasseEncrypte, prenom: prenom, nom: nom, description: description, idUtilisateur: idUtilisateur}, 
             
             function(reponse){
- console.log(reponse); 
+
                 var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
             
                 if (msgErreurs.length == 0) {//Si aucune erreur...
@@ -1468,7 +1476,7 @@ function valideModifierUtilisateur() {
                         contentType: false,
                         type: 'POST',
                         success: function(msgErreurs){
-                            console.log(msgErreurs);
+
                             if (msgErreurs != "") {//Si erreur avec l'insertion de la photo...
                                 $("#erreurPhoto").html(msgErreurs);
                             }
@@ -1555,7 +1563,7 @@ function initMapTrajet() {
             calculateAndDisplayRoute(directionsService, directionsDisplay);
   });
         
-    var geocoder = new google.maps.Geocoder;        
+         
         
         
     var infoWindow = new google.maps.InfoWindow();
@@ -1591,32 +1599,38 @@ function initMapTrajet() {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
   }
-   
-    geocodeLatLng(geocoder, map);
-    
     var urlAjax = 'ajaxControler.php?rAjax=googleMap';
     downloadUrl(urlAjax, function(data) {
-        
+        var markerArray='';
+        var mcOptions = {gridSize: 50, maxZoom: 15};
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName("marker");
+        var ClusterMap = [];
         for (var i = 0; i < markers.length; i++) {
             var name = markers[i].getAttribute("name");
+            //    var photo = markers[i].getAttribute("photo");
+            //    var urlTest = markers[i].getAttribute("urlTest");
+            var url = markers[i].getAttribute("url");
             var point = new google.maps.LatLng(
             parseFloat(markers[i].getAttribute("lat")),
             parseFloat(markers[i].getAttribute("lng")));
             var image = {
-                url: 'images/punaiseMontreart.png',
-                scaledSize: new google.maps.Size(30, 30), // scaled size
+                
+                url : 'images/punaiseMontreart.png',
+                size: new google.maps.Size(104, 104),
+                scaledSize: new google.maps.Size(50, 50),
+                anchor: new google.maps.Point(25, 50)
             };
-            var html = "<span>" + name + "</span>";
+            var html = "<a href='" + url + "'>" + name + "</a>";
             var marker = new google.maps.Marker({
-                map: map,
                 position: point,
-                icon: image        
-            });
+                icon: image 
+            });   marker.setMap(map); 
+            ClusterMap.push(marker);   
             bindInfoWindow(marker, map, infoWindow, html);
-        }
-    });
+         
+        }var markerCluster = new MarkerClusterer(map, ClusterMap,mcOptions);
+    });  
  
 }
 /**
@@ -1626,82 +1640,62 @@ function initMapTrajet() {
 */
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
    
-  var waypts = [];
-  var checkboxArray = document.getElementById('waypoints');
-  for (var i = 0; i < checkboxArray.length; i++) {
-    if (checkboxArray.options[i].selected) {
-      waypts.push({
-        location: checkboxArray[i].value,
-        stopover: true
-      });
-     
+    document.getElementById("erreurDepart").innerHTML = "";
+    document.getElementById("erreurPasTrouve").innerHTML = "";
+    document.getElementById("erreurDestination").innerHTML = "";
+    document.getElementById("erreurWaypoints").innerHTML = "";
+    var erreurs = false;
+    
+    if (document.getElementById("depart").value.trim() == "") {
+        document.getElementById("erreurDepart").innerHTML = "Veuillez entrer votre adresse ou localisation (adresse civique ou longitude et latitude, séparés par une virgule)";
+        erreurs = true;
     }
-  }
-var selectFin = document.getElementById('fin');
-var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
-  directionsService.route({
-    origin: document.getElementById('depart').value,
-    destination: selectedOptFin,
-    waypoints: waypts,
-    optimizeWaypoints: true,
-    travelMode: google.maps.TravelMode.WALKING,
-    language: 'fr'
-  }, function(response, status) {
-    if (status === google.maps.DirectionsStatus.OK) {
-      directionsDisplay.setDirections(response);
-      var route = response.routes[0];
-      var summaryPanel = document.getElementById('directions-panel');
-      summaryPanel.innerHTML = ' <h2>Votre Trajet: </h2>';
-      // For each route, display summary information.
-      for (var i = 0; i < route.legs.length; i++) {
-        var routeSegment = i + 1;
-        summaryPanel.innerHTML += '<h4>Partie ' + routeSegment +
-            ' , Marchez à</h4><br>';
-        summaryPanel.innerHTML += route.legs[i].start_address + ' à ';
-        summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-        summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-      }
-    } else {
-       
-        
-             document.getElementById("erreurPasTrouve").innerHTML = "Google n'a pas trouvé votre route. Assurez-vous de bien remplir tous les champs";
-                
-            if (document.getElementById("depart").value.trim() == "") {
-                document.getElementById("erreurDepart").innerHTML = "Veuillez entrer votre adresse ou localisation";
-                
-            }
-          
-            if (document.getElementById("fin").selectedIndex == "0") {
-               
-                document.getElementById("erreurDestination").innerHTML = "Veuillez choisir une destination";
-                
-            }
-            if (document.getElementById("waypoints").selectedIndex == "-1") {
-                document.getElementById("erreurWaypoints").innerHTML = "Veuillez choisir vos arrêts intermédiaires";
-               
-            }
-             console.log(status);
+
+    if (document.getElementById("fin").selectedIndex == "0") {
+        document.getElementById("erreurDestination").innerHTML = "Veuillez choisir une destination";
+        erreurs = true;
     }
-  });
+    if (!erreurs) {
+        var waypts = [];
+        var checkboxArray = document.getElementById('waypoints');
+        for (var i = 0; i < checkboxArray.length; i++) {
+            if (checkboxArray.options[i].selected) {
+                waypts.push({
+                location: checkboxArray[i].value,
+                stopover: true
+                });
+            }
+        }
+        var selectFin = document.getElementById('fin');
+        var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
+        directionsService.route({
+            origin: document.getElementById('depart').value,
+            destination: selectedOptFin,
+            waypoints: waypts,
+            optimizeWaypoints: true,
+            travelMode: google.maps.TravelMode.WALKING,
+            language: 'fr'
+        }, function(response, status) {
+            if (status === google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+                var route = response.routes[0];
+                var summaryPanel = document.getElementById('directions-panel');
+                summaryPanel.innerHTML = ' <h2>Votre Trajet: </h2>';
+                // For each route, display summary information.
+                for (var i = 0; i < route.legs.length; i++) {
+                    var routeSegment = i + 1;
+                    summaryPanel.innerHTML += '<h4>Partie ' + routeSegment +
+                    ' , Marchez à</h4><br>';
+                    summaryPanel.innerHTML += route.legs[i].start_address + ' à ';
+                    summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+                    summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+                }
+            }             
+        });
+    }
 }
-function geocodeLatLng(geocoder, map) {
-  var input = document.getElementById('depart').value;
-  var latlngStr = input.split(',', 2);
-  var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
-  geocoder.geocode({'location': latlng}, function(results, status) {
-    if (status === google.maps.GeocoderStatus.OK) {
-      if (results[1]) {
-        document.getElementById('pointA').value = results[1].formatted_address;
-       
-       
-      } else {
-        console.log('No results found');
-      }
-    } else {
-      console.log('Geocoder failed due to: ' + status);
-    }
-  });
-}
+
+
 /* --------------------------------------------------------------------
 ========================= FONCTIONS RECHERCHE =========================
 -------------------------------------------------------------------- */
@@ -1772,9 +1766,7 @@ function autoCompleteMobile(rechercheVoulue, nomServeur)
             $.get(url + rechercheVoulue, { keyword: keyword } )
             
             .done(function( data ) {
-                
-                
-                
+
                 $('#resultsMobile').html('');
                 var results = jQuery.parseJSON(data);
                 
@@ -1875,8 +1867,11 @@ function initMap() {
             parseFloat(markers[i].getAttribute("lat")),
             parseFloat(markers[i].getAttribute("lng")));
             var image = {
-                url: 'images/punaiseMontreart.png',
-                scaledSize: new google.maps.Size(30, 30), // scaled size
+                
+                url : 'images/punaiseMontreart.png',
+                size: new google.maps.Size(104, 104),
+                scaledSize: new google.maps.Size(50, 50),
+                anchor: new google.maps.Point(25, 50)
             };
             var html = "<a href='" + url + "'>" + name + "</a>";
             var marker = new google.maps.Marker({
@@ -1928,7 +1923,7 @@ function trouveMarqueurPlusPres(lat, lng) {
             closest = i; 
         }
     }
-         document.getElementById("distanceMarqueur").innerHTML = 'Vous êtes à'+" "+distances[closest].toFixed(2)+" "+"km de distance de l'oeuvre"+' '+markers[closest].getAttribute("name");
+         document.getElementById("distanceMarqueur").innerHTML = "Vous êtes à " + distances[closest].toFixed(2) + " km de distance de l'oeuvre" + markers[closest].getAttribute("name");
        if (distances[closest]<= 0.50){
                     if(markers[closest].getAttribute("idOeuvre") != null){
                                 Date.prototype.yyyymmdd = function() {        //function pour avoir la date d'aujourd'hui 
@@ -1991,7 +1986,7 @@ function marqueurPlusPresTrajet(lat, lng) {
             selectMultiple.appendChild(optMult);
         }
     }
-         document.getElementById("distanceMarqueur").innerHTML = 'Vous êtes à'+" "+distances[closest].toFixed(2)+" "+"km de distance de l'oeuvre"+' '+'"'+markers[closest].getAttribute("name")+'"';
+         document.getElementById("distanceMarqueur").innerHTML = "Vous êtes à " + distances[closest].toFixed(2) + " km de distance de l'oeuvre " + markers[closest].getAttribute("name");
          
         
 });
@@ -2057,13 +2052,6 @@ function fermer(){
 function fermerApprob(){
     document.getElementById('bgPanneauApprobation').style.display = "none";
     document.getElementById('panneauApprobation').style.display = "none";
-}
-
-//formulaire de la vueAdmin qui permet d'afficher le formulaire pour authoriser les photos non-autorisés
-function formRevisionPhotos(idPhoto){
-    var idPhoto = idPhoto;
-    document.getElementById('formRevisionPhotos').style.display = "block";
-    document.getElementById('formRevisionPhotos').innerHTML="<form action='#' id='formRevisionPhoto' method='post' name='formRevisionPhoto'><button id='fermer' onclick ='fermer()'>X</button><h3>Id Image:</h3><p>Adresse Oeuvre</p><img src='<?php $photoAffiche = $this->$photoAReviser['image']?>'><input id='insererPhoto' name='insererPhoto' type='submit' onclick='fermer()' value='Insérer'><input id='suprimmerPhoto' name='suprimmerPhoto' type='submit' onclick='fermer()' value='Suprimmer'></form>";
 }
 
 

@@ -93,8 +93,6 @@ class VueProfil extends Vue {
         
             
         <div class="profileUser" id="">
-            <h3>NomUser</h3>
-            <p><?php echo $this->profilUtilisateur['nomUsager']; ?></p>
             <h3>Photo de profil</h3>
             <p class="imageProfile">
             <?php
@@ -109,27 +107,49 @@ class VueProfil extends Vue {
                 }?>
                
             </p>
-            <h3>Bio</h3>
-            <h4>Description du profil: </h4>
-            <?php echo "<div class='profileUserBio'>".$this->profilUtilisateur['descriptionProfil']."</div>"; ?>
-            <h4>Quantité d'oeuvres Visités</h4> 
-            <?php echo "<p>".$this->nbrOeuvreVisite['COUNT(*)']."</p>"; ?>
-            <h4>Nombres de points:</h4>
-            <?php echo "<p>".(5*$this->nbrOeuvreVisite['COUNT(*)'])."</p>"; ?>
-             <h4>Nom des oeuvres Visités:</h4>
+            <h4>Nom d'utilisateur :</h4>
             <?php 
-            for ($i = 0; $i < count($this->oeuvreVisiter); $i++)
-                {    
-                echo "<p>".$this->oeuvreVisiter[$i]["titre"]."</p>";
-                echo "<p><a class='pourEnSavoirPlusProfil' href=http://".$_SERVER['HTTP_HOST']."?r=oeuvre&o=".$this->oeuvreVisiter[$i]["idOeuvre"]."'>Pour en savoir plus...</a>"."</p>";
+                echo "<p class='profileUserBio'>".$this->profilUtilisateur['nomUsager']."</p>";
+            ?>
+            <h4>Nom complet :</h4>
+            <?php 
+                echo "<p class='profileUserBio'>".$this->profilUtilisateur['prenom']." ".$this->profilUtilisateur['nom']."</p>";
+            ?>
+            <h4>Courriel :</h4>
+            <?php 
+                echo "<p class='profileUserBio'>".$this->profilUtilisateur['courriel']."</p>";
+            ?>
+            <h4>Description du profil :</h4>
+            <?php 
+                if ($this->profilUtilisateur['descriptionProfil'] != "") {
+                    echo "<p class='profileUserBio'>".$this->profilUtilisateur['descriptionProfil']."</p>";
+                }
+                else {
+                    echo "<p class='profileUserBio'>Aucune description</p>";
                 }
             ?>
-            <a id ="lienGestion4" class="boutonMoyenne boutonsLiens boutonHover" href="javascript:;">Modifier informations</a>
+            <h4>Quantité d'oeuvres Visités :</h4> 
+            <?php echo "<p>".$this->nbrOeuvreVisite['COUNT(*)']."</p>"; ?>
+            <h4>Nombres de points :</h4>
+            <?php echo "<p>".(5*$this->nbrOeuvreVisite['COUNT(*)'])."</p>"; ?>
+             <h4>Nom des oeuvres Visités :</h4>
+            <?php 
+                if ($this->oeuvreVisiter) {
+                    for ($i = 0; $i < count($this->oeuvreVisiter); $i++)
+                    {    
+                    echo "<p><a target = '_blank' class='lienOeuvreProfil' href=http://".$_SERVER['HTTP_HOST']."?r=oeuvre&o=".$this->oeuvreVisiter[$i]["idOeuvre"].">" . $this->oeuvreVisiter[$i]["titre"] . "</a></p>";
+                    }
+                }
+                else {
+                    echo "<p class='profileUserBio'>Aucune oeuvre visitée</p>";
+                }
+            ?>
+            <a  id ="modifInfosProfil" class="boutonMoyenne boutonsLiens boutonHover" href="javascript:;">Modifier informations</a>
         </div>
         
                <!-- ----- MODIFICATION Utilisateur ------- -->
 
-       <div id="Onglet-4">
+       <div id="OngletModifProfil">
             <h2 class="h2PageGestion">Modifier Informations</h2>
       
            <div id="formModif">
@@ -144,10 +164,10 @@ class VueProfil extends Vue {
 
                 <br>
                 <textarea name='descriptionModif' class="inputGestion textAreaGestion" id="descriptionModif" placeholder="Votre description"><?php echo $descriptionModif; ?></textarea>
-                <br><span class="erreur" id="erreurDescriptionModif"><?php if (isset($this->msgErreurs["errDescription"])) {echo $this->msgErreurs["errDescription"];} ?></span>
                 <br>
                 
                  <input type='password' class="inputGestion" name='motdepasseModif' id='motdepasseModif'   placeholder="nouveau mot de passe (optionnel)" value='<?php echo $motdepasseModif; ?>'/>
+                <input type='hidden' name='grainSelModif' id='grainSelModif' value='<?php echo $_SESSION['grainSel'];?>'>
                 <br><span class="erreur" id="erreurMotdepasseModif"><?php if (isset($this->msgErreurs["errMotdepasse"])) {echo $this->msgErreurs["errMotdepasse"];} ?></span>
                 <input type="hidden" id='idUtilisateur' value='<?php echo $_SESSION["idUsager"]; ?>'/>
                 <input type="file" name="fileToUpload" id="fileToUpload" class="fileToUploadGestion">

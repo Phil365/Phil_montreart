@@ -79,7 +79,7 @@ class Vue {
                     <div class="barreRechercheContenu">
                         <form action="?r=recherche" method="post">
                             <select name="typeRecherche" class="typeRecherche">
-                                <optgroup>
+                                <optgroup label="text">
                                     <option value="">Chercher une oeuvre par...</option>
                                     <option value="artiste">Artiste</option>
                                     <option value="titre">Titre d'oeuvre</option>
@@ -94,19 +94,19 @@ class Vue {
                 </div>
                 <div class="boutonRecherche">
                     <div class="flecheRecherche"></div>
-                    <img class="iconeRecherche" src="./images/flecheRecherche.png">
+                    <img class="iconeRecherche" src="./images/flecheRecherche.png" alt="fleche recherche">
                 </div>
                 
                 
                 <div class="boutonRechercheMobile">
-                    <img class="iconeRechercheMobile" src="./images/flecheRecherche.png">
+                    <img class="iconeRechercheMobile" src="./images/flecheRecherche.png" alt="fleche recherche">
                 </div>
                    
                 <div class="barreRechercheMobile">
                     <div class="barreRechercheContenuMobile">
                         <form action="?r=recherche" method="post">
                             <select name="typeRechercheMobile" class="typeRechercheMobile">
-                                <optgroup>
+                                <optgroup label="text">
                                     <option value="">Chercher une oeuvre par...</option>
                                     <option value="artiste">Artiste</option>
                                     <option value="titre">Titre d'oeuvre</option>
@@ -124,23 +124,23 @@ class Vue {
 
                 <nav id="navNormale">
 <!--                    Les <a> doivent rester comme ça pour corriger un bug (enter ajoute un espace de 2 pixels entres les <a>-->
-                    <a href="?r=accueil" id="NavAccueil">Accueil</a><a href="?r=trajet">Trajet</a><a href="?r=soumission">Soumettre une oeuvre</a><?php if (isset($_SESSION["idUsager"])) {
+                    <a href="?r=accueil">Accueil</a><a href="?r=trajet">Trajet</a><a href="?r=soumission">Soumettre une oeuvre</a><?php if (isset($_SESSION["idUsager"])) {
                         echo '<a href="?r=profil">Profil</a>';
                         if (isset($_SESSION["idUsager"]) && $_SESSION["admin"] === "1") {
                             echo '<a href="?r=gestion">Gestion</a>';
                         }
-                        echo '<a href="#" onclick="deconnexion()">Deconnexion</a>';
+                        echo '<a href="javascript:;" onclick="deconnexion()">Deconnexion</a>';
                     }
                     else {
-                        echo '<a href="#" onclick="afficherLogin()">Se connecter</a>';
+                        echo '<a href="javascript:;" onclick="afficherLogin()">Se connecter</a>';
                     }
                     ?>
                 </nav>
                 
                 <div id="navMobile">
-                    <img src="images/navBouton.png" id="navBoutonMobile">
+                    <img src="images/navBouton.png" id="navBoutonMobile" alt="bouton de la nav">
                     <div id="navAMobile">
-                    <a href="?r=accueil" id="NavAccueil">Accueil</a>
+                    <a href="?r=accueil">Accueil</a>
                     <a href="?r=trajet">Trajet</a>
                     <a href="?r=soumission">Soumettre une oeuvre</a>
                     <?php if (isset($_SESSION["idUsager"])) {
@@ -148,10 +148,10 @@ class Vue {
                         if (isset($_SESSION["idUsager"]) && $_SESSION["admin"] === "1") {
                             echo '<a href="?r=gestion">Gestion</a>';
                         }               
-                        echo '<a href="#" onclick="deconnexion()">Deconnexion</a>';
+                        echo '<a href="javascript:;" onclick="deconnexion()">Deconnexion</a>';
                     }
                     else {
-                        echo '<a href="#" onclick="afficherLogin()">Se connecter</a>';
+                        echo '<a href="javascript:;" onclick="afficherLogin()">Se connecter</a>';
                     }
                     ?>
                     </div>
@@ -168,7 +168,7 @@ class Vue {
 
                         <input id="user" class='inputLogin' name="user" placeholder="Nom d'utilisateur" type="text">
                         <input id="pass" class='inputLogin' name="pass" placeholder="Mot de passe" type="password">
-                        <input type='hidden' name='grainSel' value='<?php echo $_SESSION['grainSel'];?>'>
+                        <input type='hidden' name='grainSel' id='grainSel' value='<?php echo $_SESSION['grainSel'];?>'>
                         <br><span class="erreur centrerTexte" id="erreurLogin"></span>
                         <button type="button" class="boutonMoyenne" onclick="validerLogin()">Envoyer</button>
                         <a href="?r=devenir_membre"><h3>Devenez Membre!</h3></a>
@@ -188,11 +188,17 @@ class Vue {
     ?>
         </div>
         <footer>
-             <button class="lienPageMembre" onclick="location.href = '?r=devenir_membre';"><h3>Devenez membre!</h3></button>
+            <?php
+                if (!isset($_SESSION["idUsager"])) {
+            ?>
+                    <button class="lienPageMembre" onclick="location.href = '?r=devenir_membre';">Devenez membre!</button>
+            <?php
+                }
+            ?>
             <div class="reseauxsociaux">
-                <img id="logofb" src="images/fblogo.png" alt="logofb">
-                <img id="logoInsta" src="images/instalogo.png" alt="logoInsta">
-                <img id="logoPin" src="images/pinlogo.png" alt="logoPin">
+                <a target='_blank' href='https://www.facebook.com/'><img id="logofb" src="images/fblogo.png" alt="logofb"></a>
+                <a target='_blank' href='https://www.instagram.com/'><img id="logoInsta" src="images/instalogo.png" alt="logoInsta"></a>
+                <a target='_blank' href='https://www.pinterest.com/'><img id="logoPin" src="images/pinlogo.png" alt="logoPin"></a>
             </div>
         </footer>
     </body>

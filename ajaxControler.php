@@ -666,7 +666,6 @@ function updateLiensApprobCommentaires () {
 * @return void
 */
 function googleMap () {
-    
     $dom = new DOMDocument("1.0");
     $node = $dom->createElement("markers");
     $parnode = $dom->appendChild($node);
@@ -689,7 +688,6 @@ function googleMap () {
     }
     header("Content-type: text/xml");
     echo $dom->saveXML();
-    
 }
 /**
 * @brief Fonction qui vérifie si l'utilisateur a deja visiter l'oeuvre et l'ajoute sinon
@@ -697,7 +695,7 @@ function googleMap () {
 * @return void
 */
 function visiteOeuvres () {
-//    var_dump($_POST["idOeuvre"], $_POST["idUtilisateur"]);
+    
     $test= false;
     $oeuvre = new Oeuvre();
     $test =  $oeuvre->aVisiteOeuvre($_POST["idOeuvre"], $_POST["idUtilisateur"]); 
@@ -943,7 +941,7 @@ function connexion () {
 }
 
 /**
-* @brief Fonction qui déconnecte l'usager usager
+* @brief Fonction qui déconnecte l'usager
 * @access public
 * @author David Lachambre
 * @return void
@@ -953,15 +951,17 @@ function deconnexion () {
     session_start();
     session_destroy();
 }
-/**
-* @brief Fonction qui récupère toutes les oeuvres de la BDD.
-* @access public
-* @author David Lachambre
-* @return void
-*/
+
 /* --------------------------------------------------------------------
 ================================PROFIL==================================
 -------------------------------------------------------------------- */
+
+/**
+* @brief Fonction qui récupère les infos de l'utilisateur.
+* @access public
+* @author Cristina Manheke
+* @return void
+*/
 function recupererInfoUtilisateur() {
 
     $utilisateur = new Utilisateur();
@@ -970,20 +970,19 @@ function recupererInfoUtilisateur() {
    echo json_encode($utilisateurs);//Encode le tableau d'oeuvres retourné par la requête en Json.
 }
 /**
-* @brief Fonction qui modifie l'oeuvre choisie par un administrateur
-//* @access public
-* @author David Lachambre
+* @brief Fonction qui modifie l'utilisateur
+* @access public
+* @author Cristina Manheke
 * @return void
 */
 function modifierUtilisateur () {   
     $utilisateur = new Utilisateur();
-    $msgErreurs = $utilisateur->modifierOeuvre(md5($_POST["motPasse"]), $_POST["prenom"], $_POST["nom"], $_POST["description"], $_POST["idUtilisateur"]);
+    $msgErreurs = $utilisateur->modifierUtilisateur($_POST["motPasse"], $_POST["prenom"], $_POST["nom"], $_POST["description"], $_POST["idUtilisateur"]);
     echo json_encode($msgErreurs);//Encode le tableau d'erreurs retourné par la requête en Json.
 }
 /**
 * @brief Fonction qui ajoute la photo soumise
 * @access public
-* @author David Lachambre
 * @author Philippe Germain
 * @return void
 */
@@ -993,9 +992,6 @@ function ajouterPhotoUtilisateur () {
     $photo = new Photo();
     $typePhoto = "utilisateur";
     $msgErreurs = $photo->ajouterPhoto($_GET["idUtilisateur"], true, $typePhoto);
-//    $msgErreurs = 'ttoto';
-    
-    
     echo $msgErreurs;
 }
 ?>

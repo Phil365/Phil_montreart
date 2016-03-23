@@ -133,12 +133,12 @@ class VueOeuvre extends Vue {
             if ($this->photos) {//Si des photos existent pour cette oeuvre...
                 for ($i = 0; $i < count($this->photos); $i++) {
                     $imgPhoto = $this->photos[$i]['image'];
-                    echo "<img src = '$imgPhoto'>";
+                    echo "<img src = '$imgPhoto' alt='image photo'>";
                 }
             }
             else {//Image par défaut
                 $imgDefaut = "images/imgDefaut".$this->langue.".png";
-                echo "<img src = '$imgDefaut'>";
+                echo "<img src = '$imgDefaut' alt='image photo'>";
             }
             echo "</div>"; //fin div sliderOeuvre
             $idOeuvreencours=$this->oeuvre["idOeuvre"];
@@ -170,10 +170,10 @@ class VueOeuvre extends Vue {
                                 $imgVote = "etoiles_0.png";
                                 break;
                         }
-                 echo "<div class='ratingUtilisateur'><p><img src = 'images/$imgVote'></div></p>";
+                 echo "<div class='ratingOeuvre'><img src = 'images/$imgVote' alt='image de classement'></div>";
             }else{
                 
-                echo "<div class='ratingUtilisateur'><p><img src = 'images/etoiles_0.png'></div></p>";
+                echo "<div class='ratingOeuvre'><img src = 'images/etoiles_0.png' alt='image de classement'></div>";
                 echo "<p>Non-classé</p>";
             }
         
@@ -212,7 +212,7 @@ class VueOeuvre extends Vue {
         if ( $this->oeuvre["nomArrondissement"]) {
             echo "<h4 class='h4InfosOeuvre'>Arrondissement : </h4>"."<p>". $this->oeuvre["nomArrondissement"]."</p>";
         }
-        echo "<button class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</button></div>";//fin div infosOeuvre
+        echo "<a class='boutonMoyenne' id='boutonDirection' href='?r=trajet'>Directions</a></div>";//fin div infosOeuvre
             
             
             
@@ -237,31 +237,8 @@ class VueOeuvre extends Vue {
                 </form>
 
                 <div class='borderMobile'></div>
-        
-                <form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();">            <p><h3 class='titresPageOeuvre' id="h3CommentaireTitre">Commentaire :</h3></p>    
-                <input type="hidden" name="idOeuvreencours" value="<?php echo $idOeuvreencours ?>">
-                <div class="cont">
-                  <div class="stars">
-                      <input class="star star-5" name='vote' id="star-5-2" type="radio" name="star" value='5'/>
-                      <label class="star star-5" for="star-5-2"></label>
-                      <input class="star star-4"  name='vote'id="star-4-2" type="radio" name="star" value='4'/>
-                      <label class="star star-4" for="star-4-2"></label>
-                      <input class="star star-3" name='vote' id="star-3-2" type="radio" name="star" checked="checked" value='3'/>
-                      <label class="star star-3" for="star-3-2"></label>
-                      <input class="star star-2" name='vote' id="star-2-2" type="radio" name="star" value='2'/>
-                      <label class="star star-2" for="star-2-2"></label>
-                      <input class="star star-1"  name='vote' id="star-1-2" type="radio" name="star" value='1'/>
-                      <label class="star star-1" for="star-1-2"></label>
-                  </div>
-                </div>
-                <textarea name='commentaireAjout' id='commentaireAjout' ></textarea>
-
-                <input  class='boutonMoyenne' id="boutonAjouterCom" type='submit' name='ajoutCommentaire' value='Ajouter un commentaire'  >
-            <br>
-                    <span id="erreurCommentaire" class="erreur"><?php if (isset($this->MsgCommentaire)) {echo $this->MsgCommentaire;} ?></span>
-            </form>
+                <h3 class='titresPageOeuvre' id="h3CommentaireTitre">Commentaires :</h3>
                 <?php
-//                echo " <div class='sectionCommentaires'><h3>Commentaires</h3><button class='boutonMoyenne' id='boutonCommentaire' onclick=''>Laisser un commentaire</button>";
                 if ($this->commentaires) {//Si des commentaires existent pour cette oeuvre dans la langue d'affichage...
                     for ($i = 0; $i < count($this->commentaires); $i++) {
                         echo "<div class='unCommentaire'>";
@@ -292,18 +269,41 @@ class VueOeuvre extends Vue {
                             $imgPhoto = 'images/photoProfilDefaut.jpg';
                         }
 
-                        echo "<img class='thumbnail' src = '$imgPhoto'><br>";
+                        echo "<img class='thumbnail' src = '$imgPhoto' alt='photo de profil'><br>";
                         echo "<h5 id='idUtilisateur'>".$this->commentaires[$i]["nomUsager"]."</h5>";
 
-                        echo "<div class='ratingUtilisateur'><p><img src = 'images/$imgVote'></div></p>";
-                        echo "<p class='textStandard' id='texteCommP'>".$this->commentaires[$i]["texteCommentaire"]."</p>"."</div>";
+                        echo "<img class='ratingUtilisateur' src = 'images/$imgVote' alt='photo du vote'>";
+                        echo "<p class='texteCommP'>".$this->commentaires[$i]["texteCommentaire"]."</p>"."</div>";
                         //fin div unCommentaire
                     }
                 }
                 else {
-                    echo "<p class='textStandard' id='aucunCommP'>Aucun commentaire</p>";
+                    echo "<div class='unCommentaire'><p class='texteCommP'>Aucun commentaire</p></div>";
                 }//fin div commentaires 
-            echo "</div>";
+            ?>
+<form method="post" name="formAjoutCommentaire" id='formAjoutCommentaire' action="?r=oeuvre&o=<?php echo($idOeuvreencours);?>&action=envoyerCommentaire"  onsubmit="return valideAjoutCommentaireOeuvre();">
+                <input type="hidden" name="idOeuvreencours" value="<?php echo $idOeuvreencours ?>">
+                <div class="cont">
+                  <div class="stars">
+                      <input class="star star-5" name='vote' id="star-5-2" type="radio" value='5'/>
+                      <label class="star star-5" for="star-5-2"></label>
+                      <input class="star star-4"  name='vote' id="star-4-2" type="radio" value='4'/>
+                      <label class="star star-4" for="star-4-2"></label>
+                      <input class="star star-3" name='vote' id="star-3-2" type="radio" checked="checked" value='3'/>
+                      <label class="star star-3" for="star-3-2"></label>
+                      <input class="star star-2" name='vote' id="star-2-2" type="radio" value='2'/>
+                      <label class="star star-2" for="star-2-2"></label>
+                      <input class="star star-1"  name='vote' id="star-1-2" type="radio" value='1'/>
+                      <label class="star star-1" for="star-1-2"></label>
+                  </div>
+                </div>
+                <textarea name='commentaireAjout' id='commentaireAjout' ></textarea>
+
+                <input  class='boutonMoyenne' id="boutonAjouterCom" type='submit' name='ajoutCommentaire' value='Ajouter un commentaire'  >
+            <br>
+                    <span id="erreurCommentaire" class="erreur"><?php if (isset($this->MsgCommentaire)) {echo $this->MsgCommentaire;} ?></span>
+            </form>
+<?php
         }
     }
 }

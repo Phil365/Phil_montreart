@@ -189,7 +189,7 @@ h1 {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 2em;
     color: #70212F;
-    margin: 40px 10px 20px 10px;
+    margin: 30px 10px 20px 10px;
     text-align: center;
     font-weight: bolder;
 }
@@ -243,13 +243,12 @@ footer {
     letter-spacing: .6px;
     line-height: 1.6em;
     color: #ffffff;
-    padding: 0px, 0px, 10px, 0px;
-    margin-bottom: 30px;
+    padding: 0;
+    padding-bottom: 10px;
 }
 
 .global {
     background-color: #ffffff;
-    padding-bottom: 30px;
 }
 
 .textStandard {
@@ -259,7 +258,7 @@ footer {
     line-height: 1.5em;
     letter-spacing: .9px;
     font-weight: 500;
-    margin: 40px 10px;
+    padding: 10px;
 }
 
 .noIndent {
@@ -285,7 +284,7 @@ footer {
 /*div bidon qui reste en dessous du nav fixe*/
 
 .dummy {
-    height: 89px;
+    height: 100px;
 }
 
 .section1 {
@@ -348,6 +347,7 @@ footer {
     float: right;
     width: 150px;
     margin-right: 10px;
+    margin-top: 5px;
 }
 
 .reseauxsociaux img {
@@ -435,6 +435,9 @@ footer {
 
 .unCommentaire {
     width: 100%;
+    margin-top: 20px;
+    border-bottom: solid 2px #d6d6d6;
+    text-align: center;
 }
 
 .aside1 {
@@ -454,25 +457,10 @@ footer {
 .thumbnail {
     width: 50px;
     height: 50px;
-    margin-left: 5%;
-}
-
-#idUtilisateur {
-    margin-left: 5%;
-}
-
-.ratingUtilisateur {
-    height: 10px;
-    margin-left: 5%;
-}
-
-.ratingUtilisateur img {
-    width: 8%;
 }
 
 .pourEnSavoirPlus {
     margin-top: 50px;
-/*    margin-left: 30px;*/
     color: #ffffff;
     padding: 5px;
     background-color: #659CEF;
@@ -504,12 +492,14 @@ footer {
     border: 2px solid #47ce51;
 }
 
-#distanceMarqueur {
-    display: block;
-    height: auto;
-    margin-top: 20px;
+.distanceMarqueur {
     font-size: 1.1em;
     color: #70212F;
+    width: 100%;
+    background-color: #B32A42;
+    color: white;
+    text-align: center;
+    padding-top: 10px;
 }
 
 #directions-panel {
@@ -530,11 +520,6 @@ footer {
     margin-top: 40px;
 }
 
-#backgroundOeuvreHead {
-    background-color: aquamarine;
-    height: 580px;
-}
-
 .h4InfosOeuvre {
     color: azure;
 }
@@ -551,19 +536,6 @@ footer {
     text-align: center;
 }
 
-/*-----------Classes d'incrémentation des résultats de la page recherche-------------*/
-
-.1 { 
-    float: left; width: 33%; 
-}
-
-.2 { 
-    float: right; width: 33%; 
-}
-
-.3 { 
-    display: inline-block; width: 33%; 
-}
 
 /*------------- PAGE GESTION -----------------------*/
 
@@ -630,12 +602,21 @@ footer {
 }
 
 .boutonsLiens {
-    width: 15%;
+    width: 80%;
     display: inline-block;
     background: #B32A42;
     border-radius: 8px;
-    margin: 20px;
+    margin: 0 0 20px 0;
     font-weight: bold;
+}
+
+.lienOeuvreProfil {
+    color: #659CEF;
+    font-weight: bold;
+}
+
+.lienOeuvreProfil:hover {
+    color: #70212F;
 }
 
 .infoResult {
@@ -731,6 +712,10 @@ footer {
     border-radius: 10px;
     font-family: 'Source Sans Pro', sans-serif;
     background-color: #fff;
+}
+
+#modifInfosProfil {
+    margin-top: 20px;
 }
 
 #misAJour {
@@ -1055,7 +1040,7 @@ textarea:focus {
     text-align: center;
 }
 
-#form_itineraire input[type="submit"] {
+#form_itineraire input[type="button"] {
     float: right;
     width: 100px;
 }
@@ -1091,6 +1076,7 @@ div.stars {
     width: 270px;
     display: inline-block;
     margin-left: 15px;
+    margin-top: 20px;
 }
 
 input.star {
@@ -1161,24 +1147,25 @@ nav {
 }
 
 .lienPageMembre {
+    float: left;
     display: block;
-    position: absolute;
-    top: 16px;
     width: 80px;
-    height: 60px;
     background-color: #ffffff;
     border: 2px solid #F8F274;
-    border-radius: 14px;
+    margin-left: 40px;
+    margin-top: 25px;
+    border-radius: 8px;
+    font-size: 1.1em;
 }
 
-.lienPageMembre h3 {
-    margin: 0 auto;
-    size: 1.1em;
+.lienPageMembre:hover {
+    background-color: #F8F274;
+    border: 2px solid #70212F;
 }
 
 .reseauxsociaux img {
     width: 30px;
-    margin-top: 20px;
+    margin-top: 24px;
 }
 
 .titresPageOeuvre {
@@ -1187,15 +1174,25 @@ nav {
 
 .infosOeuvre {
     text-align: center;
-    height: 620px;
-}
-
-.ratingUtilisateur img {
-    width: 20%;
+    height: auto;
+    padding-bottom: 10px;
 }
 
 .ratingUtilisateur {
-    margin-left: 0;
+    width: 30%;
+    display: inline-block;
+    margin-top: 40px;
+}
+
+.ratingOeuvre {
+    text-align: center;
+    display: inline-block;
+}
+
+.ratingOeuvre img {
+    margin-top: 10px;
+    width: 20%;
+    display: inline-block;
 }
 
 .borderMobile {
@@ -1209,33 +1206,6 @@ nav {
 
 .inputPageAdmin {
     margin-left: 30px;
-}
-
-.premiereColonne h3 {
-    margin-top: 50px;
-    margin-left: 30px;
-}
-
-.deuxiemmeColonne h3 {
-    margin-left: 30px;
-    overflow-y: none;
-}
-
-.troisiemmeColonne h3 {
-    margin-left: 30px;
-    overflow-y: none;
-}
-
-.lienPageMembre {
-    display: block;
-    position: absolute;
-    top: 11px;
-    width: 80px;
-    height: 50px;
-    margin-left: 10px;
-    background-color: #ffffff;
-    border: 2px solid #70212F;
-    border-radius: 10px;
 }
 
 .boutonRecherche {
@@ -1314,7 +1284,7 @@ nav {
     font-size: 1.2em;
 }
 
-#form_itineraire input[type="submit"] {
+#form_itineraire input[type="button"] {
     float: none;
     margin-left: 29%;
 }
@@ -1323,15 +1293,6 @@ nav {
     width: 30px;
     margin-top: 10px;
     margin-left: 7px;
-}
-
-#distanceMarqueur {
-    width: 100%;
-    background-color: #B32A42;
-    color: white;
-    text-align: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 #lionDesktop {
@@ -1451,8 +1412,9 @@ nav {
 
 #backgroundOeuvreHead {
     background-color: rgba(179, 42, 66, 0.84);
-    height: 1200px;
+    height: auto;
     margin-bottom: 30px;
+    padding-bottom: 20px;
 }
 
 #commentaireAjout {
@@ -1460,8 +1422,8 @@ nav {
     height: 150px;
 }
 
-#texteCommP {
-    margin-top: 0%;
+.texteCommP {
+    margin: 10px auto 30px auto;
 }
 
 div.stars {
@@ -1469,10 +1431,6 @@ div.stars {
 }
 
 /*======================================== Style recherche mobile ====================================================*/
-
-.boutonsLiens {
-    width: auto;
-}
 
 .boutonRechercheMobile {
     background: #B32A42;
@@ -1557,6 +1515,12 @@ div.stars {
     display: none;
 }
 
+.resultatsRecherche {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+
 #results {
     width: 92%;
     border: 1px solid #c0c0c0;
@@ -1639,6 +1603,10 @@ div.stars {
     margin: 0 auto;
 }
 
+#promoMobile {
+    margin-bottom: 30px;
+}
+
 #directions-panel {
     text-align: center;
     margin: 0 auto;
@@ -1692,12 +1660,7 @@ div.stars {
   text-align: center;
 
     }
-    .profileUserBio  {
-         text-align: center;
-  margin: 0 auto;
-  width: 30em;
-          max-width: 80%;
-    }
+
     .profileUser img{
        max-width: 200px;
     height: auto;
@@ -1717,75 +1680,70 @@ div.stars {
 and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 40/71) and (orientation:portrait)
 {
 
-/*----Page Trajet-----*/    
-    
-#fin {
-    width: 180px;
-}
-    
-/*----Page Trajet-----*/ 
-    
-#form_itineraire input[type="submit"] {
-    margin-left: 24%;
-}
-    
-#boutonAjouterSoumission {
-    margin-left: 37%;
-}
-    
-    
-/*----Page gestion-----*/
-    
-.inputGestion, .selectGestion {
-    margin-left: 45px;
-    margin-right: 30px;
-}
-    
-.fileToUploadGestion {
-    margin-left: 46px;
-}
-    
-#btnAjoutOeuvre {
-    margin-left: 36%;
-}
-    
-#btnSupOeuvre {
-    margin-left: 31%;
-}
-    
-#btnSupCat {
-    margin-left: 31%;
-}
+    /*----Page Trajet-----*/    
 
-/*-----Page oeuvre------*/
+    #fin {
+        width: 180px;
+    }
 
-#formPhotoUnique input[type="file"] {
-    width: 240px;
-    text-align: center;
-    font-size: 13px;
-    margin-left: 30px;
-}
+    /*----Page Trajet-----*/ 
 
-#commentaireAjout {
-    width: 257px;
-}
-    
-div.stars {
-    margin-left: 9%;
-}
-    
-#boutonAjouterCom {
-    margin-left: 16%;
-}
-    
-.infosOeuvre {
-    width: 97%;   
-}
-    
-#backgroundOeuvreHead {
-    height: 1150px;
-}
-    
+    #form_itineraire input[type="button"] {
+        margin-left: 24%;
+    }
+
+    #boutonAjouterSoumission {
+        margin-left: 37%;
+    }
+
+
+    /*----Page gestion-----*/
+
+    .inputGestion, .selectGestion {
+        margin-left: 45px;
+        margin-right: 30px;
+    }
+
+    .fileToUploadGestion {
+        margin-left: 46px;
+    }
+
+    #btnAjoutOeuvre {
+        margin-left: 36%;
+    }
+
+    #btnSupOeuvre {
+        margin-left: 31%;
+    }
+
+    #btnSupCat {
+        margin-left: 31%;
+    }
+
+    /*-----Page oeuvre------*/
+
+    #formPhotoUnique input[type="file"] {
+        width: 240px;
+        text-align: center;
+        font-size: 13px;
+        margin-left: 30px;
+    }
+
+    #commentaireAjout {
+        width: 257px;
+    }
+
+    div.stars {
+        margin-left: 9%;
+    }
+
+    #boutonAjouterCom {
+        margin-left: 16%;
+    }
+
+    .infosOeuvre {
+        width: 97%;   
+    }    
 } 
 
     
@@ -1802,8 +1760,20 @@ div.stars {
     header {
         height: 57px;
     }
+    .lienPageMembre {
+        float: left;
+        display: block;
+        width: 140px;
+        height: 40px;
+        margin-left: 40px;
+        margin-top: 18px;
+        font-size: 1.1em;
+    }
+    .global {
+        padding-bottom: 30px;
+    }
     nav {
-        display: none;
+        display: block;
         width: 100%;
         background-color: #ffffff;
         border-top: #70212F solid 4px;
@@ -1813,11 +1783,11 @@ div.stars {
         z-index: 2;
         text-align: center;
     }
-    nav a {/*modif David*/
+    nav a {
         margin: 0 2px;
         letter-spacing: .4px;
         font-family: 'Source Sans Pro', sans-serif;
-        font-size: 1.2em;
+        font-size: 1em;
         display: initial;
         color: white;
         text-decoration: none;
@@ -1825,6 +1795,9 @@ div.stars {
         border-radius: 5px;
         padding-top: 0;
         padding-bottom: 0;
+    }
+    .ratingUtilisateur {
+        width: 10%;
     }
     .barreRechercheContenuMobile {
         display: none;
@@ -1938,11 +1911,10 @@ div.stars {
         border-radius: 8px;
         margin: 20px;
         font-weight: bold;
+        font-size: 0.8em;
     }
-    .resultatsRecherche {
-        display: block;
-        width: 100%;
-        text-align: center;
+    #navMobile {
+        display: none;
     }
     #icon_menu {
         margin-left: 2%;
@@ -1994,7 +1966,7 @@ div.stars {
     #panneauApprobation h2 a:hover {
         color: #B32A42;
     }
-    #form_itineraire input[type="submit"] {
+    #form_itineraire input[type="button"] {
         margin: 0 auto;
         margin-top: 30px;
     }
@@ -2110,14 +2082,9 @@ div.stars {
 /*========================================  STYLES POUR TABLETTE 800+ px ====================================================*/
 
 @media (min-width: 620px) {
-    #navMobile {
-        display: none;
-    }
+    
     #divPanneauApprobation {
         min-width: 500px;
-    }
-    nav {
-        display: block;
     }
     .fieldsetRecherche { 
         display: inline-block;
@@ -2162,16 +2129,9 @@ div.stars {
         height: 76px;
         width: 100%;
     }
-/*
-    nav {
-        margin: 0 auto;
+    nav a {
+        font-size: 1.2em;
     }
-*/
-/*
-    nav a:first-child {
-        margin-left: 16%;
-    }
-*/
     h2 {
         margin-left: 20px;
         margin-right: 20px;
@@ -2194,9 +2154,6 @@ div.stars {
         line-height: 1.4em;
         letter-spacing: .9px;
         font-weight: 500;
-        margin: 40px 10px;
-    }
-    .textStandard {
         margin: 40px 20px;
     }
     .dummy {
@@ -2204,7 +2161,7 @@ div.stars {
     }
     .sliderOeuvre {
         width: 60%;
-        margin-top: 45px;
+        margin-top: 36px;
         height: 400px;
         overflow: hidden;
     }
@@ -2268,12 +2225,6 @@ div.stars {
         width: 335px;
         height: auto;
         margin: 0 auto;
-    }
-    .lienPageMembre {
-        right: 82%;
-        width: 140px;
-        height: 50px;
-        top: 15px;
     }
     .infosOeuvre {
         width: 38%;
@@ -2382,8 +2333,7 @@ div.stars {
         text-align: center;
     }
     .reseauxsociaux {
-        position: absolute;
-        right: 0;
+        margin-top: 0;
     }
     #fin {
         width: 558px;
@@ -2563,6 +2513,7 @@ div.stars {
         border-radius: 8px;
         margin: 20px;
         font-weight: bold;
+        font-size: 1.2em;
     }
     #lionDesktop {
         width: 100%;
@@ -2610,18 +2561,19 @@ div.stars {
         width: 980px;
         top: 86px;
     }
-/*
-    nav a:first-child {
-        margin-left: 20%;
+    
+    footer {
+        margin-bottom: 30px;
     }
-*/
+
     .dummy {
-        height: 120px;
+        height: 130px;
     }
     .textStandard,
     h2 {
         max-width: 800px;
         margin-left: 30px;
+        margin-right: 30px;
     }
     .infosOeuvre {
     top: 166px;

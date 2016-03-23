@@ -177,15 +177,20 @@ class Controler {
     * @access private
     * @return void
     */
-      private function accueil() {
+    private function accueil() {
         
         $commentaire = new Commentaire ();
-        $oeuvresPopulaires = $commentaire->getOeuvresPopulaires();
-        $nbOeuvresPopulaires = count($oeuvresPopulaires);
-        $noAleatoire = rand(1,$nbOeuvresPopulaires);
-        $oeuvreVedette[] = $oeuvresPopulaires[$noAleatoire-1];
-        $photo = new Photo();
-        $photoOeuvreVedette = $photo->getPhotoByIdOeuvre($oeuvreVedette[0]["idOeuvre"]);
+        $photoOeuvreVedette = "";
+        
+        if ($oeuvresPopulaires = $commentaire->getOeuvresPopulaires()) {
+            $nbOeuvresPopulaires = count($oeuvresPopulaires);
+            $noAleatoire = rand(1,$nbOeuvresPopulaires);
+            $oeuvreVedette = array();
+            $oeuvreVedette[] = $oeuvresPopulaires[$noAleatoire-1];
+            $photo = new Photo();
+            $photoOeuvreVedette = $photo->getPhotoByIdOeuvre($oeuvreVedette[0]["idOeuvre"]);
+        }
+        
         $this->oVue = new VueAccueil();  
         $this->oVue->setDataGlobal("Accueil", "Page d'accueil", $this->langueAffichage, $this->pAccueil); 
         $this->oVue->setData($photoOeuvreVedette);
@@ -339,18 +344,15 @@ class Controler {
         $nbrOeuvreVisite='';
         $profilUtilisateur="";
         $oeuvreVisiter="";
+        $informationsAModifier = "";
 
         if (isset($_SESSION["idUsager"])){
-        //Affichage du nombre d'oeuvre visité
-        $nbrOeuvreVisite = $utilisateur->countVisiteOeuvre($_SESSION["idUsager"]);
-        //Affichage du profil utilisateur
-        $profilUtilisateur = $utilisateur->getUtilisateurById($_SESSION["idUsager"]);
-        $informationsAModifier = $utilisateur->getUtilisateurById($_SESSION["idUsager"]); 
-        $oeuvreVisiter = $utilisateur->getOeuvresVisiter($_SESSION["idUsager"]);    
-        //Tente la modif et récupère les messages d'erreur si présents.
-//        if (isset($_POST["boutonModifOeuvre"])) {
-//            $msgErreurs = $utilisateur->modifierOeuvre($_SESSION["idUsager"], md5($_POST["motdepasseModif"]), $_POST["prenomModif"], $_POST["nomModif"], $_POST["descriptionModif"],'');
-//        }    
+            //Affichage du nombre d'oeuvre visité
+            $nbrOeuvreVisite = $utilisateur->countVisiteOeuvre($_SESSION["idUsager"]);
+            //Affichage du profil utilisateur
+            $profilUtilisateur = $utilisateur->getUtilisateurById($_SESSION["idUsager"]);
+            $informationsAModifier = $profilUtilisateur; 
+            $oeuvreVisiter = $utilisateur->getOeuvresVisiter($_SESSION["idUsager"]);      
         }
         $this->oVue = new VueProfil();
         $this->oVue->setDataGlobal('profil', "page de profil utilisateur", $this->langueAffichage, $this->pProfil);

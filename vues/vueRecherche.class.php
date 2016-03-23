@@ -70,7 +70,7 @@ class VueRecherche extends Vue {
             
             foreach ($this->oeuvres as $oeuvre) {
                 if ( isset($oeuvre["titre"])) {
-                    echo "<a href=http://".$_SERVER['HTTP_HOST']."?r=oeuvre&o=".$oeuvre["idOeuvre"]."'><fieldset class='fieldsetRecherche'>";
+                    echo "<a href=http://".$_SERVER['HTTP_HOST']."?r=oeuvre&o=".$oeuvre["idOeuvre"]."><fieldset class='fieldsetRecherche'>";
                     if (isset($oeuvre["photo"])) {
                         echo "<img src='./" . $oeuvre["photo"] . "'>";
                     }
