@@ -26,29 +26,32 @@ class VueTrajet extends Vue {
        
     
     ?>
-
+        <script type="text/javascript" src="js/vendor/js-marker-clusterer-gh-pages/src/markerclusterer.js"></script>
          <div id="itineraire">
-            <div id="distanceMarqueur"></div>
-             <div id="form_itineraire" method="post" name="form_itineraire">
-                <h3>Point de départ:</h3>
+            <div id="distanceMarqueur" class='distanceMarqueur'></div>
+             <form id="form_itineraire">
+               
+                <h3>Point de départ :</h3>
                 <p>Veuillez taper une adresse si votre point de départ est différent de celui qui est montré pour l'icône</p>
                 <input type="text" id= "depart" name="pointA" value="" placeholder="votre localisation">
-                <span  id="erreurDepart" class="erreur"></span>
+                <span id="erreurDepart" class="erreur"></span>
                 <br>
-                <br><br><br><h3>Destination:</h3>
-                <span  id="erreurDestination" class="erreur"></span>
+                <br><br><h3>Destination :</h3>
+                
                 <select id= "fin" name="fin">
                     <option>Sélectionnez la fin de votre route</option>
                 </select>
+                 <br><span id="erreurDestination" class="erreur"></span>
                 
-                 <br><br><br><h3>Sélectionnez vos arrêts intermédiaires:</h3>
+                 <br><br><br><h3>Sélectionnez vos arrêts intermédiaires (optionel) :</h3>
                  <p>Ctrl+clic pour sélectionner plusieurs options</p>
-                 <span  id="erreurWaypoints" class="erreur"></span>
+                 <span id="erreurWaypoints" class="erreur"></span>
                  <select multiple id="waypoints">
                     
                  </select>
-                <input class="submit" onsubmit="return valideFormTrajet(); id="envoyerTrajetBouton" type="submit" value="Envoyer" name="Envoyer">
-            </div>
+                <input class="submit" id="envoyerTrajetBouton" type="button" value="Envoyer" name="Envoyer">
+                 <span id="erreurPasTrouve" class="erreur"></span>
+            </form>
             </div>
                 <div id="directions-panel">
                    

@@ -178,6 +178,23 @@ class Utilisateur {
 			return false;
 		}
 	}
+		/**
+    * @brief méthode qui récupère les donnees d'un utilisateur par son courriel
+    * @access public
+    * @return array
+    */
+	
+	public function getUtilisateurByCourriel($courriel){
+		
+		self::$database->query('SELECT * FROM utilisateurs WHERE utilisateurs.courriel = :courriel');
+		self::$database->bind(':courriel', $courriel);
+		
+		if($Utilisateur = self::$database->uneLigne()){
+			return $Utilisateur;
+		}else{
+			return false;
+		}
+	}
 	/**
     * @brief Méthode qui valide les champs du formulaire de ajoute utilisateur
     * @param string $nomUsager
@@ -188,13 +205,17 @@ class Utilisateur {
     * @access private
     * @return array
     */
-    private function validerFormAjoutUtilisateur($nomUsager, $motPasse, $prenom, $nom, $courriel) {
+    public function validerFormAjoutUtilisateur($nomUsager, $motPasse, $prenom, $nom, $courriel) {
 		$msgErreurs = array();//Initialise les messages d'erreur à un tableau vide.
         
         $nomUsager = trim($nomUsager);
         if (empty($nomUsager)) {
             $msgErreurs["errNomUsager"] = "Veuillez choisir un nom usager";
         }
+		$usagerExiste = $this->getUtilisateurByNomUsager($nomUsager);
+		if ($usagerExiste){
+			 $msgErreurs["errNomUsager"] = "Ce nom usager existe déjà dans notre base de données, veuillez choisir une autre";	
+		}
         $motPasse = trim($motPasse);
         if (empty($motPasse)) {
             $msgErreurs["errMotPasse"] = "Veuillez ecrire un mot de passe.";
@@ -211,10 +232,14 @@ class Utilisateur {
         }
 
         $courriel = trim($courriel);
+		$courrielExiste = $this->getUtilisateurByCourriel($courriel);
         if (empty($courriel)) {
             $msgErreurs["errCourriel"] = "Veuillez entrer votre courriel";
         }
-		 else if (!preg_match("^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$^",$courriel)) {
+		 elseif ($courrielExiste){
+			$msgErreurs["errCourriel"] = "Ce courriel existe déjà dans notre base de données";
+		}
+		 elseif (!preg_match("^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$^",$courriel)) {
                  $msgErreurs["errCourriel"] = "Veuillez reviser le format de votre courriel.";
         }
         return $msgErreurs;
@@ -302,21 +327,31 @@ class Utilisateur {
     * @access public
     * @return void
     */
-    public function modifierOeuvre($motPasse, $prenom, $nom, $descriptionProfil,$idUtilisateur) {
+    public function modifierUtilisateur($motPasse, $prenom, $nom, $descriptionProfil,$idUtilisateur) {
  
         $msgErreurs = $this->validerFormUtilisateur($prenom, $nom, $descriptionProfil);//Validation des champs obligatoires.
         
-        if (!empty($msgErreurs)) {
+        if ($msgErreurs === null) {
             return $msgErreurs;//Retourne le/les message(s) d'erreur de la validation.
         }
         else {
             try {
-                self::$database->query('UPDATE utilisateurs SET motPasse= :motPasse, prenom= :prenom, nom= :nom, descriptionProfil= :descriptionProfil WHERE idUtilisateur = :idUtilisateur');           
-                self::$database->bind(':motPasse', $motPasse);       
-                self::$database->bind(':prenom', $prenom);       
-                self::$database->bind(':nom', $nom);
-                self::$database->bind(':descriptionProfil', $descriptionProfil);
-                self::$database->bind(':idUtilisateur', $idUtilisateur);
+                if ($motPasse == "") {
+//                    return "test2";
+                    self::$database->query('UPDATE utilisateurs SET prenom= :prenom, nom= :nom, descriptionProfil= :descriptionProfil WHERE idUtilisateur = :idUtilisateur');      
+                    self::$database->bind(':prenom', $prenom);       
+                    self::$database->bind(':nom', $nom);
+                    self::$database->bind(':descriptionProfil', $descriptionProfil);
+                    self::$database->bind(':idUtilisateur', $idUtilisateur);
+                }
+                else {
+                    self::$database->query('UPDATE utilisateurs SET motPasse= :motPasse, prenom= :prenom, nom= :nom, descriptionProfil= :descriptionProfil WHERE idUtilisateur = :idUtilisateur');
+                    self::$database->bind(':motPasse', $motPasse);       
+                    self::$database->bind(':prenom', $prenom);       
+                    self::$database->bind(':nom', $nom);
+                    self::$database->bind(':descriptionProfil', $descriptionProfil);
+                    self::$database->bind(':idUtilisateur', $idUtilisateur);
+                }        
                 self::$database->execute();
                 
               

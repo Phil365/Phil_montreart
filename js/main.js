@@ -607,6 +607,12 @@ $(document).ready(function(){
     ======================== ACCORDEON PAGE GESTION =======================
     -------------------------------------------------------------------- */
     
+    //ONGLET MODIF INFOS PROFIL
+    $("#OngletModifProfil").hide();
+    $("#modifInfosProfil").click(function(){
+        $("#OngletModifProfil").slideToggle(500);
+    });
+    
     $( "#accordeon" ).accordion({
         active: false,
         collapsible: true,
@@ -1271,6 +1277,30 @@ function validerFormAjoutUtilisateur(){
     document.getElementById("msg").innerHTML = msg;
     return (!erreurs);
 }
+/**
+* @brief methode qui commence une session pour le nouveau utilisateur, ensuite de s'enregistrer, lui envoie a sa page profil
+* @access public
+* @author Cristina Mahneke
+*/
+function loginNouveauUsager(user, pass, grainSel){
+    
+       passEncrypte = encrypterMotPasse(pass, grainSel);
+      
+        $.post('ajaxControler.php?rAjax=connexionNouveau', {passNouveau:passEncrypte, userNouveau:user}, 
+            function(reponse){
+            
+            if (reponse) {//reponse === true
+//                console.log("utilisateur authentifié");
+                
+                window.location.href = "?r=profil";//Sinon, valeur par défaut.
+                //--------------------------------------------------------------------------
+            }
+            else {//reponse === false
+//                console.log("erreur user/pass");
+               
+            }
+        });
+}
 
 /**
 * @brief Fonction de validation du login
@@ -1283,48 +1313,50 @@ function validerLogin(){
     var erreurs = false;
     var msgErreur = "";
     var passEncrypte = "";
-    
     document.formLogin.user.style.border = "";
     document.formLogin.pass.style.border = "";
+    var user = document.formLogin.user.value;
+    var pass = document.formLogin.pass.value;
+    var grainSel = document.formLogin.grainSel.value;
         
-    if (document.formLogin.user.value.trim() == "") {
+    if (user.trim() == "") {
         document.formLogin.user.style.border = "solid 2px red";
         document.formLogin.user.value = "";
         erreurs = true;
     }
 
-    if (document.formLogin.pass.value.trim() == "") {
+    if (pass.trim() == "") {
         document.formLogin.pass.style.border = "solid 2px red";
         document.formLogin.pass.value = "";
         erreurs = true;
     }
     if (!erreurs) {
 
-        passEncrypte = encrypter();
-//        console.log("pass md5 + grain de sel : ", passEncrypte);
-        $.post('ajaxControler.php?rAjax=connexion', {pass: passEncrypte, user:document.formLogin.user.value}, 
+        passEncrypte = encrypterMotPasse(pass, grainSel);
+
+        $.post('ajaxControler.php?rAjax=connexion', {pass:passEncrypte, user:user}, 
             function(reponse){
             
             if (reponse) {//reponse === true
-                console.log("utilisateur authentifié");
+//                console.log("utilisateur authentifié");
                 
                 //--------------------------------------------------------------------------
                 //Code pour renvoyer l'usager sur la page actuelle, en éliminant les paramètres $_POST et $_GET inutiles, ce qui n'est pas possible avec "location.reload".
                 //--------------------------------------------------------------------------
-                var urlActuel = new RegExp("(\\?r=oeuvre&o=[0-9]+|\\?r=accueil|\\?r=trajet|\\?r=soumission|\\?r=devenir_membre)", "i");//Pages pouvant être trouvées.
+                var urlActuel = new RegExp("(\\?r=oeuvre&o=[0-9]+|\\?r=accueil|\\?r=trajet|\\?r=soumission)", "i");//Pages pouvant être trouvées.
                 var resultat = urlActuel.exec(document.URL);//Cherche le lien de la page actuelle dans l'url.
                 
-                if (resultat) {
+               if (resultat) {
                     window.location.href = resultat[1];//Si trouvé, renvoyer l'usager sur la page actuelle.
                 }
                 else {
                     window.location.href = "?r=accueil";//Sinon, valeur par défaut.
                 }
-                console.log(resultat);
+//                console.log(resultat);
                 //--------------------------------------------------------------------------
             }
             else {//reponse === false
-                console.log("erreur user/pass");
+//                console.log("erreur user/pass");
                 document.formLogin.user.value = "";
                 document.formLogin.pass.value = "";
                 document.getElementById("erreurLogin").innerHTML = "nom et\/ou mot de passe incorrect(s)";
@@ -1332,37 +1364,7 @@ function validerLogin(){
         });
     }
 }
-/**
-* @brief Fonction de validation formulaire page trajet
-* @access public
-* @author Cristina Mahneke
-* @return boolean
-*/
 
-/*function validerFormTrajet(){
-    var erreurs = false;
-    
-    document.getElementById("erreurDepart").innerHTML = "";
-    document.getElementById("erreurDestination").innerHTML = "";
-    document.getElementById("erreurWaypoints").innerHTML = "";
-    document.getElementById("erreurDepart").innerHTML = "";
-    
-     if (document.getElementById("depart").value.trim() == "") {
-        document.getElementById("erreurDepart").innerHTML = "Veuillez entrer votre adresse ou localisation";
-        erreurs = true;
-    }
-    if (document.getElementById("destination").value.trim() == "") {
-        document.getElementById("erreurDestination").innerHTML = "Veuillez choisir une destination";
-        erreurs = true;
-    }
-    if (document.getElementById("waypoints").value.trim() == "") {
-        document.getElementById("erreurDestination").innerHTML = "Veuillez choisir vos arrêts intermédiaires";
-        erreurs = true;
-    }
-    if (!erreurs) {
-        
-    }
-}*/
 /**
 * @brief Fonction qui déconnecte l'usager du site
 * @access public
@@ -1385,7 +1387,11 @@ function valideModifierUtilisateur() {
     
     var erreurs = false;
     var idUtilisateur= document.getElementById("idUtilisateur").value;
-    var motPasse= document.getElementById("motdepasseModif").value.trim();
+    var motPasse = document.getElementById("motdepasseModif").value.trim();
+    var motPasseEncrypte = "";
+    if (motPasse != "") {
+        motPasseEncrypte = md5(motPasse);
+    }
     var prenom = document.getElementById("prenomModif").value.trim();
     var nom = document.getElementById("nomModif").value.trim();
     var description = document.getElementById("descriptionModif").value.trim();
@@ -1394,7 +1400,6 @@ function valideModifierUtilisateur() {
     
     document.getElementById("erreurPrenomUtilisateurModif").innerHTML = "";
     document.getElementById("erreurNomUtilisateurModif").innerHTML = "";
-    document.getElementById("erreurDescriptionModif").innerHTML = "";
     document.getElementById("msgModif").innerHTML = "";
 
     if (prenom == "") {
@@ -1406,10 +1411,6 @@ function valideModifierUtilisateur() {
         erreurs = true;
     }
 
-    if (description == "") {
-        document.getElementById("erreurDescriptionModif").innerHTML = "Veuillez entrer une description";
-        erreurs = true;
-    }
      if (photo.value != "") {
         var fichiersAuthorises = new RegExp("(.jpg|.jpeg|.png)$", "i");//doit se terminer par une des extensions suivantes.
         var resultat = fichiersAuthorises.exec(photo.value);
@@ -1429,10 +1430,10 @@ function valideModifierUtilisateur() {
     //-----------------------------------------
     //Requête AJAX si aucune erreur.
     if (!erreurs) {
-        $.post('ajaxControler.php?rAjax=modifierUtilisateur', {motPasse: motPasse, prenom: prenom, nom: nom, description: description, idUtilisateur: idUtilisateur}, 
+        $.post('ajaxControler.php?rAjax=modifierUtilisateur', {motPasse: motPasseEncrypte, prenom: prenom, nom: nom, description: description, idUtilisateur: idUtilisateur}, 
             
             function(reponse){
- console.log(reponse); 
+
                 var msgErreurs = jQuery.parseJSON(reponse);//Messages d'erreurs de la requêtes encodés au format Json.
             
                 if (msgErreurs.length == 0) {//Si aucune erreur...
@@ -1475,7 +1476,7 @@ function valideModifierUtilisateur() {
                         contentType: false,
                         type: 'POST',
                         success: function(msgErreurs){
-                            console.log(msgErreurs);
+
                             if (msgErreurs != "") {//Si erreur avec l'insertion de la photo...
                                 $("#erreurPhoto").html(msgErreurs);
                             }
@@ -1540,17 +1541,31 @@ function afficherFormModif() {
 * @return void
 */
 function initMapTrajet() {
+     
     var directionsService = new google.maps.DirectionsService;
     var directionsDisplay = new google.maps.DirectionsRenderer;
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 11,
         center: new google.maps.LatLng(45.512090, -73.550979),
-        mapTypeId: 'roadmap'
+        mapTypeId: 'roadmap',
+        
     });
     directionsDisplay.setMap(map);
+    
         document.getElementById('envoyerTrajetBouton').addEventListener('click', function() {
-        calculateAndDisplayRoute(directionsService, directionsDisplay);
+            
+            document.getElementById("erreurPasTrouve").innerHTML ="";
+            document.getElementById("erreurDepart").innerHTML = "";
+            document.getElementById("erreurDestination").selectedIndex = "";
+            document.getElementById("erreurWaypoints").selectedIndex = "";
+           
+            
+            calculateAndDisplayRoute(directionsService, directionsDisplay);
   });
+        
+         
+        
+        
     var infoWindow = new google.maps.InfoWindow();
      var image = {
     url: 'images/User_icon_BLACK-01.png',
@@ -1584,26 +1599,38 @@ function initMapTrajet() {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
   }
-   
-    
     var urlAjax = 'ajaxControler.php?rAjax=googleMap';
     downloadUrl(urlAjax, function(data) {
-        
+        var markerArray='';
+        var mcOptions = {gridSize: 50, maxZoom: 15};
         var xml = data.responseXML;
         var markers = xml.documentElement.getElementsByTagName("marker");
+        var ClusterMap = [];
         for (var i = 0; i < markers.length; i++) {
             var name = markers[i].getAttribute("name");
+            //    var photo = markers[i].getAttribute("photo");
+            //    var urlTest = markers[i].getAttribute("urlTest");
+            var url = markers[i].getAttribute("url");
             var point = new google.maps.LatLng(
             parseFloat(markers[i].getAttribute("lat")),
             parseFloat(markers[i].getAttribute("lng")));
-            var html = "<span>" + name + "</span>";
+            var image = {
+                
+                url : 'images/punaiseMontreart.png',
+                size: new google.maps.Size(104, 104),
+                scaledSize: new google.maps.Size(50, 50),
+                anchor: new google.maps.Point(25, 50)
+            };
+            var html = "<a href='" + url + "'>" + name + "</a>";
             var marker = new google.maps.Marker({
-                map: map,
                 position: point,
-            });
+                icon: image 
+            });   marker.setMap(map); 
+            ClusterMap.push(marker);   
             bindInfoWindow(marker, map, infoWindow, html);
-        }
-    });
+         
+        }var markerCluster = new MarkerClusterer(map, ClusterMap,mcOptions);
+    });  
  
 }
 /**
@@ -1612,45 +1639,62 @@ function initMapTrajet() {
 * @return void
 */
 function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-  var waypts = [];
-  var checkboxArray = document.getElementById('waypoints');
-  for (var i = 0; i < checkboxArray.length; i++) {
-    if (checkboxArray.options[i].selected) {
-      waypts.push({
-        location: checkboxArray[i].value,
-        stopover: true
-      });
-     
+   
+    document.getElementById("erreurDepart").innerHTML = "";
+    document.getElementById("erreurPasTrouve").innerHTML = "";
+    document.getElementById("erreurDestination").innerHTML = "";
+    document.getElementById("erreurWaypoints").innerHTML = "";
+    var erreurs = false;
+    
+    if (document.getElementById("depart").value.trim() == "") {
+        document.getElementById("erreurDepart").innerHTML = "Veuillez entrer votre adresse ou localisation (adresse civique ou longitude et latitude, séparés par une virgule)";
+        erreurs = true;
     }
-  }
-var selectFin = document.getElementById('fin');
-var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
-  directionsService.route({
-    origin: document.getElementById('depart').value,
-    destination: selectedOptFin,
-    waypoints: waypts,
-    optimizeWaypoints: true,
-    travelMode: google.maps.TravelMode.WALKING
-  }, function(response, status) {
-    if (status === google.maps.DirectionsStatus.OK) {
-      directionsDisplay.setDirections(response);
-      var route = response.routes[0];
-      var summaryPanel = document.getElementById('directions-panel');
-      summaryPanel.innerHTML = ' <h2>Votre Trajet: </h2>';
-      // For each route, display summary information.
-      for (var i = 0; i < route.legs.length; i++) {
-        var routeSegment = i + 1;
-        summaryPanel.innerHTML += '<h4>Partie ' + routeSegment +
-            ' , Marchez à</h4><br>';
-        summaryPanel.innerHTML += route.legs[i].start_address + ' à ';
-        summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-        summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-      }
-    } else {
-      window.alert('Requête de Google Directions à échoué ' + status);
+
+    if (document.getElementById("fin").selectedIndex == "0") {
+        document.getElementById("erreurDestination").innerHTML = "Veuillez choisir une destination";
+        erreurs = true;
     }
-  });
+    if (!erreurs) {
+        var waypts = [];
+        var checkboxArray = document.getElementById('waypoints');
+        for (var i = 0; i < checkboxArray.length; i++) {
+            if (checkboxArray.options[i].selected) {
+                waypts.push({
+                location: checkboxArray[i].value,
+                stopover: true
+                });
+            }
+        }
+        var selectFin = document.getElementById('fin');
+        var selectedOptFin = selectFin.options[selectFin.selectedIndex].value;
+        directionsService.route({
+            origin: document.getElementById('depart').value,
+            destination: selectedOptFin,
+            waypoints: waypts,
+            optimizeWaypoints: true,
+            travelMode: google.maps.TravelMode.WALKING,
+            language: 'fr'
+        }, function(response, status) {
+            if (status === google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+                var route = response.routes[0];
+                var summaryPanel = document.getElementById('directions-panel');
+                summaryPanel.innerHTML = ' <h2>Votre Trajet: </h2>';
+                // For each route, display summary information.
+                for (var i = 0; i < route.legs.length; i++) {
+                    var routeSegment = i + 1;
+                    summaryPanel.innerHTML += '<h4>Partie ' + routeSegment +
+                    ' , Marchez à</h4><br>';
+                    summaryPanel.innerHTML += route.legs[i].start_address + ' à ';
+                    summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+                    summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
+                }
+            }             
+        });
+    }
 }
+
 
 /* --------------------------------------------------------------------
 ========================= FONCTIONS RECHERCHE =========================
@@ -1684,10 +1728,10 @@ function autoComplete(rechercheVoulue, nomServeur)
                     }
                     else if (rechercheVoulue=="artiste") {
                         if (value['nomCollectif'] != null) {
-                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCollectif']+"</a></div>");
+                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+"&nomArtiste="+encodeURIComponent(value['nomCollectif'])+">"+value['nomCollectif']+"</a></div>");
                         }
                         else {
-                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCompletArtiste']+"</a></div>");
+                            $('#results').append('<div class="item">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+"&nomArtiste="+encodeURIComponent(value['nomCompletArtiste'])+">"+value['nomCompletArtiste']+"</a></div>");
                         }
                     }
                 })
@@ -1722,9 +1766,7 @@ function autoCompleteMobile(rechercheVoulue, nomServeur)
             $.get(url + rechercheVoulue, { keyword: keyword } )
             
             .done(function( data ) {
-                
-                
-                
+
                 $('#resultsMobile').html('');
                 var results = jQuery.parseJSON(data);
                 
@@ -1735,10 +1777,10 @@ function autoCompleteMobile(rechercheVoulue, nomServeur)
                     }
                     if (rechercheVoulue=="artiste") {
                         if (value['nomCollectif'] != null) {
-                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCollectif']+"</a></div>");
+                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+"&nomArtiste="+encodeURIComponent(value['nomCollectif'])+">"+value['nomCollectif']+"</a></div>");
                         }
                         else {
-                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+">"+value['nomCompletArtiste']+"</a></div>");
+                            $('#resultsMobile').append('<div class="itemMobile">' + "<a href=http://"+nomServeur+"/?r=recherche&rechercheParArtiste="+value['idArtiste']+"&nomArtiste="+encodeURIComponent(value['nomCompletArtiste'])+">"+value['nomCompletArtiste']+"</a></div>");
                         }
                     }
                 })
@@ -1824,9 +1866,17 @@ function initMap() {
             var point = new google.maps.LatLng(
             parseFloat(markers[i].getAttribute("lat")),
             parseFloat(markers[i].getAttribute("lng")));
+            var image = {
+                
+                url : 'images/punaiseMontreart.png',
+                size: new google.maps.Size(104, 104),
+                scaledSize: new google.maps.Size(50, 50),
+                anchor: new google.maps.Point(25, 50)
+            };
             var html = "<a href='" + url + "'>" + name + "</a>";
             var marker = new google.maps.Marker({
-                position: point
+                position: point,
+                icon: image 
             });   marker.setMap(map); 
             ClusterMap.push(marker);   
             bindInfoWindow(marker, map, infoWindow, html);
@@ -1873,7 +1923,7 @@ function trouveMarqueurPlusPres(lat, lng) {
             closest = i; 
         }
     }
-         document.getElementById("distanceMarqueur").innerHTML = 'Vous êtes à'+" "+distances[closest].toFixed(2)+" "+"km de distance de l'oeuvre"+' '+markers[closest].getAttribute("name");
+         document.getElementById("distanceMarqueur").innerHTML = "Vous êtes à " + distances[closest].toFixed(2) + " km de distance de l'oeuvre" + markers[closest].getAttribute("name");
        if (distances[closest]<= 0.50){
                     if(markers[closest].getAttribute("idOeuvre") != null){
                                 Date.prototype.yyyymmdd = function() {        //function pour avoir la date d'aujourd'hui 
@@ -1936,7 +1986,7 @@ function marqueurPlusPresTrajet(lat, lng) {
             selectMultiple.appendChild(optMult);
         }
     }
-         document.getElementById("distanceMarqueur").innerHTML = 'Vous êtes à'+" "+distances[closest].toFixed(2)+" "+"km de distance de l'oeuvre"+' '+'"'+markers[closest].getAttribute("name")+'"';
+         document.getElementById("distanceMarqueur").innerHTML = "Vous êtes à " + distances[closest].toFixed(2) + " km de distance de l'oeuvre " + markers[closest].getAttribute("name");
          
         
 });
@@ -1983,6 +2033,8 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
                         'Error: The Geolocation service failed.' :
                         'Error: Your browser doesn\'t support geolocation.');
 }
+
+//-----fonction bidon----------
 function doNothing() {}
 
 //fonction pour monter le formulaire login
@@ -2000,13 +2052,6 @@ function fermer(){
 function fermerApprob(){
     document.getElementById('bgPanneauApprobation').style.display = "none";
     document.getElementById('panneauApprobation').style.display = "none";
-}
-
-//formulaire de la vueAdmin qui permet d'afficher le formulaire pour authoriser les photos non-autorisés
-function formRevisionPhotos(idPhoto){
-    var idPhoto = idPhoto;
-    document.getElementById('formRevisionPhotos').style.display = "block";
-    document.getElementById('formRevisionPhotos').innerHTML="<form action='#' id='formRevisionPhoto' method='post' name='formRevisionPhoto'><button id='fermer' onclick ='fermer()'>X</button><h3>Id Image:</h3><p>Adresse Oeuvre</p><img src='<?php $photoAffiche = $this->$photoAReviser['image']?>'><input id='insererPhoto' name='insererPhoto' type='submit' onclick='fermer()' value='Insérer'><input id='suprimmerPhoto' name='suprimmerPhoto' type='submit' onclick='fermer()' value='Suprimmer'></form>";
 }
 
 
@@ -2111,7 +2156,7 @@ function afficherOeuvrePourApprobation(idOeuvre) {
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
-        contenu += "<h2>L'oeuvre <a target = '_blank' href='?r=oeuvreSoumise&o=" + oeuvre.idOeuvre + "'>" + oeuvre.titre + "</a></h2>";
+        contenu += "<h2>L'oeuvre <a target = '_blank' href='?r=oeuvre&o=" + oeuvre.idOeuvre + "&approbation=true'>" + oeuvre.titre + "</a></h2>";
         contenu += "<input type='hidden' id='idOeuvreSoumise' value='" + oeuvre.idOeuvre + "'>";
         contenu += "<input type='hidden' id='idCategorieSoumise' value='" + oeuvre.idCategorie + "'>";
         contenu += "<input type='hidden' id='idArrondissementSoumis' value='" + oeuvre.idArrondissement + "'>";
@@ -2155,7 +2200,7 @@ function afficherPhotoPourApprobation(idPhoto) {
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
-        contenu += "<h2>Photo pour l'oeuvre <a target = '_blank' href='?r=oeuvreSoumise&o=" + photo.idOeuvre + "'>" + photo.titre + "</a></h2>";
+        contenu += "<h2>Photo pour l'oeuvre <a target = '_blank' href='?r=oeuvre&o=" + photo.idOeuvre + "&approbation=true'>" + photo.titre + "</a></h2>";
         contenu += "<img src='../" + photo.image + "' alt='" + alt + "'><br>";
         contenu += "<input class='boutonHover boutonRefuser' type='button' name='boutonRefuserSoumission' value='Refuser' onclick ='refuserSoumissions(" + type + ", " + photo.idPhoto + ")'>";
         contenu += "<input class='boutonHover boutonAccepter' type='button' name='boutonAccepterSoumission' value='Accepter' onclick ='accepterSoumissions(" + type + ", " + photo.idPhoto + ")'>";
@@ -2185,7 +2230,7 @@ function afficherCommentairePourApprobation(idCommentaire) {
         
         contenu += "<button id='fermer' onclick ='fermerApprob()'>X</button>";
         contenu += "<div id='divPanneauApprobation'>";
-        contenu += "<h2>Commentaire pour l'oeuvre <a target = '_blank' href='?r=oeuvreSoumise&o=" + commentaire.idOeuvre + "'>" + commentaire.titre + "</a></h2>";
+        contenu += "<h2>Commentaire pour l'oeuvre <a target = '_blank' href='?r=oeuvre&o=" + commentaire.idOeuvre + "&approbation=true'>" + commentaire.titre + "</a></h2>";
         contenu += "<input type='hidden' id='idCommentaireSoumis' value='" + commentaire.idCommentaire + "'>";
         contenu += "<p id='commentaireAffichageSoumission'>" + commentaire.texteCommentaire + "</p>";
         contenu += "<p>Langue d'origine : <span style='color:green' id='langueCommentaireModif'>" + commentaire.langueCommentaire + "</span></p>";
@@ -2301,7 +2346,7 @@ function rechargerOeuvresApprob() {
         var oeuvresApprob = "";
 
         for (var i = 1; i <= soumissions.length; i++) {
-            oeuvresApprob += '<a href="#"; onclick="afficherOeuvrePourApprobation(' + soumissions[i-1]['idOeuvre'] + ')">Oeuvre ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionOeuvre'] + '</span></a>';
+            oeuvresApprob += '<a href="javascript:;"; onclick="afficherOeuvrePourApprobation(' + soumissions[i-1]['idOeuvre'] + ')">Oeuvre ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionOeuvre'] + '</span></a>';
         }
         $("#contenuSoumissionOeuvres").html(oeuvresApprob);
         $("#nbOeuvresEnAttente").html("En attente : " + soumissions.length);
@@ -2323,7 +2368,7 @@ function rechargerPhotosApprob() {
         var photosApprob = "";
 
         for (var i = 1; i <= soumissions.length; i++) {
-            photosApprob += '<a href="#"; onclick="afficherPhotoPourApprobation(' + soumissions[i-1]['idPhoto'] + ')">Photo ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionPhoto'] + '</span></a>';
+            photosApprob += '<a href="javascript:;"; onclick="afficherPhotoPourApprobation(' + soumissions[i-1]['idPhoto'] + ')">Photo ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionPhoto'] + '</span></a>';
         }
         $("#contenuSoumissionPhotos").html(photosApprob);
         $("#nbPhotosEnAttente").html("En attente : " + soumissions.length);
@@ -2345,7 +2390,7 @@ function rechargerCommentairesApprob() {
         var commentairesApprob = "";
 
         for (var i = 1; i <= soumissions.length; i++) {
-            commentairesApprob += '<a href="#"; onclick="afficherCommentairePourApprobation(' + soumissions[i-1]['idCommentaire'] + ')">Commentaire ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionCommentaire'] + '</span></a>';
+            commentairesApprob += '<a href="javascript:;"; onclick="afficherCommentairePourApprobation(' + soumissions[i-1]['idCommentaire'] + ')">Commentaire ' + i + ' <span>Soumise le ' + soumissions[i-1]['dateSoumissionCommentaire'] + '</span></a>';
         }
         $("#contenuSoumissionCommentaires").html(commentairesApprob);
         $("#nbCommentairesEnAttente").html("En attente : " + soumissions.length);

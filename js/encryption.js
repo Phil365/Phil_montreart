@@ -280,15 +280,12 @@
 * @brief Fonction pour encrypter le mot de passe côté client
 * @access public
 * @author David Lachambre
+* @author Cristina Mahneke
 * @return string
 */
-function encrypter() {
-
-    var passwordEncrypte = md5(document.formLogin.pass.value);
-//    console.log("pass md5 : ", passwordEncrypte);
-    var grainSel = document.formLogin.grainSel.value;
-//    console.log("grain de sel : ", grainSel);
-
+function encrypterMotPasse(pass, grainSel) {
+    var passwordEncrypte = md5(pass);
+    
     //formule: md5(grainSel . md5(password))
     var passwordEncryptePlusGrainSel = md5(grainSel + passwordEncrypte);
     return passwordEncryptePlusGrainSel;

@@ -154,6 +154,15 @@ class Oeuvre {
         $this->photos = $photos;
         $this->commentaires = $commentaires;
     }
+    
+    /**
+    * @brief Méthode qui assigne un tableau de photos à une oeuvre
+    * @param array $photos
+    */
+    public function setPhotos($photos) {
+
+        $this->photos = $photos;
+    }
         
     /**
     * @brief Méthode qui récupère les valeurs des propriétés de cet objet
@@ -596,7 +605,7 @@ class Oeuvre {
     }
     
     /**
-    * @brief Méthode qui cherche toutes les oeuvres avec une longitude et une latitude pour la Google Map.
+    * @brief Méthode qui cherche toutes les oeuvres authorisées ou non.
     * @access public
     * @return array
     */
